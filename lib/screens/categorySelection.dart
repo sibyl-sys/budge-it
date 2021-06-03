@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/categorySelectionTab.dart';
+import 'package:money_tracker/screens/iconSelection.dart';
+import 'package:money_tracker/services/category.dart';
+
+class CategorySelection extends StatefulWidget {
+  @override
+  _CategorySelectionState createState() => _CategorySelectionState();
+}
+
+class _CategorySelectionState extends State<CategorySelection> {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      type: MaterialType.transparency,
+      child: Center(
+        child: Container(
+          width: 350,
+          height: 500,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(15))
+          ),
+          child: DefaultTabController(
+            length: 2,
+            child: Column(
+              children: [
+                Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 2.0
+                      )
+                    )
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Select Category",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      )
+                    )
+                  )
+                ),
+                ColoredBox(
+                  color: Colors.white,
+                  child: TabBar(
+                    indicatorColor: Colors.teal[500],
+                    labelColor: Theme.of(context).primaryColor,
+                    unselectedLabelColor: Colors.grey,
+                    tabs: [
+                      Tab(
+                        text: 'Expense'
+                      ),
+                      Tab(
+                        text: 'Income'
+                      ),
+                    ]
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      CategorySelectionTab(
+                        categoryType: CategoryType.expense,
+                      ),
+                      CategorySelectionTab(
+                        categoryType: CategoryType.income
+                      )
+                    ]
+                  )
+                )
+              ],
+            ),
+          )
+        )
+      )
+    );
+  }
+}

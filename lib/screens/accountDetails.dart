@@ -1,0 +1,504 @@
+import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/editAccount.dart';
+import 'package:money_tracker/services/account.dart';
+import 'package:money_tracker/services/transaction.dart';
+import 'package:money_tracker/services/user.dart';
+import 'package:money_tracker/widgets/creditLimitText.dart';
+import 'package:money_tracker/widgets/transactionCard.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+
+class AccountDetails extends StatefulWidget {
+
+  @override
+  _AccountDetailsState createState() => _AccountDetailsState();
+}
+
+class _AccountDetailsState extends State<AccountDetails> {
+  final moneyFormat = new NumberFormat("#,##0.00", "en_US");
+
+
+  List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  List weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+
+  int month = 1;
+  int year = 2021;
+
+  renderTransactionListPerDay(User user, List<Transaction> transactions) {
+    return Column(
+        children: transactions.map((transaction) =>
+            TransactionCard(
+              color: Color(user.findCategoryByID(transaction.categoryID).color).withOpacity(1),
+              icon: IconData(user.findCategoryByID(transaction.categoryID).icon, fontFamily: "MaterialIcons"),
+              categoryName: user.findCategoryByID(transaction.categoryID).name,
+              description: transaction.note,
+              value: transaction.value,
+            )
+        ).toList()
+    );
+
+  }
+
+  nextMonth() {
+    int nextMonth = month + 1;
+    if(nextMonth > 12) {
+      setState(() {
+        month = 1;
+        year += 1;
+      });
+    } else {
+      setState(() {
+        month = nextMonth;
+      });
+    }
+  }
+
+  previousMonth() {
+    int nextMonth = month - 1;
+    if(nextMonth == 0) {
+      setState(() {
+        month = 12;
+        year -= 1;
+      });
+    } else {
+      setState(() {
+        month = nextMonth;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    var now = new DateTime.now();
+    setState(() {
+      month = now.month;
+      year = now.year;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    final User user = context.watch<User>();
+    double monthlyNet = user.getMonthlyNet(month: month, year: year, accountID: -1);
+
+    final List<Map> transactionListPerDay = user.getTransactions(month: month, year: year, accountID: -1);
+    Account currentAccount = user.findAccountByID(arguments["accountIndex"]);
+
+
+    //TODO TRANSACTION LIST
+    //TODO DATE PICKER
+
+    return currentAccount == null ? SizedBox(height: 0) : Scaffold(
+      appBar: AppBar(
+        actions: [
+          FlatButton(onPressed: () {
+            Navigator.of(context).push(
+                PageRouteBuilder(
+                  barrierColor: Colors.black.withOpacity(0.25),
+                  barrierDismissible: true,
+                  opaque: false,
+                  pageBuilder: (_, __, ___) => EditAccount(accountIndex: arguments["accountIndex"]),
+                )
+            );
+          }, child: Text("EDIT",
+              style: TextStyle(color: Colors.white)
+            )
+          )
+        ],
+        title: Text("Account Details")
+      ),
+      body: Column(
+        children: [
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              child: Container(
+                height: 75,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                          children : [
+                            CircularPercentIndicator(
+                              radius: 48,
+                              lineWidth: 4.0,
+                              percent: currentAccount.creditLimit > 0 ? currentAccount.balance / currentAccount.creditLimit / 100 : 0,
+                              progressColor: Colors.lightGreen,
+                              backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
+                              center: CircleAvatar(
+                                backgroundColor: Color(currentAccount.color).withOpacity(1),
+                                child: Icon(
+                                    IconData(currentAccount.icon, fontFamily: 'MaterialIcons'),
+                                    color: Colors.white,
+                                    size: 30
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 20),
+                            Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      currentAccount.name,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14.0,
+                                      )
+                                  ),
+                                  SizedBox(height: 4),
+                                  RichText(
+                                    text: TextSpan(
+                                        text: "${currentAccount.currency.symbol} ${moneyFormat.format(currentAccount.balance).split('.')[0]}",
+                                        style: TextStyle(
+                                            color: Colors.green[700],
+                                            fontSize: 16
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                              text: ".${moneyFormat.format(currentAccount.balance).split('.')[1]}",
+                                              style: TextStyle(
+                                                  color: Colors.green[700],
+                                                  fontSize: 14
+                                              )
+                                          )
+                                        ]
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ]
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                              "${currentAccount.description}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 12.0,
+                                  color: Colors.grey[600]
+                              )
+                          ),
+                          SizedBox(height: 4),
+                          CreditLimitText(creditLimit: currentAccount.creditLimit, progress: currentAccount.balance / currentAccount.creditLimit)
+                        ],
+                      ),
+                    ],
+                  ),
+              ),
+            ),
+          ),
+          SizedBox(height: 1.0),
+          Card(
+            child: Container(
+              height: 48,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor), onPressed: previousMonth),
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today),
+                      SizedBox(width: 8),
+                      Text("${months[month-1]} ${year}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14
+                      )),
+                    ],
+                  ),
+                  IconButton(icon: Icon(Icons.chevron_right, color: Theme.of(context).primaryColor), onPressed: nextMonth)
+                ],
+              ),
+            )
+          ),
+          Expanded(
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 24.0, 8.0, 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 85,
+                        height: 85,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)
+                              )
+                            ),
+                            side: MaterialStateProperty.all(
+                              BorderSide(
+                                color: Colors.teal[400],
+                                width: 2.0,
+                              )
+                            )
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_downward,
+                                size: 32,
+                                color: Colors.teal[400],
+                              ),
+                              SizedBox(
+                                height: 8
+                              ),
+                              Text(
+                                  "Deposit",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12
+                                  )
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 85,
+                        height: 85,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0)
+                                  )
+                              ),
+                              side: MaterialStateProperty.all(
+                                  BorderSide(
+                                    color: Colors.red[700],
+                                    width: 2.0,
+                                  )
+                              )
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_upward,
+                                size: 32,
+                                color: Colors.red[700],
+                              ),
+                              SizedBox(
+                                  height: 8
+                              ),
+                              Text(
+                                  "Widthdraw",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 11
+                                  )
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 85,
+                        height: 85,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0)
+                                  )
+                              ),
+                              side: MaterialStateProperty.all(
+                                  BorderSide(
+                                    color: Colors.blue[700],
+                                    width: 2.0,
+                                  )
+                              )
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_forward,
+                                size: 32,
+                                color: Colors.blue[700],
+                              ),
+                              SizedBox(
+                                  height: 8
+                              ),
+                              Text(
+                                  "Transfer",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 11
+                                  )
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 85,
+                        height: 85,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0)
+                                  )
+                              ),
+                              side: MaterialStateProperty.all(
+                                  BorderSide(
+                                    color: Colors.yellow[700],
+                                    width: 2.0,
+                                  )
+                              )
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.autorenew,
+                                size: 32,
+                                color: Colors.yellow[700],
+                              ),
+                              SizedBox(
+                                  height: 8
+                              ),
+                              Text(
+                                  "Rebalance",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 11
+                                  )
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  height: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 32.0),
+                            child: Text(
+                                monthlyNet.toString(),
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                    color: monthlyNet >= 0 ? Colors.teal[700] : Colors.red[700]
+                                )
+                            ),
+                          ),
+                          Icon(
+                            monthlyNet >= 0 ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                            size: 32,
+                            color: monthlyNet >= 0 ? Colors.teal[700] : Colors.red[700],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(user.getTransactionCount(month: month, year: year, accountID: -1).toString() + " Transactions",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey
+                          )),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Column(
+                    children: transactionListPerDay.map((e) =>
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                      children: [
+                                        Text(
+                                            e["day"].toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 24,
+                                                color: Color(0x4F4F4F).withOpacity(1)
+                                            )
+                                        ),
+                                        SizedBox(width: 8),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                weekdays[e["weekday"]-1],
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: Color(0x4F4F4F).withOpacity(1)
+                                                )
+                                            ),
+                                            Text(
+                                                months[e["month"]] + " " + e["year"].toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: Color(0x4F4F4F).withOpacity(1)
+                                                )
+                                            ),
+                                          ],
+                                        )
+                                      ]
+                                  ),
+                                  Text(
+                                      e["value"].toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 24,
+                                          color: Color(0x4F4F4F).withOpacity(1)
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child:renderTransactionListPerDay(user, e["transactions"])
+                            )
+                          ],
+                        )
+                    ).toList()
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
