@@ -17,6 +17,7 @@ class CategoriesTab extends StatefulWidget {
 }
 
 class _CatgoriesTabState extends State<CategoriesTab> {
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
@@ -60,6 +61,7 @@ class _CatgoriesTabState extends State<CategoriesTab> {
               icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
               name: e.name,
               categoryID: e.categoryID,
+              currencySymbol: user.primaryCurrency.symbol,
               value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
               onCategoryClick: (int categoryID) {
                   user.selectCategory(categoryID);
@@ -77,6 +79,7 @@ class _CatgoriesTabState extends State<CategoriesTab> {
               icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
               name: e.name,
               categoryID: e.categoryID,
+              currencySymbol: user.primaryCurrency.symbol,
               value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
               onCategoryClick: (int categoryID) {
                 user.selectCategory(categoryID);

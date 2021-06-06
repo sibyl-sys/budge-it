@@ -9,8 +9,9 @@ class CategoryButton extends StatefulWidget {
   final Function onCategoryClick;
   final int categoryID;
   final double value;
+  final String currencySymbol;
 
-  const CategoryButton({Key key, this.icon, this.color, this.name, this.onCategoryClick, this.categoryID, this.value}) : super(key: key);
+  const CategoryButton({Key key, this.icon, this.color, this.name, this.onCategoryClick, this.categoryID, this.value, this.currencySymbol}) : super(key: key);
 
   @override
   _CategoryButtonState createState() => _CategoryButtonState();
@@ -44,7 +45,7 @@ class _CategoryButtonState extends State<CategoryButton> {
           ),
           SizedBox(height: 8.0),
           Text(
-              "P. " + widget.value.toString(),
+              widget.currencySymbol + " " + widget.value.toString(),
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500
