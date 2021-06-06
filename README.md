@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # money_tracker
 
 M o n e y
