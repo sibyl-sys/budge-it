@@ -1,5 +1,6 @@
 import 'package:money_tracker/services/category.dart';
 import 'package:hive/hive.dart';
+import 'package:money_tracker/services/currency.dart';
 
 part 'transaction.g.dart';
 

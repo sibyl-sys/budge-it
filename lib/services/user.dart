@@ -65,7 +65,11 @@ class User extends ChangeNotifier {
     double total = 0;
     for(var account in accounts) {
       if(account.isIncludedInTotalNet && !account.isArchived) {
-        total += account.balance;
+        if(account.currency == primaryCurrency) {
+          total += account.balance;
+        } else {
+          total += exchangeCurrency(account.balance, account.currency, primaryCurrency);
+        }
       }
     }
     return total;
@@ -85,6 +89,10 @@ class User extends ChangeNotifier {
 
   Transaction findTransactionByID(int transactionID) {
     return transactions.firstWhereOrNull((transaction) => transaction.transactionID == transactionID);
+  }
+
+  double exchangeCurrency(double value, Currency from, Currency to) {
+    return value * from.exchangeRateToUSD / to.exchangeRateToUSD;
   }
 
   void updateAccount(Account account, int accountID) async {
@@ -136,7 +144,12 @@ class User extends ChangeNotifier {
           transaction.timestamp.year == year &&
           transaction.categoryID == categoryID &&
           !transaction.isArchived) {
-        categoryNet+= transaction.value;
+        Account transactionAccount = findAccountByID(transaction.accountID);
+        if(transactionAccount.currency == primaryCurrency) {
+          categoryNet+= transaction.value;
+        } else {
+          categoryNet+= exchangeCurrency(transaction.value, transactionAccount.currency, primaryCurrency);
+        }
       }
     }
     return categoryNet;
