@@ -154,12 +154,12 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
 
-  Widget generateIconButton(int widthMultiplier, int heightMultiplier, IconData icon, Color color, Color iconColor, Function onPressed) {
+  Widget generateIconButton(double width, double height, IconData icon, Color color, Color iconColor, Function onPressed) {
     return Container(
-        width: 82.0 * widthMultiplier,
-        height: 82.0 * heightMultiplier,
+        width: width,
+        height: height,
         child: FlatButton(
-          height: 82,
+          height: height,
           onPressed: onPressed,
           color: color,
           shape: ContinuousRectangleBorder(
@@ -179,12 +179,12 @@ class _AddTransactionState extends State<AddTransaction> {
     );
   }
 
-  Widget generateButton(int widthMultiplier, int heightMultiplier, String label, Color color, Color textColor, Function onPressed) {
+  Widget generateButton(double width, double height, String label, Color color, Color textColor, Function onPressed) {
     return Container(
-        width: 82.0 * widthMultiplier,
-        height: 82.0 * heightMultiplier,
+        width: width,
+        height: height,
         child: FlatButton(
-          height: 82,
+          height: height,
           onPressed: onPressed,
           color: color,
           shape: ContinuousRectangleBorder(
@@ -209,10 +209,9 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   Widget build(BuildContext context) {
-
     final user = context.watch<User>();
-
     TransactionType transactionType = user.findCategoryByID(user.lastSelectedCategory).categoryType == CategoryType.expense ? TransactionType.expense : TransactionType.income;
+    double baseButtonSize = MediaQuery.of(context).size.width / 5;
 
     return Material(
       type: MaterialType.transparency,
@@ -361,7 +360,7 @@ class _AddTransactionState extends State<AddTransaction> {
             Container(
               color: const Color(0xFFf6FBFB),
               width: double.infinity,
-              height: 82,
+              height: baseButtonSize,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -422,11 +421,11 @@ class _AddTransactionState extends State<AddTransaction> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  generateButton(1, 1, "÷", const Color(0xFFFCFCFC), Colors.black,() {changeOperator(Operator.division);}),
-                  generateButton(1, 1, "7", Colors.white, Colors.black,(){addDigit("7");}),
-                  generateButton(1, 1, "8", Colors.white, Colors.black,(){addDigit("8");}),
-                  generateButton(1, 1, "9", Colors.white,Colors.black, (){addDigit("9");}),
-                  generateIconButton(1, 1, Icons.backspace_outlined, const Color(0xFFFCFCFC), Colors.black, eraseDigit),
+                  generateButton(baseButtonSize, baseButtonSize, "÷", const Color(0xFFFCFCFC), Colors.black,() {changeOperator(Operator.division);}),
+                  generateButton(baseButtonSize, baseButtonSize, "7", Colors.white, Colors.black,(){addDigit("7");}),
+                  generateButton(baseButtonSize, baseButtonSize, "8", Colors.white, Colors.black,(){addDigit("8");}),
+                  generateButton(baseButtonSize, baseButtonSize, "9", Colors.white,Colors.black, (){addDigit("9");}),
+                  generateIconButton(baseButtonSize, baseButtonSize, Icons.backspace_outlined, const Color(0xFFFCFCFC), Colors.black, eraseDigit),
                 ],
               ),
             ),
@@ -435,11 +434,11 @@ class _AddTransactionState extends State<AddTransaction> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  generateButton(1, 1, "x", const Color(0xFFFCFCFC), Colors.black, (){changeOperator(Operator.multiplication);}),
-                  generateButton(1, 1, "4", Colors.white, Colors.black,(){addDigit("4");}),
-                  generateButton(1, 1, "5", Colors.white, Colors.black,(){addDigit("5");}),
-                  generateButton(1, 1, "6", Colors.white, Colors.black,(){addDigit("6");}),
-                  generateButton(1, 1, "±", const Color(0xFFFCFCFC), Colors.black,(){changeNumberSign();}),
+                  generateButton(baseButtonSize, baseButtonSize, "x", const Color(0xFFFCFCFC), Colors.black, (){changeOperator(Operator.multiplication);}),
+                  generateButton(baseButtonSize, baseButtonSize, "4", Colors.white, Colors.black,(){addDigit("4");}),
+                  generateButton(baseButtonSize, baseButtonSize, "5", Colors.white, Colors.black,(){addDigit("5");}),
+                  generateButton(baseButtonSize, baseButtonSize, "6", Colors.white, Colors.black,(){addDigit("6");}),
+                  generateButton(baseButtonSize, baseButtonSize, "±", const Color(0xFFFCFCFC), Colors.black,(){changeNumberSign();}),
                 ],
               ),
             ),
@@ -452,10 +451,10 @@ class _AddTransactionState extends State<AddTransaction> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          generateButton(1, 1, "-", const Color(0xFFFCFCFC), Colors.black, (){changeOperator(Operator.subtraction);}),
-                          generateButton(1, 1, "1", Colors.white,Colors.black, (){addDigit("1");}),
-                          generateButton(1, 1, "2", Colors.white,Colors.black, (){addDigit("2");}),
-                          generateButton(1, 1, "3", Colors.white, Colors.black,(){addDigit("3");}),
+                          generateButton(baseButtonSize, baseButtonSize, "-", const Color(0xFFFCFCFC), Colors.black, (){changeOperator(Operator.subtraction);}),
+                          generateButton(baseButtonSize, baseButtonSize, "1", Colors.white,Colors.black, (){addDigit("1");}),
+                          generateButton(baseButtonSize, baseButtonSize, "2", Colors.white,Colors.black, (){addDigit("2");}),
+                          generateButton(baseButtonSize, baseButtonSize, "3", Colors.white, Colors.black,(){addDigit("3");}),
                         ],
                       ),
                     ),
@@ -464,16 +463,16 @@ class _AddTransactionState extends State<AddTransaction> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          generateButton(1, 1, "+", const Color(0xFFFCFCFC), Colors.black,(){changeOperator(Operator.addition);}),
-                          generateButton(2, 1, "0", Colors.white, Colors.black,(){addDigit("0");}),
-                          generateButton(1, 1, ".", Colors.white, Colors.black, (){addDigit(".");}),
+                          generateButton(baseButtonSize, baseButtonSize, "+", const Color(0xFFFCFCFC), Colors.black,(){changeOperator(Operator.addition);}),
+                          generateButton(baseButtonSize * 2, baseButtonSize, "0", Colors.white, Colors.black,(){addDigit("0");}),
+                          generateButton(baseButtonSize, baseButtonSize, ".", Colors.white, Colors.black, (){addDigit(".");}),
                         ],
                       ),
                     )
                   ],
                 ),
                 (operator == Operator.none) ?
-                  generateIconButton(1, 2, Icons.done, Theme.of(context).primaryColor, Colors.white, (){
+                  generateIconButton(baseButtonSize, baseButtonSize * 2, Icons.done, Theme.of(context).primaryColor, Colors.white, (){
                     User userModel = context.read<User>();
                     userModel.addTransaction(
                       Transaction(
@@ -488,7 +487,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     );
                     Navigator.pop(context);
                   }) :
-                    generateButton(1, 2, "=", Theme.of(context).primaryColor, Colors.white, (){changeOperator(Operator.none);})
+                    generateButton(baseButtonSize, baseButtonSize * 2, "=", Theme.of(context).primaryColor, Colors.white, (){changeOperator(Operator.none);})
               ],
             ),
           ],
