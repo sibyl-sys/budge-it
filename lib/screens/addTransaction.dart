@@ -140,6 +140,8 @@ class _AddTransactionState extends State<AddTransaction> {
           secondValue = "";
         });
         break;
+      default:
+        break;
     }
   }
 

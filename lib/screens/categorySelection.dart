@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/categorySelectionTab.dart';
-import 'package:money_tracker/screens/iconSelection.dart';
 import 'package:money_tracker/services/category.dart';
 
 class CategorySelection extends StatefulWidget {

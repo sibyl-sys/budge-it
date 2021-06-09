@@ -3,8 +3,6 @@ import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
-import 'package:money_tracker/services/user.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class Categories extends StatefulWidget {
@@ -109,7 +107,6 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<User>();
 
     return Material(
       child: Container(
@@ -127,7 +124,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                           children: [
                             Icon(Icons.calendar_today),
                             SizedBox(width: 8),
-                            Text("${months[month-1]} ${year}",
+                            Text("${months[month-1]} $year",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14

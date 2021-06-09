@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsTab.dart';
-import 'package:money_tracker/screens/accountsType.dart';
-import 'package:money_tracker/services/account.dart';
-import 'package:money_tracker/services/user.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class Accounts extends StatefulWidget {
@@ -41,7 +37,6 @@ class _AccountsState extends State<Accounts> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<User>();
 
     return Material(
       child: Container(

@@ -126,6 +126,8 @@ class _CalculatorState extends State<Calculator> {
           secondValue = "";
         });
         break;
+      default:
+        break;
     }
   }
 

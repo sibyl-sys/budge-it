@@ -90,7 +90,7 @@ class _TransactionsState extends State<Transactions> {
                     children: [
                       Icon(Icons.calendar_today),
                       SizedBox(width: 8),
-                      Text("${months[month-1]} ${year}",
+                      Text("${months[month-1]} $year",
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14

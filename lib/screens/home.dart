@@ -144,6 +144,7 @@ class _HomeState extends State<Home> {
           ),
           //TODO CHANGE ACTION DEPENDING ON TAB
           leading: FlatButton(
+            onPressed: () {},
             child: Icon(
                 Icons.menu,
                 color: Colors.white
