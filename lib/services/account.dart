@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:money_tracker/services/currency.dart';
-import 'package:money_tracker/services/transaction.dart';
 
 part 'account.g.dart';
 

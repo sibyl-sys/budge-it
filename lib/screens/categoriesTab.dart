@@ -13,10 +13,10 @@ class CategoriesTab extends StatefulWidget {
   const CategoriesTab({Key key, this.categoryType, this.month, this.year}) : super(key: key);
 
   @override
-  _CatgoriesTabState createState() => _CatgoriesTabState();
+  _CategoriesTabState createState() => _CategoriesTabState();
 }
 
-class _CatgoriesTabState extends State<CategoriesTab> {
+class _CategoriesTabState extends State<CategoriesTab> {
 
   @override
   Widget build(BuildContext context) {

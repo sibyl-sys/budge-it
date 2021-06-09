@@ -8,7 +8,6 @@ import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
-import 'package:money_tracker/constants/Constants.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
