@@ -240,7 +240,6 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ),
             ),
-            //TODO ADD INKWELL TO CONTAINERS
             Row(
               children: [
                 Expanded(
@@ -484,7 +483,8 @@ class _AddTransactionState extends State<AddTransaction> {
                         categoryID: user.lastSelectedCategory,
                         transactionID: userModel.transactions.length,
                         timestamp: DateTime.now(),
-                        transactionType: transactionType
+                        transactionType: transactionType,
+                        isArchived: false
                       )
                     );
                     Navigator.pop(context);
