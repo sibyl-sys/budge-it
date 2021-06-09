@@ -71,9 +71,9 @@ class AccountAdapter extends TypeAdapter<Account> {
       isIncludedInTotalNet: fields[8] as bool,
       isDarkIcon: fields[9] as bool,
       accountID: fields[11] as int,
-    )
-      ..currency = fields[10] as Currency
-      ..isArchived = fields[12] as bool;
+      isArchived: fields[12] as bool,
+      currency: fields[10] as Currency,
+    );
   }
 
   @override

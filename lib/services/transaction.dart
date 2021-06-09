@@ -12,6 +12,16 @@ enum TransactionType {
   transfer
 }
 
+@HiveType(typeId: 7)
+enum TransactionImportance {
+  @HiveField(0)
+  need,
+  @HiveField(1)
+  want,
+  @HiveField(2)
+  sudden
+}
+
 @HiveType(typeId: 2)
 class Transaction {
   
@@ -38,6 +48,9 @@ class Transaction {
 
   @HiveField(7)
   bool isArchived;
+
+  @HiveField(8)
+  TransactionImportance importance;
 
   Transaction({this.value, this.note, this.transactionID, this.timestamp, this.categoryID, this.accountID, this.transactionType, this.isArchived});
 }

@@ -50,6 +50,50 @@ class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
           typeId == other.typeId;
 }
 
+class TransactionImportanceAdapter extends TypeAdapter<TransactionImportance> {
+  @override
+  final int typeId = 7;
+
+  @override
+  TransactionImportance read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return TransactionImportance.need;
+      case 1:
+        return TransactionImportance.want;
+      case 2:
+        return TransactionImportance.sudden;
+      default:
+        return TransactionImportance.need;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, TransactionImportance obj) {
+    switch (obj) {
+      case TransactionImportance.need:
+        writer.writeByte(0);
+        break;
+      case TransactionImportance.want:
+        writer.writeByte(1);
+        break;
+      case TransactionImportance.sudden:
+        writer.writeByte(2);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TransactionImportanceAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class TransactionAdapter extends TypeAdapter<Transaction> {
   @override
   final int typeId = 2;
