@@ -34,6 +34,7 @@ class _AccountDetailsState extends State<AccountDetails> {
               categoryName: user.findCategoryByID(transaction.categoryID).name,
               description: transaction.note,
               value: transaction.value,
+              transactionID: transaction.transactionID,
             )
         ).toList()
     );

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_tracker/screens/transactionDetails.dart';
 import 'package:money_tracker/services/transaction.dart';
 
 class TransactionCard extends StatefulWidget {
+  //TODO ADD FROM TO
   final IconData icon;
   final Color color;
   final String categoryName;
   final String description;
   final double value;
   final TransactionType type;
+  final int transactionID;
 
-  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName});
+  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName, this.transactionID});
 
   @override
   _TransactionCardState createState() => _TransactionCardState();
@@ -21,12 +24,21 @@ class _TransactionCardState extends State<TransactionCard> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   @override
   Widget build(BuildContext context) {
-    print(widget.categoryName);
-    print(widget.type);
+
     return Card(
       child: InkWell(
         splashColor:  Colors.teal[700].withAlpha(50),
-        onTap: () {},
+        onTap: () {
+          //TODO ADD TRANSACTION VALUES
+          Navigator.of(context).push(
+              PageRouteBuilder(
+                barrierColor: Colors.black.withOpacity(0.25),
+                barrierDismissible: true,
+                opaque: false,
+                pageBuilder: (_, __, ___) => TransactionDetails(transactionID: widget.transactionID),
+              )
+          );
+        },
         child: Container(
           height: 75,
           child: Padding(

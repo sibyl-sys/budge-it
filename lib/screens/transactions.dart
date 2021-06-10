@@ -25,7 +25,8 @@ class _TransactionsState extends State<Transactions> {
           categoryName: user.findCategoryByID(transaction.categoryID).name,
           description: transaction.note,
           value: transaction.value,
-          type: transaction.transactionType
+          type: transaction.transactionType,
+          transactionID: transaction.transactionID,
         )
       ).toList()
     );
