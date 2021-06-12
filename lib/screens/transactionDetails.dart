@@ -16,37 +16,10 @@ class TransactionDetails extends StatefulWidget {
 }
 
 class _TransactionDetailsState extends State<TransactionDetails> {
-
-  int from;
-  int to;
-  String currencySymbol;
-  double value;
-  TransactionType transactionType;
-
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    final user = context.read<User>();
-    Transaction transaction = user.findTransactionByID(widget.transactionID);
-    setState(() {
-      from = transaction.accountID;
-      to = transaction.categoryID;
-      currencySymbol = user.findAccountByID(transaction.accountID).currency.symbol;
-      value = transaction.value;
-      transactionType = transaction.transactionType;
-    });
-
-
-
-  }
-
-
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
-
+    Transaction transaction = user.findTransactionByID(widget.transactionID);
     return Material(
       type: MaterialType.transparency,
       child: Container(
@@ -76,7 +49,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                 children: [
                   Expanded(
                     child: Ink(
-                      color: Color(user.findAccountByID(from).color).withOpacity(1),
+                      color: Color(user.findAccountByID(transaction.accountID).color).withOpacity(1),
                       child: InkWell(
                         splashColor: Colors.white.withOpacity(0.5),
                         onTap: () async {
@@ -88,7 +61,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                 pageBuilder: (_, __, ___) => AccountSelection(),
                               ));
                           if(result != null) {
-                            //TODO UPDATE TRANSACTION
+                            transaction.accountID = result["accountID"];
+                            user.updateTransaction(transaction);
                             //user.selectAccount(result["accountID"]);
                           }
                         },
@@ -108,14 +82,14 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               Row(
                                   children: [
                                     Icon(
-                                        IconData(user.findAccountByID(from).icon, fontFamily: 'MaterialIcons'),
+                                        IconData(user.findAccountByID(transaction.accountID).icon, fontFamily: 'MaterialIcons'),
                                         color: Colors.white,
                                         size: 32
                                     ),
                                     SizedBox(width: 8.0),
                                     Flexible(
                                       child: Text(
-                                        user.findAccountByID(from).name,
+                                        user.findAccountByID(transaction.accountID).name,
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.white,
@@ -134,7 +108,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   ),
                   Expanded(
                     child: Ink(
-                      color: Color(user.findCategoryByID(to).color).withOpacity(1),
+                      color: Color(user.findCategoryByID(transaction.categoryID).color).withOpacity(1),
                       child: InkWell(
                         onTap: () async {
                           final results = await Navigator.of(context).push(
@@ -146,7 +120,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               )
                           );
                           if(results != null) {
-                            //TODO UPDATE TRANSACTION
+                            transaction.categoryID = results["categoryID"];
+                            user.updateTransaction(transaction);
                             //user.selectCategory(results["categoryID"]);
                           }
                         },
@@ -157,7 +132,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                  transactionType == TransactionType.expense ? "To Expense" : "To Income",
+                                  transaction.transactionType == TransactionType.expense ? "To Expense" : "To Income",
                                   style: TextStyle(
                                       color: Colors.white
                                   )
@@ -166,14 +141,14 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               Row(
                                   children: [
                                     Icon(
-                                        IconData(user.findCategoryByID(to).icon, fontFamily: 'MaterialIcons'),
+                                        IconData(user.findCategoryByID(transaction.categoryID).icon, fontFamily: 'MaterialIcons'),
                                         color: Colors.white,
                                         size: 32
                                     ),
                                     SizedBox(width: 8.0),
                                     Flexible(
                                       child: Text(
-                                        user.findCategoryByID(to).name,
+                                        user.findCategoryByID(transaction.categoryID).name,
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.white,
@@ -210,7 +185,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   ),
                   SizedBox(height: 14),
                   Text(
-                    "$currencySymbol $value",
+                    "${user.findAccountByID(transaction.accountID).currency.symbol} ${transaction.value}",
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 32,

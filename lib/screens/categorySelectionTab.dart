@@ -19,7 +19,6 @@ class _CategorySelectionTabState extends State<CategorySelectionTab> {
   Widget build(BuildContext context) {
     final user = context.watch<User>();
 
-
     return Expanded(
       child: GridView.count(
         padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 0.0),
@@ -32,6 +31,7 @@ class _CategorySelectionTabState extends State<CategorySelectionTab> {
             name: e.name,
             categoryID: e.categoryID,
             value : user.getCategoryNet(month: DateTime.now().month, year: DateTime.now().year, categoryID: e.categoryID),
+            currencySymbol: user.primaryCurrency.symbol,
             onCategoryClick: (int categoryID) {
               Navigator.pop(context, {
                 "categoryID": categoryID,
@@ -43,6 +43,7 @@ class _CategorySelectionTabState extends State<CategorySelectionTab> {
             name: e.name,
             categoryID: e.categoryID,
             value : user.getCategoryNet(month: DateTime.now().month, year: DateTime.now().year, categoryID: e.categoryID),
+            currencySymbol: user.primaryCurrency.symbol,
             onCategoryClick: (int categoryID) {
               Navigator.pop(context, {
                 "categoryID": categoryID,

@@ -136,10 +136,9 @@ class _EditAccountState extends State<EditAccount> {
                   description: descriptionController.text,
                   isIncludedInTotalNet: isIncludedInTotalNet,
                   isDarkIcon : isDarkIcon,
-                  accountID: userModel.accounts.length,
+                  accountID: widget.accountIndex,
                   currency: selectedCurrency
                 ),
-                widget.accountIndex
               );
               Navigator.pop(context);
             },)

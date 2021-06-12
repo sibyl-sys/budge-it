@@ -12,8 +12,9 @@ class TransactionCard extends StatefulWidget {
   final double value;
   final TransactionType type;
   final int transactionID;
+  final String currencySymbol;
 
-  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName, this.transactionID});
+  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName, this.transactionID, this.currencySymbol});
 
   @override
   _TransactionCardState createState() => _TransactionCardState();
@@ -83,7 +84,7 @@ class _TransactionCardState extends State<TransactionCard> {
                 ),
                 RichText(
                   text: TextSpan(
-                      text: "₱ ${moneyFormat.format(widget.value).split('.')[0]}",
+                      text: "${widget.currencySymbol} ${moneyFormat.format(widget.value).split('.')[0]}",
                       style: TextStyle(
                           color: widget.type == TransactionType.income ? Colors.teal[700] : Colors.red[700],
                           fontSize: 20

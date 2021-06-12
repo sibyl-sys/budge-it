@@ -44,7 +44,7 @@ class _CategoryButtonState extends State<CategoryButton> {
           ),
           SizedBox(height: 8.0),
           Text(
-              widget.currencySymbol + " " + widget.value.toString(),
+              "${widget.currencySymbol} ${widget.value.toString()}",
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500

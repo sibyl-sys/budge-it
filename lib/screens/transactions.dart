@@ -19,6 +19,7 @@ class _TransactionsState extends State<Transactions> {
   renderTransactionListPerDay(User user, List<Transaction> transactions) {
     return Column(
       children: transactions.map((transaction) =>
+      //TODO compute actual value based on currency
         TransactionCard(
           color: Color(user.findCategoryByID(transaction.categoryID).color).withOpacity(1),
           icon: IconData(user.findCategoryByID(transaction.categoryID).icon, fontFamily: "MaterialIcons"),
@@ -27,6 +28,7 @@ class _TransactionsState extends State<Transactions> {
           value: transaction.value,
           type: transaction.transactionType,
           transactionID: transaction.transactionID,
+          currencySymbol: user.primaryCurrency.symbol,
         )
       ).toList()
     );

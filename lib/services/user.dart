@@ -86,6 +86,10 @@ class User extends ChangeNotifier {
     return categories.firstWhereOrNull((category) => category.categoryID == categoryID);
   }
 
+  int getTransactionIndexByID(int transactionID) {
+    return transactions.indexWhere((transaction) => transaction.transactionID == transactionID);
+  }
+
   Transaction findTransactionByID(int transactionID) {
     return transactions.firstWhereOrNull((transaction) => transaction.transactionID == transactionID);
   }
@@ -94,9 +98,8 @@ class User extends ChangeNotifier {
     return value * from.exchangeRateToUSD / to.exchangeRateToUSD;
   }
 
-  void updateAccount(Account account, int accountID) async {
-    print(accountID);
-    accounts[this.getAccountIndexByID(accountID)] = account;
+  void updateAccount(Account account) async {
+    accounts[this.getAccountIndexByID(account.accountID)] = account;
 
     Hive.box('budgeItApp').put('accounts', accounts);
     print(Hive.box('budgeItApp').get('accounts'));
@@ -256,6 +259,15 @@ class User extends ChangeNotifier {
     lastSelectedCategory = categoryIndex;
     Hive.box('budgeItApp').put('selectedCategory', lastSelectedCategory);
 
+    notifyListeners();
+  }
+
+  void updateTransaction(Transaction transaction) {
+    print(transaction.transactionID);
+    transactions[this.getTransactionIndexByID(transaction.transactionID)] = transaction;
+
+    Hive.box('budgeItApp').put('transactions', transactions);
+    print(Hive.box('budgeItApp').get('transactions'));
     notifyListeners();
   }
   

@@ -35,6 +35,7 @@ class _AccountDetailsState extends State<AccountDetails> {
               description: transaction.note,
               value: transaction.value,
               transactionID: transaction.transactionID,
+              currencySymbol: user.primaryCurrency.symbol,
             )
         ).toList()
     );
