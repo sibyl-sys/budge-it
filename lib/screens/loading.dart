@@ -22,6 +22,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Hive.registerAdapter(AccountAdapter());
     Hive.registerAdapter(CategoryAdapter());
     Hive.registerAdapter(TransactionAdapter());
+    Hive.registerAdapter(CurrencyAdapter());
     Hive.registerAdapter(CategoryTypeAdapter());
     Hive.registerAdapter(AccountTypeAdapter());
     Hive.registerAdapter(TransactionTypeAdapter());
