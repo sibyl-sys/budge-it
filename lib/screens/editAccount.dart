@@ -137,7 +137,8 @@ class _EditAccountState extends State<EditAccount> {
                   isIncludedInTotalNet: isIncludedInTotalNet,
                   isDarkIcon : isDarkIcon,
                   accountID: widget.accountIndex,
-                  currency: selectedCurrency
+                  currency: selectedCurrency,
+                  isArchived: false
                 ),
               );
               Navigator.pop(context);

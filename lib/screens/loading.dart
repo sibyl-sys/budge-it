@@ -36,7 +36,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       }
 
       if(account.isArchived == null) {
-        account.isArchived = true;
+        account.isArchived = false;
       }
     }
 
