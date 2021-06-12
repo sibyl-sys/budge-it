@@ -414,7 +414,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     contentPadding: EdgeInsets.all(12.0) ,
                     isDense: true,
                     border: InputBorder.none,
-                    hintText: "Notes...",
+                    hintText: "Add Notes...",
                     hintStyle: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 18,
@@ -498,6 +498,33 @@ class _AddTransactionState extends State<AddTransaction> {
                     generateButton(baseButtonSize, baseButtonSize * 2, "=", Theme.of(context).primaryColor, Colors.white, (){changeOperator(Operator.none);})
               ],
             ),
+            TextButton(
+                onPressed: (){},
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.all(16),
+                  backgroundColor: Colors.white
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.date_range,
+                      color: Theme.of(context).primaryColor,
+                      size: 20,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "SATURDAY, JUNE 12, 2021",
+                      style: TextStyle(
+                        color:  Theme.of(context).primaryColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500
+                      )
+                    )
+                  ]
+                )
+            )
           ],
         ),
       ),
