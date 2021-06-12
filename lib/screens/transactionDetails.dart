@@ -16,10 +16,35 @@ class TransactionDetails extends StatefulWidget {
 }
 
 class _TransactionDetailsState extends State<TransactionDetails> {
+  final TextEditingController notesController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    notesController.dispose();
+    focusNode.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    focusNode.addListener(() {
+      final user = context.read<User>();
+      Transaction transaction = user.findTransactionByID(widget.transactionID);
+      transaction.note = notesController.text;
+      user.updateTransaction(transaction);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
+
     Transaction transaction = user.findTransactionByID(widget.transactionID);
+    notesController.text = transaction.note;
     return Material(
       type: MaterialType.transparency,
       child: Container(
@@ -194,7 +219,37 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   )
                 ]
               )
-            )
+            ),
+            //TODO SCROLL TO TEXT
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Colors.grey[400].withOpacity(0.25), width: 1.0),
+                ),
+                color: Colors.white,
+              ),
+              child: TextField(
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: const Color(0xFF4F4F4F)
+                ),
+                textAlign: TextAlign.center,
+                controller: notesController,
+                focusNode: focusNode,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(12.0) ,
+                    isDense: true,
+                    border: InputBorder.none,
+                    hintText: "Notes...",
+                    hintStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                        color: const Color(0xFFBDBDBD)
+                    )
+                ),
+              ),
+            ),
           ],
         )
       )

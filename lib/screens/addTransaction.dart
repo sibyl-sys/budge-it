@@ -34,6 +34,12 @@ class _AddTransactionState extends State<AddTransaction> {
 
   final TextEditingController notesController = TextEditingController();
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    notesController.dispose();
+  }
 
   void eraseDigit() {
     if(operator == Operator.none) {
