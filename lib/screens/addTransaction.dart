@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:money_tracker/screens/accountSelection.dart';
 import 'package:money_tracker/screens/categorySelection.dart';
+import 'package:money_tracker/screens/dateSelection.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
@@ -499,7 +500,16 @@ class _AddTransactionState extends State<AddTransaction> {
               ],
             ),
             TextButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.of(context).push(
+                      PageRouteBuilder(
+                        barrierColor: Colors.black.withOpacity(0.25),
+                        barrierDismissible: true,
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => DateSeleciton(),
+                      )
+                  );
+                },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.all(16),
                   backgroundColor: Colors.white

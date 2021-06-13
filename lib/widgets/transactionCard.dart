@@ -30,7 +30,6 @@ class _TransactionCardState extends State<TransactionCard> {
       child: InkWell(
         splashColor:  Colors.teal[700].withAlpha(50),
         onTap: () {
-          //TODO ADD TRANSACTION VALUES
           Navigator.of(context).push(
               PageRouteBuilder(
                 barrierColor: Colors.black.withOpacity(0.25),
