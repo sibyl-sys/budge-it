@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountSelection.dart';
 import 'package:money_tracker/screens/categorySelection.dart';
+import 'package:money_tracker/screens/dateSelection.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class TransactionDetails extends StatefulWidget {
 
@@ -18,6 +20,8 @@ class TransactionDetails extends StatefulWidget {
 class _TransactionDetailsState extends State<TransactionDetails> {
   final TextEditingController notesController = TextEditingController();
   final FocusNode focusNode = FocusNode();
+  DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
+
 
   @override
   void dispose() {
@@ -41,6 +45,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
+
 
     Transaction transaction = user.findTransactionByID(widget.transactionID);
     notesController.text = transaction.note;
@@ -252,6 +257,81 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   ),
                 ),
               ),
+              OutlinedButton(
+                  onPressed: () async {
+                    var results = await Navigator.of(context).push(
+                        PageRouteBuilder(
+                          barrierColor: Colors.black.withOpacity(0.25),
+                          barrierDismissible: true,
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => DateSelection(currentDate: transaction.timestamp),
+                        )
+                    );
+                    if(results != null) {
+                      transaction.timestamp = results["currentDate"];
+                      user.updateTransaction(transaction);
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                      padding: EdgeInsets.all(16),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero
+                      )
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.date_range,
+                          color: Theme.of(context).primaryColor,
+                          size: 20,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                            dateFormatter.format(transaction.timestamp).toUpperCase(),
+                            style: TextStyle(
+                                color:  Theme.of(context).primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500
+                            )
+                        )
+                      ]
+                  )
+              ),
+              OutlinedButton(
+                  onPressed: () async {
+                    //TODO DELETE TRANSACTION
+                  },
+                  style: TextButton.styleFrom(
+                      padding: EdgeInsets.all(16),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero
+                      )
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.delete,
+                          color: Colors.red[700],
+                          size: 20,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                            "DELETE TRANSACTION",
+                            style: TextStyle(
+                                color:  Colors.red[700],
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500
+                            )
+                        )
+                      ]
+                  )
+              )
             ],
           )
         ),
