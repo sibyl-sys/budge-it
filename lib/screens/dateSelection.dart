@@ -1,16 +1,30 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:money_tracker/widgets/dateButton.dart';
+import 'package:intl/intl.dart';
 
-class DateSeleciton extends StatefulWidget {
-  const DateSeleciton({Key key}) : super(key: key);
+class DateSelection extends StatefulWidget {
+  final DateTime currentDate;
+
+  const DateSelection({Key key, this.currentDate}) : super(key: key);
 
   @override
-  _DateSelecitonState createState() => _DateSelecitonState();
+  _DateSelectionState createState() => _DateSelectionState();
 }
 
-class _DateSelecitonState extends State<DateSeleciton> {
+class _DateSelectionState extends State<DateSelection> {
+
+  bool compareDates(DateTime dateA, DateTime dateB) {
+    return dateA.year == dateB.year && dateA.month == dateB.month && dateA.day == dateB.day;
+  }
+
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    DateTime yesterday = now.subtract(Duration(days: 1));
+    DateFormat dateFormatter = DateFormat('dd MMM');
+
     return Material(
       type: MaterialType.transparency,
       child: Center(
@@ -43,83 +57,19 @@ class _DateSelecitonState extends State<DateSeleciton> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 16.0,
-                            bottom: 16.0
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(5))
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.access_alarm,
-                                size: 24
-                              ),
-                              SizedBox(height: 8.0),
-                              Text(
-                                "Reminder",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16
-                                )
-                              ),
-                              SizedBox(height: 4.0),
-                              Text(
-                                  "None",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                    color: Colors.grey
-                                  )
-                              )
-                            ],
-                          ),
-                        ),
+                      DateButton(
+                          icon: Icons.access_alarm,
+                          header: "Reminder",
+                          subtitle: "None",
+                          isActive: true
                       ),
                       SizedBox(width: 16.0),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              top: 16.0,
-                              bottom: 16.0
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(5))
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                  Icons.repeat,
-                                  size: 24
-                              ),
-                              SizedBox(height: 8.0),
-                              Text(
-                                  "Recurrence",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16
-                                  )
-                              ),
-                              SizedBox(height: 4.0),
-                              Text(
-                                  "None",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: Colors.grey
-                                  )
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      DateButton(
+                          icon: Icons.repeat,
+                          header: "Recurrence",
+                          subtitle: "None",
+                          isActive: true
+                      ),
                     ],
                   ),
                 ),
@@ -129,31 +79,58 @@ class _DateSelecitonState extends State<DateSeleciton> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              top: 16.0,
-                              bottom: 16.0
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(5))
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                  Icons.calendar_today,
-                                  size: 24
+                        child: Material(
+                          color: Colors.white.withOpacity(0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(5))
+                            ),
+                            child: InkWell(
+                              onTap: () async {
+                                var results = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1990),
+                                    lastDate: DateTime(2050),
+                                    builder: (BuildContext context, Widget child) {
+                                      return Theme(
+                                        data: ThemeData.light(),
+                                        child: child
+                                      );
+                                    },
+                                );
+                                if(results != null) {
+                                  Navigator.of(context).pop(
+                                      {"currentDate": results});
+                                }
+                              },
+                              splashColor: Theme.of(context).primaryColor.withOpacity(0.5),
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 16.0,
+                                    bottom: 16.0
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                        Icons.calendar_today,
+                                        size: 24
+                                    ),
+                                    SizedBox(height: 8.0),
+                                    Text(
+                                        "Select Day",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16
+                                        )
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(height: 8.0),
-                              Text(
-                                  "Select Day",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16
-                                  )
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
@@ -165,83 +142,26 @@ class _DateSelecitonState extends State<DateSeleciton> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              top: 16.0,
-                              bottom: 16.0
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(5))
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                  Icons.mode_night_outlined,
-                                  size: 24
-                              ),
-                              SizedBox(height: 8.0),
-                              Text(
-                                  "Yesterday",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16
-                                  )
-                              ),
-                              SizedBox(height: 4.0),
-                              Text(
-                                  "None",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: Colors.grey
-                                  )
-                              )
-                            ],
-                          ),
-                        ),
+                      DateButton(
+                        icon: Icons.mode_night_outlined,
+                        header: "Yesterday",
+                        subtitle: "${dateFormatter.format(yesterday)}",
+                        isActive: !compareDates(widget.currentDate, yesterday),
+                        onTap: () {
+                          Navigator.of(context).pop({"currentDate" : yesterday});
+                        },
                       ),
                       SizedBox(width: 16.0),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              top: 16.0,
-                              bottom: 16.0
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(5))
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                  Icons.light_mode_outlined,
-                                  size: 24
-                              ),
-                              SizedBox(height: 8.0),
-                              Text(
-                                  "Today",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16
-                                  )
-                              ),
-                              SizedBox(height: 4.0),
-                              Text(
-                                  "None",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: Colors.grey
-                                  )
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      DateButton(
+                        icon: Icons.light_mode_outlined,
+                        header: "Today",
+                        subtitle: "${dateFormatter.format(now)}",
+                        isActive: !compareDates(widget.currentDate, now),
+                        onTap: () {
+                          Navigator.of(context).pop({"currentDate" : now});
+                        },
+
+                      ),
                     ],
                   ),
                 ),

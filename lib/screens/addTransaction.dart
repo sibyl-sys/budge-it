@@ -7,6 +7,7 @@ import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 enum Operator {
   addition,
@@ -31,7 +32,8 @@ class _AddTransactionState extends State<AddTransaction> {
   String secondValue = "";
   bool isDecimal = false;
   Operator operator = Operator.none;
-
+  DateTime currentDate = DateTime.now();
+  DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
 
   final TextEditingController notesController = TextEditingController();
 
@@ -489,7 +491,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         accountID: user.lastSelectedAccount,
                         categoryID: user.lastSelectedCategory,
                         transactionID: userModel.transactions.length,
-                        timestamp: DateTime.now(),
+                        timestamp: currentDate,
                         transactionType: transactionType,
                         isArchived: false
                       )
@@ -500,15 +502,20 @@ class _AddTransactionState extends State<AddTransaction> {
               ],
             ),
             TextButton(
-                onPressed: (){
-                  Navigator.of(context).push(
+                onPressed: () async {
+                  var results = await Navigator.of(context).push(
                       PageRouteBuilder(
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => DateSeleciton(),
+                        pageBuilder: (_, __, ___) => DateSelection(currentDate: this.currentDate),
                       )
                   );
+                  if(results != null) {
+                    setState(() {
+                      currentDate = results["currentDate"];
+                    });
+                  }
                 },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.all(16),
@@ -525,7 +532,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     ),
                     SizedBox(width: 5),
                     Text(
-                      "SATURDAY, JUNE 12, 2021",
+                      dateFormatter.format(currentDate).toUpperCase(),
                       style: TextStyle(
                         color:  Theme.of(context).primaryColor,
                         fontSize: 14,
