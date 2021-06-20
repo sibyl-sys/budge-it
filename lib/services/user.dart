@@ -262,6 +262,14 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteTransaction(int transactionID) async {
+    transactions.removeWhere((transaction) => transaction.transactionID == transactionID);
+
+    Hive.box('budgeItApp').put('transactions', transactions);
+    print(Hive.box('budgeItApp').get('accounts'));
+    notifyListeners();
+  }
+
   void updateTransaction(Transaction transaction) {
     print(transaction.transactionID);
     transactions[this.getTransactionIndexByID(transaction.transactionID)] = transaction;

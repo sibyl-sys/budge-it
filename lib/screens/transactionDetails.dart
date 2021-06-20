@@ -302,7 +302,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
               ),
               OutlinedButton(
                   onPressed: () async {
-                    //TODO DELETE TRANSACTION
+                    Navigator.pop(context);
+                    user.deleteTransaction(widget.transactionID);
                   },
                   style: TextButton.styleFrom(
                       padding: EdgeInsets.all(16),
