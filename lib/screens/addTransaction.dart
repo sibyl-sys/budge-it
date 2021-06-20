@@ -448,7 +448,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   generateButton(baseButtonSize, baseButtonSize, "4", Colors.white, Colors.black,(){addDigit("4");}),
                   generateButton(baseButtonSize, baseButtonSize, "5", Colors.white, Colors.black,(){addDigit("5");}),
                   generateButton(baseButtonSize, baseButtonSize, "6", Colors.white, Colors.black,(){addDigit("6");}),
-                  generateButton(baseButtonSize, baseButtonSize, "±", const Color(0xFFFCFCFC), Colors.black,(){changeNumberSign();}),
+                  generateIconButton(baseButtonSize, baseButtonSize, Icons.camera_alt_outlined, const Color(0xFFFCFCFC), Colors.black,(){}),
                 ],
               ),
             ),
