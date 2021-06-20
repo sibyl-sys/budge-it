@@ -263,8 +263,16 @@ class User extends ChangeNotifier {
   }
 
   void deleteTransaction(int transactionID) async {
+    Transaction transaction = findTransactionByID(transactionID);
+    if(transaction.transactionType == TransactionType.expense) {
+      findAccountByID(transaction.accountID).balance += transaction.value;
+    } else if(transaction.transactionType == TransactionType.income ) {
+      findAccountByID(transaction.accountID).balance -= transaction.value;
+    }
+
     transactions.removeWhere((transaction) => transaction.transactionID == transactionID);
 
+    Hive.box('budgeItApp').put('accounts', accounts);
     Hive.box('budgeItApp').put('transactions', transactions);
     print(Hive.box('budgeItApp').get('accounts'));
     notifyListeners();
@@ -284,9 +292,9 @@ class User extends ChangeNotifier {
     transactions = List.from(transactions)..add(transaction);
 
     if(transaction.transactionType == TransactionType.expense) {
-      accounts[transaction.accountID].balance -= transaction.value;
+      findAccountByID(transaction.accountID).balance -= transaction.value;
     } else if(transaction.transactionType == TransactionType.income ) {
-      accounts[transaction.accountID].balance += transaction.value;
+      findAccountByID(transaction.accountID).balance += transaction.value;
     }
 
     Hive.box('budgeItApp').put('accounts', accounts);
