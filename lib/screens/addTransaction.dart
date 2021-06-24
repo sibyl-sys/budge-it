@@ -250,41 +250,61 @@ class _AddTransactionState extends State<AddTransaction> {
                             }
                       },
                       child: Container(
-                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                        height: 75,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "From Account",
-                                style: TextStyle(
-                                  color: Colors.white
-                                )
-                            ),
-                            SizedBox(height: 8.0),
-                            Row(
-                              children: [
-                                Icon(
-                                    IconData(user.findAccountByID(user.lastSelectedAccount).icon, fontFamily: 'MaterialIcons'),
-                                    color: Colors.white,
-                                    size: 32
-                                ),
-                                SizedBox(width: 8.0),
-                                Flexible(
-                                  child: Text(
-                                    user.findAccountByID(user.lastSelectedAccount).name,
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )
-                              ]
-                            )
-                          ],
+                        padding: EdgeInsets.fromLTRB(0.0, 4.0, 16.0, 4.0),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.white)
                         ),
+                        height: 75,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: -16,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                      IconData(user.findAccountByID(user.lastSelectedAccount).icon, fontFamily: 'MaterialIcons'),
+                                      color: Colors.white.withOpacity(0.3),
+                                      size: 65
+                                  ),
+                                ]
+                              ),
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(width: 55),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        "From Account",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12
+                                        )
+                                    ),
+                                    SizedBox(height: 4.0),
+                                    Flexible(
+                                      child: Text(
+                                        user.findAccountByID(user.lastSelectedAccount).name,
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ]
+                        )
+
+                        
                       ),
                     ),
                   ),
@@ -293,6 +313,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   child: Ink(
                     color: Color(user.findCategoryByID(user.lastSelectedCategory).color).withOpacity(1),
                     child: InkWell(
+                      splashColor: Colors.white.withOpacity(0.5),
                       onTap: () async {
                         final results = await Navigator.of(context).push(
                             PageRouteBuilder(
@@ -307,45 +328,65 @@ class _AddTransactionState extends State<AddTransaction> {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                        height: 75,
-                          child:  Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  transactionType == TransactionType.expense ? "To Expense" : "To Income",
-                                  style: TextStyle(
-                                      color: Colors.white
-                                  )
-                              ),
-                              SizedBox(height: 8.0),
-                              Row(
-                                  children: [
-                                    Icon(
-                                        IconData(user.findCategoryByID(user.lastSelectedCategory).icon, fontFamily: 'MaterialIcons'),
-                                        color: Colors.white,
-                                        size: 32
-                                    ),
-                                    SizedBox(width: 8.0),
-                                    Flexible(
-                                      child: Text(
-                                          user.findCategoryByID(user.lastSelectedCategory).name,
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500
-                                          ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    )
-                                  ]
-                              )
-                            ],
+                          padding: EdgeInsets.fromLTRB(0.0, 4.0, 16.0, 4.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.white)
                           ),
+                          height: 75,
+                          child: Stack(
+                              children: [
+                                Positioned(
+                                  left: -16,
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                            IconData(user.findCategoryByID(user.lastSelectedCategory).icon, fontFamily: 'MaterialIcons'),
+                                            color: Colors.white.withOpacity(0.3),
+                                            size: 65
+                                        ),
+                                      ]
+                                  ),
+                                ),
+                                Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(width: 55),
+                                      Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                "To Expense",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12
+                                                )
+                                            ),
+                                            SizedBox(height: 4.0),
+                                            Flexible(
+                                              child: Text(
+                                                user.findCategoryByID(user.lastSelectedCategory).name,
+                                                style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ]
+                                      ),
+                                    ]
+                                ),
+                              ]
+                          )
+
+
                       ),
                     ),
                   ),
-                )
+                ),
               ]
             ),
             Container(
