@@ -230,25 +230,6 @@ class _AddTransactionState extends State<AddTransaction> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(15.0)
-                ),
-                color: Colors.white,
-              ),
-              child: Center(
-                child: Text(
-                  "Expense Details",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                    fontSize: 14
-                  )
-                ),
-              ),
-            ),
             Row(
               children: [
                 Expanded(
