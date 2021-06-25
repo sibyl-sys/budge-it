@@ -35,6 +35,7 @@ class _AddTransactionState extends State<AddTransaction> {
   Operator operator = Operator.none;
   DateTime currentDate = DateTime.now();
   DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
+  TransactionImportance transactionImportance = TransactionImportance.need;
 
   final TextEditingController notesController = TextEditingController();
 
@@ -455,8 +456,12 @@ class _AddTransactionState extends State<AddTransaction> {
                             ),
                           ]
                       ),
-                      onChange: () {print("Need");},
-                      selected: false,
+                      onChange: () {
+                        setState(() {
+                          transactionImportance = TransactionImportance.need;
+                        });
+                      },
+                      selected: transactionImportance == TransactionImportance.need,
                       outlineColor: Theme.of(context).primaryColor
                     ),
                   ),
@@ -519,8 +524,12 @@ class _AddTransactionState extends State<AddTransaction> {
                             ),
                           ]
                       ),
-                      onChange: () {print("Want");},
-                      selected: false,
+                      onChange: () {
+                        setState(() {
+                          transactionImportance = TransactionImportance.want;
+                        });
+                      },
+                      selected: transactionImportance == TransactionImportance.want,
                       outlineColor: Colors.yellow[700]
                     ),
                   ),
@@ -585,8 +594,12 @@ class _AddTransactionState extends State<AddTransaction> {
                             ),
                           ]
                       ),
-                      onChange: () {print("Sudden");},
-                      selected: false,
+                      onChange: () {
+                        setState(() {
+                          transactionImportance = TransactionImportance.sudden;
+                        });
+                      },
+                      selected: transactionImportance == TransactionImportance.sudden,
                       outlineColor: Colors.orange[700],
                     ),
                   ),
@@ -719,7 +732,8 @@ class _AddTransactionState extends State<AddTransaction> {
                         transactionID: userModel.transactions.length,
                         timestamp: currentDate,
                         transactionType: transactionType,
-                        isArchived: false
+                        isArchived: false,
+                        importance: transactionImportance
                       )
                     );
                     Navigator.pop(context);
