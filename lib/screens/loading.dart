@@ -48,6 +48,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
       if(transaction.isArchived == null) {
         transaction.isArchived = false;
       }
+
+      if(transaction.importance == null) {
+        transaction.importance = TransactionImportance.need;
+      }
     }
 
     int selectedCategory = box.get('selectedCategory', defaultValue: 0);

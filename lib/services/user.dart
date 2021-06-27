@@ -318,7 +318,7 @@ class User extends ChangeNotifier {
   void updateCategory(Category category) {
     categories[this.getCategoryIndexByID(category.categoryID)] = category;
 
-    Hive.box('budgeItApp').put('categories', category);
+    Hive.box('budgeItApp').put('categories', categories);
     print(Hive.box('budgeItApp').get('categories'));
     notifyListeners();
   }
