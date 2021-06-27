@@ -86,6 +86,11 @@ class User extends ChangeNotifier {
     return categories.firstWhereOrNull((category) => category.categoryID == categoryID);
   }
 
+  int getCategoryIndexByID(int categoryID) {
+    return categories.indexWhere((category) => category.categoryID == categoryID);
+  }
+
+
   int getTransactionIndexByID(int transactionID) {
     return transactions.indexWhere((transaction) => transaction.transactionID == transactionID);
   }
@@ -307,6 +312,14 @@ class User extends ChangeNotifier {
     this.primaryCurrency = newCurrency;
 
     Hive.box('budgeItApp').put('primaryCurrency', primaryCurrency);
+    notifyListeners();
+  }
+
+  void updateCategory(Category category) {
+    categories[this.getCategoryIndexByID(category.categoryID)] = category;
+
+    Hive.box('budgeItApp').put('categories', category);
+    print(Hive.box('budgeItApp').get('categories'));
     notifyListeners();
   }
 

@@ -113,13 +113,14 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       accountID: fields[5] as int,
       transactionType: fields[6] as TransactionType,
       isArchived: fields[7] as bool,
+      importance: fields[8] as TransactionImportance,
     );
   }
 
   @override
   void write(BinaryWriter writer, Transaction obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.value)
       ..writeByte(1)
@@ -135,7 +136,9 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(6)
       ..write(obj.transactionType)
       ..writeByte(7)
-      ..write(obj.isArchived);
+      ..write(obj.isArchived)
+      ..writeByte(8)
+      ..write(obj.importance);
   }
 
   @override
