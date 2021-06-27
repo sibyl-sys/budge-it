@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:money_tracker/services/transaction.dart';
 
 part 'category.g.dart';
 
@@ -26,6 +27,9 @@ class Category {
 
   @HiveField(4)
   int categoryID;
+
+  @HiveField(5)
+  TransactionImportance lastTransactionImportance;
 
   //TODO CATEGORY LIMIT
 

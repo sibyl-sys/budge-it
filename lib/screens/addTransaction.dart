@@ -6,6 +6,7 @@ import 'package:money_tracker/screens/dateSelection.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
+import 'package:money_tracker/widgets/toggleButton.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -34,6 +35,7 @@ class _AddTransactionState extends State<AddTransaction> {
   Operator operator = Operator.none;
   DateTime currentDate = DateTime.now();
   DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
+  TransactionImportance transactionImportance = TransactionImportance.need;
 
   final TextEditingController notesController = TextEditingController();
 
@@ -230,25 +232,6 @@ class _AddTransactionState extends State<AddTransaction> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(15.0)
-                ),
-                color: Colors.white,
-              ),
-              child: Center(
-                child: Text(
-                  "Expense Details",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                    fontSize: 14
-                  )
-                ),
-              ),
-            ),
             Row(
               children: [
                 Expanded(
@@ -269,41 +252,61 @@ class _AddTransactionState extends State<AddTransaction> {
                             }
                       },
                       child: Container(
-                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                        height: 75,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "From Account",
-                                style: TextStyle(
-                                  color: Colors.white
-                                )
-                            ),
-                            SizedBox(height: 8.0),
-                            Row(
-                              children: [
-                                Icon(
-                                    IconData(user.findAccountByID(user.lastSelectedAccount).icon, fontFamily: 'MaterialIcons'),
-                                    color: Colors.white,
-                                    size: 32
-                                ),
-                                SizedBox(width: 8.0),
-                                Flexible(
-                                  child: Text(
-                                    user.findAccountByID(user.lastSelectedAccount).name,
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )
-                              ]
-                            )
-                          ],
+                        padding: EdgeInsets.fromLTRB(0.0, 4.0, 16.0, 4.0),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.white)
                         ),
+                        height: 75,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: -16,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                      IconData(user.findAccountByID(user.lastSelectedAccount).icon, fontFamily: 'MaterialIcons'),
+                                      color: Colors.white.withOpacity(0.3),
+                                      size: 65
+                                  ),
+                                ]
+                              ),
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(width: 55),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        "From Account",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12
+                                        )
+                                    ),
+                                    SizedBox(height: 4.0),
+                                    Flexible(
+                                      child: Text(
+                                        user.findAccountByID(user.lastSelectedAccount).name,
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ]
+                        )
+
+                        
                       ),
                     ),
                   ),
@@ -312,6 +315,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   child: Ink(
                     color: Color(user.findCategoryByID(user.lastSelectedCategory).color).withOpacity(1),
                     child: InkWell(
+                      splashColor: Colors.white.withOpacity(0.5),
                       onTap: () async {
                         final results = await Navigator.of(context).push(
                             PageRouteBuilder(
@@ -326,49 +330,284 @@ class _AddTransactionState extends State<AddTransaction> {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                        height: 75,
-                          child:  Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  transactionType == TransactionType.expense ? "To Expense" : "To Income",
-                                  style: TextStyle(
-                                      color: Colors.white
-                                  )
-                              ),
-                              SizedBox(height: 8.0),
-                              Row(
-                                  children: [
-                                    Icon(
-                                        IconData(user.findCategoryByID(user.lastSelectedCategory).icon, fontFamily: 'MaterialIcons'),
-                                        color: Colors.white,
-                                        size: 32
-                                    ),
-                                    SizedBox(width: 8.0),
-                                    Flexible(
-                                      child: Text(
-                                          user.findCategoryByID(user.lastSelectedCategory).name,
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500
-                                          ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    )
-                                  ]
-                              )
-                            ],
+                          padding: EdgeInsets.fromLTRB(0.0, 4.0, 16.0, 4.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.white)
                           ),
+                          height: 75,
+                          child: Stack(
+                              children: [
+                                Positioned(
+                                  left: -16,
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                            IconData(user.findCategoryByID(user.lastSelectedCategory).icon, fontFamily: 'MaterialIcons'),
+                                            color: Colors.white.withOpacity(0.3),
+                                            size: 65
+                                        ),
+                                      ]
+                                  ),
+                                ),
+                                Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(width: 55),
+                                      Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                "To Expense",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12
+                                                )
+                                            ),
+                                            SizedBox(height: 4.0),
+                                            Flexible(
+                                              child: Text(
+                                                user.findCategoryByID(user.lastSelectedCategory).name,
+                                                style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ]
+                                      ),
+                                    ]
+                                ),
+                              ]
+                          )
+
+
                       ),
                     ),
                   ),
-                )
+                ),
               ]
             ),
             Container(
-              color: const Color(0xFFf6FBFB),
+              padding: EdgeInsets.all(8),
+              color: Colors.white,
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: ToggleButton(
+                      childSelected: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                child: Icon(
+                                  Icons.favorite,
+                                  size: 11.0,
+                                  color: Colors.white,
+                                ),
+                                radius: 8.0,
+                                backgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
+                              ),
+                            ],
+                          ),
+                          Center(
+                            child: Text("Need",
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 16
+                              )
+                            ),
+                          ),
+                        ]
+                      ),
+                      childUnselected: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  child: Icon(
+                                    Icons.favorite,
+                                    size: 11.0,
+                                    color: Colors.white,
+                                  ),
+                                  radius: 8.0,
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                ),
+                              ],
+                            ),
+                            Center(
+                              child: Text("Need",
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 16
+                                  )
+                              ),
+                            ),
+                          ]
+                      ),
+                      onChange: () {
+                        setState(() {
+                          transactionImportance = TransactionImportance.need;
+                        });
+                      },
+                      selected: transactionImportance == TransactionImportance.need,
+                      outlineColor: Theme.of(context).primaryColor
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: ToggleButton(
+                      childSelected: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  child: Icon(
+                                    Icons.star,
+                                    size: 11.0,
+                                    color: Colors.white,
+                                  ),
+                                  radius: 8.0,
+                                  backgroundColor: Colors.yellow[700].withOpacity(0.5),
+                                ),
+                              ],
+                            ),
+                            Center(
+                              child: Text("Want",
+                                  style: TextStyle(
+                                      color: Colors.yellow[700],
+                                      fontSize: 16
+                                  )
+                              ),
+                            ),
+                          ]
+                      ),
+                      childUnselected: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  child: Icon(
+                                    Icons.star,
+                                    size: 11.0,
+                                    color: Colors.white,
+                                  ),
+                                  radius: 8.0,
+                                  backgroundColor: Colors.yellow[700],
+                                ),
+                              ],
+                            ),
+                            Center(
+                              child: Text("Want",
+                                  style: TextStyle(
+                                      color: Colors.yellow[700],
+                                      fontSize: 16
+                                  )
+                              ),
+                            ),
+                          ]
+                      ),
+                      onChange: () {
+                        setState(() {
+                          transactionImportance = TransactionImportance.want;
+                        });
+                      },
+                      selected: transactionImportance == TransactionImportance.want,
+                      outlineColor: Colors.yellow[700]
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: ToggleButton(
+                      childSelected: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  child: Text("*",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18
+                                    )
+                                  ),
+                                  radius: 8.0,
+                                  backgroundColor: Colors.orange[700].withOpacity(0.5),
+                                ),
+                              ],
+                            ),
+                            Center(
+                              child: Text("Sudden",
+                                  style: TextStyle(
+                                      color: Colors.orange[700],
+                                      fontSize: 16
+                                  )
+                              ),
+                            ),
+                          ]
+                      ),
+                      childUnselected: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  child: Text("*",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18
+                                      )
+                                  ),
+                                  radius: 8.0,
+                                  backgroundColor: Colors.orange[700],
+                                ),
+                              ],
+                            ),
+                            Center(
+                              child: Text("Sudden",
+                                  style: TextStyle(
+                                      color: Colors.orange[700],
+                                      fontSize: 16
+                                  )
+                              ),
+                            ),
+                          ]
+                      ),
+                      onChange: () {
+                        setState(() {
+                          transactionImportance = TransactionImportance.sudden;
+                        });
+                      },
+                      selected: transactionImportance == TransactionImportance.sudden,
+                      outlineColor: Colors.orange[700],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              color: const Color(0xFBFBFBFF),
               width: double.infinity,
               height: baseButtonSize,
               child: Column(
@@ -493,7 +732,8 @@ class _AddTransactionState extends State<AddTransaction> {
                         transactionID: userModel.transactions.length,
                         timestamp: currentDate,
                         transactionType: transactionType,
-                        isArchived: false
+                        isArchived: false,
+                        importance: transactionImportance
                       )
                     );
                     Navigator.pop(context);

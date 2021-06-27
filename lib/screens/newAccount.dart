@@ -98,7 +98,7 @@ class _NewAccountState extends State<NewAccount> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              if(userModel.accounts.length < 0) {
+              if(userModel.accounts.length < 1) {
                 userModel.changePrimaryCurrency(selectedCurrency);
               }
               userModel.addAccount(

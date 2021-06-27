@@ -61,13 +61,13 @@ class CategoryAdapter extends TypeAdapter<Category> {
       name: fields[2] as String,
       categoryType: fields[3] as CategoryType,
       categoryID: fields[4] as int,
-    );
+    )..lastTransactionImportance = fields[5] as TransactionImportance;
   }
 
   @override
   void write(BinaryWriter writer, Category obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.icon)
       ..writeByte(1)
@@ -77,7 +77,9 @@ class CategoryAdapter extends TypeAdapter<Category> {
       ..writeByte(3)
       ..write(obj.categoryType)
       ..writeByte(4)
-      ..write(obj.categoryID);
+      ..write(obj.categoryID)
+      ..writeByte(5)
+      ..write(obj.lastTransactionImportance);
   }
 
   @override
