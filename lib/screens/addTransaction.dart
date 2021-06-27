@@ -35,7 +35,6 @@ class _AddTransactionState extends State<AddTransaction> {
   Operator operator = Operator.none;
   DateTime currentDate = DateTime.now();
   DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
-  TransactionImportance transactionImportance = TransactionImportance.need;
 
   final TextEditingController notesController = TextEditingController();
 
@@ -225,6 +224,8 @@ class _AddTransactionState extends State<AddTransaction> {
     final user = context.watch<User>();
     TransactionType transactionType = user.findCategoryByID(user.lastSelectedCategory).categoryType == CategoryType.expense ? TransactionType.expense : TransactionType.income;
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
+    TransactionImportance transactionImportance = user.findCategoryByID(user.lastSelectedCategory).lastTransactionImportance == null ? TransactionImportance.need : user.findCategoryByID(user.lastSelectedCategory).lastTransactionImportance;
+
 
     return Material(
       type: MaterialType.transparency,
@@ -457,9 +458,9 @@ class _AddTransactionState extends State<AddTransaction> {
                           ]
                       ),
                       onChange: () {
-                        setState(() {
-                          transactionImportance = TransactionImportance.need;
-                        });
+                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategory);
+                        currentSelectedCategory.lastTransactionImportance = TransactionImportance.need;
+                        user.updateCategory(currentSelectedCategory);
                       },
                       selected: transactionImportance == TransactionImportance.need,
                       outlineColor: Theme.of(context).primaryColor
@@ -525,9 +526,9 @@ class _AddTransactionState extends State<AddTransaction> {
                           ]
                       ),
                       onChange: () {
-                        setState(() {
-                          transactionImportance = TransactionImportance.want;
-                        });
+                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategory);
+                        currentSelectedCategory.lastTransactionImportance = TransactionImportance.want;
+                        user.updateCategory(currentSelectedCategory);
                       },
                       selected: transactionImportance == TransactionImportance.want,
                       outlineColor: Colors.yellow[700]
@@ -595,9 +596,10 @@ class _AddTransactionState extends State<AddTransaction> {
                           ]
                       ),
                       onChange: () {
-                        setState(() {
-                          transactionImportance = TransactionImportance.sudden;
-                        });
+
+                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategory);
+                        currentSelectedCategory.lastTransactionImportance = TransactionImportance.sudden;
+                        user.updateCategory(currentSelectedCategory);
                       },
                       selected: transactionImportance == TransactionImportance.sudden,
                       outlineColor: Colors.orange[700],
