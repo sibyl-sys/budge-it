@@ -12,7 +12,7 @@ class CategoriesTab extends StatefulWidget {
   final Function onCategoryClick;
   final bool isRearrange;
 
-  const CategoriesTab({Key key, this.categoryType, this.month, this.year, this.onCategoryClick}) : super(key: key);
+  const CategoriesTab({Key key, this.categoryType, this.month, this.year, this.onCategoryClick, this.isRearrange}) : super(key: key);
 
   @override
   _CategoriesTabState createState() => _CategoriesTabState();
