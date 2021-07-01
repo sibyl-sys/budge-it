@@ -76,6 +76,7 @@ class _CategorySelectionState extends State<CategorySelection> {
                             "categoryID": categoryID,
                           });
                         },
+                        isRearrange: false,
                       ),
                       CategoriesTab(
                         categoryType: CategoryType.income,
@@ -86,6 +87,7 @@ class _CategorySelectionState extends State<CategorySelection> {
                             "categoryID": categoryID,
                           });
                         },
+                        isRearrange: false,
                       )
                     ]
                   )

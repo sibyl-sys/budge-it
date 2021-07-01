@@ -144,8 +144,18 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
                 child: TabBarView(
                     controller: _tabController,
                     children: [
-                      CategoriesTab(categoryType: CategoryType.expense, month: month, year: year),
-                      CategoriesTab(categoryType: CategoryType.income, month: month, year: year),
+                      CategoriesTab(
+                        categoryType: CategoryType.expense,
+                        month: month,
+                        year: year,
+                        isRearrange: true,
+                      ),
+                      CategoriesTab(
+                        categoryType: CategoryType.income,
+                        month: month,
+                        year: year,
+                        isRearrange: true,
+                      ),
                     ]
                 ),
               )

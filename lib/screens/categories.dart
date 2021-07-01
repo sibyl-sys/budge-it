@@ -162,7 +162,9 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                                 pageBuilder: (_, __, ___) => AddTransaction(),
                               )
                           );
-                        }),
+                        },
+                        isRearrange: false,
+                      ),
                       CategoriesTab(
                         categoryType: CategoryType.income,
                         month: month,
@@ -179,6 +181,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                               )
                           );
                         },
+                        isRearrange: false,
                       ),
                     ]
                 ),

@@ -45,10 +45,36 @@ class _CategoriesTabState extends State<CategoriesTab> {
     }
     if(widget.isRearrange) {
       categoryList.add(
-        InkWell(
-          child: ,
-        )
-      )
+        CircleAvatar(
+          radius: 25,
+          backgroundColor: Theme.of(context).primaryColor,
+          child: CircleAvatar(
+            radius: 24,
+            backgroundColor: Colors.white,
+            child: IconButton(
+                icon: Icon(Icons.add, size: 30),
+                color: Theme.of(context).primaryColor,
+                onPressed: () async {
+                  // final result = await Navigator.of(context).push(
+                  //     PageRouteBuilder(
+                  //       barrierColor: Colors.black.withOpacity(0.25),
+                  //       barrierDismissible: true,
+                  //       opaque: false,
+                  //       pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
+                  //     )
+                  // );
+                  // if(result != null) {
+                  //   setState(() {
+                  //     accountIcon = result["iconData"];
+                  //     accountColor = result["backgroundColor"];
+                  //     isDarkIcon = result["isDarkIcon"];
+                  //   });
+                  // }
+                }
+            ),
+          ),
+        ),
+      );
     }
 
     return categoryList;
