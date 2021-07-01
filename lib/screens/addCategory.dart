@@ -1,0 +1,310 @@
+import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/accountsType.dart';
+import 'package:money_tracker/screens/calculator.dart';
+import 'package:money_tracker/screens/currencySelection.dart';
+import 'package:money_tracker/screens/iconAndColorSelection.dart';
+import 'package:money_tracker/services/account.dart';
+import 'package:intl/intl.dart';
+import 'package:money_tracker/services/category.dart';
+import 'package:money_tracker/services/currency.dart';
+import 'package:money_tracker/services/user.dart';
+import 'package:provider/provider.dart';
+
+
+class AddCategory extends StatefulWidget {
+  @override
+  _AddCategoryState createState() => _AddCategoryState();
+}
+
+
+class _AddCategoryState extends State<AddCategory> {
+  //TODO INITIALIZE CURRENCY
+  final moneyFormat = new NumberFormat("#,##0.00", "en_US");
+
+  AccountType _accountType = AccountType.wallet;
+  CategoryType _categoryType = CategoryType.expense;
+  final FocusNode nameFocusNode = FocusNode();
+  final TextEditingController categoryNameController = TextEditingController();
+  IconData categoryIcon = Icons.account_balance_wallet;
+  Color categoryColor = Colors.blue[700];
+  bool isDarkIcon = false;
+  Currency selectedCurrency;
+
+  void initState() {
+    super.initState();
+    User userModel = context.read<User>();
+    setState(() {
+      selectedCurrency = userModel.primaryCurrency;
+    });
+  }
+
+  Future<void> _selectAccountType(BuildContext context) async {
+    AccountType newAccountType = await showDialog<AccountType>(
+        context: context,
+        builder: (BuildContext context) {
+          return AccountsType();
+        }
+    );
+    setState(() {
+      _accountType = newAccountType;
+    });
+  }
+
+  TextStyle generateMoneyStyle(double value) {
+    if(value > 0) {
+      return TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 18,
+          color: Colors.teal[400]
+      );
+    } else {
+      return TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 18,
+          color: const Color(0xFFBDBDBD)
+      );
+    }
+  }
+
+  String getCategoryTypeString() {
+    switch(_categoryType) {
+      case CategoryType.income:
+        return "Income";
+      case CategoryType.expense:
+        return "Expense";
+      default:
+        return "Expense";
+    }
+  }
+
+  String getAccountTypeString() {
+    switch(_accountType) {
+      case AccountType.wallet:
+        return "Stash";
+      case AccountType.savings:
+        return "Savings - Goals";
+      case AccountType.debt:
+        return "Debt - Mortgage";
+      default:
+        return "Stash";
+    }
+  }
+
+  @override
+  void dispose() {
+    nameFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () {
+              User userModel = context.read<User>();
+              userModel.addCategory(
+                  Category(
+                    color: categoryColor.value,
+                    categoryType: _categoryType,
+                    icon: categoryIcon.codePoint,
+                    name: categoryNameController.text,
+                    categoryID: userModel.newCategoryID
+                  )
+              );
+              Navigator.pop(context);
+            },)
+        ],
+        title: Text("New Category"),
+      ),
+      resizeToAvoidBottomInset: true,
+      backgroundColor: const Color(0xFFF2F2F2),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24.0, 20.0, 16.0, 20.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: categoryColor,
+                      child: IconButton(
+                          icon: Icon(categoryIcon, size: 30),
+                          color: isDarkIcon ? Colors.black.withOpacity(0.2) : Colors.white,
+                          onPressed: () async {
+                            final result = await Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  barrierColor: Colors.black.withOpacity(0.25),
+                                  barrierDismissible: true,
+                                  opaque: false,
+                                  pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.categoryColor, accountIcon: this.categoryIcon, isDarkIcon: isDarkIcon),
+                                )
+                            );
+                            if(result != null) {
+                              setState(() {
+                                categoryIcon = result["iconData"];
+                                categoryColor = result["backgroundColor"];
+                                isDarkIcon = result["isDarkIcon"];
+                              });
+                            }
+
+                          }
+                      ),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          _selectAccountType(context);
+                        },
+                        child: Container(
+                            width: 250,
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                    getCategoryTypeString(),
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400
+                                    )
+                                ),
+                                Icon(
+                                    Icons.arrow_right,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 28
+                                )
+                              ],
+                            )
+                        )
+                    )
+                  ]
+              ),
+            ),
+            Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: FlatButton(
+                      color: Colors.white,
+                      height: 70,
+                      onPressed: (){
+                        nameFocusNode.requestFocus();
+                      },
+                      shape: Border(
+                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
+                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            "Name",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                                color: const Color(0xFF4F4F4F)
+                            )
+                        ),
+                        SizedBox(
+                          width: 250,
+                          child: TextField(
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                color: const Color(0xFF4F4F4F)
+                            ),
+                            focusNode: nameFocusNode,
+                            textAlign: TextAlign.right,
+                            controller: categoryNameController,
+                            decoration: InputDecoration(
+                                isDense: true,
+                                border: InputBorder.none,
+                                hintText: "Untitled Account",
+                                hintStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                    color: const Color(0xFFBDBDBD)
+                                )
+                            ),
+                          ),
+                        )
+
+                      ],
+                    ),
+                  )
+                ]
+            ),
+            Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: FlatButton(
+                      color: Colors.white,
+                      height: 70,
+                      onPressed: () async{
+                        final result = await Navigator.of(context).push(
+                            PageRouteBuilder(
+                              barrierColor: Colors.black.withOpacity(0.25),
+                              barrierDismissible: true,
+                              opaque: false,
+                              pageBuilder: (_, __, ___) => CurrencySelection(),
+                            )
+                        );
+                        if(result != null) {
+                          setState(() {
+                            selectedCurrency = result;
+                          });
+                        }
+                      },
+                      shape: Border(
+                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
+                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
+                    child: IgnorePointer(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              "Currency",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: const Color(0xFF4F4F4F)
+                              )
+                          ),
+                          Text(
+                              "${selectedCurrency.symbol} (${selectedCurrency.name})",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                  color: const Color(0xFFBDBDBD)
+                              )
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ]
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
