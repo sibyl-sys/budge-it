@@ -112,28 +112,23 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
       child: Container(
           child: Column(
             children: [
-              Card(
-                  margin: EdgeInsets.zero,
-                  child: Container(
-                    height: 48,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor), onPressed: previousMonth),
-                        Row(
-                          children: [
-                            Icon(Icons.calendar_today),
-                            SizedBox(width: 8),
-                            Text("${months[month-1]} $year",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14
-                                )),
-                          ],
-                        ),
-                        IconButton(icon: Icon(Icons.chevron_right, color: Theme.of(context).primaryColor), onPressed: nextMonth)
-                      ],
-                    ),
+              TextButton(
+                  onPressed: (){},
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.add,
+                        size: 14,
+                        color: Theme.of(context).primaryColor
+                      ),
+                      Text(
+                        "Add Category",
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 14
+                        )
+                      ),
+                    ],
                   )
               ),
               ColoredBox(
