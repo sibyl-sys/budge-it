@@ -145,6 +145,7 @@ class User extends ChangeNotifier {
   }
 
   double getCategoryNet({int month, int year, int categoryID}) {
+    //TODO IMPLEMENT CURRENCY CALCULATION
     double categoryNet = 0;
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.month == month &&

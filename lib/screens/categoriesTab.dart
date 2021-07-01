@@ -28,7 +28,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
           icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
           name: e.name,
           categoryID: e.categoryID,
-          currencySymbol: user.primaryCurrency.symbol,
+          currencySymbol: e.categoryCurrency == null ? user.primaryCurrency.symbol : e.categoryCurrency,
           value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
           onCategoryClick: widget.onCategoryClick
       )).toList();

@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:money_tracker/services/transaction.dart';
+import 'package:money_tracker/services/currency.dart';
+
 
 part 'category.g.dart';
 
@@ -31,8 +33,12 @@ class Category {
   @HiveField(5)
   TransactionImportance lastTransactionImportance;
 
-  //TODO CATEGORY LIMIT
+  @HiveField(6)
+  Currency categoryCurrency;
 
-  Category({this.icon, this.color, this.name, this.categoryType, this.categoryID});
+  @HiveField(7)
+  int index;
+
+  Category({this.icon, this.color, this.name, this.categoryType, this.categoryID, this.categoryCurrency, this.index});
 
 }
