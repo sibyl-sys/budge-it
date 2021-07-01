@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
-import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
-import 'package:money_tracker/services/user.dart';
-import 'package:provider/provider.dart';
 
-class Categories extends StatefulWidget {
+class RearrangeCategories extends StatefulWidget {
   @override
-  _CategoriesState createState() => _CategoriesState();
+  _RearrangeCategoriesState createState() => _RearrangeCategoriesState();
 }
 
-class _CategoriesState extends State<Categories> with SingleTickerProviderStateMixin {
+class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTickerProviderStateMixin {
 
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   String _value = 'all';
@@ -58,11 +55,11 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
         controller: _tabController,
         indicator: BoxDecoration(
             color : _tabController.index == 0 ? Colors.red[500].withOpacity(0.1) : Colors
-            .teal[500].withOpacity(0.1),
-          border: Border(
-            bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red[500]: Colors
-                .teal[500])
-          )
+                .teal[500].withOpacity(0.1),
+            border: Border(
+                bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red[500]: Colors
+                    .teal[500])
+            )
         ),
         indicatorColor: _tabController.index == 0 ? Colors.red[500] : Colors
             .teal[500],
@@ -147,39 +144,8 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                 child: TabBarView(
                     controller: _tabController,
                     children: [
-                      CategoriesTab(
-                        categoryType: CategoryType.expense,
-                        month: month,
-                        year: year,
-                        onCategoryClick: (int categoryID) {
-                          final user = context.read<User>();
-                          user.selectCategory(categoryID);
-                          Navigator.of(context).push(
-                              PageRouteBuilder(
-                                barrierColor: Colors.black.withOpacity(0.25),
-                                barrierDismissible: true,
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => AddTransaction(),
-                              )
-                          );
-                        }),
-                      CategoriesTab(
-                        categoryType: CategoryType.income,
-                        month: month,
-                        year: year,
-                        onCategoryClick: (int categoryID) {
-                          final user = context.read<User>();
-                          user.selectCategory(categoryID);
-                          Navigator.of(context).push(
-                              PageRouteBuilder(
-                                barrierColor: Colors.black.withOpacity(0.25),
-                                barrierDismissible: true,
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => AddTransaction(),
-                              )
-                          );
-                        },
-                      ),
+                      CategoriesTab(categoryType: CategoryType.expense, month: month, year: year),
+                      CategoriesTab(categoryType: CategoryType.income, month: month, year: year),
                     ]
                 ),
               )

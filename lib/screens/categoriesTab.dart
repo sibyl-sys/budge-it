@@ -9,14 +9,50 @@ class CategoriesTab extends StatefulWidget {
   final CategoryType categoryType;
   final int month;
   final int year;
+  final Function onCategoryClick;
+  final bool isRearrange;
 
-  const CategoriesTab({Key key, this.categoryType, this.month, this.year}) : super(key: key);
+  const CategoriesTab({Key key, this.categoryType, this.month, this.year, this.onCategoryClick}) : super(key: key);
 
   @override
   _CategoriesTabState createState() => _CategoriesTabState();
 }
 
 class _CategoriesTabState extends State<CategoriesTab> {
+
+  List generateCategoryList(User user) {
+    List categoryList;
+    if(widget.categoryType == CategoryType.expense) {
+      categoryList = user.expenseCategories.map((e) => CategoryButton(
+          color: Color(e.color).withOpacity(1),
+          icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
+          name: e.name,
+          categoryID: e.categoryID,
+          currencySymbol: user.primaryCurrency.symbol,
+          value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
+          onCategoryClick: widget.onCategoryClick
+      )).toList();
+    } else {
+      categoryList = user.incomeCategories.map((e) => CategoryButton(
+          color: Color(e.color).withOpacity(1),
+          icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
+          name: e.name,
+          categoryID: e.categoryID,
+          currencySymbol: user.primaryCurrency.symbol,
+          value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
+          onCategoryClick: widget.onCategoryClick
+      )).toList();
+    }
+    if(widget.isRearrange) {
+      categoryList.add(
+        InkWell(
+          child: ,
+        )
+      )
+    }
+
+    return categoryList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,43 +92,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
         Expanded(
           child: GridView.count(
             crossAxisCount: 4,
-            children: widget.categoryType == CategoryType.expense ? user.expenseCategories.map((e) => CategoryButton(
-              color: Color(e.color).withOpacity(1),
-              icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
-              name: e.name,
-              categoryID: e.categoryID,
-              currencySymbol: user.primaryCurrency.symbol,
-              value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
-              onCategoryClick: (int categoryID) {
-                  user.selectCategory(categoryID);
-                  Navigator.of(context).push(
-                      PageRouteBuilder(
-                        barrierColor: Colors.black.withOpacity(0.25),
-                        barrierDismissible: true,
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => AddTransaction(),
-                      )
-                  );
-                }
-            )).toList() : user.incomeCategories.map((e) => CategoryButton(
-              color: Color(e.color).withOpacity(1),
-              icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
-              name: e.name,
-              categoryID: e.categoryID,
-              currencySymbol: user.primaryCurrency.symbol,
-              value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
-              onCategoryClick: (int categoryID) {
-                user.selectCategory(categoryID);
-                Navigator.of(context).push(
-                    PageRouteBuilder(
-                      barrierColor: Colors.black.withOpacity(0.25),
-                      barrierDismissible: true,
-                      opaque: false,
-                      pageBuilder: (_, __, ___) => AddTransaction(),
-                    )
-                );
-              }
-            )).toList(),
+            children: generateCategoryList(user)
           ),
         )
         //TODO CATEGORY PROGRESS BAR

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/categoriesTab.dart';
 import 'package:money_tracker/screens/categorySelectionTab.dart';
 import 'package:money_tracker/services/category.dart';
 
@@ -8,6 +9,9 @@ class CategorySelection extends StatefulWidget {
 }
 
 class _CategorySelectionState extends State<CategorySelection> {
+  int month = DateTime.now().month;
+  int year = DateTime.now().year;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -63,11 +67,25 @@ class _CategorySelectionState extends State<CategorySelection> {
                 Expanded(
                   child: TabBarView(
                     children: [
-                      CategorySelectionTab(
+                      CategoriesTab(
                         categoryType: CategoryType.expense,
+                        month: month,
+                        year: year,
+                        onCategoryClick: (int categoryID) {
+                          Navigator.pop(context, {
+                            "categoryID": categoryID,
+                          });
+                        },
                       ),
-                      CategorySelectionTab(
-                        categoryType: CategoryType.income
+                      CategoriesTab(
+                        categoryType: CategoryType.income,
+                        month: month,
+                        year: year,
+                        onCategoryClick: (int categoryID) {
+                          Navigator.pop(context, {
+                            "categoryID": categoryID,
+                          });
+                        },
                       )
                     ]
                   )
