@@ -86,6 +86,8 @@ class _NewAccountState extends State<NewAccount> {
   void dispose() {
     nameFocusNode.dispose();
     descriptionFocusNode.dispose();
+    accountNameController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
