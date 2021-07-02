@@ -3,6 +3,7 @@ import 'package:money_tracker/screens/accounts.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/categories.dart';
+import 'package:money_tracker/screens/rearrangeCategories.dart';
 import 'package:money_tracker/screens/transactions.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:intl/intl.dart';
@@ -48,6 +49,22 @@ class _HomeState extends State<Home> {
     ),
   ];
 
+  Widget generateAppbarAction(int index) {
+    if(index == 1) {
+      return TextButton(
+          child: Text("EDIT"),
+          onPressed: (){
+            Navigator.of(context).pushNamed("/rearrangeCategories");
+          });
+    } else {
+      return IconButton(
+        icon: Icon(Icons.add),
+        onPressed: (){
+        _selectAccountType(context);
+      });
+    }
+  }
+
   void _onItemTapped(int index) {
     if(index == 4) {
        Navigator.of(context).push(
@@ -79,11 +96,7 @@ class _HomeState extends State<Home> {
           toolbarHeight: 75,
           centerTitle: true,
           actions: [
-            IconButton(
-                icon: Icon(Icons.add),
-                onPressed: (){
-                  _selectAccountType(context);
-                })
+            generateAppbarAction(_selectedIndex)
           ],
           title: Row(
             mainAxisSize: MainAxisSize.min,

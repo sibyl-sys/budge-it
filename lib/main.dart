@@ -4,6 +4,7 @@ import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/home.dart';
 import 'package:money_tracker/screens/loading.dart';
 import 'package:money_tracker/screens/newAccount.dart';
+import 'package:money_tracker/screens/rearrangeCategories.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ void main() {
           '/accountType' : (context) => AccountsType(),
           '/loading': (context) => LoadingScreen(),
           '/accountDetails' : (context) => AccountDetails(),
+          '/rearrangeCategories' : (context) => RearrangeCategories(),
         },
         theme: ThemeData(
           primaryColor: Color(0x3C3A5F).withOpacity(1.0),
