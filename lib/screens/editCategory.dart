@@ -3,6 +3,7 @@ import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
 import 'package:money_tracker/services/account.dart';
+import 'package:intl/intl.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/user.dart';
@@ -10,12 +11,16 @@ import 'package:provider/provider.dart';
 
 
 class AddCategory extends StatefulWidget {
+  final int categoryID;
+  const AddCategory({Key key, this.categoryID}) : super(key : key);
   @override
   _AddCategoryState createState() => _AddCategoryState();
 }
 
 
 class _AddCategoryState extends State<AddCategory> {
+  //TODO INITIALIZE CURRENCY
+
   AccountType _accountType = AccountType.wallet;
   CategoryType _categoryType = CategoryType.expense;
   final FocusNode nameFocusNode = FocusNode();
@@ -28,8 +33,13 @@ class _AddCategoryState extends State<AddCategory> {
   void initState() {
     super.initState();
     User userModel = context.read<User>();
+    Category currentCategory = userModel.findCategoryByID(widget.categoryID);
     setState(() {
-      selectedCurrency = userModel.primaryCurrency;
+      _categoryType = currentCategory.categoryType;
+      selectedCurrency = currentCategory.categoryCurrency;
+      categoryNameController.text = currentCategory.name;
+      categoryColor = Color(currentCategory.color).withOpacity(1);
+      categoryIcon = IconData(currentCategory.icon, fontFamily: 'MaterialIcons');
     });
   }
 
@@ -72,6 +82,19 @@ class _AddCategoryState extends State<AddCategory> {
     }
   }
 
+  String getAccountTypeString() {
+    switch(_accountType) {
+      case AccountType.wallet:
+        return "Stash";
+      case AccountType.savings:
+        return "Savings - Goals";
+      case AccountType.debt:
+        return "Debt - Mortgage";
+      default:
+        return "Stash";
+    }
+  }
+
   @override
   void dispose() {
     nameFocusNode.dispose();
@@ -87,19 +110,19 @@ class _AddCategoryState extends State<AddCategory> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              userModel.addCategory(
+              userModel.updateCategory(
                   Category(
-                    color: categoryColor.value,
-                    categoryType: _categoryType,
-                    icon: categoryIcon.codePoint,
-                    name: categoryNameController.text,
-                    categoryID: userModel.newCategoryID
+                      color: categoryColor.value,
+                      categoryType: _categoryType,
+                      icon: categoryIcon.codePoint,
+                      name: categoryNameController.text,
+                      categoryID: widget.categoryID
                   )
               );
               Navigator.pop(context);
             },)
         ],
-        title: Text("New Category"),
+        title: Text("Edit Category"),
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color(0xFFF2F2F2),
