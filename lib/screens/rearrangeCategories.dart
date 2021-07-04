@@ -123,7 +123,9 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
                   )
                 ),
                 child: TextButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.of(context).pushNamed("/addCategory");
+                    },
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.white,
                     ),

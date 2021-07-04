@@ -53,7 +53,8 @@ class _CategoriesTabState extends State<CategoriesTab> {
             icon: Icon(Icons.add_circle_outline),
             iconSize: 50,
             color: Theme.of(context).primaryColor,
-            onPressed: () async {
+            onPressed: () {
+              Navigator.of(context).pushNamed("/addCategory");
               // final result = await Navigator.of(context).push(
               //     PageRouteBuilder(
               //       barrierColor: Colors.black.withOpacity(0.25),

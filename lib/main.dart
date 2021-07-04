@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountDetails.dart';
 import 'package:money_tracker/screens/accountsType.dart';
+import 'package:money_tracker/screens/addCategory.dart';
 import 'package:money_tracker/screens/home.dart';
 import 'package:money_tracker/screens/loading.dart';
 import 'package:money_tracker/screens/newAccount.dart';
@@ -16,6 +17,7 @@ void main() {
         routes: {
           '/home' : (context) => Home(),
           '/newAccount' : (context) => NewAccount(),
+          '/addCategory' : (context) => AddCategory(),
           '/accountType' : (context) => AccountsType(),
           '/loading': (context) => LoadingScreen(),
           '/accountDetails' : (context) => AccountDetails(),
