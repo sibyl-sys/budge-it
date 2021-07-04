@@ -67,20 +67,24 @@ class _HomeState extends State<Home> {
 
   void _onItemTapped(int index) {
     if(index == 4) {
-       Navigator.of(context).push(
-          PageRouteBuilder(
-            barrierColor: Colors.black.withOpacity(0.25),
-            barrierDismissible: true,
-            opaque: false,
-            pageBuilder: (_, __, ___) => AddTransaction(),
-          )
-      );
+
+      final user = context.read<User>();
+      //TODO POPUP ADD ACCOUNT
+      if(user.accounts.length > 0) {
+        Navigator.of(context).push(
+            PageRouteBuilder(
+              barrierColor: Colors.black.withOpacity(0.25),
+              barrierDismissible: true,
+              opaque: false,
+              pageBuilder: (_, __, ___) => AddTransaction(),
+            )
+        );
+      }
     } else {
       setState(() {
         _selectedIndex = index;
       });
     }
-    //TODO NAVIGATE WHEN ADD TRANSACTION
   }
 
   @override
