@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
@@ -108,28 +109,42 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
   @override
   Widget build(BuildContext context) {
 
-    return Material(
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(
+          title: Text("Edit Categories")
+      ),
+      body: Container(
           child: Column(
             children: [
-              TextButton(
-                  onPressed: (){},
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.add,
-                        size: 14,
-                        color: Theme.of(context).primaryColor
-                      ),
-                      Text(
-                        "Add Category",
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 14
-                        )
-                      ),
-                    ],
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey.withOpacity(0.5), width: 2.5)
                   )
+                ),
+                child: TextButton(
+                    onPressed: (){},
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          size: 20,
+                          color: Theme.of(context).primaryColor
+                        ),
+                        Text(
+                          "ADD NEW CATEGORY",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 16
+                          )
+                        ),
+                      ],
+                    )
+                ),
               ),
               ColoredBox(
                   color: Colors.white,

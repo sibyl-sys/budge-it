@@ -21,58 +21,55 @@ class CategoriesTab extends StatefulWidget {
 class _CategoriesTabState extends State<CategoriesTab> {
 
   List generateCategoryList(User user) {
-    List categoryList;
+    List<Widget> categoryList = [];
     if(widget.categoryType == CategoryType.expense) {
-      categoryList = user.expenseCategories.map((e) => CategoryButton(
-          color: Color(e.color).withOpacity(1),
-          icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
-          name: e.name,
-          categoryID: e.categoryID,
-          currencySymbol: e.categoryCurrency == null ? user.primaryCurrency.symbol : e.categoryCurrency,
-          value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
-          onCategoryClick: widget.onCategoryClick
-      )).toList();
+      user.expenseCategories.forEach((e) => categoryList.add(
+          CategoryButton(
+              color: Color(e.color).withOpacity(1),
+              icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
+              name: e.name,
+              categoryID: e.categoryID,
+              currencySymbol: e.categoryCurrency == null ? user.primaryCurrency.symbol : e.categoryCurrency,
+              value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
+              onCategoryClick: widget.onCategoryClick
+          )
+      ));
     } else {
-      categoryList = user.incomeCategories.map((e) => CategoryButton(
-          color: Color(e.color).withOpacity(1),
-          icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
-          name: e.name,
-          categoryID: e.categoryID,
-          currencySymbol: user.primaryCurrency.symbol,
-          value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
-          onCategoryClick: widget.onCategoryClick
-      )).toList();
+      user.incomeCategories.forEach((e) => categoryList.add(
+          CategoryButton(
+              color: Color(e.color).withOpacity(1),
+              icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
+              name: e.name,
+              categoryID: e.categoryID,
+              currencySymbol: e.categoryCurrency == null ? user.primaryCurrency.symbol : e.categoryCurrency,
+              value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
+              onCategoryClick: widget.onCategoryClick
+          )
+      ));
     }
     if(widget.isRearrange) {
       categoryList.add(
-        CircleAvatar(
-          radius: 25,
-          backgroundColor: Theme.of(context).primaryColor,
-          child: CircleAvatar(
-            radius: 24,
-            backgroundColor: Colors.white,
-            child: IconButton(
-                icon: Icon(Icons.add, size: 30),
-                color: Theme.of(context).primaryColor,
-                onPressed: () async {
-                  // final result = await Navigator.of(context).push(
-                  //     PageRouteBuilder(
-                  //       barrierColor: Colors.black.withOpacity(0.25),
-                  //       barrierDismissible: true,
-                  //       opaque: false,
-                  //       pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
-                  //     )
-                  // );
-                  // if(result != null) {
-                  //   setState(() {
-                  //     accountIcon = result["iconData"];
-                  //     accountColor = result["backgroundColor"];
-                  //     isDarkIcon = result["isDarkIcon"];
-                  //   });
-                  // }
-                }
-            ),
-          ),
+        IconButton(
+            icon: Icon(Icons.add_circle_outline),
+            iconSize: 50,
+            color: Theme.of(context).primaryColor,
+            onPressed: () async {
+              // final result = await Navigator.of(context).push(
+              //     PageRouteBuilder(
+              //       barrierColor: Colors.black.withOpacity(0.25),
+              //       barrierDismissible: true,
+              //       opaque: false,
+              //       pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
+              //     )
+              // );
+              // if(result != null) {
+              //   setState(() {
+              //     accountIcon = result["iconData"];
+              //     accountColor = result["backgroundColor"];
+              //     isDarkIcon = result["isDarkIcon"];
+              //   });
+              // }
+            }
         ),
       );
     }

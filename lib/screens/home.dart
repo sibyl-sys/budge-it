@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
   Widget generateAppbarAction(int index) {
     if(index == 1) {
       return TextButton(
-          child: Text("EDIT"),
+          child: Text("EDIT", style: TextStyle(color: Colors.white)),
           onPressed: (){
             Navigator.of(context).pushNamed("/rearrangeCategories");
           });
