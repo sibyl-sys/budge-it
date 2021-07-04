@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
+import 'package:money_tracker/screens/editAccount.dart';
+import 'package:money_tracker/screens/editCategory.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
@@ -160,6 +162,16 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
                         categoryType: CategoryType.expense,
                         month: month,
                         year: year,
+                        onCategoryClick: (int categoryID) {
+                          Navigator.of(context).push(
+                              PageRouteBuilder(
+                                barrierColor: Colors.black.withOpacity(0.25),
+                                barrierDismissible: true,
+                                opaque: false,
+                                pageBuilder: (_, __, ___) => EditCategory(categoryID: categoryID),
+                              )
+                          );
+                        },
                         isRearrange: true,
                       ),
                       CategoriesTab(
@@ -167,6 +179,16 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
                         month: month,
                         year: year,
                         isRearrange: true,
+                        onCategoryClick: (int categoryID) {
+                          Navigator.of(context).push(
+                              PageRouteBuilder(
+                                barrierColor: Colors.black.withOpacity(0.25),
+                                barrierDismissible: true,
+                                opaque: false,
+                                pageBuilder: (_, __, ___) => EditCategory(categoryID: categoryID),
+                              )
+                          );
+                        },
                       ),
                     ]
                 ),

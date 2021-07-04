@@ -10,15 +10,15 @@ import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
 
-class AddCategory extends StatefulWidget {
+class EditCategory extends StatefulWidget {
   final int categoryID;
-  const AddCategory({Key key, this.categoryID}) : super(key : key);
+  const EditCategory({Key key, this.categoryID}) : super(key : key);
   @override
-  _AddCategoryState createState() => _AddCategoryState();
+  _EditCategoryState createState() => _EditCategoryState();
 }
 
 
-class _AddCategoryState extends State<AddCategory> {
+class _EditCategoryState extends State<EditCategory> {
   //TODO INITIALIZE CURRENCY
 
   AccountType _accountType = AccountType.wallet;
