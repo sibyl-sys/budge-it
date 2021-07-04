@@ -20,11 +20,15 @@ class User extends ChangeNotifier {
   int get newTransactionID => transactions.length < 1 ? 0 : transactions[transactions.length-1].transactionID + 1;
 
   List<Category> get expenseCategories {
-    return categories.where((element) => element.categoryType == CategoryType.expense).toList();
+    List<Category> expenseCategory = categories.where((element) => element.categoryType == CategoryType.expense).toList();
+    expenseCategory.sort((a,b) => a.index.compareTo(b.index));
+    return expenseCategory;
   }
 
   List<Category> get incomeCategories {
-    return categories.where((element) => element.categoryType == CategoryType.income).toList();
+    List<Category> incomeCategory = categories.where((element) => element.categoryType == CategoryType.income).toList();
+    incomeCategory.sort((a,b) => a.index.compareTo(b.index));
+    return incomeCategory;
   }
 
   List<Account> get stashAccounts {
@@ -325,6 +329,16 @@ class User extends ChangeNotifier {
 
   void updateCategory(Category category) {
     categories[this.getCategoryIndexByID(category.categoryID)] = category;
+
+    Hive.box('budgeItApp').put('categories', categories);
+    print(Hive.box('budgeItApp').get('categories'));
+    notifyListeners();
+  }
+
+  void rearrangeCategories(List<Category> updatedCategories) {
+    updatedCategories.forEach((category) {
+      categories[this.getCategoryIndexByID(category.categoryID)] = category;
+    });
 
     Hive.box('budgeItApp').put('categories', categories);
     print(Hive.box('budgeItApp').get('categories'));

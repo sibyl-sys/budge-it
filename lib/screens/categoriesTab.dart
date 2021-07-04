@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/categoryButton.dart';
 import 'package:provider/provider.dart';
+import 'package:drag_and_drop_gridview/devdrag.dart';
+import 'package:drag_and_drop_gridview/drag.dart';
 
 class CategoriesTab extends StatefulWidget {
   final CategoryType categoryType;
@@ -55,27 +59,56 @@ class _CategoriesTabState extends State<CategoriesTab> {
             color: Theme.of(context).primaryColor,
             onPressed: () {
               Navigator.of(context).pushNamed("/addCategory");
-              // final result = await Navigator.of(context).push(
-              //     PageRouteBuilder(
-              //       barrierColor: Colors.black.withOpacity(0.25),
-              //       barrierDismissible: true,
-              //       opaque: false,
-              //       pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
-              //     )
-              // );
-              // if(result != null) {
-              //   setState(() {
-              //     accountIcon = result["iconData"];
-              //     accountColor = result["backgroundColor"];
-              //     isDarkIcon = result["isDarkIcon"];
-              //   });
-              // }
             }
         ),
       );
     }
 
     return categoryList;
+  }
+
+  Widget renderStaticGridView(User user) {
+    return GridView.count(
+        crossAxisCount: 4,
+        children: generateCategoryList(user)
+    );
+  }
+  
+  Widget renderDragAndDropView(User user) {
+    List categoryList = generateCategoryList(user);
+    return DragAndDropGridView(
+
+        onWillAccept: (oldIndex, newIndex) {
+          if(oldIndex == categoryList.length) {
+            return false;
+          }
+          return true;
+        },
+        onReorder: (oldIndex, newIndex) {
+          List<Category> categories;
+          if(widget.categoryType == CategoryType.expense) {
+            categories = user.expenseCategories;
+          } else {
+            categories = user.incomeCategories;
+          }
+          if(oldIndex > newIndex) {
+            for(int i = newIndex; i < oldIndex; i++) {
+              categories[i].index = categories[i].index + 1;
+            }
+          } else {
+            for(int i = newIndex; i > oldIndex; i--) {
+              categories[i].index = categories[i].index - 1;
+            }
+          }
+          categories[oldIndex].index = newIndex;
+          user.rearrangeCategories(categories);
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4
+        ),
+        itemBuilder: (context, index) => DragItem(isDraggable: true, isDropable: true, child: categoryList[index]),
+        itemCount: categoryList.length,
+    );
   }
 
   @override
@@ -114,10 +147,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
         ),
         SizedBox(height: 8.0),
         Expanded(
-          child: GridView.count(
-            crossAxisCount: 4,
-            children: generateCategoryList(user)
-          ),
+          child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)
         )
         //TODO CATEGORY PROGRESS BAR
       ],
