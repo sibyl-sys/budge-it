@@ -70,6 +70,8 @@ class _CategoriesTabState extends State<CategoriesTab> {
   Widget renderStaticGridView(User user) {
     return GridView.count(
         crossAxisCount: 4,
+        mainAxisSpacing: 0,
+        childAspectRatio: 9/10,
         children: generateCategoryList(user)
     );
   }
