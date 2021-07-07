@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
+import 'package:money_tracker/screens/categoriesType.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
 import 'package:money_tracker/services/account.dart';
@@ -21,7 +22,6 @@ class EditCategory extends StatefulWidget {
 class _EditCategoryState extends State<EditCategory> {
   //TODO INITIALIZE CURRENCY
 
-  AccountType _accountType = AccountType.wallet;
   CategoryType _categoryType = CategoryType.expense;
   final FocusNode nameFocusNode = FocusNode();
   final TextEditingController categoryNameController = TextEditingController();
@@ -43,15 +43,15 @@ class _EditCategoryState extends State<EditCategory> {
     });
   }
 
-  Future<void> _selectAccountType(BuildContext context) async {
-    AccountType newAccountType = await showDialog<AccountType>(
+  Future<void> _selectCategoryType(BuildContext context) async {
+    CategoryType newCategoryType = await showDialog<CategoryType>(
         context: context,
         builder: (BuildContext context) {
-          return AccountsType();
+          return CategoriesType();
         }
     );
     setState(() {
-      _accountType = newAccountType;
+      _categoryType = newCategoryType;
     });
   }
 
@@ -79,19 +79,6 @@ class _EditCategoryState extends State<EditCategory> {
         return "Expense";
       default:
         return "Expense";
-    }
-  }
-
-  String getAccountTypeString() {
-    switch(_accountType) {
-      case AccountType.wallet:
-        return "Stash";
-      case AccountType.savings:
-        return "Savings - Goals";
-      case AccountType.debt:
-        return "Debt - Mortgage";
-      default:
-        return "Stash";
     }
   }
 
@@ -162,7 +149,7 @@ class _EditCategoryState extends State<EditCategory> {
                     ),
                     InkWell(
                         onTap: () {
-                          _selectAccountType(context);
+                          _selectCategoryType(context);
                         },
                         child: Container(
                             width: 250,

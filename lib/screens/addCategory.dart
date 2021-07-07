@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
+import 'package:money_tracker/screens/categoriesType.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
 import 'package:money_tracker/services/account.dart';
@@ -16,7 +17,6 @@ class AddCategory extends StatefulWidget {
 
 
 class _AddCategoryState extends State<AddCategory> {
-  AccountType _accountType = AccountType.wallet;
   CategoryType _categoryType = CategoryType.expense;
   final FocusNode nameFocusNode = FocusNode();
   final TextEditingController categoryNameController = TextEditingController();
@@ -33,15 +33,15 @@ class _AddCategoryState extends State<AddCategory> {
     });
   }
 
-  Future<void> _selectAccountType(BuildContext context) async {
-    AccountType newAccountType = await showDialog<AccountType>(
+  Future<void> _selectCategoryType(BuildContext context) async {
+    CategoryType newCategoryType = await showDialog<CategoryType>(
         context: context,
         builder: (BuildContext context) {
-          return AccountsType();
+          return CategoriesType();
         }
     );
     setState(() {
-      _accountType = newAccountType;
+      _categoryType = newCategoryType;
     });
   }
 
@@ -139,7 +139,7 @@ class _AddCategoryState extends State<AddCategory> {
                     ),
                     InkWell(
                         onTap: () {
-                          _selectAccountType(context);
+                          _selectCategoryType(context);
                         },
                         child: Container(
                             width: 250,
