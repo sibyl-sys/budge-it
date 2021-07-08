@@ -334,7 +334,6 @@ class User extends ChangeNotifier {
     categories = List.from(categories)..add(newCategory);
 
     Hive.box('budgeItApp').put('categories', categories);
-    print(Hive.box('budgeItApp').get('categories'));
     notifyListeners();
   }
 
@@ -342,7 +341,6 @@ class User extends ChangeNotifier {
     categories[this.getCategoryIndexByID(category.categoryID)] = category;
 
     Hive.box('budgeItApp').put('categories', categories);
-    print(Hive.box('budgeItApp').get('categories'));
     notifyListeners();
   }
 
