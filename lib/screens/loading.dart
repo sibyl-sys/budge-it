@@ -5,6 +5,7 @@ import 'package:money_tracker/constants/Constants.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
+import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Hive.registerAdapter(CategoryTypeAdapter());
     Hive.registerAdapter(AccountTypeAdapter());
     Hive.registerAdapter(TransactionTypeAdapter());
-    Hive.registerAdapter(TransactionImportanceAdapter());
+    Hive.registerAdapter(SubcategoryAdapter());
 
     var box = await Hive.openBox('budgeItApp');
     List<Account> accounts = List<Account>.from(box.get('accounts', defaultValue:  new List<Account>()));

@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 
+part 'subcategory.g.dart';
 
 @HiveType(typeId: 8)
 class Subcategory {

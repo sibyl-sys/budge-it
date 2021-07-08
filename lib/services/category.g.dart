@@ -63,9 +63,8 @@ class CategoryAdapter extends TypeAdapter<Category> {
       categoryID: fields[4] as int,
       categoryCurrency: fields[6] as Currency,
       index: fields[7] as int,
-    )
-      ..lastTransactionImportance = fields[5] as TransactionImportance
-      ..subcategories = (fields[8] as List)?.cast<Subcategory>();
+      subcategories: (fields[8] as List)?.cast<Subcategory>(),
+    )..lastTransactionImportance = fields[5] as TransactionImportance;
   }
 
   @override
