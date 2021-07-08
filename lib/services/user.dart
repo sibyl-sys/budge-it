@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -18,6 +20,14 @@ class User extends ChangeNotifier {
   int get newAccountID => accounts.length < 1 ? 0 : accounts[accounts.length-1].accountID + 1 ;
   int get newCategoryID => categories.length < 1 ? 0 : categories[categories.length-1].categoryID + 1;
   int get newTransactionID => transactions.length < 1 ? 0 : transactions[transactions.length-1].transactionID + 1;
+
+  int get newCategoryIndex {
+    int maxIndex = 1;
+    categories.forEach((element) {
+      maxIndex = max(maxIndex, element.index);
+    });
+    return maxIndex + 1;
+  }
 
   List<Category> get expenseCategories {
     List<Category> expenseCategory = categories.where((element) => element.categoryType == CategoryType.expense).toList();
@@ -324,6 +334,7 @@ class User extends ChangeNotifier {
     categories = List.from(categories)..add(newCategory);
 
     Hive.box('budgeItApp').put('categories', categories);
+    print(Hive.box('budgeItApp').get('categories'));
     notifyListeners();
   }
 

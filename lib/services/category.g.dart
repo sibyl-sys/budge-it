@@ -63,13 +63,15 @@ class CategoryAdapter extends TypeAdapter<Category> {
       categoryID: fields[4] as int,
       categoryCurrency: fields[6] as Currency,
       index: fields[7] as int,
-    )..lastTransactionImportance = fields[5] as TransactionImportance;
+    )
+      ..lastTransactionImportance = fields[5] as TransactionImportance
+      ..subcategories = (fields[8] as List)?.cast<Subcategory>();
   }
 
   @override
   void write(BinaryWriter writer, Category obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.icon)
       ..writeByte(1)
@@ -85,7 +87,9 @@ class CategoryAdapter extends TypeAdapter<Category> {
       ..writeByte(6)
       ..write(obj.categoryCurrency)
       ..writeByte(7)
-      ..write(obj.index);
+      ..write(obj.index)
+      ..writeByte(8)
+      ..write(obj.subcategories);
   }
 
   @override

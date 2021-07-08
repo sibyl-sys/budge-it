@@ -26,9 +26,7 @@ class _AddCategoryState extends State<AddCategory> {
   Color categoryColor = Colors.blue[700];
   bool isDarkIcon = false;
   Currency selectedCurrency;
-  List<Subcategory> subcategories = [
-    Subcategory(icon: Icons.face.codePoint, name: "Sample subcategory")
-  ];
+  List<Subcategory> subcategories = [];
 
   void initState() {
     super.initState();
@@ -68,7 +66,6 @@ class _AddCategoryState extends State<AddCategory> {
 
 
   Widget renderSubcategoryList() {
-    print(subcategories.length);
     return Column(
         children: subcategories.map((e) =>
           Card(
@@ -135,7 +132,9 @@ class _AddCategoryState extends State<AddCategory> {
                     categoryType: _categoryType,
                     icon: categoryIcon.codePoint,
                     name: categoryNameController.text,
-                    categoryID: userModel.newCategoryID
+                    categoryID: userModel.newCategoryID,
+                    index: userModel.newCategoryIndex,
+                    subcategories: subcategories
                   )
               );
               Navigator.pop(context);

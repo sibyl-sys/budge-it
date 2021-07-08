@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/currency.dart';
 
@@ -39,6 +40,9 @@ class Category {
   @HiveField(7)
   int index;
 
-  Category({this.icon, this.color, this.name, this.categoryType, this.categoryID, this.categoryCurrency, this.index});
+  @HiveField(8)
+  List<Subcategory> subcategories;
+
+  Category({this.icon, this.color, this.name, this.categoryType, this.categoryID, this.categoryCurrency, this.index, this.subcategories});
 
 }

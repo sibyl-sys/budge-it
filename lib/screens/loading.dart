@@ -42,6 +42,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
 
     List<Category> categories = List<Category>.from(box.get('categories', defaultValue: categoryDefault));
+    int lastIndex = 0;
+    for(Category category in categories) {
+      if(category.index == null) {
+        category.index = lastIndex + 1;
+      }
+      lastIndex = category.index;
+    }
+
     List<Transaction> transactions = List<Transaction>.from(box.get('transactions', defaultValue: new List<Transaction>()));
 
     for(Transaction transaction in transactions) {
