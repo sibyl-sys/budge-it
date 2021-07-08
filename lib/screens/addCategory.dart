@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
+import 'package:money_tracker/screens/addSubcategory.dart';
 import 'package:money_tracker/screens/categoriesType.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
+import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,9 @@ class _AddCategoryState extends State<AddCategory> {
   Color categoryColor = Colors.blue[700];
   bool isDarkIcon = false;
   Currency selectedCurrency;
+  List<Subcategory> subcategories = [
+    Subcategory(icon: Icons.face.codePoint, name: "Sample subcategory")
+  ];
 
   void initState() {
     super.initState();
@@ -61,6 +66,42 @@ class _AddCategoryState extends State<AddCategory> {
     }
   }
 
+
+  Widget renderSubcategoryList() {
+    print(subcategories.length);
+    return Column(
+        children: subcategories.map((e) =>
+          Card(
+              child: Container(
+                height: 50,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                  child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Icon(
+                            IconData(e.icon, fontFamily: "MaterialIcons"),
+                            color: categoryColor,
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Text(
+                            e.name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: categoryColor
+                            )
+                        )
+                      ]
+                  ),
+                ),
+              )
+          )
+        ).toList()
+    );
+  }
+
   String getCategoryTypeString() {
     switch(_categoryType) {
       case CategoryType.income:
@@ -75,6 +116,7 @@ class _AddCategoryState extends State<AddCategory> {
   @override
   void dispose() {
     nameFocusNode.dispose();
+    categoryNameController.dispose();
     super.dispose();
   }
 
@@ -284,6 +326,84 @@ class _AddCategoryState extends State<AddCategory> {
                   )
                 ]
             ),
+            SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Subcategories:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: Color(0x4F4F4F).withOpacity(1)
+                    )
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              child: Column(
+                children: [
+                  renderSubcategoryList(),
+                  Card(
+                      child: Container(
+                        height: 50,
+                        child: TextButton(
+                          onPressed: () async {
+                            final result = await Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  barrierColor: Colors.black.withOpacity(0.25),
+                                  barrierDismissible: true,
+                                  opaque: false,
+                                  pageBuilder: (_, __, ___) => AddSubcategory(categoryColor: this.categoryColor, categoryIcon: this.categoryIcon, isDarkIcon: isDarkIcon),
+                                )
+                                //TODO SUBCATEGORY ADD
+                            );
+                            if(result != null) {
+                              setState(() {
+                                subcategories = List.from(subcategories)..add(Subcategory(
+                                  icon: result["iconData"].codePoint,
+                                  name: result["name"]
+                                ));
+                              });
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                          ),
+                          child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(4.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Colors.grey.withOpacity(0.25))
+                                  ),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: categoryColor,
+                                  )
+                                ),
+                                SizedBox(width: 20),
+                                Text(
+                                  "Add Subcategory",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: categoryColor
+                                  )
+                                )
+                              ]
+                          ),
+                        ),
+                      )
+                  ),
+                ],
+              ),
+            ),
+
           ],
         ),
       ),
