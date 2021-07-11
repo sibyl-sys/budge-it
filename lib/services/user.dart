@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
+import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:collection/collection.dart';
 
@@ -20,6 +21,14 @@ class User extends ChangeNotifier {
   int get newAccountID => accounts.length < 1 ? 0 : accounts[accounts.length-1].accountID + 1 ;
   int get newCategoryID => categories.length < 1 ? 0 : categories[categories.length-1].categoryID + 1;
   int get newTransactionID => transactions.length < 1 ? 0 : transactions[transactions.length-1].transactionID + 1;
+
+  int newSubCategoryID(List<Subcategory> subcategories) {
+    int subcategoryID = 0;
+    if(transactions.length > 0) {
+      subcategoryID = subcategories[subcategories.length - 1].id + 1;
+    }
+    return subcategoryID;
+  }
 
   int get newCategoryIndex {
     int maxIndex = 1;

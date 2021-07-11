@@ -373,10 +373,12 @@ class _EditCategoryState extends State<EditCategory> {
                               //TODO SUBCATEGORY ADD
                             );
                             if(result != null) {
+                              User userModel = context.read<User>();
                               setState(() {
                                 subcategories = List.from(subcategories)..add(Subcategory(
                                     icon: result["iconData"].codePoint,
-                                    name: result["name"]
+                                    name: result["name"],
+                                    id: userModel.newSubCategoryID(subcategories)
                                 ));
                               });
                             }

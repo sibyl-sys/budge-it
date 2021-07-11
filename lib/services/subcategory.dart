@@ -10,6 +10,9 @@ class Subcategory {
   @HiveField(2)
   String name;
 
-  Subcategory({this.icon, this.name});
+  @HiveField(3)
+  int id;
+
+  Subcategory({this.icon, this.name, this.id});
 
 }
