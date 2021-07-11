@@ -5,6 +5,7 @@ import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/categoryButton.dart';
+import 'package:money_tracker/widgets/categoryPercentBar.dart';
 import 'package:provider/provider.dart';
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
@@ -147,6 +148,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
             ),
           ],
         ),
+        CategoryPercentBar(categoryType: widget.categoryType),
         SizedBox(height: 8.0),
         Expanded(
           child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)
