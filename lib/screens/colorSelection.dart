@@ -43,7 +43,7 @@ class _ColorSelectionState extends State<ColorSelection> {
                   "Selected Color:"
                 ),
                 Text(
-                  colorName + " " + colorShade.toString(),
+                  colorName,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: widget.colorData
@@ -54,7 +54,7 @@ class _ColorSelectionState extends State<ColorSelection> {
             SizedBox(height: 8.0),
             Expanded(
               child: GridView.count(
-                crossAxisCount: 6,
+                crossAxisCount: 4,
                 padding: EdgeInsets.all(8.0),
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
