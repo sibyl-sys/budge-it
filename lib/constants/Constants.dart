@@ -66,12 +66,6 @@ final List<Map<String, dynamic>> accountColorList = [
     "isDarkIcon" : false
   },
   {
-    "name" : "Blue",
-    "shade" : 400,
-    "value" :  Colors.blue[400],
-    "isDarkIcon" : false
-  },
-  {
     "name" : "Teal",
     "shade" : 400,
     "value" :  Colors.teal[400],

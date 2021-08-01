@@ -29,7 +29,7 @@ class _NewAccountState extends State<NewAccount> {
   double balance = 0;
   double limit = 0;
   IconData accountIcon = Icons.account_balance_wallet;
-  Color accountColor = Colors.blue[700];
+  Color accountColor = Colors.blue[400];
   bool isDarkIcon = false;
   Currency selectedCurrency;
 
