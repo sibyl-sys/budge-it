@@ -76,6 +76,26 @@ class _AddTransactionState extends State<AddTransaction> {
     }
   }
 
+  String getToLabel(TransactionType transactionType) {
+    if(transactionType == TransactionType.expense) {
+      return "To Expense";
+    } else if(transactionType == TransactionType.income){
+      return "To Income";
+    } else {
+      return "To Account";
+    }
+  }
+
+  String getValueLabel(TransactionType transactionType) {
+    if(transactionType == TransactionType.expense) {
+      return "Expense";
+    } else if(transactionType == TransactionType.income){
+      return "Income";
+    } else {
+      return "Transfer";
+    }
+  }
+
   String getTextDisplay() {
     if(firstValue == "") {
       return "0";
@@ -360,7 +380,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                                "To Expense",
+                                                getToLabel(transactionType),
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 12
@@ -616,7 +636,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Expense",
+                    getValueLabel(transactionType),
                     style: TextStyle(
                         decoration: TextDecoration.none,
                         fontSize: 16,

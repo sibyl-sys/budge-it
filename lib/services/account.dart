@@ -12,7 +12,7 @@ enum AccountType {
   @HiveField(2)
   debt
 }
-//TODO INTEGRATE ACCOUNT ID
+
 @HiveType(typeId: 0)
 class Account {
   @HiveField(0)

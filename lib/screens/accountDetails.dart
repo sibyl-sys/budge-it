@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/editAccount.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/transaction.dart';
@@ -89,8 +90,6 @@ class _AccountDetailsState extends State<AccountDetails> {
     final List<Map> transactionListPerDay = user.getTransactions(month: month, year: year, accountID: -1);
     Account currentAccount = user.findAccountByID(arguments["accountIndex"]);
 
-
-    //TODO TRANSACTION LIST
     //TODO DATE PICKER
 
     return currentAccount == null ? SizedBox(height: 0) : Scaffold(
@@ -232,7 +231,19 @@ class _AccountDetailsState extends State<AccountDetails> {
                         width: 85,
                         height: 85,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final user = context.read<User>();
+                            user.selectAccount(currentAccount.accountID);
+                            user.selectCategory(user.incomeCategories[0].categoryID);
+                            Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  barrierColor: Colors.black.withOpacity(0.25),
+                                  barrierDismissible: true,
+                                  opaque: false,
+                                  pageBuilder: (_, __, ___) => AddTransaction(),
+                                )
+                            );
+                          },
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
@@ -273,7 +284,19 @@ class _AccountDetailsState extends State<AccountDetails> {
                         width: 85,
                         height: 85,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final user = context.read<User>();
+                            user.selectAccount(currentAccount.accountID);
+                            user.selectCategory(user.expenseCategories[0].categoryID);
+                            Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  barrierColor: Colors.black.withOpacity(0.25),
+                                  barrierDismissible: true,
+                                  opaque: false,
+                                  pageBuilder: (_, __, ___) => AddTransaction(),
+                                )
+                            );
+                          },
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
