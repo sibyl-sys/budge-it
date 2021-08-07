@@ -17,6 +17,7 @@ class User extends ChangeNotifier {
   int lastSelectedCategoryTo;
   int lastSelectedAccountFrom;
   int lastSelectedAccountTo;
+  TransactionType lastTransactionType;
   Currency primaryCurrency;
 
   int get newAccountID => accounts.length < 1 ? 0 : accounts[accounts.length-1].accountID + 1 ;
@@ -285,16 +286,16 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectAccountTo(int accountIndex) async {
-    lastSelectedAccountTo = accountIndex;
-    Hive.box('budgeItApp').put('selectedAccountFrom', lastSelectedAccountTo);
-    notifyListeners();
-  }
-
-  void selectCategoryTo(int categoryIndex) async {
-    lastSelectedCategoryTo = categoryIndex;
+  void selectRecipient(int toIndex, TransactionType transactionType) async {
+    if(transactionType == TransactionType.transfer) {
+      lastSelectedAccountTo = toIndex;
+    } else {
+      lastSelectedCategoryTo = toIndex;
+    }
+    lastTransactionType = transactionType;
+    Hive.box('budgeItApp').put('lastTransactionType', lastTransactionType);
+    Hive.box('budgeItApp').put('selectedAccountTo', lastSelectedAccountTo);
     Hive.box('budgeItApp').put('selectedCategoryTo', lastSelectedCategoryTo);
-
     notifyListeners();
   }
 
@@ -370,13 +371,14 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
-  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo) {
+  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo, TransactionType transactionType) {
     this.accounts = List.from(accounts);
     this.categories = List.from(categories);
     this.transactions = List.from(transactions);
     this.lastSelectedAccountFrom = lastSelectedAccount;
     this.lastSelectedCategoryTo = lastSelectedCategory;
     this.lastSelectedAccountTo = lastSelectedAccountTo;
+    this.lastTransactionType = lastTransactionType;
     this.primaryCurrency = primaryCurrency;
   }
 }

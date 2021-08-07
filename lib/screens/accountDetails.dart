@@ -234,7 +234,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                           onPressed: () {
                             final user = context.read<User>();
                             user.selectAccountFrom(currentAccount.accountID);
-                            user.selectCategoryTo(user.incomeCategories[0].categoryID);
+                            user.selectRecipient(user.incomeCategories[0].categoryID, TransactionType.income);
                             Navigator.of(context).push(
                                 PageRouteBuilder(
                                   barrierColor: Colors.black.withOpacity(0.25),
@@ -287,7 +287,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                           onPressed: () {
                             final user = context.read<User>();
                             user.selectAccountFrom(currentAccount.accountID);
-                            user.selectCategoryTo(user.expenseCategories[0].categoryID);
+                            user.selectRecipient(user.expenseCategories[0].categoryID, TransactionType.expense);
                             Navigator.of(context).push(
                                 PageRouteBuilder(
                                   barrierColor: Colors.black.withOpacity(0.25),

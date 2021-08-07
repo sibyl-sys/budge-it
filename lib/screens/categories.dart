@@ -5,6 +5,7 @@ import 'package:money_tracker/screens/categoriesTab.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
+import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
@@ -153,7 +154,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                         year: year,
                         onCategoryClick: (int categoryID) {
                           final user = context.read<User>();
-                          user.selectCategoryTo(categoryID);
+                          user.selectRecipient(categoryID, TransactionType.expense);
                           Navigator.of(context).push(
                               PageRouteBuilder(
                                 barrierColor: Colors.black.withOpacity(0.25),
@@ -170,8 +171,8 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                         month: month,
                         year: year,
                         onCategoryClick: (int categoryID) {
-                          final user = context.read<User>();
-                          user.selectCategoryTo(categoryID);
+                          final user = context.read<User>();                          user.selectRecipient(categoryID, TransactionType.expense);
+                          user.selectRecipient(categoryID, TransactionType.income);
                           Navigator.of(context).push(
                               PageRouteBuilder(
                                 barrierColor: Colors.black.withOpacity(0.25),

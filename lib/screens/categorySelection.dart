@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/accountsTab.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
 import 'package:money_tracker/screens/categorySelectionTab.dart';
 import 'package:money_tracker/services/category.dart';
+import 'package:money_tracker/services/transaction.dart';
 
 class CategorySelection extends StatefulWidget {
   @override
@@ -25,7 +27,7 @@ class _CategorySelectionState extends State<CategorySelection> {
             borderRadius: BorderRadius.all(Radius.circular(15))
           ),
           child: DefaultTabController(
-            length: 2,
+            length: 3,
             child: Column(
               children: [
                 Container(
@@ -40,7 +42,7 @@ class _CategorySelectionState extends State<CategorySelection> {
                   ),
                   child: Center(
                     child: Text(
-                      "Select Category",
+                      "Select Recipient",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
@@ -61,6 +63,9 @@ class _CategorySelectionState extends State<CategorySelection> {
                       Tab(
                         text: 'Income'
                       ),
+                      Tab(
+                        text: 'Transfer'
+                      )
                     ]
                   ),
                 ),
@@ -73,7 +78,8 @@ class _CategorySelectionState extends State<CategorySelection> {
                         year: year,
                         onCategoryClick: (int categoryID) {
                           Navigator.pop(context, {
-                            "categoryID": categoryID,
+                            "recipientID": categoryID,
+                            "transactionType": TransactionType.expense
                           });
                         },
                         isRearrange: false,
@@ -84,10 +90,19 @@ class _CategorySelectionState extends State<CategorySelection> {
                         year: year,
                         onCategoryClick: (int categoryID) {
                           Navigator.pop(context, {
-                            "categoryID": categoryID,
+                            "recipientID": categoryID,
+                            "transactionType": TransactionType.income
                           });
                         },
                         isRearrange: false,
+                      ),
+                      AccountsTab(
+                          onAccountTapped: (int accountID) {
+                            Navigator.pop(context, {
+                              "recipientID": accountID,
+                              "transactionType": TransactionType.transfer
+                            });
+                          }
                       )
                     ]
                   )

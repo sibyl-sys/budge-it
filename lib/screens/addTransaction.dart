@@ -242,8 +242,11 @@ class _AddTransactionState extends State<AddTransaction> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
-    TransactionType transactionType = user.findCategoryByID(user.lastSelectedCategoryTo).categoryType == CategoryType.expense ? TransactionType.expense : TransactionType.income;
+    TransactionType transactionType = user.lastTransactionType;
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
+    
+    //TODO HIDE FROM ON TRANSFER SELECTION
+    //TODO ADD DEBT IN TRANSFER SELECTION
     TransactionImportance transactionImportance = user.findCategoryByID(user.lastSelectedCategoryTo).lastTransactionImportance == null ? TransactionImportance.need : user.findCategoryByID(user.lastSelectedCategoryTo).lastTransactionImportance;
 
 
@@ -334,7 +337,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
                 Expanded(
                   child: Ink(
-                    color: Color(user.findCategoryByID(user.lastSelectedCategoryTo).color).withOpacity(1),
+                    color: Color(transactionType != TransactionType.transfer ? user.findCategoryByID(user.lastSelectedCategoryTo).color : user.findAccountByID(user.lastSelectedAccountTo).color).withOpacity(1),
                     child: InkWell(
                       splashColor: Colors.white.withOpacity(0.5),
                       onTap: () async {
@@ -347,7 +350,7 @@ class _AddTransactionState extends State<AddTransaction> {
                             )
                         );
                         if(results != null) {
-                          user.selectCategoryTo(results["categoryID"]);
+                          user.selectRecipient(results["recipientID"], results["transactionType"]);
                         }
                       },
                       child: Container(
@@ -364,7 +367,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(
-                                            IconData(user.findCategoryByID(user.lastSelectedCategoryTo).icon, fontFamily: 'MaterialIcons'),
+                                            IconData(transactionType != TransactionType.transfer ? user.findCategoryByID(user.lastSelectedCategoryTo).icon : user.findAccountByID(user.lastSelectedAccountTo).icon, fontFamily: 'MaterialIcons'),
                                             color: Colors.white.withOpacity(0.3),
                                             size: 65
                                         ),
@@ -389,7 +392,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                             SizedBox(height: 4.0),
                                             Flexible(
                                               child: Text(
-                                                user.findCategoryByID(user.lastSelectedCategoryTo).name,
+                                                transactionType != TransactionType.transfer ? user.findCategoryByID(user.lastSelectedCategoryTo).name : user.findAccountByID(user.lastSelectedAccountTo).name,
                                                 style: TextStyle(
                                                     fontSize: 18.0,
                                                     color: Colors.white,
@@ -412,7 +415,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ]
             ),
-            Container(
+            transactionType != TransactionType.transfer ? Container(
               padding: EdgeInsets.all(8),
               color: Colors.white,
               width: MediaQuery.of(context).size.width,
@@ -627,7 +630,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                 ],
               ),
-            ),
+            ) : SizedBox(height: 0),
             Container(
               color: const Color(0xFBFBFBFF),
               width: double.infinity,
