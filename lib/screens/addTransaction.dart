@@ -242,9 +242,9 @@ class _AddTransactionState extends State<AddTransaction> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
-    TransactionType transactionType = user.findCategoryByID(user.lastSelectedCategory).categoryType == CategoryType.expense ? TransactionType.expense : TransactionType.income;
+    TransactionType transactionType = user.findCategoryByID(user.lastSelectedCategoryTo).categoryType == CategoryType.expense ? TransactionType.expense : TransactionType.income;
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
-    TransactionImportance transactionImportance = user.findCategoryByID(user.lastSelectedCategory).lastTransactionImportance == null ? TransactionImportance.need : user.findCategoryByID(user.lastSelectedCategory).lastTransactionImportance;
+    TransactionImportance transactionImportance = user.findCategoryByID(user.lastSelectedCategoryTo).lastTransactionImportance == null ? TransactionImportance.need : user.findCategoryByID(user.lastSelectedCategoryTo).lastTransactionImportance;
 
 
     return Material(
@@ -257,7 +257,7 @@ class _AddTransactionState extends State<AddTransaction> {
               children: [
                 Expanded(
                   child: Ink(
-                    color: Color(user.findAccountByID(user.lastSelectedAccount).color).withOpacity(1),
+                    color: Color(user.findAccountByID(user.lastSelectedAccountFrom).color).withOpacity(1),
                     child: InkWell(
                       splashColor: Colors.white.withOpacity(0.5),
                       onTap: () async {
@@ -286,7 +286,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                      IconData(user.findAccountByID(user.lastSelectedAccount).icon, fontFamily: 'MaterialIcons'),
+                                      IconData(user.findAccountByID(user.lastSelectedAccountFrom).icon, fontFamily: 'MaterialIcons'),
                                       color: Colors.white.withOpacity(0.3),
                                       size: 65
                                   ),
@@ -311,7 +311,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                     SizedBox(height: 4.0),
                                     Flexible(
                                       child: Text(
-                                        user.findAccountByID(user.lastSelectedAccount).name,
+                                        user.findAccountByID(user.lastSelectedAccountFrom).name,
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.white,
@@ -334,7 +334,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
                 Expanded(
                   child: Ink(
-                    color: Color(user.findCategoryByID(user.lastSelectedCategory).color).withOpacity(1),
+                    color: Color(user.findCategoryByID(user.lastSelectedCategoryTo).color).withOpacity(1),
                     child: InkWell(
                       splashColor: Colors.white.withOpacity(0.5),
                       onTap: () async {
@@ -364,7 +364,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(
-                                            IconData(user.findCategoryByID(user.lastSelectedCategory).icon, fontFamily: 'MaterialIcons'),
+                                            IconData(user.findCategoryByID(user.lastSelectedCategoryTo).icon, fontFamily: 'MaterialIcons'),
                                             color: Colors.white.withOpacity(0.3),
                                             size: 65
                                         ),
@@ -389,7 +389,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                             SizedBox(height: 4.0),
                                             Flexible(
                                               child: Text(
-                                                user.findCategoryByID(user.lastSelectedCategory).name,
+                                                user.findCategoryByID(user.lastSelectedCategoryTo).name,
                                                 style: TextStyle(
                                                     fontSize: 18.0,
                                                     color: Colors.white,
@@ -478,7 +478,7 @@ class _AddTransactionState extends State<AddTransaction> {
                           ]
                       ),
                       onChange: () {
-                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategory);
+                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategoryTo);
                         currentSelectedCategory.lastTransactionImportance = TransactionImportance.need;
                         user.updateCategory(currentSelectedCategory);
                       },
@@ -546,7 +546,7 @@ class _AddTransactionState extends State<AddTransaction> {
                           ]
                       ),
                       onChange: () {
-                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategory);
+                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategoryTo);
                         currentSelectedCategory.lastTransactionImportance = TransactionImportance.want;
                         user.updateCategory(currentSelectedCategory);
                       },
@@ -617,7 +617,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       ),
                       onChange: () {
 
-                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategory);
+                        Category currentSelectedCategory = user.findCategoryByID(user.lastSelectedCategoryTo);
                         currentSelectedCategory.lastTransactionImportance = TransactionImportance.sudden;
                         user.updateCategory(currentSelectedCategory);
                       },
@@ -749,8 +749,8 @@ class _AddTransactionState extends State<AddTransaction> {
                       Transaction(
                         value: double.parse(this.firstValue),
                         note: notesController.text,
-                        accountID: user.lastSelectedAccount,
-                        categoryID: user.lastSelectedCategory,
+                        accountID: user.lastSelectedAccountFrom,
+                        categoryID: user.lastSelectedCategoryTo,
                         transactionID: userModel.transactions.length,
                         timestamp: currentDate,
                         transactionType: transactionType,
