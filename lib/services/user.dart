@@ -16,6 +16,7 @@ class User extends ChangeNotifier {
   List<Transaction> transactions = [];
   int lastSelectedCategoryTo;
   int lastSelectedAccountFrom;
+  int lastSelectedAccountTo;
   Currency primaryCurrency;
 
   int get newAccountID => accounts.length < 1 ? 0 : accounts[accounts.length-1].accountID + 1 ;
@@ -278,13 +279,19 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectAccount(int accountIndex) async {
+  void selectAccountFrom(int accountIndex) async {
     lastSelectedAccountFrom = accountIndex;
     Hive.box('budgeItApp').put('selectedAccountFrom', lastSelectedAccountFrom);
     notifyListeners();
   }
 
-  void selectCategory(int categoryIndex) async {
+  void selectAccountTo(int accountIndex) async {
+    lastSelectedAccountTo = accountIndex;
+    Hive.box('budgeItApp').put('selectedAccountFrom', lastSelectedAccountTo);
+    notifyListeners();
+  }
+
+  void selectCategoryTo(int categoryIndex) async {
     lastSelectedCategoryTo = categoryIndex;
     Hive.box('budgeItApp').put('selectedCategoryTo', lastSelectedCategoryTo);
 
@@ -363,12 +370,13 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
-  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency) {
+  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo) {
     this.accounts = List.from(accounts);
     this.categories = List.from(categories);
     this.transactions = List.from(transactions);
     this.lastSelectedAccountFrom = lastSelectedAccount;
     this.lastSelectedCategoryTo = lastSelectedCategory;
+    this.lastSelectedAccountTo = lastSelectedAccountTo;
     this.primaryCurrency = primaryCurrency;
   }
 }

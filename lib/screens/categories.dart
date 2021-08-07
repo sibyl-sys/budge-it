@@ -153,7 +153,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                         year: year,
                         onCategoryClick: (int categoryID) {
                           final user = context.read<User>();
-                          user.selectCategory(categoryID);
+                          user.selectCategoryTo(categoryID);
                           Navigator.of(context).push(
                               PageRouteBuilder(
                                 barrierColor: Colors.black.withOpacity(0.25),
@@ -171,7 +171,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                         year: year,
                         onCategoryClick: (int categoryID) {
                           final user = context.read<User>();
-                          user.selectCategory(categoryID);
+                          user.selectCategoryTo(categoryID);
                           Navigator.of(context).push(
                               PageRouteBuilder(
                                 barrierColor: Colors.black.withOpacity(0.25),

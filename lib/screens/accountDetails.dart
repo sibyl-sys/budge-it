@@ -233,8 +233,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                         child: OutlinedButton(
                           onPressed: () {
                             final user = context.read<User>();
-                            user.selectAccount(currentAccount.accountID);
-                            user.selectCategory(user.incomeCategories[0].categoryID);
+                            user.selectAccountFrom(currentAccount.accountID);
+                            user.selectCategoryTo(user.incomeCategories[0].categoryID);
                             Navigator.of(context).push(
                                 PageRouteBuilder(
                                   barrierColor: Colors.black.withOpacity(0.25),
@@ -286,8 +286,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                         child: OutlinedButton(
                           onPressed: () {
                             final user = context.read<User>();
-                            user.selectAccount(currentAccount.accountID);
-                            user.selectCategory(user.expenseCategories[0].categoryID);
+                            user.selectAccountFrom(currentAccount.accountID);
+                            user.selectCategoryTo(user.expenseCategories[0].categoryID);
                             Navigator.of(context).push(
                                 PageRouteBuilder(
                                   barrierColor: Colors.black.withOpacity(0.25),

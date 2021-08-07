@@ -65,8 +65,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     int selectedCategory = box.get('selectedCategoryTo', defaultValue: 0);
     int selectedAccount = box.get('selectedAccountFrom', defaultValue: 0);
+    int selectedAccountTo = box.get('selectedAccountTo', defaultValue: 0);
     User user = context.read<User>();
-    user.init(accounts, categories, transactions, selectedCategory, selectedAccount, primaryCurrency);
+    user.init(accounts, categories, transactions, selectedCategory, selectedAccount, primaryCurrency, selectedAccountTo);
     Navigator.pushReplacementNamed(context, "/home");
   }
 

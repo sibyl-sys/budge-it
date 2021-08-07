@@ -269,7 +269,7 @@ class _AddTransactionState extends State<AddTransaction> {
                               pageBuilder: (_, __, ___) => AccountSelection(),
                             ));
                             if(result != null) {
-                              user.selectAccount(result["accountID"]);
+                              user.selectAccountFrom(result["accountID"]);
                             }
                       },
                       child: Container(
@@ -347,7 +347,7 @@ class _AddTransactionState extends State<AddTransaction> {
                             )
                         );
                         if(results != null) {
-                          user.selectCategory(results["categoryID"]);
+                          user.selectCategoryTo(results["categoryID"]);
                         }
                       },
                       child: Container(
