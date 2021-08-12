@@ -752,8 +752,8 @@ class _AddTransactionState extends State<AddTransaction> {
                       Transaction(
                         value: double.parse(this.firstValue),
                         note: notesController.text,
-                        accountID: user.lastSelectedAccountFrom,
-                        categoryID: user.lastSelectedCategoryTo,
+                        fromID: user.lastSelectedAccountFrom,
+                        toID: user.lastSelectedCategoryTo,
                         transactionID: userModel.transactions.length,
                         timestamp: currentDate,
                         transactionType: transactionType,

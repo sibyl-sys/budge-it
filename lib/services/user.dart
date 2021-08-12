@@ -149,7 +149,7 @@ class User extends ChangeNotifier {
     double accountExpenses = 0;
     //TODO LIMIT TO CURRENT MONTH
     for(var transaction in transactions) {
-      if(transaction.accountID == accountID && transaction.timestamp.month == month && transaction.timestamp.year == year && !transaction.isArchived) {
+      if(transaction.fromID == accountID && transaction.timestamp.month == month && transaction.timestamp.year == year && !transaction.isArchived) {
         accountExpenses += transaction.value;
       }
     }
@@ -161,7 +161,7 @@ class User extends ChangeNotifier {
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.month == month &&
           transaction.timestamp.year == year &&
-          (accountID == -1 || transaction.accountID == accountID) &&
+          (accountID == -1 || transaction.fromID == accountID) &&
           !transaction.isArchived) {
         transactionCount++;
       }
@@ -175,9 +175,10 @@ class User extends ChangeNotifier {
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.month == month &&
           transaction.timestamp.year == year &&
-          transaction.categoryID == categoryID &&
-          !transaction.isArchived) {
-        Account transactionAccount = findAccountByID(transaction.accountID);
+          transaction.toID == categoryID &&
+          !transaction.isArchived &&
+          transaction.transactionType != TransactionType.transfer) {
+        Account transactionAccount = findAccountByID(transaction.fromID);
         if(transactionAccount.currency == primaryCurrency) {
           categoryNet+= transaction.value;
         } else {
@@ -208,7 +209,7 @@ class User extends ChangeNotifier {
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.month == month &&
           transaction.timestamp.year == year &&
-          (accountID == -1 || transaction.accountID == accountID)) {
+          (accountID == -1 || transaction.fromID == accountID)) {
         if (transaction.transactionType == TransactionType.expense && !transaction.isArchived) {
           monthlyNet -= transaction.value;
         } else if (transaction.transactionType == TransactionType.income && !transaction.isArchived) {
@@ -222,7 +223,7 @@ class User extends ChangeNotifier {
  List<Map> getTransactions({int month, int year, int accountID}) {
     List<Map> transactionsByDate = new List<Map>();
     for(Transaction transaction in transactions) {
-      if(transaction.timestamp.month == month && transaction.timestamp.year == year && (accountID == -1 || transaction.accountID == accountID) && !transaction.isArchived) {
+      if(transaction.timestamp.month == month && transaction.timestamp.year == year && (accountID == -1 || transaction.fromID == accountID) && !transaction.isArchived) {
         int objectIndex = transactionsByDate.indexWhere((element) => element["day"] == transaction.timestamp.day);
         if(objectIndex == -1) {
           Map transactionObject = {
@@ -258,7 +259,7 @@ class User extends ChangeNotifier {
     accounts[this.getAccountIndexByID(accountID)].isArchived = true;
 
     for(Transaction transaction in transactions) {
-      if (transaction.accountID == accountID) {
+      if (transaction.fromID == accountID) {
         transaction.isArchived = true;
       }
     }
@@ -271,7 +272,7 @@ class User extends ChangeNotifier {
 
   void deleteAccount(int accountID) async {
     accounts.removeWhere((account) => account.accountID == accountID);
-    transactions.removeWhere((transaction) => transaction.accountID == accountID);
+    transactions.removeWhere((transaction) => transaction.fromID == accountID);
 
 
     Hive.box('budgeItApp').put('accounts', accounts);
@@ -302,9 +303,12 @@ class User extends ChangeNotifier {
   void deleteTransaction(int transactionID) async {
     Transaction transaction = findTransactionByID(transactionID);
     if(transaction.transactionType == TransactionType.expense) {
-      findAccountByID(transaction.accountID).balance += transaction.value;
+      findAccountByID(transaction.fromID).balance += transaction.value;
     } else if(transaction.transactionType == TransactionType.income ) {
-      findAccountByID(transaction.accountID).balance -= transaction.value;
+      findAccountByID(transaction.fromID).balance -= transaction.value;
+    } else if(transaction.transactionType == TransactionType.transfer) {
+      findAccountByID(transaction.fromID).balance += transaction.value;
+      findAccountByID(transaction.toID).balance -= transaction.value;
     }
 
     transactions.removeWhere((transaction) => transaction.transactionID == transactionID);
@@ -329,9 +333,12 @@ class User extends ChangeNotifier {
     transactions = List.from(transactions)..add(transaction);
 
     if(transaction.transactionType == TransactionType.expense) {
-      findAccountByID(transaction.accountID).balance -= transaction.value;
+      findAccountByID(transaction.fromID).balance -= transaction.value;
     } else if(transaction.transactionType == TransactionType.income ) {
-      findAccountByID(transaction.accountID).balance += transaction.value;
+      findAccountByID(transaction.fromID).balance += transaction.value;
+    } else if(transaction.transactionType == TransactionType.transfer) {
+      findAccountByID(transaction.fromID).balance -= transaction.value;
+      findAccountByID(transaction.toID).balance += transaction.value;
     }
 
     Hive.box('budgeItApp').put('accounts', accounts);

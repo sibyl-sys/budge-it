@@ -30,9 +30,9 @@ class _AccountDetailsState extends State<AccountDetails> {
     return Column(
         children: transactions.map((transaction) =>
             TransactionCard(
-              color: Color(user.findCategoryByID(transaction.categoryID).color).withOpacity(1),
-              icon: IconData(user.findCategoryByID(transaction.categoryID).icon, fontFamily: "MaterialIcons"),
-              categoryName: user.findCategoryByID(transaction.categoryID).name,
+              color: Color(user.findCategoryByID(transaction.toID).color).withOpacity(1),
+              icon: IconData(user.findCategoryByID(transaction.toID).icon, fontFamily: "MaterialIcons"),
+              categoryName: user.findCategoryByID(transaction.toID).name,
               description: transaction.note,
               value: transaction.value,
               transactionID: transaction.transactionID,

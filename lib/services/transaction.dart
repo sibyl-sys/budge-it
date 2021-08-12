@@ -38,10 +38,10 @@ class Transaction {
   int transactionID;
 
   @HiveField(4)
-  int categoryID;
+  int toID;
 
   @HiveField(5)
-  int accountID;
+  int fromID;
 
   @HiveField(6)
   TransactionType transactionType;
@@ -52,5 +52,5 @@ class Transaction {
   @HiveField(8)
   TransactionImportance importance;
 
-  Transaction({this.value, this.note, this.transactionID, this.timestamp, this.categoryID, this.accountID, this.transactionType, this.isArchived, this.importance});
+  Transaction({this.value, this.note, this.transactionID, this.timestamp, this.toID, this.fromID, this.transactionType, this.isArchived, this.importance});
 }

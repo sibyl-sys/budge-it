@@ -109,8 +109,8 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       note: fields[1] as String,
       transactionID: fields[3] as int,
       timestamp: fields[2] as DateTime,
-      categoryID: fields[4] as int,
-      accountID: fields[5] as int,
+      toID: fields[4] as int,
+      fromID: fields[5] as int,
       transactionType: fields[6] as TransactionType,
       isArchived: fields[7] as bool,
       importance: fields[8] as TransactionImportance,
@@ -130,9 +130,9 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(3)
       ..write(obj.transactionID)
       ..writeByte(4)
-      ..write(obj.categoryID)
+      ..write(obj.toID)
       ..writeByte(5)
-      ..write(obj.accountID)
+      ..write(obj.fromID)
       ..writeByte(6)
       ..write(obj.transactionType)
       ..writeByte(7)

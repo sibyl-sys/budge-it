@@ -119,8 +119,8 @@ class _EditAccountState extends State<EditAccount> {
                     Transaction(
                         value: userModel.findAccountByID(widget.accountIndex).balance-balance,
                         note: "Account adjustment " + accountNameController.text,
-                        accountID: widget.accountIndex,
-                        categoryID: 9,
+                        fromID: widget.accountIndex,
+                        toID: 9,
                         transactionID: userModel.transactions.length,
                         timestamp: DateTime.now(),
                         transactionType: TransactionType.expense
