@@ -85,14 +85,14 @@ class _TransactionCardState extends State<TransactionCard> {
                   text: TextSpan(
                       text: "${widget.currencySymbol} ${moneyFormat.format(widget.value).split('.')[0]}",
                       style: TextStyle(
-                          color: widget.type == TransactionType.income ? Colors.teal[700] : Colors.red[700],
+                          color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
                           fontSize: 20
                       ),
                       children: [
                         TextSpan(
                             text: ".${moneyFormat.format(widget.value).split('.')[1]}",
                             style: TextStyle(
-                                color: widget.type == TransactionType.income ? Colors.teal[700] : Colors.red[700],
+                                color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
                                 fontSize: 18
                             )
                         )
