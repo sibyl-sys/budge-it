@@ -5,6 +5,7 @@ import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/creditLimitText.dart';
+import 'package:money_tracker/widgets/dateRangeBar.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -19,12 +20,14 @@ class AccountDetails extends StatefulWidget {
 class _AccountDetailsState extends State<AccountDetails> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
-
   List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
   List weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
   int month = 1;
   int year = 2021;
+
+  DateTime from;
+  DateTime to;
 
   renderTransactionListPerDay(User user, List<Transaction> transactions) {
     return Column(
@@ -71,13 +74,22 @@ class _AccountDetailsState extends State<AccountDetails> {
     }
   }
 
+  changeDate(Map dateMap) {
+    setState(() {
+      from = dateMap["from"];
+      to = dateMap["to"];
+    });
+  }
+
+
+
   @override
   void initState() {
     super.initState();
     var now = new DateTime.now();
     setState(() {
-      month = now.month;
-      year = now.year;
+      from = DateTime(now.year, now.month, 1);
+      to = DateTime(now.year, now.month + 1, 0);
     });
   }
 
@@ -91,6 +103,7 @@ class _AccountDetailsState extends State<AccountDetails> {
     Account currentAccount = user.findAccountByID(arguments["accountIndex"]);
 
     //TODO DATE PICKER
+    //TODO IMPLEMENT DATE RANGE
 
     return currentAccount == null ? SizedBox(height: 0) : Scaffold(
       appBar: AppBar(
@@ -196,28 +209,10 @@ class _AccountDetailsState extends State<AccountDetails> {
             ),
           ),
           SizedBox(height: 1.0),
-          Card(
-            child: Container(
-              height: 48,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor), onPressed: previousMonth),
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today),
-                      SizedBox(width: 8),
-                      Text("${months[month-1]} $year",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14
-                      )),
-                    ],
-                  ),
-                  IconButton(icon: Icon(Icons.chevron_right, color: Theme.of(context).primaryColor), onPressed: nextMonth)
-                ],
-              ),
-            )
+          DateRangeBar(
+            from: this.from,
+            to: this.to,
+            onChanged: changeDate,
           ),
           Expanded(
             child: ListView(
