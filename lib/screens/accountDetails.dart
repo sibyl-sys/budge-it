@@ -20,7 +20,7 @@ class AccountDetails extends StatefulWidget {
 class _AccountDetailsState extends State<AccountDetails> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
-  List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
   List weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
   DateTime from;
@@ -286,7 +286,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   height: 8
                               ),
                               Text(
-                                  "Widthdraw",
+                                  "Withdraw",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
@@ -368,7 +368,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   height: 8
                               ),
                               Text(
-                                  "Rebalance",
+                                  "Re-balance",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
