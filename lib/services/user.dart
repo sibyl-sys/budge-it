@@ -156,11 +156,11 @@ class User extends ChangeNotifier {
     return accountExpenses;
   }
 
-  int getTransactionCount({int month, int year, int accountID}) {
+  int getTransactionCount({DateTime from, DateTime to, int accountID}) {
     int transactionCount = 0;
     for(Transaction transaction in transactions) {
-      if (transaction.timestamp.month == month &&
-          transaction.timestamp.year == year &&
+      if (transaction.timestamp.compareTo(from) >= 0 &&
+          transaction.timestamp.compareTo(to) <= 0 &&
           (accountID == -1 || transaction.fromID == accountID) &&
           !transaction.isArchived) {
         transactionCount++;
@@ -204,11 +204,11 @@ class User extends ChangeNotifier {
     return categoryNet;
   }
 
-  double getMonthlyNet({int month, int year, int accountID}) {
+  double getMonthlyNet({DateTime from, DateTime to, int accountID}) {
     double monthlyNet = 0;
     for(Transaction transaction in transactions) {
-      if (transaction.timestamp.month == month &&
-          transaction.timestamp.year == year &&
+      if (transaction.timestamp.compareTo(from) >= 0 &&
+          transaction.timestamp.compareTo(to) <= 0 &&
           (accountID == -1 || transaction.fromID == accountID)) {
         if (transaction.transactionType == TransactionType.expense && !transaction.isArchived) {
           monthlyNet -= transaction.value;
@@ -220,10 +220,10 @@ class User extends ChangeNotifier {
     return monthlyNet;
   }
 
- List<Map> getTransactions({int month, int year, int accountID}) {
+ List<Map> getTransactions({DateTime from, DateTime to, int accountID}) {
     List<Map> transactionsByDate = new List<Map>();
     for(Transaction transaction in transactions) {
-      if(transaction.timestamp.month == month && transaction.timestamp.year == year && (accountID == -1 || transaction.fromID == accountID) && !transaction.isArchived) {
+      if(transaction.timestamp.compareTo(from) >= 0 && transaction.timestamp.compareTo(to) <= 0 && (accountID == -1 || transaction.fromID == accountID) && !transaction.isArchived) {
         int objectIndex = transactionsByDate.indexWhere((element) => element["day"] == transaction.timestamp.day);
         if(objectIndex == -1) {
           Map transactionObject = {

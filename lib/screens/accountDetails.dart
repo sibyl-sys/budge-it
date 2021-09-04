@@ -23,9 +23,6 @@ class _AccountDetailsState extends State<AccountDetails> {
   List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
   List weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
-  int month = 1;
-  int year = 2021;
-
   DateTime from;
   DateTime to;
 
@@ -44,34 +41,6 @@ class _AccountDetailsState extends State<AccountDetails> {
         ).toList()
     );
 
-  }
-
-  nextMonth() {
-    int nextMonth = month + 1;
-    if(nextMonth > 12) {
-      setState(() {
-        month = 1;
-        year += 1;
-      });
-    } else {
-      setState(() {
-        month = nextMonth;
-      });
-    }
-  }
-
-  previousMonth() {
-    int nextMonth = month - 1;
-    if(nextMonth == 0) {
-      setState(() {
-        month = 12;
-        year -= 1;
-      });
-    } else {
-      setState(() {
-        month = nextMonth;
-      });
-    }
   }
 
   changeDate(Map dateMap) {
@@ -97,9 +66,9 @@ class _AccountDetailsState extends State<AccountDetails> {
   Widget build(BuildContext context) {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
     final User user = context.watch<User>();
-    double monthlyNet = user.getMonthlyNet(month: month, year: year, accountID: -1);
+    double monthlyNet = user.getMonthlyNet(from: from, to: to, accountID: arguments["accountIndex"]);
 
-    final List<Map> transactionListPerDay = user.getTransactions(month: month, year: year, accountID: -1);
+    final List<Map> transactionListPerDay = user.getTransactions(from: from, to: to, accountID: arguments["accountIndex"]);
     Account currentAccount = user.findAccountByID(arguments["accountIndex"]);
 
     //TODO DATE PICKER
@@ -442,7 +411,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                         ],
                       ),
                       SizedBox(height: 8.0),
-                      Text(user.getTransactionCount(month: month, year: year, accountID: -1).toString() + " Transactions",
+                      Text(user.getTransactionCount(from: from, to: to, accountID: currentAccount.accountID).toString() + " Transactions",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,

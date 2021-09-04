@@ -90,11 +90,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
-    user.getTransactions(
-      month: DateTime.now().month,
-      year: DateTime.now().year,
-      accountID: 0
-    );
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 75,

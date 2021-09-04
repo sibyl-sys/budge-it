@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
+import 'package:money_tracker/widgets/dateRangeBar.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,9 @@ class Transactions extends StatefulWidget {
 }
 
 class _TransactionsState extends State<Transactions> {
+
+  DateTime from;
+  DateTime to;
 
   int month = DateTime.now().month;
   int year = DateTime.now().year;
@@ -34,34 +38,21 @@ class _TransactionsState extends State<Transactions> {
     );
   }
 
-  nextMonth() {
-    int nextMonth = month + 1;
-    if(nextMonth > 12) {
-      setState(() {
-        month = 1;
-        year += 1;
-      });
-    } else {
-      print(nextMonth);
-      setState(() {
-        month = nextMonth;
-      });
-    }
+  changeDate(Map dateMap) {
+    setState(() {
+      from = dateMap["from"];
+      to = dateMap["to"];
+    });
   }
 
-  previousMonth() {
-    int nextMonth = month - 1;
-    if(nextMonth == 0) {
-      setState(() {
-        month = 12;
-        year -= 1;
-      });
-    } else {
-      print(nextMonth);
-      setState(() {
-        month = nextMonth;
-      });
-    }
+  @override
+  void initState() {
+    super.initState();
+    var now = new DateTime.now();
+    setState(() {
+      from = DateTime(now.year, now.month, 1);
+      to = DateTime(now.year, now.month + 1, 0);
+    });
   }
 
   @override
@@ -73,37 +64,18 @@ class _TransactionsState extends State<Transactions> {
     //TODO CREATE MONTH WIDGET
     List months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     List weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
-    double monthlyNet = user.getMonthlyNet(month: month, year: year, accountID: -1);
+    double monthlyNet = user.getMonthlyNet(from: from, to: to, accountID: -1);
 
 
-    final List<Map> transactionListPerDay = user.getTransactions(month: month, year: year, accountID: -1);
+    final List<Map> transactionListPerDay = user.getTransactions(from: from, to: to, accountID: -1);
 
     return ListView(
       padding: EdgeInsets.zero,
       children: [
-        Card(
-            margin: EdgeInsets.zero,
-            child: Container(
-              height: 48,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor), onPressed: previousMonth),
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today),
-                      SizedBox(width: 8),
-                      Text("${months[month-1]} $year",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14
-                          )),
-                    ],
-                  ),
-                  IconButton(icon: Icon(Icons.chevron_right, color: Theme.of(context).primaryColor), onPressed: nextMonth)
-                ],
-              ),
-            )
+        DateRangeBar(
+          from: this.from,
+          to: this.to,
+          onChanged: changeDate,
         ),
         SizedBox(height: 4),
         Container(
@@ -135,7 +107,7 @@ class _TransactionsState extends State<Transactions> {
                 ],
               ),
               SizedBox(height: 8.0),
-              Text(user.getTransactionCount(month: month, year: year, accountID: -1).toString() + " Transactions",
+              Text(user.getTransactionCount(from: from, to: to, accountID: -1).toString() + " Transactions",
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
