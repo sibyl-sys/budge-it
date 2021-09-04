@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 
 class CategoryPercentBar extends StatefulWidget {
   final CategoryType categoryType;
+  final DateTime from;
+  final DateTime to;
 
-  const CategoryPercentBar({Key key, this.categoryType}) : super(key: key);
+  const CategoryPercentBar({Key key, this.categoryType, this.from, this.to}) : super(key: key);
 
   @override
   _CategoryPercentBarState createState() => _CategoryPercentBarState();
@@ -20,16 +22,15 @@ class _CategoryPercentBarState extends State<CategoryPercentBar> {
   @override
   Widget build(BuildContext context) {
     User user = context.watch<User>();
-
     List<Category> categories = widget.categoryType == CategoryType.expense ? user.expenseCategories : user.incomeCategories;
-    double limit = user.getCategoryTypeNet(month: now.month, year: now.year, categoryType: widget.categoryType);
+    double limit = user.getCategoryTypeNet(from: widget.from, to: widget.to, categoryType: widget.categoryType);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Container(
         height: 10,
         child: Row(
-          children: categories.map((e) => user.getCategoryNet(month: now.month, year: now.year, categoryID: e.categoryID) != 0 ? Expanded(
-            flex: (user.getCategoryNet(month: now.month, year: now.year, categoryID: e.categoryID).abs() / limit.abs() * 100).floor(),
+          children: categories.map((e) => user.getCategoryNet(from: widget.from, to: widget.to, categoryID: e.categoryID) != 0 ? Expanded(
+            flex: (user.getCategoryNet(from: widget.from, to: widget.to, categoryID: e.categoryID).abs() / limit.abs() * 100).floor(),
             child: Container(
                margin: EdgeInsets.symmetric(horizontal: 1.0),
                color: Color(e.color).withOpacity(1)

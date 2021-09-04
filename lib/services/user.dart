@@ -169,12 +169,12 @@ class User extends ChangeNotifier {
     return transactionCount;
   }
 
-  double getCategoryNet({int month, int year, int categoryID}) {
+  double getCategoryNet({DateTime from, DateTime to, int categoryID}) {
     //TODO IMPLEMENT CURRENCY CALCULATION
     double categoryNet = 0;
     for(Transaction transaction in transactions) {
-      if (transaction.timestamp.month == month &&
-          transaction.timestamp.year == year &&
+      if (transaction.timestamp.compareTo(from) >= 0 &&
+          transaction.timestamp.compareTo(to) <= 0 &&
           transaction.toID == categoryID &&
           !transaction.isArchived &&
           transaction.transactionType != TransactionType.transfer) {
@@ -189,11 +189,11 @@ class User extends ChangeNotifier {
     return categoryNet;
   }
 
-  double getCategoryTypeNet({int month, int year, CategoryType categoryType}) {
+  double getCategoryTypeNet({DateTime from , DateTime to, CategoryType categoryType}) {
     double categoryNet = 0;
     for(Transaction transaction in transactions) {
-      if (transaction.timestamp.month == month &&
-          transaction.timestamp.year == year) {
+      if (transaction.timestamp.compareTo(from) >= 0  &&
+          transaction.timestamp.compareTo(to) <= 0) {
         if (transaction.transactionType == TransactionType.expense && categoryType == CategoryType.expense && !transaction.isArchived) {
           categoryNet -= transaction.value;
         } else if (transaction.transactionType == TransactionType.income && categoryType == CategoryType.income && !transaction.isArchived) {

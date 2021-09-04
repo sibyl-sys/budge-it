@@ -7,6 +7,7 @@ import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
+import 'package:money_tracker/widgets/dateRangeBar.dart';
 import 'package:provider/provider.dart';
 
 class Categories extends StatefulWidget {
@@ -21,36 +22,11 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
   //TODO CREATE MONTH WIDGET
   List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
+  DateTime from;
+  DateTime to;
+
   int month = DateTime.now().month;
   int year = DateTime.now().year;
-
-  nextMonth() {
-    int nextMonth = month + 1;
-    if(nextMonth > 12) {
-      setState(() {
-        month = 1;
-        year += 1;
-      });
-    } else {
-      setState(() {
-        month = nextMonth;
-      });
-    }
-  }
-
-  previousMonth() {
-    int nextMonth = month - 1;
-    if(nextMonth == 0) {
-      setState(() {
-        month = 12;
-        year -= 1;
-      });
-    } else {
-      setState(() {
-        month = nextMonth;
-      });
-    }
-  }
 
   TabController _tabController;
 
@@ -86,6 +62,12 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
     super.initState();
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
+
+    var now = new DateTime.now();
+    setState(() {
+      from = DateTime(now.year, now.month, 1);
+      to = DateTime(now.year, now.month + 1, 0);
+    });
   }
 
   void _handleTabChange() {
@@ -109,6 +91,14 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
     }
   }
 
+  changeDate(Map dateMap) {
+    setState(() {
+      from = dateMap["from"];
+      to = dateMap["to"];
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -116,29 +106,10 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
       child: Container(
           child: Column(
             children: [
-              Card(
-                  margin: EdgeInsets.zero,
-                  child: Container(
-                    height: 48,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor), onPressed: previousMonth),
-                        Row(
-                          children: [
-                            Icon(Icons.calendar_today),
-                            SizedBox(width: 8),
-                            Text("${months[month-1]} $year",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14
-                                )),
-                          ],
-                        ),
-                        IconButton(icon: Icon(Icons.chevron_right, color: Theme.of(context).primaryColor), onPressed: nextMonth)
-                      ],
-                    ),
-                  )
+              DateRangeBar(
+                from: this.from,
+                to: this.to,
+                onChanged: changeDate,
               ),
               ColoredBox(
                   color: Colors.white,
@@ -150,8 +121,8 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                     children: [
                       CategoriesTab(
                         categoryType: CategoryType.expense,
-                        month: month,
-                        year: year,
+                        from: from,
+                        to: to,
                         onCategoryClick: (int categoryID) {
                           final user = context.read<User>();
                           user.selectRecipient(categoryID, TransactionType.expense);
@@ -168,10 +139,10 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                       ),
                       CategoriesTab(
                         categoryType: CategoryType.income,
-                        month: month,
-                        year: year,
+                        from: from,
+                        to: to,
                         onCategoryClick: (int categoryID) {
-                          final user = context.read<User>();                          user.selectRecipient(categoryID, TransactionType.expense);
+                          final user = context.read<User>();
                           user.selectRecipient(categoryID, TransactionType.income);
                           Navigator.of(context).push(
                               PageRouteBuilder(

@@ -12,12 +12,12 @@ import 'package:drag_and_drop_gridview/drag.dart';
 
 class CategoriesTab extends StatefulWidget {
   final CategoryType categoryType;
-  final int month;
-  final int year;
+  final DateTime from;
+  final DateTime to;
   final Function onCategoryClick;
   final bool isRearrange;
 
-  const CategoriesTab({Key key, this.categoryType, this.month, this.year, this.onCategoryClick, this.isRearrange}) : super(key: key);
+  const CategoriesTab({Key key, this.categoryType, this.from, this.to, this.onCategoryClick, this.isRearrange}) : super(key: key);
 
   @override
   _CategoriesTabState createState() => _CategoriesTabState();
@@ -35,7 +35,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
               name: e.name,
               categoryID: e.categoryID,
               currencySymbol: e.categoryCurrency == null ? user.primaryCurrency.symbol : e.categoryCurrency,
-              value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
+              value : user.getCategoryNet(from: widget.from, to: widget.to, categoryID: e.categoryID),
               onCategoryClick: widget.onCategoryClick
           )
       ));
@@ -47,7 +47,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
               name: e.name,
               categoryID: e.categoryID,
               currencySymbol: e.categoryCurrency == null ? user.primaryCurrency.symbol : e.categoryCurrency,
-              value : user.getCategoryNet(month: widget.month, year: widget.year, categoryID: e.categoryID),
+              value : user.getCategoryNet(from: widget.from, to: widget.to, categoryID: e.categoryID),
               onCategoryClick: widget.onCategoryClick
           )
       ));
@@ -136,7 +136,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
                   height: 65,
                   child: Center(
                       child: Text(
-                        user.getCategoryTypeNet(month: widget.month, year: widget.year, categoryType: widget.categoryType).toString(),
+                        user.getCategoryTypeNet(from: widget.from, to: widget.to, categoryType: widget.categoryType).toString(),
                       style: TextStyle(
                         color: widget.categoryType == CategoryType.expense ? Colors.red[600]: Colors.teal[600],
                         fontWeight: FontWeight.w400,

@@ -20,36 +20,9 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
   //TODO CREATE MONTH WIDGET
   List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
-  int month = DateTime.now().month;
-  int year = DateTime.now().year;
+  DateTime from;
+  DateTime to;
 
-  nextMonth() {
-    int nextMonth = month + 1;
-    if(nextMonth > 12) {
-      setState(() {
-        month = 1;
-        year += 1;
-      });
-    } else {
-      setState(() {
-        month = nextMonth;
-      });
-    }
-  }
-
-  previousMonth() {
-    int nextMonth = month - 1;
-    if(nextMonth == 0) {
-      setState(() {
-        month = 12;
-        year -= 1;
-      });
-    } else {
-      setState(() {
-        month = nextMonth;
-      });
-    }
-  }
 
   TabController _tabController;
 
@@ -85,6 +58,12 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
     super.initState();
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
+
+    var now = new DateTime.now();
+    setState(() {
+      from = DateTime(now.year, now.month, 1);
+      to = DateTime(now.year, now.month + 1, 0);
+    });
   }
 
   void _handleTabChange() {
@@ -160,8 +139,8 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
                     children: [
                       CategoriesTab(
                         categoryType: CategoryType.expense,
-                        month: month,
-                        year: year,
+                        from: from,
+                        to: to,
                         onCategoryClick: (int categoryID) {
                           Navigator.of(context).push(
                               PageRouteBuilder(
@@ -176,8 +155,8 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
                       ),
                       CategoriesTab(
                         categoryType: CategoryType.income,
-                        month: month,
-                        year: year,
+                        from: from,
+                        to: to,
                         isRearrange: true,
                         onCategoryClick: (int categoryID) {
                           Navigator.of(context).push(
