@@ -120,7 +120,8 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
                                 );
                                 if(results != null) {
                                   Navigator.of(context).pop(
-                                      {"currentDate": results});
+                                      {"from": results.start,
+                                      "to": results.end});
                                 }
                               },
                               splashColor: Theme.of(context).primaryColor.withOpacity(0.5),
