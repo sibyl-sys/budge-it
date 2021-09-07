@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_tracker/screens/dateRangeSelection.dart';
 
 
 enum DateRangeType {
@@ -92,27 +93,40 @@ class _DateRangeBarState extends State<DateRangeBar> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO IMPLEMENT DATERANGEPICKER ON CARD TAP
     return Card(
-        child: Container(
-          height: 48,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor), onPressed: previous),
-              Row(
-                children: [
-                  Icon(Icons.calendar_today),
-                  SizedBox(width: 8),
-                  Text(getDateRangeText(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14
-                      )),
-                ],
-              ),
-              IconButton(icon: Icon(Icons.chevron_right, color: Theme.of(context).primaryColor), onPressed: next)
-            ],
+        child: InkWell(
+          splashColor:  Colors.teal[700].withAlpha(50),
+          onTap: () async {
+            var results = await Navigator.of(context).push(
+                PageRouteBuilder(
+                  barrierColor: Colors.black.withOpacity(0.25),
+                  barrierDismissible: true,
+                  opaque: false,
+                  pageBuilder: (_, __, ___) => DateRangeSelection(toDate:  widget.to, fromDate: widget.from),
+                )
+            );
+            widget.onChanged(results);
+          },
+          child: Container(
+            height: 48,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor), onPressed: previous),
+                Row(
+                  children: [
+                    Icon(Icons.calendar_today),
+                    SizedBox(width: 8),
+                    Text(getDateRangeText(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14
+                        )),
+                  ],
+                ),
+                IconButton(icon: Icon(Icons.chevron_right, color: Theme.of(context).primaryColor), onPressed: next)
+              ],
+            ),
           ),
         )
     );

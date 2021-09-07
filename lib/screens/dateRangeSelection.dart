@@ -66,8 +66,8 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
                           onTap: () {
                             Navigator.of(context).pop(
                                 {
-                                  "fromDate" : DateTime(now.year, 1, 1),
-                                  "toDate" : DateTime(now.year + 1, 1, 0)
+                                  "from" : DateTime(now.year, 1, 1),
+                                  "to" : DateTime(now.year + 1, 1, 0)
                                 }
                             );
                           },
@@ -82,8 +82,8 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
                           onTap: () {
                             Navigator.of(context).pop(
                                 {
-                                  "fromDate" : DateTime(now.year, now.month, 1),
-                                  "toDate" : DateTime(now.year, now.month + 1, 0)
+                                  "from" : DateTime(now.year, now.month, 1),
+                                  "to" : DateTime(now.year, now.month + 1, 0)
                                 }
                             );
                           },
@@ -106,10 +106,9 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
                             ),
                             child: InkWell(
                               onTap: () async {
-                                //TDO CHANGE TO DATE RANGE PICKER
-                                var results = await showDatePicker(
+                                //TODO CHANGE TO DATE RANGE PICKER
+                                var results = await showDateRangePicker(
                                     context: context,
-                                    initialDate: DateTime.now(),
                                     firstDate: DateTime(1990),
                                     lastDate: DateTime(2050),
                                     builder: (BuildContext context, Widget child) {
@@ -168,8 +167,8 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
                         isActive: !(compareDates(widget.fromDate, yesterday) && compareDates(widget.toDate, yesterday)),
                         onTap: () {
                           Navigator.of(context).pop({
-                            "fromDate" : yesterday,
-                            "toDate" : yesterday
+                            "from" : yesterday,
+                            "to" : yesterday
                           });
                         },
                       ),
@@ -182,8 +181,8 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
                         onTap: () {
                           Navigator.of(context).pop(
                               {
-                                "fromDate" : now,
-                                "toDate" : now
+                                "from" : now,
+                                "to" : now
                               }
                             );
                         },
