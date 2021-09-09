@@ -4,15 +4,15 @@ import 'package:money_tracker/services/currency.dart';
 
 final Map<String, List<IconData>> accountIconList = {
   "Accounts" : [
-    Icons.account_balance_wallet,
-    Icons.credit_card,
-    Icons.account_balance,
-    Icons.attach_money,
+    Icons.account_balance_wallet_outlined,
+    Icons.credit_card_outlined,
+    Icons.account_balance_outlined,
+    Icons.attach_money_outlined,
   ],
   "Categories" : [
-    Icons.whatshot,
+    Icons.whatshot_outlined,
     Icons.shopping_cart_outlined,
-    Icons.house
+    Icons.house_outlined
   ]
 };
 

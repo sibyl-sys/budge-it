@@ -65,8 +65,8 @@ class _AccountsTabState extends State<AccountsTab> {
             Text(
                 "Stashes",
                 style: TextStyle(
-                  color: Colors.grey[800],
-                  fontSize: 14,
+                  color: Colors.grey[400],
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 )
             ),
@@ -118,8 +118,8 @@ class _AccountsTabState extends State<AccountsTab> {
             Text(
                 "SAVINGS",
                 style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: 14,
+                    color: Colors.grey[400],
+                    fontSize: 12,
                     fontWeight: FontWeight.w500
                 )
             ),
