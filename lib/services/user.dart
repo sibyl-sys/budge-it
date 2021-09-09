@@ -385,7 +385,7 @@ class User extends ChangeNotifier {
     this.lastSelectedAccountFrom = lastSelectedAccount;
     this.lastSelectedCategoryTo = lastSelectedCategory;
     this.lastSelectedAccountTo = lastSelectedAccountTo;
-    this.lastTransactionType = lastTransactionType;
+    this.lastTransactionType = transactionType;
     this.primaryCurrency = primaryCurrency;
   }
 }

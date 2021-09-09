@@ -243,6 +243,8 @@ class _AddTransactionState extends State<AddTransaction> {
   Widget build(BuildContext context) {
     final user = context.watch<User>();
     TransactionType transactionType = user.lastTransactionType;
+
+    print(transactionType);
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
     
     //TODO HIDE FROM ON TRANSFER SELECTION
