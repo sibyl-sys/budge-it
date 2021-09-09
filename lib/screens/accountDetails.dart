@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/editAccount.dart';
@@ -108,7 +110,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                             CircularPercentIndicator(
                               radius: 48,
                               lineWidth: 4.0,
-                              percent: currentAccount.creditLimit > 0 ? currentAccount.balance / currentAccount.creditLimit / 100 : 0,
+                              percent: currentAccount.creditLimit > 0 ? min(currentAccount.balance / currentAccount.creditLimit, 1) : 0,
                               progressColor: Colors.lightGreen,
                               backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
                               center: CircleAvatar(

@@ -148,7 +148,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
             ),
           ],
         ),
-        CategoryPercentBar(categoryType: widget.categoryType),
+        CategoryPercentBar(from: widget.from, to: widget.to, categoryType: widget.categoryType),
         SizedBox(height: 8.0),
         Expanded(
           child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)

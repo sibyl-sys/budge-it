@@ -28,6 +28,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Hive.registerAdapter(AccountTypeAdapter());
     Hive.registerAdapter(TransactionTypeAdapter());
     Hive.registerAdapter(SubcategoryAdapter());
+    Hive.registerAdapter(TransactionImportanceAdapter());
 
     var box = await Hive.openBox('budgeItApp');
     List<Account> accounts = List<Account>.from(box.get('accounts', defaultValue:  new List<Account>()));

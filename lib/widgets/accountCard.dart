@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/widgets/creditLimitText.dart';
@@ -47,7 +49,7 @@ class _AccountCardState extends State<AccountCard> {
                     CircularPercentIndicator(
                         radius: 48,
                         lineWidth: 4.0,
-                        percent: widget.creditLimit == 0 ? 0 : widget.progress / 100,
+                        percent: widget.creditLimit == 0 ? 0 : min(widget.progress / 100, 1),
                         progressColor: Colors.lightGreen,
                         backgroundColor: widget.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
                         center: CircleAvatar(
