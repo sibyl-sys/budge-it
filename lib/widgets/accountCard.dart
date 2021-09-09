@@ -57,7 +57,7 @@ class _AccountCardState extends State<AccountCard> {
                           child: Icon(
                             widget.icon,
                             color: Colors.white,
-                            size: 30
+                            size: 24
                           ),
                         ),
                     ),
