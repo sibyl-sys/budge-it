@@ -25,7 +25,8 @@ void main() {
         },
         theme: ThemeData(
           primaryColor: Color(0x3C3A5F).withOpacity(1.0),
-          accentColor: Colors.red[500]
+          accentColor: Colors.red[500],
+          fontFamily: 'Poppins'
         )
       )
   ));

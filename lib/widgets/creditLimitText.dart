@@ -6,8 +6,9 @@ class CreditLimitText extends StatefulWidget {
 
   final double creditLimit;
   final double progress;
+  final String currencySymbol;
 
-  CreditLimitText({Key key, this.creditLimit, this.progress});
+  CreditLimitText({Key key, this.creditLimit, this.progress, this.currencySymbol});
 
   @override
   _CreditLimitTextState createState() => _CreditLimitTextState();
@@ -22,17 +23,26 @@ class _CreditLimitTextState extends State<CreditLimitText> {
     if(widget.creditLimit > 0) {
       return RichText(
         text: TextSpan(
-            text: "₱ ${moneyFormat.format(widget.creditLimit)} (",
+            text: "${widget.currencySymbol} ",
             style: TextStyle(
                 color: Colors.grey[600],
-                fontSize: 14
+                fontSize: 14,
             ),
             children: [
+            TextSpan(
+                text: "${moneyFormat.format(widget.creditLimit)} (",
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 14,
+                    fontFamily: "Poppins"
+                )
+              ),
               TextSpan(
                 text: "${widget.progress.toStringAsFixed(2)}%",
                 style: TextStyle(
                     color: Colors.lightGreen[600],
-                    fontSize: 14
+                    fontSize: 14,
+                    fontFamily: "Poppins"
                 ),
               ),
               TextSpan(

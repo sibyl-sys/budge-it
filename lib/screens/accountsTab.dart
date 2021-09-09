@@ -69,14 +69,33 @@ class _AccountsTabState extends State<AccountsTab> {
                   fontWeight: FontWeight.w500,
                 )
             ),
-            Text(
-                "₱ ${moneyFormat.format(user.totalRegular)}",
-                style: TextStyle(
+            RichText(
+              text: TextSpan(
+                  text: "${user.primaryCurrency.symbol} ",
+                  style: TextStyle(
                     color: Colors.green[700],
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16
-                )
-            )
+                    fontSize: 14,
+                  ),
+                  children: [
+                    TextSpan(
+                        text: "${moneyFormat.format(user.totalRegular).split('.')[0]}",
+                        style: TextStyle(
+                            color: Colors.green[700],
+                            fontSize: 14,
+                            fontFamily: "Poppins"
+                        )
+                    ),
+                    TextSpan(
+                        text: ".${moneyFormat.format(user.totalRegular).split('.')[1]}",
+                        style: TextStyle(
+                            color: Colors.green[700],
+                            fontSize: 12,
+                            fontFamily: "Poppins"
+                        )
+                    )
+                  ]
+              ),
+            ),
           ],
         ),
         SizedBox(height: 8.0),

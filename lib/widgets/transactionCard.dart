@@ -83,17 +83,27 @@ class _TransactionCardState extends State<TransactionCard> {
                 ),
                 RichText(
                   text: TextSpan(
-                      text: "${widget.currencySymbol} ${moneyFormat.format(widget.value).split('.')[0]}",
+                      text: "${widget.currencySymbol} ",
                       style: TextStyle(
                           color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
-                          fontSize: 20
+                          fontSize: 20,
                       ),
                       children: [
+                        TextSpan(
+                            text: "${moneyFormat.format(widget.value).split('.')[0]}",
+                            style: TextStyle(
+                                color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
+                                fontSize: 20,
+                                fontFamily: "Poppins",
+
+                            )
+                        ),
                         TextSpan(
                             text: ".${moneyFormat.format(widget.value).split('.')[1]}",
                             style: TextStyle(
                                 color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
-                                fontSize: 18
+                                fontSize: 18,
+                                fontFamily: "Poppins",
                             )
                         )
                       ]

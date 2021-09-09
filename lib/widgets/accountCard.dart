@@ -76,17 +76,26 @@ class _AccountCardState extends State<AccountCard> {
                         SizedBox(height: 4),
                         RichText(
                             text: TextSpan(
-                                text: "${widget.currencySymbol} ${moneyFormat.format(widget.balance).split('.')[0]}",
+                                text: "${widget.currencySymbol} ",
                                 style: TextStyle(
                                     color: Colors.green[700],
-                                    fontSize: 16
+                                    fontSize: 16,
                                 ),
                                 children: [
+                                  TextSpan(
+                                    text: "${moneyFormat.format(widget.balance).split('.')[0]}",
+                                    style: TextStyle(
+                                        color: Colors.green[700],
+                                        fontSize: 16,
+                                        fontFamily: "Poppins"
+                                    )
+                                  ),
                                   TextSpan(
                                       text: ".${moneyFormat.format(widget.balance).split('.')[1]}",
                                       style: TextStyle(
                                           color: Colors.green[700],
-                                          fontSize: 14
+                                          fontSize: 14,
+                                          fontFamily: "Poppins"
                                       )
                                   )
                                 ]
@@ -110,7 +119,7 @@ class _AccountCardState extends State<AccountCard> {
                         )
                     ),
                     SizedBox(height: 4),
-                    CreditLimitText(creditLimit: widget.creditLimit, progress: widget.progress,)
+                    CreditLimitText(currencySymbol: widget.currencySymbol, creditLimit: widget.creditLimit, progress: widget.progress,)
                   ],
                 ),
               ],

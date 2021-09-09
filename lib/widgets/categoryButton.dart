@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 
 class CategoryButton extends StatefulWidget {
@@ -17,6 +18,7 @@ class CategoryButton extends StatefulWidget {
 }
 
 class _CategoryButtonState extends State<CategoryButton> {
+  final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   @override
   Widget build(BuildContext context) {
     return FlatButton(
@@ -43,12 +45,36 @@ class _CategoryButtonState extends State<CategoryButton> {
               ),
           ),
           SizedBox(height: 8.0),
-          Text(
-              "${widget.currencySymbol} ${widget.value.toString()}",
-              style: TextStyle(
-                  fontSize: 14,
+          RichText(
+            text: TextSpan(
+                text: "${widget.currencySymbol} ",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 12,
                   fontWeight: FontWeight.w500
-              )
+                ),
+                children: [
+                  TextSpan(
+                      text: "${moneyFormat.format(widget.value).split('.')[0]}",
+                      style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 12,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500
+
+                      )
+                  ),
+                  TextSpan(
+                      text: ".${moneyFormat.format(widget.value).split('.')[1]}",
+                      style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 12,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500
+                      )
+                  )
+                ]
+            ),
           )
         ],
       ),
