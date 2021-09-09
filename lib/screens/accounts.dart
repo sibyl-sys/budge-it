@@ -14,7 +14,7 @@ class _AccountsState extends State<Accounts> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   String _value = 'all';
   TabBar get _tabBar => TabBar(
-    indicatorColor: Colors.teal[500],
+    indicatorColor: Color(0x55C9C6).withOpacity(1),
     labelColor: Theme.of(context).primaryColor,
     unselectedLabelColor: Colors.grey,
     tabs: [
@@ -24,9 +24,6 @@ class _AccountsState extends State<Accounts> {
       Tab(
           text: 'Debts'
       ),
-      Tab(
-        icon: Icon(Icons.analytics),
-      )
     ],
   );
 
@@ -41,7 +38,7 @@ class _AccountsState extends State<Accounts> {
     return Material(
       child: Container(
         child: DefaultTabController(
-            length: 3,
+            length: 2,
             child: Column(
               children: [
                 ColoredBox(
@@ -56,7 +53,6 @@ class _AccountsState extends State<Accounts> {
                             Navigator.pushNamed(context, "/accountDetails", arguments : {'accountIndex': accountIndex});
                           },
                         ),
-                        AccountsTab(),
                         AccountsTab(),
                       ]
                   ),

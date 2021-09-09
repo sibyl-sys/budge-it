@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/accountCard.dart';
+import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -142,15 +143,22 @@ class _AccountsTabState extends State<AccountsTab> {
     final stash = user.stashAccounts;
     final savings = user.savingsAccounts;
     print(savings);
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          stash.length > 0 ? renderStashAccounts(user) : SizedBox(height: 0),
-          savings.length > 0 ? renderSavingsAccounts(user) : SizedBox(height: 0)
-        ],
-      ),
+    return Column(
+      children: [
+        TotalHeader(header: "Total Balance", currencySymbol: user.primaryCurrency.symbol, value: user.totalRegular + user.totalSavings, percentage: 10),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                stash.length > 0 ? renderStashAccounts(user) : SizedBox(height: 0),
+                savings.length > 0 ? renderSavingsAccounts(user) : SizedBox(height: 0)
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 

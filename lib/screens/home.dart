@@ -49,6 +49,13 @@ class _HomeState extends State<Home> {
     ),
   ];
 
+  List<String> _headerOptions = [
+    "Accounts",
+    "Categories",
+    "Transactions",
+    "Overview"
+  ];
+
   Widget generateAppbarAction(int index) {
     if(index == 1) {
       return TextButton(
@@ -92,67 +99,15 @@ class _HomeState extends State<Home> {
     final user = context.watch<User>();
     return Scaffold(
       appBar: AppBar(
-          toolbarHeight: 75,
-          centerTitle: true,
           actions: [
             generateAppbarAction(_selectedIndex)
           ],
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'TOTAL NET:',
-                      style: TextStyle(
-                          fontSize: 12.0
-                      ),
-                    ),
-                    SizedBox(height: 8.0),
-                    Text(
-                      '${user.primaryCurrency.symbol} ${moneyFormat.format(user.totalNet)}',
-                      style: TextStyle(
-                          fontSize: 24.0
-                      ),
-                    )
-                  ]
-              )
-
-              // DropdownButton(
-              //     value: _value,
-              //     items: [
-              //       DropdownMenuItem(
-              //           child: new Text(
-              //             'All Accounts',
-              //             style: TextStyle(
-              //               color: Colors.white,
-              //             )
-              //           ),
-              //           value: 'all'
-              //       ),
-              //       DropdownMenuItem(
-              //           child: new Text('Others',
-              //               style: TextStyle(
-              //                 color: Colors.white,
-              //               )
-              //           ),
-              //           value: 'others',
-              //
-              //       )
-              //     ],
-              //     underline: SizedBox(height: 0),
-              //     onChanged: (String value) {
-              //       setState(() => _value = value);
-              //     },
-              //     icon: Icon(
-              //       Icons.arrow_drop_down,
-              //       color: Colors.white
-              //     ),
-              //     dropdownColor: Colors.blue,
-              //   ),
-            ],
+          title: Text(
+            _headerOptions[_selectedIndex],
+            style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500
+            ),
           ),
           //TODO CHANGE ACTION DEPENDING ON TAB
           leading: FlatButton(
