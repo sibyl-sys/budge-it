@@ -115,12 +115,15 @@ class _DateRangeBarState extends State<DateRangeBar> {
                 IconButton(icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor), onPressed: previous),
                 Row(
                   children: [
-                    Icon(Icons.calendar_today),
+                    Icon(
+                        Icons.calendar_today,
+                        size: 14
+                    ),
                     SizedBox(width: 8),
                     Text(getDateRangeText(),
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 14
+                            fontSize: 13.2
                         )),
                   ],
                 ),

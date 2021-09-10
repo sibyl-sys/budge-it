@@ -98,6 +98,8 @@ class _AccountDetailsState extends State<AccountDetails> {
       body: Column(
         children: [
           Card(
+            margin: EdgeInsets.zero,
+            color: Color(currentAccount.color).withOpacity(1),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
               child: Container(
@@ -114,11 +116,11 @@ class _AccountDetailsState extends State<AccountDetails> {
                               progressColor: Colors.lightGreen,
                               backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
                               center: CircleAvatar(
-                                backgroundColor: Color(currentAccount.color).withOpacity(1),
+                                backgroundColor: Colors.white,
                                 child: Icon(
                                     IconData(currentAccount.icon, fontFamily: 'MaterialIcons'),
-                                    color: Colors.white,
-                                    size: 30
+                                    color: Color(currentAccount.color).withOpacity(1),
+                                    size: 25
                                 ),
                               ),
                             ),
@@ -130,49 +132,24 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   Text(
                                       currentAccount.name,
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
                                         fontSize: 14.0,
                                       )
                                   ),
                                   SizedBox(height: 4),
-                                  RichText(
-                                    text: TextSpan(
-                                        text: "${currentAccount.currency.symbol} ${moneyFormat.format(currentAccount.balance).split('.')[0]}",
-                                        style: TextStyle(
-                                            color: Colors.green[700],
-                                            fontSize: 16
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                              text: ".${moneyFormat.format(currentAccount.balance).split('.')[1]}",
-                                              style: TextStyle(
-                                                  color: Colors.green[700],
-                                                  fontSize: 14
-                                              )
-                                          )
-                                        ]
-                                    ),
+                                  Text(
+                                      currentAccount.description,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 12.0,
+                                      )
                                   ),
                                 ]
                             ),
                           ]
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                              "${currentAccount.description}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 12.0,
-                                  color: Colors.grey[600]
-                              )
-                          ),
-                          SizedBox(height: 4),
-                          CreditLimitText(creditLimit: currentAccount.creditLimit, progress: currentAccount.balance / currentAccount.creditLimit)
-                        ],
                       ),
                     ],
                   ),
@@ -195,7 +172,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                     children: [
                       Container(
                         width: 85,
-                        height: 85,
+                        height: 65,
                         child: OutlinedButton(
                           onPressed: () {
                             final user = context.read<User>();
@@ -217,10 +194,10 @@ class _AccountDetailsState extends State<AccountDetails> {
                               )
                             ),
                             side: MaterialStateProperty.all(
-                              BorderSide(
-                                color: Colors.teal[400],
-                                width: 2.0,
-                              )
+                              BorderSide.none
+                            ),
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.white
                             )
                           ),
                           child: Column(
@@ -228,8 +205,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                             children: [
                               Icon(
                                 Icons.arrow_downward,
-                                size: 32,
-                                color: Colors.teal[400],
+                                size: 25,
+                                color: Color(0x55C9C6).withOpacity(1),
                               ),
                               SizedBox(
                                 height: 8
@@ -238,8 +215,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   "Deposit",
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 11
                                   )
                               )
                             ],
@@ -248,7 +225,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                       ),
                       Container(
                         width: 85,
-                        height: 85,
+                        height: 65,
                         child: OutlinedButton(
                           onPressed: () {
                             final user = context.read<User>();
@@ -270,10 +247,10 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   )
                               ),
                               side: MaterialStateProperty.all(
-                                  BorderSide(
-                                    color: Colors.red[700],
-                                    width: 2.0,
-                                  )
+                                  BorderSide.none
+                              ),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.white
                               )
                           ),
                           child: Column(
@@ -281,8 +258,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                             children: [
                               Icon(
                                 Icons.arrow_upward,
-                                size: 32,
-                                color: Colors.red[700],
+                                size: 25,
+                                color: Color(0xEB6467).withOpacity(1),
                               ),
                               SizedBox(
                                   height: 8
@@ -291,7 +268,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   "Withdraw",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 11
                                   )
                               )
@@ -301,7 +278,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                       ),
                       Container(
                         width: 85,
-                        height: 85,
+                        height: 65,
                         child: OutlinedButton(
                           onPressed: () {},
                           style: ButtonStyle(
@@ -311,10 +288,10 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   )
                               ),
                               side: MaterialStateProperty.all(
-                                  BorderSide(
-                                    color: Colors.blue[700],
-                                    width: 2.0,
-                                  )
+                                  BorderSide.none
+                              ),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.white
                               )
                           ),
                           child: Column(
@@ -322,8 +299,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                             children: [
                               Icon(
                                 Icons.arrow_forward,
-                                size: 32,
-                                color: Colors.blue[700],
+                                size: 25,
+                                color: Color(0XB6B6B6).withOpacity(1),
                               ),
                               SizedBox(
                                   height: 8
@@ -332,7 +309,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   "Transfer",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 11
                                   )
                               )
@@ -342,7 +319,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                       ),
                       Container(
                         width: 85,
-                        height: 85,
+                        height: 65,
                         child: OutlinedButton(
                           onPressed: () {},
                           style: ButtonStyle(
@@ -352,10 +329,10 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   )
                               ),
                               side: MaterialStateProperty.all(
-                                  BorderSide(
-                                    color: Colors.yellow[700],
-                                    width: 2.0,
-                                  )
+                                  BorderSide.none
+                              ),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.white
                               )
                           ),
                           child: Column(
@@ -363,17 +340,17 @@ class _AccountDetailsState extends State<AccountDetails> {
                             children: [
                               Icon(
                                 Icons.autorenew,
-                                size: 32,
-                                color: Colors.yellow[700],
+                                size: 25,
+                                color: Color(0x5F5C96).withOpacity(1)
                               ),
                               SizedBox(
                                   height: 8
                               ),
                               Text(
-                                  "Re-balance",
+                                  "Balance",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 11
                                   )
                               )

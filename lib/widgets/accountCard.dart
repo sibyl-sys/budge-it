@@ -70,7 +70,7 @@ class _AccountCardState extends State<AccountCard> {
                             widget.accountName,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontSize: 14.0,
+                            fontSize: 12.0,
                           )
                         ),
                         SizedBox(height: 4),
@@ -80,6 +80,7 @@ class _AccountCardState extends State<AccountCard> {
                                 style: TextStyle(
                                     color: Colors.green[700],
                                     fontSize: 16,
+                                    fontWeight: FontWeight.w500
                                 ),
                                 children: [
                                   TextSpan(
@@ -87,7 +88,8 @@ class _AccountCardState extends State<AccountCard> {
                                     style: TextStyle(
                                         color: Colors.green[700],
                                         fontSize: 16,
-                                        fontFamily: "Poppins"
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w500
                                     )
                                   ),
                                   TextSpan(
@@ -95,7 +97,8 @@ class _AccountCardState extends State<AccountCard> {
                                       style: TextStyle(
                                           color: Colors.green[700],
                                           fontSize: 14,
-                                          fontFamily: "Poppins"
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w500
                                       )
                                   )
                                 ]
@@ -114,7 +117,7 @@ class _AccountCardState extends State<AccountCard> {
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.italic,
-                            fontSize: 12.0,
+                            fontSize: 10.0,
                             color: Colors.grey[600]
                         )
                     ),
