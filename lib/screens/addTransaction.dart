@@ -435,7 +435,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                   size: 11.0,
                                   color: Colors.white,
                                 ),
-                                radius: 8.0,
+                                radius: 7.0,
                                 backgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
                               ),
                             ],
@@ -444,7 +444,8 @@ class _AddTransactionState extends State<AddTransaction> {
                             child: Text("Need",
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
-                                fontSize: 16
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500
                               )
                             ),
                           ),
@@ -463,7 +464,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                     size: 11.0,
                                     color: Colors.white,
                                   ),
-                                  radius: 8.0,
+                                  radius: 7.0,
                                   backgroundColor: Theme.of(context).primaryColor,
                                 ),
                               ],
@@ -472,7 +473,8 @@ class _AddTransactionState extends State<AddTransaction> {
                               child: Text("Need",
                                   style: TextStyle(
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 16
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
                                   )
                               ),
                             ),
@@ -503,7 +505,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                     size: 11.0,
                                     color: Colors.white,
                                   ),
-                                  radius: 8.0,
+                                  radius: 7.0,
                                   backgroundColor: Colors.yellow[700].withOpacity(0.5),
                                 ),
                               ],
@@ -512,7 +514,8 @@ class _AddTransactionState extends State<AddTransaction> {
                               child: Text("Want",
                                   style: TextStyle(
                                       color: Colors.yellow[700],
-                                      fontSize: 16
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
                                   )
                               ),
                             ),
@@ -531,7 +534,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                     size: 11.0,
                                     color: Colors.white,
                                   ),
-                                  radius: 8.0,
+                                  radius: 7.0,
                                   backgroundColor: Colors.yellow[700],
                                 ),
                               ],
@@ -540,7 +543,8 @@ class _AddTransactionState extends State<AddTransaction> {
                               child: Text("Want",
                                   style: TextStyle(
                                       color: Colors.yellow[700],
-                                      fontSize: 16
+                                      fontSize: 14,
+                                    fontWeight: FontWeight.w500
                                   )
                               ),
                             ),
@@ -569,10 +573,10 @@ class _AddTransactionState extends State<AddTransaction> {
                                   child: Text("*",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18
+                                      fontSize: 14
                                     )
                                   ),
-                                  radius: 8.0,
+                                  radius: 7.0,
                                   backgroundColor: Colors.orange[700].withOpacity(0.5),
                                 ),
                               ],
@@ -581,7 +585,8 @@ class _AddTransactionState extends State<AddTransaction> {
                               child: Text("Sudden",
                                   style: TextStyle(
                                       color: Colors.orange[700],
-                                      fontSize: 16
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
                                   )
                               ),
                             ),
@@ -598,10 +603,10 @@ class _AddTransactionState extends State<AddTransaction> {
                                   child: Text("*",
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 18
+                                          fontSize: 14
                                       )
                                   ),
-                                  radius: 8.0,
+                                  radius: 7.0,
                                   backgroundColor: Colors.orange[700],
                                 ),
                               ],
@@ -610,7 +615,8 @@ class _AddTransactionState extends State<AddTransaction> {
                               child: Text("Sudden",
                                   style: TextStyle(
                                       color: Colors.orange[700],
-                                      fontSize: 16
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
                                   )
                               ),
                             ),
