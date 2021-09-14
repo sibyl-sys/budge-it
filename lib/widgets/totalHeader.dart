@@ -6,8 +6,9 @@ class TotalHeader extends StatefulWidget {
   final String header;
   final double value;
   final double percentage;
+  final Color valueColor;
 
-  const TotalHeader({Key key, this.currencySymbol, this.header, this.value, this.percentage}) : super(key: key);
+  const TotalHeader({Key key, this.currencySymbol, this.header, this.value, this.percentage, this.valueColor}) : super(key: key);
 
   @override
   _TotalHeaderState createState() => _TotalHeaderState();
@@ -26,7 +27,7 @@ class _TotalHeaderState extends State<TotalHeader> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Total Balance",
+            Text(widget.header,
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.grey[400],
@@ -41,7 +42,7 @@ class _TotalHeaderState extends State<TotalHeader> {
                   text: TextSpan(
                       text: "${widget.currencySymbol} ",
                       style: TextStyle(
-                          color: Color(0x333333).withOpacity(1),
+                          color: widget.valueColor,
                           fontSize: 21,
                         fontWeight: FontWeight.w500
                       ),
@@ -49,7 +50,7 @@ class _TotalHeaderState extends State<TotalHeader> {
                         TextSpan(
                             text: "${moneyFormat.format(widget.value)}",
                             style: TextStyle(
-                                color: Color(0x333333).withOpacity(1),
+                                color: widget.valueColor,
                                 fontSize: 21,
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500

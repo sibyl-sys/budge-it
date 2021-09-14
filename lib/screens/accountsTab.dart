@@ -145,7 +145,7 @@ class _AccountsTabState extends State<AccountsTab> {
     print(savings);
     return Column(
       children: [
-        TotalHeader(header: "Total Balance", currencySymbol: user.primaryCurrency.symbol, value: user.totalRegular + user.totalSavings, percentage: 10),
+        TotalHeader(header: "Total Balance", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.totalRegular + user.totalSavings, percentage: 10),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

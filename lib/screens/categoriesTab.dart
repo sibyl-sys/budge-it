@@ -120,36 +120,9 @@ class _CategoriesTabState extends State<CategoriesTab> {
 
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                      color: widget.categoryType == CategoryType.expense ? Colors.red[600].withOpacity(0.2) : Colors.teal[600].withOpacity(0.2),
-                      width: 2.0
-                  ),
-                  borderRadius: BorderRadius.circular(8.0)
-                ),
-                margin: EdgeInsets.all(8.0),
-                child: Container(
-                  height: 65,
-                  child: Center(
-                      child: Text(
-                        user.getCategoryTypeNet(from: widget.from, to: widget.to, categoryType: widget.categoryType).toString(),
-                      style: TextStyle(
-                        color: widget.categoryType == CategoryType.expense ? Colors.red[600]: Colors.teal[600],
-                        fontWeight: FontWeight.w400,
-                        fontSize: 24
-                      ))
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        SizedBox(height: 16.0),
         CategoryPercentBar(from: widget.from, to: widget.to, categoryType: widget.categoryType),
-        SizedBox(height: 8.0),
+        SizedBox(height: 16.0),
         Expanded(
           child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)
         )

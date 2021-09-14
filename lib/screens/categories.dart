@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
+import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:provider/provider.dart';
 
 class Categories extends StatefulWidget {
@@ -75,22 +76,6 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
     });
   }
 
-  Future<void> _selectAccountType(BuildContext context) async {
-    switch (await showDialog<AccountType>(
-        context: context,
-        builder: (BuildContext context) {
-          return AccountsType();
-        })) {
-      case AccountType.wallet:
-        Navigator.pushNamed(context, "/newAccount");
-        break;
-      case AccountType.savings:
-        break;
-      case AccountType.debt:
-        break;
-    }
-  }
-
   changeDate(Map dateMap) {
     setState(() {
       from = dateMap["from"];
@@ -98,9 +83,35 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
     });
   }
 
+  getCategoryType() {
+    if(_tabController.index == 0) {
+      return CategoryType.expense;
+    } else {
+      return CategoryType.income;
+    }
+  }
+
+  getValueColor() {
+    if(_tabController.index == 0) {
+      return Color(0xEB6467).withOpacity(1);
+    } else {
+      return Color(0x55C9C6).withOpacity(1);
+    }
+  }
+
+  getHeaderText() {
+    if(_tabController.index == 0) {
+      return "You've spent:";
+    } else {
+      return "You've earned:";
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+    final user = context.read<User>();
 
     return Material(
       child: Container(
@@ -111,6 +122,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                 to: this.to,
                 onChanged: changeDate,
               ),
+              TotalHeader(header: getHeaderText(), valueColor: getValueColor(), currencySymbol: user.primaryCurrency.symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), percentage: 10),
               ColoredBox(
                   color: Colors.white,
                   child: _tabBar
