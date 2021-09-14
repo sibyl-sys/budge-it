@@ -31,7 +31,7 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
       child: Center(
         child: Container(
           width: 350,
-          height: 398,
+          height: 425,
           decoration: BoxDecoration(
               color: const Color(0xF2F2F2).withOpacity(1),
               borderRadius: BorderRadius.all(Radius.circular(15))
