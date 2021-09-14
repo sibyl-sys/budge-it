@@ -4,129 +4,198 @@ import 'package:money_tracker/services/account.dart';
 class AccountsType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      title: Text('Select Account Type'),
-      backgroundColor: const Color(0xFFF2F2F2),
-      children : [
-        SimpleDialogOption(
-          onPressed: () {
-            Navigator.pop(context, AccountType.wallet);
-          },
-          child: Container(
-            color: Colors.white,
-            width: 280.0,
-            height: 70.0,
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                    Icons.account_balance_wallet,
-                    size: 32,
-                    color: const Color(0xFF27AE60)
-                ),
-                SizedBox(width: 16),
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          "Stash",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(
-                          "Regular, Cash, Card, Bank",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey
-                          ))
-                    ]
+    return Material(
+      type: MaterialType.transparency,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                  "Add New Account",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500
                 )
-              ],
-            ),
+              ),
+              SizedBox(height: 16),
+              Ink(
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context, AccountType.wallet);
+                  },
+                  splashColor: Color(0x5F5C96).withOpacity(0.5),
+                  child: Container(
+                    height: 80,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Color(0x5F5C96).withOpacity(1),
+                            radius: 25,
+                            child: Icon(
+                              Icons.account_balance_wallet_outlined,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Stash",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500
+                                ),
+                              ),
+                              Text(
+                                "Cash, Debit Cards, Wallet...",
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xB6B6B6).withOpacity(1)
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 96),
+                          Icon(
+                            Icons.add,
+                            color: Color(0x5F5C96).withOpacity(1),
+                            size: 30,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Ink(
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context, AccountType.savings);
+                  },
+                  splashColor: Color(0x55C9C6).withOpacity(0.5),
+                  child: Container(
+                    height: 80,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Color(0x55C9C6).withOpacity(1),
+                            radius: 25,
+                            child: Icon(
+                              Icons.account_balance_outlined,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Savings",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500
+                                ),
+                              ),
+                              Text(
+                                "Investments, Deposits, Goals...",
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xB6B6B6).withOpacity(1)
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 78),
+                          Icon(
+                            Icons.add,
+                            color: Color(0x55C9C6).withOpacity(1),
+                            size: 30,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Ink(
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context, AccountType.debt);
+                  },
+                  splashColor: Color(0xEB6468).withOpacity(0.5),
+                  child: Container(
+                    height: 80,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Color(0xEB6468).withOpacity(1),
+                            radius: 25,
+                            child: Icon(
+                              Icons.credit_card_outlined,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Debt",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500
+                                ),
+                              ),
+                              Text(
+                                "Credit, Mortgage, Lendings...",
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xB6B6B6).withOpacity(1)
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 86),
+                          Icon(
+                            Icons.add,
+                            color: Color(0xEB6468).withOpacity(1),
+                            size: 30,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
-        SimpleDialogOption(
-          onPressed: () {
-            Navigator.pop(context, AccountType.savings);
-          },
-          child: Container(
-            color: Colors.white,
-            width: 280.0,
-            height: 70.0,
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Icon(
-                    Icons.account_balance,
-                    size: 32,
-                    color: const Color(0xFF2D9CDB)
-                ),
-                SizedBox(width: 16),
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          "Savings",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(
-                          "Savings, Goals",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey
-                          ))
-                    ]
-                )
-              ],
-            ),
-          ),
-        ),
-        SimpleDialogOption(
-          onPressed: () {
-            Navigator.pop(context, AccountType.debt);
-          },
-          child: Container(
-            color: Colors.white,
-            width: 280.0,
-            height: 70.0,
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Icon(
-                    Icons.credit_card,
-                    size: 32,
-                    color: Colors.redAccent
-                ),
-                SizedBox(width: 16),
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          "Debt",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(
-                          "Credit, Mortgage",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey
-                          ))
-                    ]
-                )
-              ],
-            ),
-          ),
-        )
-      ]
+      ),
     );
   }
 }
