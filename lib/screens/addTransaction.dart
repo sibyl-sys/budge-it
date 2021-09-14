@@ -243,8 +243,6 @@ class _AddTransactionState extends State<AddTransaction> {
   Widget build(BuildContext context) {
     final user = context.watch<User>();
     TransactionType transactionType = user.lastTransactionType;
-
-    print(transactionType);
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
     
     //TODO HIDE FROM ON TRANSFER SELECTION
@@ -282,18 +280,18 @@ class _AddTransactionState extends State<AddTransaction> {
                         decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.white)
                         ),
-                        height: 75,
+                        height: 60,
                         child: Stack(
                           children: [
                             Positioned(
-                              left: -16,
+                              left: -4,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                       IconData(user.findAccountByID(user.lastSelectedAccountFrom).icon, fontFamily: 'MaterialIcons'),
                                       color: Colors.white.withOpacity(0.3),
-                                      size: 65
+                                      size: 50
                                   ),
                                 ]
                               ),
@@ -310,17 +308,16 @@ class _AddTransactionState extends State<AddTransaction> {
                                         "From Account",
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12
+                                          fontSize: 10
                                         )
                                     ),
-                                    SizedBox(height: 4.0),
                                     Flexible(
                                       child: Text(
                                         user.findAccountByID(user.lastSelectedAccountFrom).name,
                                         style: TextStyle(
-                                            fontSize: 18.0,
+                                            fontSize: 14.0,
                                             color: Colors.white,
-                                            fontWeight: FontWeight.w500
+                                            fontWeight: FontWeight.w600
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -360,18 +357,18 @@ class _AddTransactionState extends State<AddTransaction> {
                           decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.white)
                           ),
-                          height: 75,
+                          height: 60,
                           child: Stack(
                               children: [
                                 Positioned(
-                                  left: -16,
+                                  left: -4,
                                   child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                             IconData(transactionType != TransactionType.transfer ? user.findCategoryByID(user.lastSelectedCategoryTo).icon : user.findAccountByID(user.lastSelectedAccountTo).icon, fontFamily: 'MaterialIcons'),
                                             color: Colors.white.withOpacity(0.3),
-                                            size: 65
+                                            size: 50
                                         ),
                                       ]
                                   ),
@@ -388,17 +385,16 @@ class _AddTransactionState extends State<AddTransaction> {
                                                 getToLabel(transactionType),
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 12
+                                                    fontSize: 10
                                                 )
                                             ),
-                                            SizedBox(height: 4.0),
                                             Flexible(
                                               child: Text(
                                                 transactionType != TransactionType.transfer ? user.findCategoryByID(user.lastSelectedCategoryTo).name : user.findAccountByID(user.lastSelectedAccountTo).name,
                                                 style: TextStyle(
-                                                    fontSize: 18.0,
+                                                    fontSize: 16.0,
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.w500
+                                                    fontWeight: FontWeight.w600
                                                 ),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
@@ -644,7 +640,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     getValueLabel(transactionType),
                     style: TextStyle(
                         decoration: TextDecoration.none,
-                        fontSize: 16,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
 
                     )
@@ -656,7 +652,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       getTextDisplay(),
                       style: TextStyle(
                           decoration: TextDecoration.none,
-                          fontSize: 32,
+                          fontSize: 26,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor
                       )
@@ -795,14 +791,14 @@ class _AddTransactionState extends State<AddTransaction> {
                     Icon(
                       Icons.date_range,
                       color: Theme.of(context).primaryColor,
-                      size: 20,
+                      size: 15,
                     ),
                     SizedBox(width: 5),
                     Text(
                       dateFormatter.format(currentDate).toUpperCase(),
                       style: TextStyle(
                         color:  Theme.of(context).primaryColor,
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w500
                       )
                     )
