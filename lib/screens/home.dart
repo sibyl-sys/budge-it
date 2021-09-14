@@ -63,12 +63,14 @@ class _HomeState extends State<Home> {
           onPressed: (){
             Navigator.of(context).pushNamed("/rearrangeCategories");
           });
+    } else if(index == 2) {
+      return SizedBox(height: 0);
     } else {
       return IconButton(
         icon: Icon(Icons.add),
         onPressed: (){
-        _selectAccountType(context);
-      });
+          _selectAccountType(context);
+        });
     }
   }
 
