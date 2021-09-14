@@ -84,7 +84,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold(
       body: Center(
         child: Image(
-          image: AssetImage('assets/logo.png')
+          image: AssetImage('assets/splash.png'),
+          fit: BoxFit.cover,
+          height: double.infinity,
+          width: double.infinity,
+          alignment: Alignment.center,
         )
       )
     );
