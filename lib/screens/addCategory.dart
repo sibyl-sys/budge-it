@@ -23,7 +23,7 @@ class _AddCategoryState extends State<AddCategory> {
   final FocusNode nameFocusNode = FocusNode();
   final TextEditingController categoryNameController = TextEditingController();
   IconData categoryIcon = Icons.account_balance_wallet;
-  Color categoryColor = Colors.blue[700];
+  Color categoryColor = Colors.blue[400];
   bool isDarkIcon = false;
   Currency selectedCurrency;
   List<Subcategory> subcategories = [];
