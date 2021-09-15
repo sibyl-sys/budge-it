@@ -70,8 +70,10 @@ class _CategoriesTabState extends State<CategoriesTab> {
 
   Widget renderStaticGridView(User user) {
     return GridView.count(
+        padding: EdgeInsets.all(8),
         crossAxisCount: 4,
-        mainAxisSpacing: 0,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 6,
         childAspectRatio: 9/10,
         children: generateCategoryList(user)
     );
@@ -79,38 +81,44 @@ class _CategoriesTabState extends State<CategoriesTab> {
   
   Widget renderDragAndDropView(User user) {
     List categoryList = generateCategoryList(user);
-    return DragAndDropGridView(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+      child: DragAndDropGridView(
 
-        onWillAccept: (oldIndex, newIndex) {
-          if(oldIndex == categoryList.length) {
-            return false;
-          }
-          return true;
-        },
-        onReorder: (oldIndex, newIndex) {
-          List<Category> categories;
-          if(widget.categoryType == CategoryType.expense) {
-            categories = user.expenseCategories;
-          } else {
-            categories = user.incomeCategories;
-          }
-          if(oldIndex > newIndex) {
-            for(int i = newIndex; i < oldIndex; i++) {
-              categories[i].index = categories[i].index + 1;
+          onWillAccept: (oldIndex, newIndex) {
+            if(oldIndex == categoryList.length) {
+              return false;
             }
-          } else {
-            for(int i = newIndex; i > oldIndex; i--) {
-              categories[i].index = categories[i].index - 1;
+            return true;
+          },
+          onReorder: (oldIndex, newIndex) {
+            List<Category> categories;
+            if(widget.categoryType == CategoryType.expense) {
+              categories = user.expenseCategories;
+            } else {
+              categories = user.incomeCategories;
             }
-          }
-          categories[oldIndex].index = newIndex;
-          user.rearrangeCategories(categories);
-        },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4
-        ),
-        itemBuilder: (context, index) => DragItem(isDraggable: true, isDropable: true, child: categoryList[index]),
-        itemCount: categoryList.length,
+            if(oldIndex > newIndex) {
+              for(int i = newIndex; i < oldIndex; i++) {
+                categories[i].index = categories[i].index + 1;
+              }
+            } else {
+              for(int i = newIndex; i > oldIndex; i--) {
+                categories[i].index = categories[i].index - 1;
+              }
+            }
+            categories[oldIndex].index = newIndex;
+            user.rearrangeCategories(categories);
+          },
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 6,
+            childAspectRatio: 9/10
+          ),
+          itemBuilder: (context, index) => DragItem(isDraggable: true, isDropable: true, child: categoryList[index]),
+          itemCount: categoryList.length,
+      ),
     );
   }
 
