@@ -28,8 +28,8 @@ class _CategoryButtonState extends State<CategoryButton> {
         onTap: () { widget.onCategoryClick(widget.categoryID);},
         child: Container(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox(height: 4),
               Text(
                   widget.name,
                   style: TextStyle(
@@ -38,7 +38,6 @@ class _CategoryButtonState extends State<CategoryButton> {
                   ),
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 8.0),
               Container(
                   width: 40,
                   height: 40,
@@ -56,7 +55,6 @@ class _CategoryButtonState extends State<CategoryButton> {
                       size: 30
                   ),
               ),
-              SizedBox(height: 8.0),
               RichText(
                 text: TextSpan(
                     text: "${widget.currencySymbol} ",

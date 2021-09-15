@@ -66,7 +66,7 @@ class AccountsType extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(width: 96),
+                          Spacer(),
                           Icon(
                             Icons.add,
                             color: Color(0x5F5C96).withOpacity(1),
@@ -123,7 +123,7 @@ class AccountsType extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(width: 78),
+                          Spacer(),
                           Icon(
                             Icons.add,
                             color: Color(0x55C9C6).withOpacity(1),
@@ -158,7 +158,7 @@ class AccountsType extends StatelessWidget {
                               size: 25,
                             ),
                           ),
-                          SizedBox(width: 16),
+                          Spacer(),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,

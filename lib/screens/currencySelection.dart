@@ -66,8 +66,9 @@ class _CurrencySelectionState extends State<CurrencySelection> {
                                     Text(
                                       currency.symbol,
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Roboto'
                                       )
                                     )
                                   ],

@@ -74,7 +74,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
         crossAxisCount: 4,
         mainAxisSpacing: 8,
         crossAxisSpacing: 6,
-        childAspectRatio: 9/10,
+        childAspectRatio: 4/5,
         children: generateCategoryList(user)
     );
   }
@@ -114,7 +114,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
             crossAxisCount: 4,
             mainAxisSpacing: 8,
             crossAxisSpacing: 6,
-            childAspectRatio: 9/10
+            childAspectRatio: 4/5
           ),
           itemBuilder: (context, index) => DragItem(isDraggable: true, isDropable: true, child: categoryList[index]),
           itemCount: categoryList.length,

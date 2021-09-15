@@ -28,6 +28,7 @@ class _CategoryPercentBarState extends State<CategoryPercentBar> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Container(
         height: 10,
+        color: Color(0xB6B6B6).withOpacity(1),
         child: Row(
           children: categories.map((e) => user.getCategoryNet(from: widget.from, to: widget.to, categoryID: e.categoryID) != 0 ? Expanded(
             flex: (user.getCategoryNet(from: widget.from, to: widget.to, categoryID: e.categoryID).abs() / limit.abs() * 100).floor(),

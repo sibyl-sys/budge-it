@@ -322,13 +322,26 @@ class _EditCategoryState extends State<EditCategory> {
                                   color: const Color(0xFF4F4F4F)
                               )
                           ),
-                          Text(
-                              "${selectedCurrency.symbol} (${selectedCurrency.name})",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 18,
-                                  color: const Color(0xFFBDBDBD)
-                              )
+                          RichText(
+                            text: TextSpan(
+                                text: "${selectedCurrency.symbol} ",
+                                style: TextStyle(
+                                    color: Colors.green[700],
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500
+                                ),
+                                children: [
+                                  TextSpan(
+                                      text: " (${selectedCurrency.name})",
+                                      style: TextStyle(
+                                          color: Colors.green[700],
+                                          fontSize: 18,
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w500
+                                      )
+                                  ),
+                                ]
+                            ),
                           ),
                         ],
                       ),
