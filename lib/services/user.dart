@@ -331,12 +331,14 @@ class User extends ChangeNotifier {
 
   void addTransaction(Transaction transaction) async {
     transactions = List.from(transactions)..add(transaction);
+    print(transaction.transactionType);
 
     if(transaction.transactionType == TransactionType.expense) {
       findAccountByID(transaction.fromID).balance -= transaction.value;
     } else if(transaction.transactionType == TransactionType.income ) {
       findAccountByID(transaction.fromID).balance += transaction.value;
     } else if(transaction.transactionType == TransactionType.transfer) {
+      print(transaction.value);
       findAccountByID(transaction.fromID).balance -= transaction.value;
       findAccountByID(transaction.toID).balance += transaction.value;
     }

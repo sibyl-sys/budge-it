@@ -752,12 +752,13 @@ class _AddTransactionState extends State<AddTransaction> {
                 (operator == Operator.none) ?
                   generateIconButton(baseButtonSize, baseButtonSize * 2, Icons.done, Theme.of(context).primaryColor, Colors.white, (){
                     User userModel = context.read<User>();
+                    print(transactionType);
                     userModel.addTransaction(
                       Transaction(
                         value: double.parse(this.firstValue),
                         note: notesController.text,
                         fromID: user.lastSelectedAccountFrom,
-                        toID: user.lastSelectedCategoryTo,
+                        toID: transactionType == TransactionType.transfer ? user.lastSelectedAccountTo : user.lastSelectedCategoryTo,
                         transactionID: userModel.transactions.length,
                         timestamp: currentDate,
                         transactionType: transactionType,
