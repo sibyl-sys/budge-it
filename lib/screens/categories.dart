@@ -111,7 +111,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<User>();
+    final user = context.watch<User>();
 
     return Material(
       child: Container(
