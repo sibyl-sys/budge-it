@@ -223,7 +223,7 @@ class User extends ChangeNotifier {
  List<Map> getTransactions({DateTime from, DateTime to, int accountID}) {
     List<Map> transactionsByDate = new List<Map>();
     for(Transaction transaction in transactions) {
-      if(transaction.timestamp.compareTo(from) >= 0 && transaction.timestamp.compareTo(to) <= 0 && (accountID == -1 || transaction.fromID == accountID) && !transaction.isArchived) {
+      if(transaction.timestamp.compareTo(from) >= 0 && transaction.timestamp.compareTo(to) <= 0 && (accountID == -1 || transaction.fromID == accountID || (transaction.transactionType == TransactionType.transfer && transaction.toID == accountID)) && !transaction.isArchived) {
         int objectIndex = transactionsByDate.indexWhere((element) => element["day"] == transaction.timestamp.day);
         if(objectIndex == -1) {
           Map transactionObject = {

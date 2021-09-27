@@ -8,6 +8,7 @@ import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/creditLimitText.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
+import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +40,7 @@ class _AccountDetailsState extends State<AccountDetails> {
               value: transaction.value,
               transactionID: transaction.transactionID,
               currencySymbol: user.primaryCurrency.symbol,
+              type: transaction.transactionType,
             )
         ).toList()
     );
@@ -361,43 +363,13 @@ class _AccountDetailsState extends State<AccountDetails> {
                     ],
                   ),
                 ),
-                Container(
-                  color: Colors.white,
-                  height: 100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 32.0),
-                            child: Text(
-                                monthlyNet.toString(),
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
-                                    color: monthlyNet >= 0 ? Colors.teal[700] : Colors.red[700]
-                                )
-                            ),
-                          ),
-                          Icon(
-                            monthlyNet >= 0 ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                            size: 32,
-                            color: monthlyNet >= 0 ? Colors.teal[700] : Colors.red[700],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(user.getTransactionCount(from: from, to: to, accountID: currentAccount.accountID).toString() + " Transactions",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey
-                          )),
-                    ],
-                  ),
+                TotalHeader(header: "Balance:", valueColor: Color(0x55C9C6).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: currentAccount.balance, description:
+                Text(user.getTransactionCount(from: from, to: to, accountID: currentAccount.accountID).toString() + " Transactions",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey
+                    )),
                 ),
                 SizedBox(height: 8),
                 Column(
@@ -415,7 +387,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                                             e["day"].toString(),
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 24,
+                                                fontSize: 26,
                                                 color: Color(0x4F4F4F).withOpacity(1)
                                             )
                                         ),
@@ -426,17 +398,17 @@ class _AccountDetailsState extends State<AccountDetails> {
                                             Text(
                                                 weekdays[e["weekday"]-1],
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 10,
                                                     color: Color(0x4F4F4F).withOpacity(1)
                                                 )
                                             ),
                                             Text(
                                                 months[e["month"]] + " " + e["year"].toString(),
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
+                                                    fontWeight: FontWeight.w400,
                                                     fontSize: 12,
-                                                    color: Color(0x4F4F4F).withOpacity(1)
+                                                    color: Color(0xB6B6B6).withOpacity(1)
                                                 )
                                             ),
                                           ],
@@ -446,8 +418,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                                   Text(
                                       e["value"].toString(),
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 24,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
                                           color: Color(0x4F4F4F).withOpacity(1)
                                       )
                                   ),

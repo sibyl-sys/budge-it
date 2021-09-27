@@ -5,10 +5,10 @@ class TotalHeader extends StatefulWidget {
   final String currencySymbol;
   final String header;
   final double value;
-  final double percentage;
   final Color valueColor;
+  final Widget description;
 
-  const TotalHeader({Key key, this.currencySymbol, this.header, this.value, this.percentage, this.valueColor}) : super(key: key);
+  const TotalHeader({Key key, this.currencySymbol, this.header, this.value, this.valueColor, this.description}) : super(key: key);
 
   @override
   _TotalHeaderState createState() => _TotalHeaderState();
@@ -59,24 +59,7 @@ class _TotalHeaderState extends State<TotalHeader> {
                       ]
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      widget.percentage > 0 ? Icons.arrow_upward : Icons.arrow_downward,
-                      color: widget.percentage > 0 ? Color(0x55C9C6).withOpacity(1) : Color(0xEB6467).withOpacity(1),
-                      size: 12,
-                    ),
-                    Text("${widget.percentage}% from last month",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey[400],
-                          fontSize: 12,
-                        )
-                    ),
-                  ],
-                )
+                widget.description
               ],
             )
           ],

@@ -52,7 +52,7 @@ class _CategoryButtonState extends State<CategoryButton> {
                   child: Icon(
                       widget.icon,
                       color: Colors.white,
-                      size: 30
+                      size: 25
                   ),
               ),
               RichText(

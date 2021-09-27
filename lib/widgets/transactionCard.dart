@@ -22,6 +22,38 @@ class TransactionCard extends StatefulWidget {
 
 class _TransactionCardState extends State<TransactionCard> {
 
+  getIcon() {
+    if(widget.type == TransactionType.transfer) {
+      return CircleAvatar(
+          backgroundColor: widget.color,
+          child: Icon(
+            widget.icon,
+            color: Colors.white,
+            size: 24,
+          )
+      );
+    } else {
+      return Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.45),
+              width: 2,
+            ),
+            color: widget.color
+        ),
+        child: Icon(
+            widget.icon,
+            color: Colors.white,
+            size: 25
+        ),
+      );
+    }
+  }
+
+
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   @override
   Widget build(BuildContext context) {
@@ -49,14 +81,7 @@ class _TransactionCardState extends State<TransactionCard> {
               children: [
                 Row(
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.white60,
-                      child: Icon(
-                        widget.icon,
-                        color: widget.color,
-                        size: 30,
-                      )
-                    ),
+                    getIcon(),
                     SizedBox(width: 20),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -67,6 +92,7 @@ class _TransactionCardState extends State<TransactionCard> {
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14.0,
+                              color: Color(0x4F4F4F).withOpacity(1)
                             )
                         ),
                         SizedBox(height: 4),
@@ -75,6 +101,8 @@ class _TransactionCardState extends State<TransactionCard> {
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14.0,
+                              fontStyle: FontStyle.italic,
+                              color: Color(0xB6B6B6).withOpacity(1)
                             )
                         ),
                       ],
@@ -86,15 +114,17 @@ class _TransactionCardState extends State<TransactionCard> {
                       text: "${widget.currencySymbol} ",
                       style: TextStyle(
                           color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
-                          fontSize: 20,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
                       ),
                       children: [
                         TextSpan(
                             text: "${moneyFormat.format(widget.value).split('.')[0]}",
                             style: TextStyle(
                                 color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500
 
                             )
                         ),
@@ -102,8 +132,9 @@ class _TransactionCardState extends State<TransactionCard> {
                             text: ".${moneyFormat.format(widget.value).split('.')[1]}",
                             style: TextStyle(
                                 color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
-                                fontSize: 18,
+                                fontSize: 14,
                                 fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500
                             )
                         )
                       ]

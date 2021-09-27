@@ -122,7 +122,25 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                 to: this.to,
                 onChanged: changeDate,
               ),
-              TotalHeader(header: getHeaderText(), valueColor: getValueColor(), currencySymbol: user.primaryCurrency.symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), percentage: 10),
+              TotalHeader(header: getHeaderText(), valueColor: getValueColor(), currencySymbol: user.primaryCurrency.symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), description:
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.arrow_upward,
+                    color: Color(0x55C9C6).withOpacity(1),
+                    size: 12,
+                  ),
+                  Text("0% from last month",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey[400],
+                        fontSize: 12,
+                      )
+                  ),
+                ],
+              )),
               ColoredBox(
                   color: Colors.white,
                   child: _tabBar
