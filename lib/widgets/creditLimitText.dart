@@ -40,7 +40,7 @@ class _CreditLimitTextState extends State<CreditLimitText> {
               TextSpan(
                 text: "${widget.progress.toStringAsFixed(2)}%",
                 style: TextStyle(
-                    color: Colors.lightGreen[600],
+                    color: Color(0x55C9C6).withOpacity(1),
                     fontSize: 14,
                     fontFamily: "Poppins"
                 ),

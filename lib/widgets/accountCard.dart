@@ -78,7 +78,7 @@ class _AccountCardState extends State<AccountCard> {
                             text: TextSpan(
                                 text: "${widget.currencySymbol} ",
                                 style: TextStyle(
-                                    color: Colors.green[700],
+                                    color: Color(0x55C9C6).withOpacity(1),
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500
                                 ),
@@ -86,7 +86,7 @@ class _AccountCardState extends State<AccountCard> {
                                   TextSpan(
                                     text: "${moneyFormat.format(widget.balance).split('.')[0]}",
                                     style: TextStyle(
-                                        color: Colors.green[700],
+                                        color: Color(0x55C9C6).withOpacity(1),
                                         fontSize: 16,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500
@@ -95,7 +95,7 @@ class _AccountCardState extends State<AccountCard> {
                                   TextSpan(
                                       text: ".${moneyFormat.format(widget.balance).split('.')[1]}",
                                       style: TextStyle(
-                                          color: Colors.green[700],
+                                          color: Color(0x55C9C6).withOpacity(1),
                                           fontSize: 14,
                                           fontFamily: "Poppins",
                                           fontWeight: FontWeight.w500

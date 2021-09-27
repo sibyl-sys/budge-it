@@ -20,6 +20,16 @@ class _TransactionsState extends State<Transactions> {
   int month = DateTime.now().month;
   int year = DateTime.now().year;
 
+  getValueColor(Transaction transaction) {
+    if(transaction.transactionType == TransactionType.transfer) {
+        return Color(0xB6B6B6).withOpacity(1);
+    } else if(transaction.transactionType == TransactionType.expense) {
+        return Color(0xEB6467).withOpacity(1);
+    } else {
+      return Color(0x55C9C6).withOpacity(1);
+    }
+  }
+
   renderTransactionListPerDay(User user, List<Transaction> transactions) {
     return Column(
       children: transactions.map((transaction) =>
@@ -33,6 +43,7 @@ class _TransactionsState extends State<Transactions> {
           type: transaction.transactionType,
           transactionID: transaction.transactionID,
           currencySymbol: user.primaryCurrency.symbol,
+          valueColor: getValueColor(transaction),
         )
       ).toList()
     );

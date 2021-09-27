@@ -74,14 +74,14 @@ class _AccountsTabState extends State<AccountsTab> {
               text: TextSpan(
                   text: "${user.primaryCurrency.symbol} ",
                   style: TextStyle(
-                    color: Colors.green[700],
+                    color: Color(0x55C9C6).withOpacity(1),
                     fontSize: 14,
                   ),
                   children: [
                     TextSpan(
                         text: "${moneyFormat.format(user.totalRegular).split('.')[0]}",
                         style: TextStyle(
-                            color: Colors.green[700],
+                            color: Color(0x55C9C6).withOpacity(1),
                             fontSize: 14,
                             fontFamily: "Poppins"
                         )
@@ -89,7 +89,7 @@ class _AccountsTabState extends State<AccountsTab> {
                     TextSpan(
                         text: ".${moneyFormat.format(user.totalRegular).split('.')[1]}",
                         style: TextStyle(
-                            color: Colors.green[700],
+                            color: Color(0x55C9C6).withOpacity(1),
                             fontSize: 12,
                             fontFamily: "Poppins"
                         )
@@ -127,14 +127,14 @@ class _AccountsTabState extends State<AccountsTab> {
               text: TextSpan(
                   text: "${user.primaryCurrency.symbol} ",
                   style: TextStyle(
-                    color: Colors.green[700],
+                    color: Color(0x55C9C6).withOpacity(1),
                     fontSize: 14,
                   ),
                   children: [
                     TextSpan(
                         text: "${moneyFormat.format(user.totalSavings).split('.')[0]}",
                         style: TextStyle(
-                            color: Colors.green[700],
+                            color: Color(0x55C9C6).withOpacity(1),
                             fontSize: 14,
                             fontFamily: "Poppins"
                         )
@@ -142,7 +142,7 @@ class _AccountsTabState extends State<AccountsTab> {
                     TextSpan(
                         text: ".${moneyFormat.format(user.totalSavings).split('.')[1]}",
                         style: TextStyle(
-                            color: Colors.green[700],
+                            color: Color(0x55C9C6).withOpacity(1),
                             fontSize: 12,
                             fontFamily: "Poppins"
                         )
