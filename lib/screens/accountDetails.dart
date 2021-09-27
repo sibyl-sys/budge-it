@@ -29,18 +29,35 @@ class _AccountDetailsState extends State<AccountDetails> {
   DateTime from;
   DateTime to;
 
-  renderTransactionListPerDay(User user, List<Transaction> transactions) {
+  getValueColor(Transaction transaction, Account currentAccount) {
+    if(transaction.transactionType == TransactionType.transfer) {
+      if(currentAccount.accountID == transaction.fromID) {
+        return Color(0xEB6467).withOpacity(1);
+      } else {
+        return Color(0x55C9C6).withOpacity(1);
+      }
+    } else {
+      if(transaction.transactionType == TransactionType.expense) {
+        return Color(0xEB6467).withOpacity(1);
+      } else {
+        return Color(0x55C9C6).withOpacity(1);
+      }
+    }
+  }
+
+  renderTransactionListPerDay(User user, List<Transaction> transactions, Account currentAccount) {
     return Column(
         children: transactions.map((transaction) =>
             TransactionCard(
               color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).color : user.findAccountByID(transaction.toID).color).withOpacity(1),
-              icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).icon : user.findAccountByID(transaction.toID).icon, fontFamily: "MaterialIcons"),
+              icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).icon : transaction.fromID == currentAccount.accountID ? user.findAccountByID(transaction.toID).icon : user.findAccountByID(transaction.fromID).icon, fontFamily: "MaterialIcons"),
               categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).name : user.findAccountByID(transaction.toID).name,
               description: transaction.note,
               value: transaction.value,
               transactionID: transaction.transactionID,
               currencySymbol: user.primaryCurrency.symbol,
               type: transaction.transactionType,
+              valueColor: getValueColor(transaction, currentAccount),
             )
         ).toList()
     );
@@ -428,7 +445,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                             ),
                             Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child:renderTransactionListPerDay(user, e["transactions"])
+                                child:renderTransactionListPerDay(user, e["transactions"], currentAccount)
                             )
                           ],
                         )

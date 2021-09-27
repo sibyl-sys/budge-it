@@ -13,14 +13,16 @@ class TransactionCard extends StatefulWidget {
   final TransactionType type;
   final int transactionID;
   final String currencySymbol;
+  final Color valueColor;
 
-  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName, this.transactionID, this.currencySymbol});
+  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName, this.transactionID, this.currencySymbol, this.valueColor});
 
   @override
   _TransactionCardState createState() => _TransactionCardState();
 }
 
 class _TransactionCardState extends State<TransactionCard> {
+
 
   getIcon() {
     if(widget.type == TransactionType.transfer) {
@@ -113,7 +115,7 @@ class _TransactionCardState extends State<TransactionCard> {
                   text: TextSpan(
                       text: "${widget.currencySymbol} ",
                       style: TextStyle(
-                          color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
+                          color: widget.valueColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       ),
@@ -121,7 +123,7 @@ class _TransactionCardState extends State<TransactionCard> {
                         TextSpan(
                             text: "${moneyFormat.format(widget.value).split('.')[0]}",
                             style: TextStyle(
-                                color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
+                                color: widget.valueColor,
                                 fontSize: 16,
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500
@@ -131,7 +133,7 @@ class _TransactionCardState extends State<TransactionCard> {
                         TextSpan(
                             text: ".${moneyFormat.format(widget.value).split('.')[1]}",
                             style: TextStyle(
-                                color: widget.type != TransactionType.expense ? Colors.teal[700] : Colors.red[700],
+                                color: widget.valueColor,
                                 fontSize: 14,
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500
