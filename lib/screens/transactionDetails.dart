@@ -23,6 +23,35 @@ class _TransactionDetailsState extends State<TransactionDetails> {
   final FocusNode focusNode = FocusNode();
   DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
 
+  String getToLabel(TransactionType transactionType) {
+    if(transactionType == TransactionType.expense) {
+      return "To Expense";
+    } else if(transactionType == TransactionType.income){
+      return "To Income";
+    } else {
+      return "To Account";
+    }
+  }
+
+  String getValueLabel(TransactionType transactionType) {
+    if(transactionType == TransactionType.expense) {
+      return "Expense";
+    } else if(transactionType == TransactionType.income){
+      return "Income";
+    } else {
+      return "Transfer";
+    }
+  }
+
+  Color getLabelColor(TransactionType transactionType) {
+    if(transactionType == TransactionType.expense) {
+      return Color(0xEB6467).withOpacity(1);
+    } else if(transactionType == TransactionType.income){
+      return Color(0x55C9C6).withOpacity(1);
+    } else {
+      return Color(0xB6B6B6).withOpacity(1);
+    }
+  }
 
   @override
   void dispose() {
@@ -46,7 +75,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
-
+    final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
     Transaction transaction = user.findTransactionByID(widget.transactionID);
     notesController.text = transaction.note;
@@ -86,18 +115,18 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               decoration: BoxDecoration(
                                   border: Border.all(width: 1, color: Colors.white)
                               ),
-                              height: 75,
+                              height: 60,
                               child: Stack(
                                   children: [
                                     Positioned(
-                                      left: -16,
+                                      left: -4,
                                       child: Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Icon(
                                                 IconData(user.findAccountByID(transaction.fromID).icon, fontFamily: 'MaterialIcons'),
                                                 color: Colors.white.withOpacity(0.3),
-                                                size: 65
+                                                size: 50
                                             ),
                                           ]
                                       ),
@@ -114,7 +143,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                                     "From Account",
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 12
+                                                        fontSize: 10
                                                     )
                                                 ),
                                                 SizedBox(height: 4.0),
@@ -122,9 +151,9 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                                   child: Text(
                                                     user.findAccountByID(transaction.fromID).name,
                                                     style: TextStyle(
-                                                        fontSize: 18.0,
+                                                        fontSize: 14.0,
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.w500
+                                                        fontWeight: FontWeight.w600
                                                     ),
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
@@ -143,7 +172,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                     ),
                     Expanded(
                       child: Ink(
-                        color: Color(user.findCategoryByID(transaction.toID).color).withOpacity(1),
+                        color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).color : user.findAccountByID(transaction.toID).color).withOpacity(1),
                         child: InkWell(
                           splashColor: Colors.white.withOpacity(0.5),
                           onTap: () async {
@@ -166,18 +195,18 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               decoration: BoxDecoration(
                                   border: Border.all(width: 1, color: Colors.white)
                               ),
-                              height: 75,
+                              height: 60,
                               child: Stack(
                                   children: [
                                     Positioned(
-                                      left: -16,
+                                      left: -4,
                                       child: Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Icon(
-                                                IconData(user.findCategoryByID(transaction.toID).icon, fontFamily: 'MaterialIcons'),
+                                                IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).icon : user.findAccountByID(transaction.toID).icon, fontFamily: 'MaterialIcons'),
                                                 color: Colors.white.withOpacity(0.3),
-                                                size: 65
+                                                size: 50
                                             ),
                                           ]
                                       ),
@@ -191,20 +220,20 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                    "To Expense",
+                                                    getToLabel(transaction.transactionType),
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 12
+                                                        fontSize: 10
                                                     )
                                                 ),
                                                 SizedBox(height: 4.0),
                                                 Flexible(
                                                   child: Text(
-                                                    user.findCategoryByID(transaction.toID).name,
+                                                    transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).name : user.findAccountByID(transaction.toID).name,
                                                     style: TextStyle(
-                                                        fontSize: 18.0,
+                                                        fontSize: 16.0,
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.w500
+                                                        fontWeight: FontWeight.w600
                                                     ),
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
@@ -224,220 +253,6 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   ]
               ),
               Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: ToggleButton(
-                          childSelected: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      child: Icon(
-                                        Icons.favorite,
-                                        size: 11.0,
-                                        color: Colors.white,
-                                      ),
-                                      radius: 8.0,
-                                      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
-                                    ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Text("Need",
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 16
-                                      )
-                                  ),
-                                ),
-                              ]
-                          ),
-                          childUnselected: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      child: Icon(
-                                        Icons.favorite,
-                                        size: 11.0,
-                                        color: Colors.white,
-                                      ),
-                                      radius: 8.0,
-                                      backgroundColor: Theme.of(context).primaryColor,
-                                    ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Text("Need",
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 16
-                                      )
-                                  ),
-                                ),
-                              ]
-                          ),
-                          onChange: () {
-                              transaction.importance = TransactionImportance.need;
-                              user.updateTransaction(transaction);
-                          },
-                          selected: transaction.importance == TransactionImportance.need,
-                          outlineColor: Theme.of(context).primaryColor
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: ToggleButton(
-                          childSelected: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      child: Icon(
-                                        Icons.star,
-                                        size: 11.0,
-                                        color: Colors.white,
-                                      ),
-                                      radius: 8.0,
-                                      backgroundColor: Colors.yellow[700].withOpacity(0.5),
-                                    ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Text("Want",
-                                      style: TextStyle(
-                                          color: Colors.yellow[700],
-                                          fontSize: 16
-                                      )
-                                  ),
-                                ),
-                              ]
-                          ),
-                          childUnselected: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      child: Icon(
-                                        Icons.star,
-                                        size: 11.0,
-                                        color: Colors.white,
-                                      ),
-                                      radius: 8.0,
-                                      backgroundColor: Colors.yellow[700],
-                                    ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Text("Want",
-                                      style: TextStyle(
-                                          color: Colors.yellow[700],
-                                          fontSize: 16
-                                      )
-                                  ),
-                                ),
-                              ]
-                          ),
-                          onChange: () {
-                            setState(() {
-                              transaction.importance = TransactionImportance.want;
-                              user.updateTransaction(transaction);
-                            });
-                          },
-                          selected: transaction.importance == TransactionImportance.want,
-                          outlineColor: Colors.yellow[700]
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: ToggleButton(
-                        childSelected: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    child: Text("*",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18
-                                        )
-                                    ),
-                                    radius: 8.0,
-                                    backgroundColor: Colors.orange[700].withOpacity(0.5),
-                                  ),
-                                ],
-                              ),
-                              Center(
-                                child: Text("Sudden",
-                                    style: TextStyle(
-                                        color: Colors.orange[700],
-                                        fontSize: 16
-                                    )
-                                ),
-                              ),
-                            ]
-                        ),
-                        childUnselected: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    child: Text("*",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18
-                                        )
-                                    ),
-                                    radius: 8.0,
-                                    backgroundColor: Colors.orange[700],
-                                  ),
-                                ],
-                              ),
-                              Center(
-                                child: Text("Sudden",
-                                    style: TextStyle(
-                                        color: Colors.orange[700],
-                                        fontSize: 16
-                                    )
-                                ),
-                              ),
-                            ]
-                        ),
-                        onChange: () {
-                          transaction.importance = TransactionImportance.sudden;
-                          user.updateTransaction(transaction);
-                        },
-                        selected: transaction.importance == TransactionImportance.sudden,
-                        outlineColor: Colors.orange[700],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
                 color: const Color(0xFBFBFB).withOpacity(1),
                 width: double.infinity,
                 height: 82,
@@ -446,22 +261,41 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "Expense",
+                      getValueLabel(transaction.transactionType),
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
-                        color: Colors.red[700]
+                        color: getLabelColor(transaction.transactionType)
                       )
                     ),
-                    SizedBox(height: 14),
-                    Text(
-                      "${user.findAccountByID(transaction.fromID).currency.symbol} ${transaction.value}",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 32,
-                          color: Colors.red[700]
-                      )
-                    )
+                    SizedBox(height: 8),
+                    RichText(
+                      text: TextSpan(
+                          text: "${user.findAccountByID(transaction.fromID).currency.symbol}",
+                          style: TextStyle(
+                            color: getLabelColor(transaction.transactionType),
+                            fontSize: 26,
+                          ),
+                          children: [
+                            TextSpan(
+                                text: "${moneyFormat.format(transaction.value).split('.')[0]}",
+                                style: TextStyle(
+                                    color: getLabelColor(transaction.transactionType),
+                                    fontSize: 26,
+                                    fontFamily: "Poppins"
+                                )
+                            ),
+                            TextSpan(
+                                text: ".${moneyFormat.format(transaction.value).split('.')[1]}",
+                                style: TextStyle(
+                                    color: getLabelColor(transaction.transactionType),
+                                    fontSize: 26,
+                                    fontFamily: "Poppins"
+                                )
+                            )
+                          ]
+                      ),
+                    ),
                   ]
                 )
               ),
