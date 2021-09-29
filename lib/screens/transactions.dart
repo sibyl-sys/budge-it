@@ -92,13 +92,27 @@ class _TransactionsState extends State<Transactions> {
         ),
         SizedBox(height: 4),
         TotalHeader(header: "Total Net:", valueColor: Color(0x4F4F4F).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.getMonthlyNet(from: from, to: to, accountID: -1), description:
-        Text(user.getTransactionCount(from: from, to: to, accountID: -1).toString() + " Transactions",
-            style: TextStyle(
+        RichText(
+          text: TextSpan(
+              text: "xx%",
+              style: TextStyle(
+                color: Color(0x55C9C6).withOpacity(1),
+                fontWeight: FontWeight.w500,
                 fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey
-            )),
-        ),
+              ),
+              children: [
+                TextSpan(
+                    text: " Total Savings",
+                    style: TextStyle(
+                        color: Color(0xB6B6B6).withOpacity(1),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: "Poppins"
+                    )
+                ),
+              ]
+          ),
+        )),
         SizedBox(height: 8),
         Column(
           children: transactionListPerDay.map((e) =>
@@ -145,8 +159,8 @@ class _TransactionsState extends State<Transactions> {
                       Text(
                           e["value"].toString(),
                           style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
                               color: Color(0x4F4F4F).withOpacity(1)
                           )
                       ),
