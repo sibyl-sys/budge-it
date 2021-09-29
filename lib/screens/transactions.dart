@@ -143,8 +143,8 @@ class _TransactionsState extends State<Transactions> {
                             e["day"].toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 24,
-                              color: Color(0x4F4F4F).withOpacity(1)
+                              fontSize: 26,
+                              color: Color(0x3C3A5F).withOpacity(1)
                             )
                           ),
                           SizedBox(width: 8),
@@ -154,17 +154,16 @@ class _TransactionsState extends State<Transactions> {
                               Text(
                                   weekdays[e["weekday"]-1],
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: Color(0x4F4F4F).withOpacity(1)
+                                      fontSize: 10,
+                                      color: Color(0x3C3A5F).withOpacity(1)
                                   )
                               ),
                               Text(
                                   months[e["month"]] + " " + e["year"].toString(),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 12,
-                                      color: Color(0x4F4F4F).withOpacity(1)
+                                      color: Color(0x5F5C96).withOpacity(1)
                                   )
                               ),
                             ],
