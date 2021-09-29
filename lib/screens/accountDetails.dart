@@ -58,6 +58,7 @@ class _AccountDetailsState extends State<AccountDetails> {
               currencySymbol: user.primaryCurrency.symbol,
               type: transaction.transactionType,
               valueColor: getValueColor(transaction, currentAccount),
+              importance: transaction.importance,
             )
         ).toList()
     );

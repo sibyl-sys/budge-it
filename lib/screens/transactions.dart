@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
+import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +45,7 @@ class _TransactionsState extends State<Transactions> {
           transactionID: transaction.transactionID,
           currencySymbol: user.primaryCurrency.symbol,
           valueColor: getValueColor(transaction),
+          importance: transaction.importance,
         )
       ).toList()
     );
@@ -89,43 +91,13 @@ class _TransactionsState extends State<Transactions> {
           onChanged: changeDate,
         ),
         SizedBox(height: 4),
-        Container(
-          color: Colors.white,
-          height: 100,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 32.0),
-                    child: Text(
-                        monthlyNet.toString(),
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                            color: monthlyNet >= 0 ? Colors.teal[700] : Colors.red[700]
-                        )
-                    ),
-                  ),
-                  Icon(
-                    monthlyNet >= 0 ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                    size: 32,
-                    color: monthlyNet >= 0 ? Colors.teal[700] : Colors.red[700],
-                  ),
-                ],
-              ),
-              SizedBox(height: 8.0),
-              Text(user.getTransactionCount(from: from, to: to, accountID: -1).toString() + " Transactions",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey
-                  )),
-            ],
-          ),
+        TotalHeader(header: "Total Net:", valueColor: Color(0x4F4F4F).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.getMonthlyNet(from: from, to: to, accountID: -1), description:
+        Text(user.getTransactionCount(from: from, to: to, accountID: -1).toString() + " Transactions",
+            style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey
+            )),
         ),
         SizedBox(height: 8),
         Column(

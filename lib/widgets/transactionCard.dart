@@ -14,8 +14,9 @@ class TransactionCard extends StatefulWidget {
   final int transactionID;
   final String currencySymbol;
   final Color valueColor;
+  final TransactionImportance importance;
 
-  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName, this.transactionID, this.currencySymbol, this.valueColor});
+  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName, this.transactionID, this.importance, this.currencySymbol, this.valueColor});
 
   @override
   _TransactionCardState createState() => _TransactionCardState();
@@ -55,6 +56,46 @@ class _TransactionCardState extends State<TransactionCard> {
     }
   }
 
+  getImportanceIcon () {
+    if(widget.type == TransactionType.expense) {
+      if(widget.importance == TransactionImportance.need) {
+        return CircleAvatar(
+          child: Icon(
+            Icons.favorite,
+            size: 12.0,
+            color: Colors.white,
+          ),
+          radius: 9.0,
+          backgroundColor: Theme.of(context).primaryColor,
+        );
+      } else if (widget.importance == TransactionImportance.want) {
+        return CircleAvatar(
+          child: Icon(
+            Icons.favorite,
+            size: 12.0,
+            color: Colors.white,
+          ),
+          radius: 9.0,
+          backgroundColor: Theme.of(context).primaryColor,
+        );
+      } else if (widget.importance == TransactionImportance.sudden) {
+        return CircleAvatar(
+          child: Text("*",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14
+              )
+          ),
+          radius: 8.0,
+          backgroundColor: Colors.orange[700].withOpacity(0.5),
+        );
+      }
+    } else {
+      return SizedBox(width: 0);
+    }
+
+  }
+
 
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   @override
@@ -89,13 +130,19 @@ class _TransactionCardState extends State<TransactionCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                            widget.categoryName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14.0,
-                              color: Color(0x4F4F4F).withOpacity(1)
-                            )
+                        Row(
+                          children: [
+                            Text(
+                                widget.categoryName,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.0,
+                                  color: Color(0x4F4F4F).withOpacity(1)
+                                )
+                            ),
+                            SizedBox(width: 8),
+                            getImportanceIcon()
+                          ],
                         ),
                         SizedBox(height: 4),
                         Text(
