@@ -40,7 +40,7 @@ class _TotalHeaderState extends State<TotalHeader> {
               children: [
                 RichText(
                   text: TextSpan(
-                      text: "${widget.currencySymbol} ",
+                      text: widget.value < 0 ? "- ${widget.currencySymbol} " : "${widget.currencySymbol} ",
                       style: TextStyle(
                           color: widget.valueColor,
                           fontSize: 21,
@@ -48,7 +48,7 @@ class _TotalHeaderState extends State<TotalHeader> {
                       ),
                       children: [
                         TextSpan(
-                            text: "${moneyFormat.format(widget.value)}",
+                            text: "${moneyFormat.format(widget.value.abs())}",
                             style: TextStyle(
                                 color: widget.valueColor,
                                 fontSize: 21,
