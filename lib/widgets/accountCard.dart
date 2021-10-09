@@ -28,9 +28,9 @@ class AccountCard extends StatefulWidget {
 class _AccountCardState extends State<AccountCard> {
 
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-
   @override
   Widget build(BuildContext context) {
+    print(widget.progress);
     return Card(
       child: InkWell(
         splashColor:  Colors.teal[700].withAlpha(50),
@@ -49,7 +49,7 @@ class _AccountCardState extends State<AccountCard> {
                     CircularPercentIndicator(
                         radius: 48,
                         lineWidth: 4.0,
-                        percent: widget.creditLimit == 0 ? 0 : min(widget.progress / 100, 1),
+                        percent: widget.creditLimit == 0 ? 0 : max(0, min(widget.progress / 100, 1)),
                         progressColor: Colors.lightGreen,
                         backgroundColor: widget.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
                         center: CircleAvatar(
@@ -76,18 +76,18 @@ class _AccountCardState extends State<AccountCard> {
                         SizedBox(height: 4),
                         RichText(
                             text: TextSpan(
-                                text: "${widget.currencySymbol} ",
+                                text: widget.balance > 0 ? "${widget.currencySymbol} " : "- ${widget.currencySymbol} ",
                                 style: TextStyle(
-                                    color: Color(0x55C9C6).withOpacity(1),
+                                    color: widget.balance > 0 ? Color(0x55C9C6).withOpacity(1) :Color(0xEB6467).withOpacity(1) ,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: "${moneyFormat.format(widget.balance).split('.')[0]}",
+                                    text: "${moneyFormat.format(widget.balance.abs()).split('.')[0]}",
                                     style: TextStyle(
-                                        color: Color(0x55C9C6).withOpacity(1),
                                         fontSize: 16,
+                                        color: widget.balance > 0 ? Color(0x55C9C6).withOpacity(1) :Color(0xEB6467).withOpacity(1) ,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500
                                     )
@@ -95,7 +95,7 @@ class _AccountCardState extends State<AccountCard> {
                                   TextSpan(
                                       text: ".${moneyFormat.format(widget.balance).split('.')[1]}",
                                       style: TextStyle(
-                                          color: Color(0x55C9C6).withOpacity(1),
+                                          color: widget.balance > 0 ? Color(0x55C9C6).withOpacity(1) :Color(0xEB6467).withOpacity(1) ,
                                           fontSize: 14,
                                           fontFamily: "Poppins",
                                           fontWeight: FontWeight.w500
@@ -122,7 +122,7 @@ class _AccountCardState extends State<AccountCard> {
                         )
                     ),
                     SizedBox(height: 4),
-                    CreditLimitText(currencySymbol: widget.currencySymbol, creditLimit: widget.creditLimit, progress: widget.progress,)
+                    CreditLimitText(currencySymbol: widget.currencySymbol, creditLimit: widget.creditLimit, progress: widget.progress)
                   ],
                 ),
               ],

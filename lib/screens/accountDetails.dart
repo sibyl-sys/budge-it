@@ -132,7 +132,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                             CircularPercentIndicator(
                               radius: 48,
                               lineWidth: 4.0,
-                              percent: currentAccount.creditLimit > 0 ? min(currentAccount.balance / currentAccount.creditLimit, 1) : 0,
+                              percent: currentAccount.creditLimit > 0 ? max(0, min(currentAccount.balance / currentAccount.creditLimit, 1)) : 0,
                               progressColor: Colors.lightGreen,
                               backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
                               center: CircleAvatar(
