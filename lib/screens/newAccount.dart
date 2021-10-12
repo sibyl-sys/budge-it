@@ -28,7 +28,7 @@ class _NewAccountState extends State<NewAccount> {
   final TextEditingController descriptionController = TextEditingController();
   double balance = 0;
   double limit = 0;
-  IconData accountIcon = Icons.account_balance_wallet;
+  IconData accountIcon = Icons.account_balance_wallet_outlined;
   Color accountColor = Colors.blue[400];
   bool isDarkIcon = false;
   Currency selectedCurrency;
@@ -129,66 +129,96 @@ class _NewAccountState extends State<NewAccount> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 20.0, 16.0, 20.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: accountColor,
-                      child: IconButton(
-                          icon: Icon(accountIcon, size: 30),
-                          color: isDarkIcon ? Colors.black.withOpacity(0.2) : Colors.white,
-                          onPressed: () async {
-                            final result = await Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  barrierColor: Colors.black.withOpacity(0.25),
-                                  barrierDismissible: true,
-                                  opaque: false,
-                                  pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
-                                )
-                            );
-                            if(result != null) {
-                              setState(() {
-                                accountIcon = result["iconData"];
-                                accountColor = result["backgroundColor"];
-                                isDarkIcon = result["isDarkIcon"];
-                              });
-                            }
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero
+              ),
+              margin: EdgeInsets.zero,
+              color: accountColor,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                child: Container(
+                  height: 75,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                          children : [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: IconButton(
+                                  icon: Icon(accountIcon, size: 30),
+                                  color: accountColor,
+                                  onPressed: () async {
+                                    final result = await Navigator.of(context).push(
+                                        PageRouteBuilder(
+                                          barrierColor: Colors.black.withOpacity(0.25),
+                                          barrierDismissible: true,
+                                          opaque: false,
+                                          pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
+                                        )
+                                    );
+                                    if(result != null) {
+                                      setState(() {
+                                        accountIcon = result["iconData"];
+                                        accountColor = result["backgroundColor"];
+                                        isDarkIcon = result["isDarkIcon"];
+                                      });
+                                    }
 
-                          }
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        _selectAccountType(context);
-                      },
-                      child: Container(
-                        width: 250,
-                        height: 50,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                                getAccountTypeString(),
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400
-                                )
+                                  }
+                              ),
                             ),
-                            Icon(
-                              Icons.arrow_right,
-                              color: Theme.of(context).primaryColor,
-                              size: 28
-                            )
-                          ],
-                        )
-                      )
-                    )
-                  ]
+                            SizedBox(width: 20),
+                            InkWell(
+                              onTap: () {
+                                _selectAccountType(context);
+                              },
+                              splashColor: Colors.white.withOpacity(0.5),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                width: 250,
+                                height: 50,
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "Type",
+                                          style: TextStyle(
+                                            color: Color(0xB6B6B6).withOpacity(1),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12.0,
+                                          )
+                                      ),
+                                      SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          Text(
+                                              getAccountTypeString(),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14.0,
+                                              )
+                                          ),
+                                          Icon(
+                                              Icons.arrow_drop_down_sharp,
+                                              color: Colors.white,
+                                              size: 24
+                                          )
+                                        ],
+                                      ),
+                                    ]
+                                ),
+                              ),
+                            ),
+                          ]
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             Stack(

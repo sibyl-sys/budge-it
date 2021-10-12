@@ -118,6 +118,9 @@ class _AccountDetailsState extends State<AccountDetails> {
       body: Column(
         children: [
           Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero
+            ),
             margin: EdgeInsets.zero,
             color: Color(currentAccount.color).withOpacity(1),
             child: Padding(
