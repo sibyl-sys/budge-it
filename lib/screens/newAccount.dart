@@ -521,7 +521,7 @@ class _NewAccountState extends State<NewAccount> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Column(
@@ -570,37 +570,49 @@ class _NewAccountState extends State<NewAccount> {
                 ),
               ),
             ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: (){
-                        setState(() {
-                          isIncludedInTotalNet = !isIncludedInTotalNet;
-                        });
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    isIncludedInTotalNet = !isIncludedInTotalNet;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 10.0, 0),
+                  width: double.infinity,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                            "Include in Total Net",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: const Color(0xFF4F4F4F)
-                            )
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "Include in Total Net",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF4F4F4F)
+                                )
+                            ),
+                            Text(
+                                "Balance added to total net worth",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFFB6B6B6)
+                                )
+                            ),
+                          ],
                         ),
                         SizedBox(
                           width: 60,
@@ -616,8 +628,9 @@ class _NewAccountState extends State<NewAccount> {
                         )
                       ],
                     ),
-                  )
-                ]
+                  ),
+                ),
+              ),
             ),
           ],
         ),
