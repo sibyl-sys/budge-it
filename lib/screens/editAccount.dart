@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/calculator.dart';
+import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:intl/intl.dart';
@@ -66,19 +67,22 @@ class _EditAccountState extends State<EditAccount> {
     });
   }
 
-  TextStyle generateMoneyStyle(double value) {
-    if(value > 0) {
-      return TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
-          color: Colors.teal[400]
-      );
+
+  Color generateMoneyStyle(double value) {
+    if(value < 0) {
+      return Color(0xFFEB6467);
+    } else if(value == 0) {
+      return Color(0xFFB6B6B6);
     } else {
-      return TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 18,
-          color: const Color(0xFFBDBDBD)
-      );
+      return Color(0xFF55C9C6);
+    }
+  }
+
+  Color generateLimitStyle(double value) {
+    if (value == 0) {
+      return Color(0xFFB6B6B6);
+    } else {
+      return Color(0xFF4F4F4F);
     }
   }
 
@@ -153,279 +157,209 @@ class _EditAccountState extends State<EditAccount> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 20.0, 16.0, 20.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: accountColor,
-                      child: IconButton(
-                          icon: Icon(accountIcon, size: 30),
-                          color: isDarkIcon ? Colors.black.withOpacity(0.2) : Colors.white,
-                          onPressed: () async {
-                            final result = await Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  barrierColor: Colors.black.withOpacity(0.25),
-                                  barrierDismissible: true,
-                                  opaque: false,
-                                  pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
-                                )
-                            );
-                            if(result != null) {
-                              setState(() {
-                                accountIcon = result["iconData"];
-                                accountColor = result["backgroundColor"];
-                                isDarkIcon = result["isDarkIcon"];
-                              });
-                            }
+            Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero
+              ),
+              margin: EdgeInsets.zero,
+              color: accountColor,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                child: Container(
+                  height: 75,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                          children : [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: IconButton(
+                                  icon: Icon(accountIcon, size: 30),
+                                  color: accountColor,
+                                  onPressed: () async {
+                                    final result = await Navigator.of(context).push(
+                                        PageRouteBuilder(
+                                          barrierColor: Colors.black.withOpacity(0.25),
+                                          barrierDismissible: true,
+                                          opaque: false,
+                                          pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
+                                        )
+                                    );
+                                    if(result != null) {
+                                      setState(() {
+                                        accountIcon = result["iconData"];
+                                        accountColor = result["backgroundColor"];
+                                        isDarkIcon = result["isDarkIcon"];
+                                      });
+                                    }
 
-                          }
-                      ),
-                    ),
-                    InkWell(
-                        onTap: () {
-                          _selectAccountType(context);
-                        },
-                        child: Container(
-                            width: 250,
-                            height: 50,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                    getAccountTypeString(),
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400
-                                    )
+                                  }
+                              ),
+                            ),
+                            SizedBox(width: 20),
+                            InkWell(
+                              onTap: () {
+                                _selectAccountType(context);
+                              },
+                              splashColor: Colors.white.withOpacity(0.5),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                width: 250,
+                                height: 50,
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "Type",
+                                          style: TextStyle(
+                                            color: Color(0xB6B6B6).withOpacity(1),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12.0,
+                                          )
+                                      ),
+                                      SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          Text(
+                                              getAccountTypeString(),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14.0,
+                                              )
+                                          ),
+                                          Icon(
+                                              Icons.arrow_drop_down_sharp,
+                                              color: Colors.white,
+                                              size: 24
+                                          )
+                                        ],
+                                      ),
+                                    ]
                                 ),
-                                Icon(
-                                    Icons.arrow_right,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 28
-                                )
-                              ],
-                            )
-                        )
-                    )
-                  ]
+                              ),
+                            ),
+                          ]
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: (){
-                        nameFocusNode.requestFocus();
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  nameFocusNode.requestFocus();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                             "Name",
                             style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: const Color(0xFF4F4F4F)
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
                             )
                         ),
-                        SizedBox(
-                          width: 250,
+                        SizedBox(height: 8.0),
+                        Expanded(
                           child: TextField(
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: const Color(0xFF4F4F4F)
                             ),
                             focusNode: nameFocusNode,
-                            textAlign: TextAlign.right,
                             controller: accountNameController,
                             decoration: InputDecoration(
-                                isDense: true,
-                                border: InputBorder.none,
-                                hintText: "Untitled Account",
-                                hintStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 18,
-                                    color: const Color(0xFFBDBDBD)
-                                )
+                              isDense: true,
+                              border: InputBorder.none,
+                              hintText: "Untitled Account",
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: const Color(0xFFBDBDBD)
+                              ),
                             ),
                           ),
                         )
 
                       ],
                     ),
-                  )
-                ]
+                  ),
+                ),
+              ),
             ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: () async {
-                        final result = await Navigator.of(context).push(
-                            PageRouteBuilder(
-                              barrierColor: Colors.black.withOpacity(0.25),
-                              barrierDismissible: true,
-                              opaque: false,
-                              pageBuilder: (_, __, ___) => Calculator(),
-                            )
-                        );
-                        if(result != null) {
-                          setState(() {
-                            balance = result;
-                          });
-                        }
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async {
+                  final result = await Navigator.of(context).push(
+                      PageRouteBuilder(
+                        barrierColor: Colors.black.withOpacity(0.25),
+                        barrierDismissible: true,
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => CurrencySelection(),
+                      )
+                  );
+                  if(result != null) {
+                    setState(() {
+                      selectedCurrency = result;
+                    });
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
-                    child: IgnorePointer(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              "Balance",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: const Color(0xFF4F4F4F)
-                              )
-                          ),
-                          Text(
-                            "P ${moneyFormat.format(this.balance)}",
-                            style: generateMoneyStyle(this.balance),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ]
-            ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: () async {
-                        final result = await Navigator.of(context).push(
-                            PageRouteBuilder(
-                              barrierColor: Colors.black.withOpacity(0.25),
-                              barrierDismissible: true,
-                              opaque: false,
-                              pageBuilder: (_, __, ___) => Calculator(),
-                            )
-                        );
-                        if(result != null) {
-                          setState(() {
-                            limit = result;
-                          });
-                        }
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
-                    child: IgnorePointer(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              "Limit",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: const Color(0xFF4F4F4F)
-                              )
-                          ),
-                          Text(
-                              "P ${moneyFormat.format(this.limit)}",
-                              style: generateMoneyStyle(this.limit)
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ]
-            ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: (){
-                        //TODO CURRENCY SELECTION
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  width: double.infinity,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                             "Currency",
                             style: TextStyle(
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: const Color(0xFF4F4F4F)
+                                color: Theme.of(context).primaryColor
                             )
                         ),
                         RichText(
                           text: TextSpan(
                               text: "${selectedCurrency.symbol} ",
                               style: TextStyle(
-                                  color: Colors.green[700],
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF4F4F4F)
                               ),
                               children: [
                                 TextSpan(
                                     text: " (${selectedCurrency.name})",
                                     style: TextStyle(
-                                        color: Colors.green[700],
-                                        fontSize: 18,
+                                        fontSize: 14,
                                         fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500
+                                        fontWeight: FontWeight.w500,
+                                        color: const Color(0xFF4F4F4F)
                                     )
                                 ),
                               ]
@@ -433,100 +367,278 @@ class _EditAccountState extends State<EditAccount> {
                         ),
                       ],
                     ),
-                  )
-                ]
+                  ),
+                ),
+              ),
             ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: (){
-                        descriptionFocusNode.requestFocus();
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async {
+                  final result = await Navigator.of(context).push(
+                      PageRouteBuilder(
+                        barrierColor: Colors.black.withOpacity(0.25),
+                        barrierDismissible: true,
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => Calculator(),
+                      )
+                  );
+                  if(result != null) {
+                    setState(() {
+                      balance = result;
+                    });
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
-                    child: IgnorePointer(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              "Description",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: const Color(0xFF4F4F4F)
-                              )
-                          ),
-                          SizedBox(
-                            width: 250,
-                            child: TextField(
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: const Color(0xFF4F4F4F)
-                              ),
-                              focusNode: descriptionFocusNode,
-                              textAlign: TextAlign.right,
-                              controller: descriptionController,
-                              decoration: InputDecoration(
-                                  isDense: true,
-                                  border: InputBorder.none,
-                                  hintText: "ex. Daily carry wallet",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 18,
-                                      color: const Color(0xFFBDBDBD)
-                                  )
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ]
-            ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: (){
-                        setState(() {
-                          isIncludedInTotalNet = !isIncludedInTotalNet;
-                        });
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 10.0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  width: double.infinity,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Include in Total Net",
+                            "Balance",
                             style: TextStyle(
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: const Color(0xFF4F4F4F)
+                                color: Theme.of(context).primaryColor
                             )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                  text: "${selectedCurrency.symbol} ",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: generateMoneyStyle(this.balance)
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                        text: "${moneyFormat.format(this.balance)}",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w500,
+                                            color: generateMoneyStyle(this.balance)
+                                        )
+                                    ),
+                                  ]
+                              ),
+                            ),
+                            Text(
+                                "Current Amount",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFFB6B6B6)
+                                )
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async {
+                  final result = await Navigator.of(context).push(
+                      PageRouteBuilder(
+                        barrierColor: Colors.black.withOpacity(0.25),
+                        barrierDismissible: true,
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => Calculator(),
+                      )
+                  );
+                  if(result != null) {
+                    setState(() {
+                      limit = result;
+                    });
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                    ),
+                  ),
+                  width: double.infinity,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            "Limit",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).primaryColor
+                            )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                  text: "${selectedCurrency.symbol} ",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: generateLimitStyle(this.limit)
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                        text: "${moneyFormat.format(this.limit)}",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w500,
+                                            color: generateLimitStyle(this.limit)
+                                        )
+                                    ),
+                                  ]
+                              ),
+                            ),
+                            Text(
+                                "Transaction Alert",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFFB6B6B6)
+                                )
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  descriptionFocusNode.requestFocus();
+                },
+                child: Container(
+                  height: 74,
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "Description",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                )
+                            ),
+                            SizedBox(height: 8),
+                            SizedBox(
+                              width: 200,
+                              height: 14,
+                              child: TextField(
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: const Color(0xFF4F4F4F)
+                                ),
+                                focusNode: descriptionFocusNode,
+                                controller: descriptionController,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            )
+
+                          ],
+                        ),
+                        Text(
+                            "Ex. Daily carry wallet",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFB6B6B6)
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    isIncludedInTotalNet = !isIncludedInTotalNet;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                    ),
+                  ),
+                  width: double.infinity,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "Include in Total Net",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF4F4F4F)
+                                )
+                            ),
+                            Text(
+                                "Balance added to total net worth",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFFB6B6B6)
+                                )
+                            ),
+                          ],
                         ),
                         SizedBox(
                           width: 60,
@@ -542,150 +654,159 @@ class _EditAccountState extends State<EditAccount> {
                         )
                       ],
                     ),
-                  )
-                ]
+                  ),
+                ),
+              ),
             ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: () {
-                        //TODO: ARCHIVE CONFIMRATION POPUP
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                                title: Text("Archive ${accountNameController.text}?"),
-                                content: Text("All transactions in this account will be archived as well. You may unarchive the account in the Archives menu.",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400
-                                        ),
-                                ),
-                                actions: [
-                                  TextButton(onPressed: (){
-                                    Navigator.pop(context);
-                                  }, child: Text('Cancel')),
-                                  TextButton(onPressed: (){
-                                    User userModel = context.read<User>();
-                                    userModel.archiveAccount(widget.accountIndex);
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  }, child: Text(
-                                      'Archive',
-                                  )),
-                                ]
-                            )
-                        );
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                          title: Text("Archive ${accountNameController.text}?"),
+                          content: Text("All transactions in this account will be archived as well. You may unarchive the account in the Archives menu.",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400
+                            ),
+                          ),
+                          actions: [
+                            TextButton(onPressed: (){
+                              Navigator.pop(context);
+                            }, child: Text('Cancel')),
+                            TextButton(onPressed: (){
+                              User userModel = context.read<User>();
+                              userModel.archiveAccount(widget.accountIndex);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            }, child: Text(
+                              'Archive',
+                            )),
+                          ]
+                      )
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 10.0, 0),
-                    child: IgnorePointer(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                              "Archive Account",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: const Color(0xFF4F4F4F)
-                              )
-                          )
-                        ],
-                      ),
+                  width: double.infinity,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            "Archive Account",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF4F4F4F)
+                            )
+                        ),
+                        Text(
+                            "Hide account and transactions",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFB6B6B6)
+                            )
+                        ),
+                      ],
                     ),
-                  )
-                ]
+                  ),
+                ),
+              ),
             ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: (){
-                        //TODO: ADD TRANSACTION COUNT
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: Text("Delete ${accountNameController.text}?"),
-                            content: RichText(
-                                text: TextSpan(
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                          title: Text("Delete ${accountNameController.text}?"),
+                          content: RichText(
+                              text: TextSpan(
                                   text: "All transactions in this account will be deleted permanently. \n\nIf you wish to hide this account, you may consider ",
                                   style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400
                                   ),
                                   children: [
                                     TextSpan(
                                         text: "Archive",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w700,
+                                          fontWeight: FontWeight.w700,
                                         )
                                     ),
                                     TextSpan(
                                       text: " instead",
                                     )
                                   ]
-                                )
-                            ),
-                            actions: [
-                              TextButton(onPressed: (){
-                                Navigator.pop(context);
-                              }, child: Text('Cancel')),
-                              TextButton(onPressed: () {
-                                User userModel = context.read<User>();
-                                userModel.deleteAccount(widget.accountIndex);
-                                Navigator.pushNamedAndRemoveUntil(context, "/home", (Route<dynamic> route) => false);
-                              }, child: Text(
+                              )
+                          ),
+                          actions: [
+                            TextButton(onPressed: (){
+                              Navigator.pop(context);
+                            }, child: Text('Cancel')),
+                            TextButton(onPressed: () {
+                              User userModel = context.read<User>();
+                              userModel.deleteAccount(widget.accountIndex);
+                              Navigator.pushNamedAndRemoveUntil(context, "/home", (Route<dynamic> route) => false);
+                            }, child: Text(
                                 'Delete',
                                 style: TextStyle(
-                                  color: Colors.red[700]
+                                    color: Colors.red[700]
                                 )
-                              )),
-                            ]
-                          )
-                        );
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
+                            )),
+                          ]
+                      )
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 10.0, 0),
-                    child: IgnorePointer(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                              "Delete Account",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Colors.red[700]
-                              )
-                          )
-                        ],
-                      ),
+                  width: double.infinity,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            "Delete Account",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFEB6467)
+                            )
+                        ),
+                        Text(
+                            "Permanently remove account and transactions",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFB6B6B6)
+                            )
+                        ),
+                      ],
                     ),
-                  )
-                ]
+                  ),
+                ),
+              ),
             ),
           ],
         ),
