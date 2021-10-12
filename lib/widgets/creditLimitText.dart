@@ -23,35 +23,35 @@ class _CreditLimitTextState extends State<CreditLimitText> {
     if(widget.creditLimit > 0) {
       return RichText(
         text: TextSpan(
-            text: "${widget.currencySymbol} ",
+            text: "/ ${widget.currencySymbol} ",
             style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 14,
             ),
             children: [
             TextSpan(
-                text: "${moneyFormat.format(widget.creditLimit)} (",
+                text: "${moneyFormat.format(widget.creditLimit)}",
                 style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 14,
                     fontFamily: "Poppins"
                 )
               ),
-              TextSpan(
-                text: "${widget.progress.toStringAsFixed(2)}%",
-                style: TextStyle(
-                    color: Color(0x55C9C6).withOpacity(1),
-                    fontSize: 14,
-                    fontFamily: "Poppins"
-                ),
-              ),
-              TextSpan(
-                text: ")",
-                style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14
-                ),
-              ),
+              // TextSpan(
+              //   text: "(${widget.progress.toStringAsFixed(2)}%",
+              //   style: TextStyle(
+              //       color: Color(0x55C9C6).withOpacity(1),
+              //       fontSize: 14,
+              //       fontFamily: "Poppins"
+              //   ),
+              // ),
+              // TextSpan(
+              //   text: ")",
+              //   style: TextStyle(
+              //       color: Colors.grey[600],
+              //       fontSize: 14
+              //   ),
+              // ),
             ]
         ),
       );
