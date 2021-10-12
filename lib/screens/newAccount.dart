@@ -512,29 +512,33 @@ class _NewAccountState extends State<NewAccount> {
                   descriptionFocusNode.requestFocus();
                 },
                 child: Container(
+                  height: 74,
                   decoration: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  height: 74,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 2.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                            "Description",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            )
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
+                            Text(
+                                "Description",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                )
+                            ),
+                            SizedBox(height: 8),
+                            SizedBox(
+                              width: 200,
+                              height: 14,
                               child: TextField(
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
@@ -548,18 +552,18 @@ class _NewAccountState extends State<NewAccount> {
                                   border: InputBorder.none,
                                 ),
                               ),
-                            ),
-                            Text(
-                                "Ex. Daily carry wallet",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFFB6B6B6)
-                                )
-                            ),
-                          ],
-                        )
+                            )
 
+                          ],
+                        ),
+                        Text(
+                            "Ex. Daily carry wallet",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFB6B6B6)
+                            )
+                        ),
                       ],
                     ),
                   ),
