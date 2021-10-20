@@ -99,6 +99,32 @@ class _EditAccountState extends State<EditAccount> {
     }
   }
 
+  String getLimitHeader() {
+    switch(_accountType) {
+      case AccountType.wallet:
+        return "Expense Limit";
+      case AccountType.savings:
+        return "Goal";
+      case AccountType.debt:
+        return "Total Debt";
+      default:
+        return "Expense Limit";
+    }
+  }
+
+  String getLimitDescription() {
+    switch(_accountType) {
+      case AccountType.wallet:
+        return "Transaction Alert";
+      case AccountType.savings:
+        return "Savings Target";
+      case AccountType.debt:
+        return "";
+      default:
+        return "Expense Limit";
+    }
+  }
+
   @override
   void dispose() {
     nameFocusNode.dispose();
@@ -484,7 +510,7 @@ class _EditAccountState extends State<EditAccount> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Limit",
+                            getLimitHeader(),
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -516,7 +542,7 @@ class _EditAccountState extends State<EditAccount> {
                               ),
                             ),
                             Text(
-                                "Transaction Alert",
+                                getLimitDescription(),
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,

@@ -11,13 +11,17 @@ import 'package:provider/provider.dart';
 
 
 class NewAccount extends StatefulWidget {
+  final AccountType accountType;
+
+  const NewAccount({Key key, this.accountType}) : super(key: key);
+
+
   @override
   _NewAccountState createState() => _NewAccountState();
 }
 
 
 class _NewAccountState extends State<NewAccount> {
-  //TODO INITIALIZE CURRENCY
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
   AccountType _accountType = AccountType.wallet;
@@ -33,11 +37,25 @@ class _NewAccountState extends State<NewAccount> {
   bool isDarkIcon = false;
   Currency selectedCurrency;
 
+
+
   void initState() {
     super.initState();
     User userModel = context.read<User>();
+    IconData defaultIcon = Icons.account_balance_wallet_outlined;
+    Color defaultColor = Colors.deepPurple[400];
+
+    if(widget.accountType == AccountType.savings) {
+      defaultIcon = Icons.account_balance_outlined;
+      defaultColor = Colors.teal[400];
+    }
+
+
     setState(() {
       selectedCurrency = userModel.primaryCurrency;
+      _accountType = widget.accountType;
+      accountColor = defaultColor;
+      accountIcon = defaultIcon;
     });
   }
 
@@ -81,6 +99,32 @@ class _NewAccountState extends State<NewAccount> {
         return "Debt - Mortgage";
       default:
         return "Stash";
+    }
+  }
+
+  String getLimitHeader() {
+    switch(_accountType) {
+      case AccountType.wallet:
+        return "Expense Limit";
+      case AccountType.savings:
+        return "Goal";
+      case AccountType.debt:
+        return "Total Debt";
+      default:
+        return "Expense Limit";
+    }
+  }
+
+  String getLimitDescription() {
+    switch(_accountType) {
+      case AccountType.wallet:
+        return "Transaction Alert";
+      case AccountType.savings:
+        return "Savings Target";
+      case AccountType.debt:
+        return "";
+      default:
+        return "Expense Limit";
     }
   }
 
@@ -458,7 +502,7 @@ class _NewAccountState extends State<NewAccount> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Limit",
+                            this.getLimitHeader(),
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -490,7 +534,7 @@ class _NewAccountState extends State<NewAccount> {
                               ),
                             ),
                             Text(
-                                "Transaction Alert",
+                                this.getLimitDescription(),
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,

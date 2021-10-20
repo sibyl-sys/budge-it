@@ -3,6 +3,7 @@ import 'package:money_tracker/screens/accounts.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/categories.dart';
+import 'package:money_tracker/screens/newAccount.dart';
 import 'package:money_tracker/screens/rearrangeCategories.dart';
 import 'package:money_tracker/screens/transactions.dart';
 import 'package:money_tracker/services/account.dart';
@@ -24,9 +25,24 @@ Future<void> _selectAccountType(BuildContext context) async {
         return AccountsType();
       })) {
     case AccountType.wallet:
-      Navigator.pushNamed(context, "/newAccount");
+      Navigator.of(context).push(
+          PageRouteBuilder(
+            barrierColor: Colors.black.withOpacity(0.25),
+            barrierDismissible: true,
+            opaque: false,
+            pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.wallet),
+          )
+      );
       break;
     case AccountType.savings:
+      Navigator.of(context).push(
+          PageRouteBuilder(
+            barrierColor: Colors.black.withOpacity(0.25),
+            barrierDismissible: true,
+            opaque: false,
+            pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.savings),
+          )
+      );
       break;
     case AccountType.debt:
       break;
