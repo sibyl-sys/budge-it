@@ -69,9 +69,11 @@ class _NewAccountState extends State<NewAccount> {
           return AccountsType();
         }
     );
-    setState(() {
-      _accountType = newAccountType;
-    });
+    if(newAccountType != null) {
+      setState(() {
+        _accountType = newAccountType;
+      });
+    }
   }
 
   Color generateMoneyStyle(double value) {
