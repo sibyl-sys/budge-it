@@ -128,6 +128,36 @@ class _NewAccountState extends State<NewAccount> {
     }
   }
 
+  String getBalanceHeader() {
+    switch(_accountType) {
+      case AccountType.wallet:
+        return "Balance";
+      case AccountType.savings:
+        return "Balance";
+      case AccountType.debt:
+        return "Debt Balance";
+      default:
+        return "Expense Limit";
+    }
+  }
+
+  String getBalanceDescription() {
+    switch(_accountType) {
+      case AccountType.wallet:
+        return "Current Amount";
+      case AccountType.savings:
+        return "Current Amount";
+      case AccountType.debt:
+        if(balance > 0)
+          return "I am Owed";
+        else
+          return "I Owe";
+        break;
+      default:
+        return "Expense Limit";
+    }
+  }
+
   @override
   void dispose() {
     nameFocusNode.dispose();
@@ -422,7 +452,7 @@ class _NewAccountState extends State<NewAccount> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Balance",
+                            getLimitHeader(),
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -454,7 +484,7 @@ class _NewAccountState extends State<NewAccount> {
                               ),
                             ),
                             Text(
-                                "Current Amount",
+                                getBalanceDescription(),
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
