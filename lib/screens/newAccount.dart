@@ -431,7 +431,7 @@ class _NewAccountState extends State<NewAccount> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrency: selectedCurrency, header: getBalanceHeader()),
                       )
                   );
                   if(result != null) {
@@ -455,7 +455,7 @@ class _NewAccountState extends State<NewAccount> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            getLimitHeader(),
+                            getBalanceHeader(),
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -511,7 +511,7 @@ class _NewAccountState extends State<NewAccount> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrency: this.selectedCurrency, header: getLimitHeader()),
                       )
                   );
                   if(result != null) {

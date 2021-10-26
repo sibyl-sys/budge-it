@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/services/currency.dart';
 
 enum Operator {
   addition,
@@ -9,6 +10,11 @@ enum Operator {
 }
 
 class Calculator extends StatefulWidget {
+  final Currency valueCurrency;
+  final String header;
+
+  const Calculator({Key key, this.valueCurrency, this.header}) : super(key: key);
+
   @override
   _CalculatorState createState() => _CalculatorState();
 }
@@ -213,7 +219,7 @@ class _CalculatorState extends State<Calculator> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Account Balance",
+                    widget.header,
                     style: TextStyle(
                         decoration: TextDecoration.none,
                         fontSize: 16,
