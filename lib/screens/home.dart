@@ -45,6 +45,14 @@ Future<void> _selectAccountType(BuildContext context) async {
       );
       break;
     case AccountType.debt:
+      Navigator.of(context).push(
+          PageRouteBuilder(
+            barrierColor: Colors.black.withOpacity(0.25),
+            barrierDismissible: true,
+            opaque: false,
+            pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.debt),
+          )
+      );
       break;
   }
 }

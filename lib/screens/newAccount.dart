@@ -48,6 +48,9 @@ class _NewAccountState extends State<NewAccount> {
     if(widget.accountType == AccountType.savings) {
       defaultIcon = Icons.account_balance_outlined;
       defaultColor = Colors.teal[400];
+    } else if(widget.accountType == AccountType.debt) {
+      defaultIcon = Icons.credit_card_outlined;
+      defaultColor = Colors.red[400];
     }
 
 
