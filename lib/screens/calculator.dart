@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/services/currency.dart';
+import 'package:intl/intl.dart';
 
 enum Operator {
   addition,
@@ -10,10 +11,10 @@ enum Operator {
 }
 
 class Calculator extends StatefulWidget {
-  final Currency valueCurrency;
+  final String valueCurrencySymbol;
   final String header;
 
-  const Calculator({Key key, this.valueCurrency, this.header}) : super(key: key);
+  const Calculator({Key key, this.valueCurrencySymbol, this.header}) : super(key: key);
 
   @override
   _CalculatorState createState() => _CalculatorState();
@@ -25,6 +26,8 @@ class _CalculatorState extends State<Calculator> {
   String secondValue = "";
   bool isDecimal = false;
   Operator operator = Operator.none;
+
+  final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
   void eraseDigit() {
     if(operator == Operator.none) {
@@ -57,25 +60,207 @@ class _CalculatorState extends State<Calculator> {
     }
   }
 
-  String getTextDisplay() {
+  Widget getTextDisplay() {
     if(firstValue == "") {
-      return "0";
+      return RichText(
+        text: TextSpan(
+            text: "${widget.valueCurrencySymbol}",
+            style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).primaryColor
+            ),
+            children: [
+              TextSpan(
+                  text: moneyFormat.format(0),
+                  style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColor
+                  )
+              ),
+            ]
+        ),
+      );
+    }
+
+    if(secondValue == "" && operator != Operator.none) {
+      secondValue = "0";
     }
     switch(operator) {
       case Operator.addition:
-        return firstValue + " + " + secondValue;
+        return RichText(
+          text: TextSpan(
+              text: double.parse(firstValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol} ",
+              style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor
+              ),
+              children: [
+                TextSpan(
+                    text: moneyFormat.format(double.parse(firstValue)) + " + ",
+                    style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColor
+                    )
+                ),
+                TextSpan(
+                    text: double.parse(secondValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol}",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+                TextSpan(
+                    text: moneyFormat.format(double.parse(secondValue)),
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+              ]
+          ),
+        );
         break;
       case Operator.subtraction:
-        return firstValue + " - " + secondValue;
+        return RichText(
+          text: TextSpan(
+              text: double.parse(firstValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol} ",
+              style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor
+              ),
+              children: [
+                TextSpan(
+                    text: moneyFormat.format(double.parse(firstValue)) + " - ",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+                TextSpan(
+                    text: double.parse(secondValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol}",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+                TextSpan(
+                    text: moneyFormat.format(double.parse(secondValue)),
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+              ]
+          ),
+        );
         break;
       case Operator.multiplication:
-        return firstValue + " x " + secondValue;
+        return RichText(
+          text: TextSpan(
+              text: double.parse(firstValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol} ",
+              style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor
+              ),
+              children: [
+                TextSpan(
+                    text: moneyFormat.format(double.parse(firstValue)) + " x ",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+                TextSpan(
+                    text: double.parse(secondValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol}",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+                TextSpan(
+                    text: moneyFormat.format(double.parse(secondValue)),
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+              ]
+          ),
+        );
         break;
       case Operator.division:
-        return firstValue + " ÷ " + secondValue;
+        return RichText(
+          text: TextSpan(
+              text: double.parse(firstValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol} ",
+              style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor
+              ),
+              children: [
+                TextSpan(
+                    text: moneyFormat.format(double.parse(firstValue)) + " ÷ ",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+                TextSpan(
+                    text: double.parse(secondValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol}",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+                TextSpan(
+                    text: moneyFormat.format(double.parse(secondValue)),
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+              ]
+          ),
+        );
         break;
       default:
-        return firstValue;
+        return RichText(
+          text: TextSpan(
+              text: double.parse(firstValue) >= 0 ? "${widget.valueCurrencySymbol} " : "- ${widget.valueCurrencySymbol} ",
+              style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor
+              ),
+              children: [
+                TextSpan(
+                    text: moneyFormat.format(double.parse(firstValue)),
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor
+                    )
+                ),
+              ]
+          ),
+        );
 
     }
   }
@@ -230,15 +415,7 @@ class _CalculatorState extends State<Calculator> {
                   SizedBox(
                     height: 8.0
                   ),
-                  Text(
-                      getTextDisplay(),
-                      style: TextStyle(
-                          decoration: TextDecoration.none,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor
-                      )
-                  )
+                  getTextDisplay()
                 ]
               )
             ),

@@ -437,7 +437,7 @@ class _EditAccountState extends State<EditAccount> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrency: selectedCurrency, header: getBalanceHeader()),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getBalanceHeader()),
                       )
                   );
                   if(result != null) {
@@ -517,7 +517,7 @@ class _EditAccountState extends State<EditAccount> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrency: selectedCurrency, header: getLimitHeader()),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getLimitHeader()),
                       )
                   );
                   if(result != null) {
