@@ -99,7 +99,7 @@ class _CalculatorState extends State<Calculator> {
               ),
               children: [
                 TextSpan(
-                    text: moneyFormat.format(double.parse(firstValue)) + " + ",
+                    text: moneyFormat.format(double.parse(firstValue).abs()) + " + ",
                     style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.w500,
@@ -137,7 +137,7 @@ class _CalculatorState extends State<Calculator> {
               ),
               children: [
                 TextSpan(
-                    text: moneyFormat.format(double.parse(firstValue)) + " - ",
+                    text: moneyFormat.format(double.parse(firstValue).abs()) + " - ",
                     style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w500,
@@ -175,7 +175,7 @@ class _CalculatorState extends State<Calculator> {
               ),
               children: [
                 TextSpan(
-                    text: moneyFormat.format(double.parse(firstValue)) + " x ",
+                    text: moneyFormat.format(double.parse(firstValue).abs()) + " x ",
                     style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w500,
@@ -213,7 +213,7 @@ class _CalculatorState extends State<Calculator> {
               ),
               children: [
                 TextSpan(
-                    text: moneyFormat.format(double.parse(firstValue)) + " ÷ ",
+                    text: moneyFormat.format(double.parse(firstValue).abs()) + " ÷ ",
                     style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w500,
@@ -251,7 +251,7 @@ class _CalculatorState extends State<Calculator> {
               ),
               children: [
                 TextSpan(
-                    text: moneyFormat.format(double.parse(firstValue)),
+                    text: moneyFormat.format(double.parse(firstValue).abs()),
                     style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w500,
