@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsTab.dart';
 import 'package:intl/intl.dart';
+import 'package:money_tracker/screens/debtsTab.dart';
 
 class Accounts extends StatefulWidget {
 
@@ -53,7 +54,11 @@ class _AccountsState extends State<Accounts> {
                             Navigator.pushNamed(context, "/accountDetails", arguments : {'accountIndex': accountIndex});
                           },
                         ),
-                        AccountsTab(),
+                        DebtsTab(
+                          onAccountTapped: (int accountIndex) {
+                            Navigator.pushNamed(context, "/accountDetails", arguments : {'accountIndex': accountIndex});
+                          },
+                        ),
                       ]
                   ),
                 )

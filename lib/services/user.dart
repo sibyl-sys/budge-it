@@ -60,6 +60,14 @@ class User extends ChangeNotifier {
     return accounts.where((element) => element.accountType == AccountType.savings && !element.isArchived).toList();
   }
 
+  List<Account> get iAmOwedAccounts {
+    return accounts.where((element) => element.accountType == AccountType.debt && !element.isArchived && element.balance >= 0).toList();
+  }
+
+  List<Account> get iOwedAccounts {
+    return accounts.where((element) => element.accountType == AccountType.debt && !element.isArchived && element.balance < 0).toList();
+  }
+
   //TODO CREATE I OWE ACCOUNTS
   //TODO CREATE I AM OWED ACCOUNTS
   //TODO CREATE FULLY PAID ACCOUNTS
