@@ -13,19 +13,41 @@ enum Operator {
 class Calculator extends StatefulWidget {
   final String valueCurrencySymbol;
   final String header;
+  final bool isDebt;
 
-  const Calculator({Key key, this.valueCurrencySymbol, this.header}) : super(key: key);
+  const Calculator({Key key, this.valueCurrencySymbol, this.header, this.isDebt}) : super(key: key);
 
   @override
   _CalculatorState createState() => _CalculatorState();
 }
 
-class _CalculatorState extends State<Calculator> {
+class _CalculatorState extends State<Calculator> with SingleTickerProviderStateMixin {
 
   String firstValue = "";
   String secondValue = "";
   bool isDecimal = false;
   Operator operator = Operator.none;
+
+  TabController _tabController;
+
+  TabBar get _tabBar =>
+      TabBar(
+        controller: _tabController,
+        indicator: BoxDecoration(
+            color : Color(0xffEB6467),
+        ),
+        indicatorColor: Color(0xFFEB6467),
+        labelColor: Colors.white,
+        unselectedLabelColor: Color(0xFF4F4F4F),
+        tabs: [
+          Tab(
+              text: 'I OWE'
+          ),
+          Tab(
+              text: 'I AM OWED'
+          ),
+        ],
+      );
 
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
@@ -332,6 +354,11 @@ class _CalculatorState extends State<Calculator> {
     });
   }
 
+  void _handleTabChange() {
+    setState(() {
+    });
+  }
+
 
   Widget generateIconButton(double width, double height, IconData icon, Color color, Color iconColor, Function onPressed) {
     return Container(
@@ -387,8 +414,16 @@ class _CalculatorState extends State<Calculator> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
+    _tabController.addListener(_handleTabChange);
+  }
+
+  @override
   Widget build(BuildContext context) {
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
+
 
     return Material(
       type: MaterialType.transparency,
@@ -396,6 +431,10 @@ class _CalculatorState extends State<Calculator> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            widget.isDebt ? ColoredBox(
+                color: Colors.white,
+                child: _tabBar
+            ) : SizedBox(height: 0),
             Container(
               color: const Color(0xFFf6FBFB),
               width: double.infinity,

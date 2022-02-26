@@ -433,7 +433,7 @@ class _NewAccountState extends State<NewAccount> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getBalanceHeader()),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getBalanceHeader(), isDebt: this._accountType == AccountType.debt),
                       )
                   );
                   if(result != null) {
