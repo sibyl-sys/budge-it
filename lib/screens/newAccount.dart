@@ -469,7 +469,7 @@ class _NewAccountState extends State<NewAccount> {
                           children: [
                             RichText(
                               text: TextSpan(
-                                  text: "${selectedCurrency.symbol} ",
+                                  text: _accountType == AccountType.debt ? "${selectedCurrency.symbol}" : this.balance < 0 ? "-${selectedCurrency.symbol}" :  "${selectedCurrency.symbol}",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
@@ -477,7 +477,7 @@ class _NewAccountState extends State<NewAccount> {
                                   ),
                                   children: [
                                     TextSpan(
-                                        text: "${moneyFormat.format(this.balance)}",
+                                        text: "${moneyFormat.format(this.balance.abs())}",
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontFamily: "Poppins",
@@ -513,7 +513,7 @@ class _NewAccountState extends State<NewAccount> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getLimitHeader()),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getLimitHeader(), isDebt: false),
                       )
                   );
                   if(result != null) {
