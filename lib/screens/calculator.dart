@@ -515,7 +515,15 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
                 ),
                 (operator == Operator.none) ?
                   generateIconButton(baseButtonSize, baseButtonSize * 2, Icons.done, Theme.of(context).primaryColor, Colors.white, (){
-                    Navigator.pop(context, (this.firstValue == "") ? 0.0 : double.parse(this.firstValue));
+                    if(widget.isDebt) {
+                      if(_tabController.index == 1) {
+                        Navigator.pop(context, (this.firstValue == "") ? 0.0 : double.parse(this.firstValue));
+                      } else {
+                        Navigator.pop(context, (this.firstValue == "") ? 0.0 : double.parse(this.firstValue) * -1);
+                      }
+                    } else {
+                      Navigator.pop(context, (this.firstValue == "") ? 0.0 : double.parse(this.firstValue));
+                    }
                   }) :
                     generateButton(baseButtonSize, baseButtonSize * 2, "=", Theme.of(context).primaryColor, Colors.white, (){changeOperator(Operator.none);})
               ],
