@@ -34,7 +34,7 @@ class _DebtsTabState extends State<DebtsTab> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
             child: Text(
-                "Ooops! You don't have a wallet yet",
+                "Ooops! You don't have a debt account yet",
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18
@@ -54,8 +54,8 @@ class _DebtsTabState extends State<DebtsTab> {
     );
   }
 
-  Widget renderStashAccounts(User user) {
-    final stash = user.stashAccounts;
+  Widget renderIOweAccounts(User user) {
+    final iOwed = user.iOwedAccounts;
     return Column(
       children: [
         Row(
@@ -100,14 +100,14 @@ class _DebtsTabState extends State<DebtsTab> {
           ],
         ),
         SizedBox(height: 8.0),
-        renderAccounts(user, stash),
+        renderAccounts(user, iOwed),
         SizedBox(height: 32),
       ],
     );
   }
 
-  Widget renderSavingsAccounts(User user) {
-    final savings = user.savingsAccounts;
+  Widget renderIAmOwedAccounts(User user) {
+    final iAmOwed = user.iAmOwedAccounts;
     return Column(
       children: [
         Row(
@@ -152,14 +152,14 @@ class _DebtsTabState extends State<DebtsTab> {
           ],
         ),
         SizedBox(height: 8.0),
-        renderAccounts(user, savings),
+        renderAccounts(user, iAmOwed),
       ],
     );
   }
 
   Widget renderAllAccounts(User user) {
-    final stash = user.stashAccounts;
-    final savings = user.savingsAccounts;
+    final iAmOwed = user.iAmOwedAccounts;
+    final iOwed = user.iOwedAccounts;
     return Column(
       children: [
         TotalHeader(header: "Total Balance", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.totalRegular + user.totalSavings, description:
@@ -187,8 +187,8 @@ class _DebtsTabState extends State<DebtsTab> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                stash.length > 0 ? renderStashAccounts(user) : SizedBox(height: 0),
-                savings.length > 0 ? renderSavingsAccounts(user) : SizedBox(height: 0)
+                iAmOwed.length > 0 ? renderIAmOwedAccounts(user) : SizedBox(height: 0),
+                iOwed.length > 0 ? renderIOweAccounts(user) : SizedBox(height: 0)
               ],
             ),
           ),
