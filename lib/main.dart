@@ -24,8 +24,11 @@ void main() {
           '/rearrangeCategories' : (context) => RearrangeCategories(),
         },
         theme: ThemeData(
+          colorScheme: ColorScheme.light(
+            primary: Color(0x3C3A5F).withOpacity(1.0),
+            secondary: Color(0xEB6467).withOpacity(1.0),
+          ),
           primaryColor: Color(0x3C3A5F).withOpacity(1.0),
-          accentColor: Color(0xEB6467).withOpacity(1.0),
           fontFamily: 'Poppins'
         )
       )
