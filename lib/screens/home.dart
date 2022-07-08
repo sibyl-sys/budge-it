@@ -4,7 +4,6 @@ import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/categories.dart';
 import 'package:money_tracker/screens/newAccount.dart';
-import 'package:money_tracker/screens/rearrangeCategories.dart';
 import 'package:money_tracker/screens/transactions.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:intl/intl.dart';

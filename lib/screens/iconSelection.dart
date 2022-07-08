@@ -27,14 +27,16 @@ class _IconSelectionState extends State<IconSelection> {
             mainAxisSpacing: 8,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            children: accountIconList["Accounts"].map((item) => OutlineButton(
+            children: accountIconList["Accounts"].map((item) => OutlinedButton(
                 onPressed: () {
                   widget.onIconChange(item);
                 },
-                color: Colors.white,
-                borderSide: BorderSide(
-                    width:  widget.iconData == item ? 2.0 : 1.0,
-                    color: widget.iconData == item ? Theme.of(context).primaryColor : Colors.grey[400]
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: BorderSide(
+                      width:  widget.iconData == item ? 2.0 : 1.0,
+                      color: widget.iconData == item ? Theme.of(context).primaryColor : Colors.grey[400]
+                  ),
                 ),
                 child: Icon(item)
               )
@@ -48,15 +50,17 @@ class _IconSelectionState extends State<IconSelection> {
               mainAxisSpacing: 8,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              children: accountIconList["Categories"].map((item) => OutlineButton(
+              children: accountIconList["Categories"].map((item) => OutlinedButton(
                   onPressed: () {
                     widget.onIconChange(item);
                   },
-                  borderSide: BorderSide(
-                    width:  widget.iconData == item ? 2.0 : 1.0,
-                    color: widget.iconData == item ? Theme.of(context).primaryColor : Colors.grey[400]
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                        width:  widget.iconData == item ? 2.0 : 1.0,
+                        color: widget.iconData == item ? Theme.of(context).primaryColor : Colors.grey[400]
+                    ),
+                    backgroundColor: Colors.white,
                   ),
-                  color: Colors.white,
                   child: Icon(item)
               )
               ).toList()
