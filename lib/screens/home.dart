@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accounts.dart';
 import 'package:money_tracker/screens/accountsType.dart';
@@ -135,13 +136,74 @@ class _HomeState extends State<Home> {
             ),
           ),
           //TODO CHANGE ACTION DEPENDING ON TAB
-          leading: FlatButton(
-            onPressed: () {},
-            child: Icon(
-                Icons.menu,
-                color: Colors.white
-            ),
-          ),
+      ),
+      drawer: SafeArea(
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              SizedBox(
+                  height: 68,
+                  child: DrawerHeader(
+                    margin: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Budge-it",
+                          style: TextStyle(
+                            color: Color(0xFF5F5C96)
+                          )
+                        ),
+                        Text(
+                            "Cloud Saving Disabled",
+                            style: TextStyle(
+                              color: Color(0xFF55C9C6),
+                              fontSize: 10
+                            )
+                        )
+                      ],
+                    ),
+                  )
+              ),
+              ListTile(
+                title: Text(
+                  "Profile",
+                  style: TextStyle(
+                    color: Color(0xFFB6B6B6),
+                    fontSize: 12
+                  ),
+                ),
+                tileColor: Colors.grey.withOpacity(0.25),
+                dense: true
+              ),
+              ListTile(
+                title: Text("Jane Doe"),
+                subtitle: Text('Premium Account'),
+                minLeadingWidth: 0,
+                leading: Container(height: double.infinity, child: Icon(Icons.person)),
+                trailing: Icon(Icons.chevron_right),
+                dense: true
+              ),
+              ListTile(
+                  title: Text(
+                    "General Settings",
+                    style: TextStyle(
+                        color: Color(0xFFB6B6B6),
+                        fontSize: 12
+                    ),
+                  ),
+                  tileColor: Colors.grey.withOpacity(0.25),
+                  dense: true
+              ),
+              ListTile(title: Text("Item 2")),
+            ],
+          )
+        ),
       ),
       body: _bodyOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
