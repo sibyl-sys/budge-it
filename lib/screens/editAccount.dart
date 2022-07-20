@@ -315,7 +315,7 @@ class _EditAccountState extends State<EditAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1)
                     ),
                   ),
                   height: 74,
