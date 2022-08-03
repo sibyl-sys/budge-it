@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/profileInfo.dart';
+import 'package:money_tracker/services/user.dart';
+import 'package:provider/provider.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key key}) : super(key: key);
@@ -9,8 +12,11 @@ class NavigationDrawer extends StatefulWidget {
 }
 
 class _NavigationDrawerState extends State<NavigationDrawer> {
+
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<User>();
+
     return SafeArea(
       child: Drawer(
           backgroundColor: Color(0xFFFBFBFB),
@@ -97,7 +103,20 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               // SizedBox(height: 5),
               ListTile(
                 title: Text("Currency"),
-                subtitle: Text('Philippine Peso (P)', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                onTap: () async {
+                  final result = await Navigator.of(context).push(
+                      PageRouteBuilder(
+                        barrierColor: Colors.black.withOpacity(0.25),
+                        barrierDismissible: true,
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => CurrencySelection(),
+                      )
+                  );
+                  if(result != null) {
+                    user.changePrimaryCurrency(result);
+                  }
+                },
+                subtitle: Text(user.primaryCurrency.name + " (" + user.primaryCurrency.symbol + ")", style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                 minLeadingWidth: 0,
                 leading: Container(height: double.infinity, child: Icon(Icons.account_balance_outlined, color: Color(0x3C3A5F).withOpacity(0.25))),
                 dense: true,
