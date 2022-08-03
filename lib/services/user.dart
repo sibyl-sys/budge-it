@@ -19,6 +19,7 @@ class User extends ChangeNotifier {
   int lastSelectedAccountTo;
   TransactionType lastTransactionType;
   Currency primaryCurrency;
+  double spendAlertAmount;
 
   int get newAccountID => accounts.length < 1 ? 0 : accounts[accounts.length-1].accountID + 1 ;
   int get newCategoryID => categories.length < 1 ? 0 : categories[categories.length-1].categoryID + 1;
@@ -364,6 +365,12 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeSpendAlertAmount(double value) {
+    this.spendAlertAmount = value;
+    Hive.box('budgeItApp').put('spendAlertAmount', spendAlertAmount);
+    notifyListeners();
+  }
+
   void addCategory(Category newCategory) {
     categories = List.from(categories)..add(newCategory);
 
@@ -388,7 +395,7 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
-  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo, TransactionType transactionType) {
+  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo, TransactionType transactionType, double spendAlertAmount) {
     this.accounts = List.from(accounts);
     this.categories = List.from(categories);
     this.transactions = List.from(transactions);
@@ -397,5 +404,6 @@ class User extends ChangeNotifier {
     this.lastSelectedAccountTo = lastSelectedAccountTo;
     this.lastTransactionType = transactionType;
     this.primaryCurrency = primaryCurrency;
+    this.spendAlertAmount = spendAlertAmount;
   }
 }

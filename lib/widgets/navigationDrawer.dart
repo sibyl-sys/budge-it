@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/calculator.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/profileInfo.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key key}) : super(key: key);
@@ -12,6 +14,7 @@ class NavigationDrawer extends StatefulWidget {
 }
 
 class _NavigationDrawerState extends State<NavigationDrawer> {
+  final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +128,46 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               SizedBox(height: 5),
               ListTile(
                 title: Text("Spend Alert"),
-                subtitle: Text('P 5,000.00', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                subtitle: RichText(
+                  text: TextSpan(
+                      text: "${user.primaryCurrency.symbol} ",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 14,
+                      ),
+                      children: [
+                        TextSpan(
+                            text: "${moneyFormat.format(user.spendAlertAmount).split('.')[0]}",
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 14,
+                                fontFamily: "Poppins"
+                            )
+                        ),
+                        TextSpan(
+                            text: ".${moneyFormat.format(user.totalRegular).split('.')[1]}",
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 12,
+                                fontFamily: "Poppins"
+                            )
+                        )
+                      ]
+                  ),
+                ),
+                onTap: () async {
+                  final result = await Navigator.of(context).push(
+                      PageRouteBuilder(
+                        barrierColor: Colors.black.withOpacity(0.25),
+                        barrierDismissible: true,
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: user.primaryCurrency.symbol, header: "Spend Alert Amount"),
+                      )
+                  );
+                  if(result != null) {
+                    user.changeSpendAlertAmount(result);
+                  }
+                },
                 minLeadingWidth: 0,
                 leading: Container(height: double.infinity, child: Icon(Icons.speed_outlined, color: Color(0x3C3A5F).withOpacity(0.25))),
                 dense: true,
