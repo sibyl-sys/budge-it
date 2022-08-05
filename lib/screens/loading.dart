@@ -33,7 +33,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     var box = await Hive.openBox('budgeItApp');
     List<Account> accounts = List<Account>.from(box.get('accounts', defaultValue:  new List<Account>()));
     Currency primaryCurrency =box.get('primaryCurrency', defaultValue: currencyList[0]);
-    double spendAlertAmount = box.get('spendAlertAmount', defaultValue: 5000);
+    double spendAlertAmount = box.get('spendAlertAmount', defaultValue: 5000.00);
     for(Account account in accounts) {
       if(account.currency == null) {
         account.currency = primaryCurrency;

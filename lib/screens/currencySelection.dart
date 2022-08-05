@@ -17,7 +17,7 @@ class _CurrencySelectionState extends State<CurrencySelection> {
       child: Center(
         child: Container(
           width: 350,
-          height: 368,
+          height: 475,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(15))
@@ -51,16 +51,17 @@ class _CurrencySelectionState extends State<CurrencySelection> {
                               },
                               splashColor: Theme.of(context).primaryColor.withOpacity(0.7),
                               child: Container(
-                                height: 50,
                                 padding: EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      currency.name,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400
+                                    Flexible(
+                                      child: Text(
+                                        currency.name,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400
+                                        ),
                                       ),
                                     ),
                                     Text(

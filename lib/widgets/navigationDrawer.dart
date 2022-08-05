@@ -161,7 +161,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: user.primaryCurrency.symbol, header: "Spend Alert Amount"),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: user.primaryCurrency.symbol, header: "Spend Alert Amount", isDebt: false),
                       )
                   );
                   if(result != null) {
