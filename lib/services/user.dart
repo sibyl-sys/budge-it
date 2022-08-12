@@ -14,6 +14,7 @@ class User extends ChangeNotifier {
   List<Account> accounts = [];
   List<Category> categories = [];
   List<Transaction> transactions = [];
+  List<Transaction> transactionAlert = [];
   int lastSelectedCategoryTo;
   int lastSelectedAccountFrom;
   int lastSelectedAccountTo;
@@ -344,6 +345,9 @@ class User extends ChangeNotifier {
 
     if(transaction.transactionType == TransactionType.expense) {
       findAccountByID(transaction.fromID).balance -= transaction.value;
+      if(transaction.value >= spendAlertAmount) {
+        transactionAlert = List.from(transactionAlert)..add(transaction);
+      }
     } else if(transaction.transactionType == TransactionType.income ) {
       findAccountByID(transaction.fromID).balance += transaction.value;
     } else if(transaction.transactionType == TransactionType.transfer) {
@@ -352,8 +356,10 @@ class User extends ChangeNotifier {
       findAccountByID(transaction.toID).balance += transaction.value;
     }
 
+
     Hive.box('budgeItApp').put('accounts', accounts);
     Hive.box('budgeItApp').put('transactions', transactions);
+    Hive.box('budgeItApp').put('transactionAlert', transactionAlert);
     print(Hive.box('budgeItApp').get('transactions'));
     notifyListeners();
   }
@@ -395,7 +401,7 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
-  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo, TransactionType transactionType, double spendAlertAmount) {
+  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo, TransactionType transactionType, double spendAlertAmount, List<Transaction> transactionAlert) {
     this.accounts = List.from(accounts);
     this.categories = List.from(categories);
     this.transactions = List.from(transactions);
@@ -405,5 +411,6 @@ class User extends ChangeNotifier {
     this.lastTransactionType = transactionType;
     this.primaryCurrency = primaryCurrency;
     this.spendAlertAmount = spendAlertAmount;
+    this.transactionAlert = transactionAlert;
   }
 }
