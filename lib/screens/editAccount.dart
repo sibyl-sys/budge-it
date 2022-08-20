@@ -115,7 +115,7 @@ class _EditAccountState extends State<EditAccount> {
   String getLimitDescription() {
     switch(_accountType) {
       case AccountType.wallet:
-        return "Transaction Alert";
+        return "Monthly Limit";
       case AccountType.savings:
         return "Savings Target";
       case AccountType.debt:
@@ -437,7 +437,7 @@ class _EditAccountState extends State<EditAccount> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getBalanceHeader()),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getBalanceHeader(), isDebt: false),
                       )
                   );
                   if(result != null) {
@@ -517,7 +517,7 @@ class _EditAccountState extends State<EditAccount> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getLimitHeader()),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getLimitHeader(), isDebt: false),
                       )
                   );
                   if(result != null) {

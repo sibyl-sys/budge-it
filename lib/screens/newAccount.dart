@@ -123,7 +123,7 @@ class _NewAccountState extends State<NewAccount> {
   String getLimitDescription() {
     switch(_accountType) {
       case AccountType.wallet:
-        return "Transaction Alert";
+        return "Monthly Limit";
       case AccountType.savings:
         return "Savings Target";
       case AccountType.debt:

@@ -354,6 +354,7 @@ class User extends ChangeNotifier {
       print(transaction.value);
       findAccountByID(transaction.fromID).balance -= transaction.value;
       findAccountByID(transaction.toID).balance += transaction.value;
+      //TODO CONVERT CURRENCIES WHEN TRANSFERRING BETWEEN TWO ACCOUNTS WITH DIFFERENT CURRENCIES.
     }
 
 
