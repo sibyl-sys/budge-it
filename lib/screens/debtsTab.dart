@@ -156,13 +156,13 @@ class _DebtsTabState extends State<DebtsTab> {
       ],
     );
   }
-
+  //TODO COMPUTATION FOR INCREASE
   Widget renderAllAccounts(User user) {
     final iAmOwed = user.iAmOwedAccounts;
     final iOwed = user.iOwedAccounts;
     return Column(
       children: [
-        TotalHeader(header: "Total Balance", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.totalRegular + user.totalSavings, description:
+        TotalHeader(header: "Total Debts", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.totalDebts, description:
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,

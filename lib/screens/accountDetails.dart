@@ -95,6 +95,7 @@ class _AccountDetailsState extends State<AccountDetails> {
 
     //TODO DATE PICKER
     //TODO IMPLEMENT DATE RANGE
+    //TODO CHANGE PROGRESS CALCULATION DEPENDING ON ACCOUNT TYPE.
 
     return currentAccount == null ? SizedBox(height: 0) : Scaffold(
       appBar: AppBar(
@@ -132,10 +133,17 @@ class _AccountDetailsState extends State<AccountDetails> {
                     children: [
                       Row(
                           children : [
-                            CircularPercentIndicator(
+                            currentAccount.creditLimit == 0 ? CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                  IconData(currentAccount.icon, fontFamily: 'MaterialIcons'),
+                                  color: Color(currentAccount.color).withOpacity(1),
+                                  size: 25
+                              ),
+                            ) :CircularPercentIndicator(
                               radius: 48,
                               lineWidth: 4.0,
-                              percent: currentAccount.creditLimit > 0 ? max(0, min(currentAccount.balance / currentAccount.creditLimit, 1)) : 0,
+                              percent: user.getAccountProgress(currentAccount.accountID),
                               progressColor: Colors.lightGreen,
                               backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
                               center: CircleAvatar(

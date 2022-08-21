@@ -157,7 +157,7 @@ class _AccountsTabState extends State<AccountsTab> {
       ],
     );
   }
-
+  //TODO COMPUTATION FOR INCREASE
   Widget renderAllAccounts(User user) {
     final stash = user.stashAccounts;
     final savings = user.savingsAccounts;
@@ -200,6 +200,7 @@ class _AccountsTabState extends State<AccountsTab> {
   }
 
   Widget renderAccounts(User user, List<Account> accounts) {
+    //TODO CHANGE PROGRESS CALCULATION DEPENDING ON ACCOUNT TYPE.
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -210,7 +211,7 @@ class _AccountsTabState extends State<AccountsTab> {
           color: Color(account.color).withOpacity(1),
           balance: account.balance,
           creditLimit: account.creditLimit,
-          progress: user.getAccountExpenses(account.accountID, DateTime.now().month, DateTime.now().year) / account.creditLimit * 100,
+          progress: user.getAccountProgress(account.accountID),
           description: account.description,
           accountIndex: account.accountID,
           onAccountTapped: widget.onAccountTapped,

@@ -78,7 +78,11 @@ class User extends ChangeNotifier {
     double total = 0;
     for(var account in accounts) {
       if(account.accountType == AccountType.savings && !account.isArchived) {
-        total += account.balance;
+        if(account.currency == primaryCurrency) {
+          total += account.balance;
+        } else {
+          total += exchangeCurrency(account.balance, account.currency, primaryCurrency);
+        }
         print(total);
       }
     }
@@ -89,7 +93,25 @@ class User extends ChangeNotifier {
     double total = 0;
     for(var account in accounts) {
       if(account.accountType == AccountType.wallet && !account.isArchived) {
-        total += account.balance;
+        if(account.currency == primaryCurrency) {
+          total += account.balance;
+        } else {
+          total += exchangeCurrency(account.balance, account.currency, primaryCurrency);
+        }
+      }
+    }
+    return total;
+  }
+
+  double get totalDebts {
+    double total = 0;
+    for(var account in accounts) {
+      if(account.accountType == AccountType.debt && !account.isArchived) {
+        if(account.currency == primaryCurrency) {
+          total += account.balance;
+        } else {
+          total += exchangeCurrency(account.balance, account.currency, primaryCurrency);
+        }
       }
     }
     return total;
@@ -164,6 +186,20 @@ class User extends ChangeNotifier {
       }
     }
     return accountExpenses;
+  }
+
+  double getAccountProgress(int accountID) {
+    int accountIndex = getAccountIndexByID(accountID);
+
+    if(accounts[accountIndex].accountType == AccountType.debt) {
+      return 0;
+    } else if (accounts[accountIndex].accountType == AccountType.savings) {
+      accounts[accountIndex].creditLimit > 0 ? max(0, min(accounts[accountIndex].balance / accounts[accountIndex].creditLimit, 1)) : 0;
+    } else if(accounts[accountIndex].accountType == AccountType.wallet) {
+      this.getAccountExpenses(accountID, DateTime.now().month, DateTime.now().year) / accounts[accountIndex].creditLimit * 100;
+    }
+
+    return 0;
   }
 
   int getTransactionCount({DateTime from, DateTime to, int accountID}) {
