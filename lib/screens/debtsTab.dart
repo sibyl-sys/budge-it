@@ -213,6 +213,7 @@ class _DebtsTabState extends State<DebtsTab> {
               accountIndex: account.accountID,
               onAccountTapped: widget.onAccountTapped,
               currencySymbol : account.currency.symbol,
+              isDebt: true,
             )
         ).toList()
     );

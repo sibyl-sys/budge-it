@@ -17,8 +17,9 @@ class AccountCard extends StatefulWidget {
   final int accountIndex;
   final Function(int) onAccountTapped;
   final String currencySymbol;
+  final bool isDebt;
 
-  AccountCard({Key key, this.accountName, this.balance, this.icon, this.color, this.creditLimit, this.progress, this.description, this.accountIndex, this.onAccountTapped, this.currencySymbol}) : super(key:key);
+  AccountCard({Key key, this.accountName, this.balance, this.icon, this.color, this.creditLimit, this.progress, this.description, this.accountIndex, this.onAccountTapped, this.currencySymbol, this.isDebt = false}) : super(key:key);
 
 
   @override
@@ -76,7 +77,7 @@ class _AccountCardState extends State<AccountCard> {
                         SizedBox(height: 4),
                         RichText(
                             text: TextSpan(
-                                text: widget.balance > 0 ? "${widget.currencySymbol} " : "- ${widget.currencySymbol} ",
+                                text: widget.balance > 0 || widget.isDebt ? "${widget.currencySymbol} " : "- ${widget.currencySymbol} ",
                                 style: TextStyle(
                                     color: widget.balance > 0 ? Color(0x55C9C6).withOpacity(1) :Color(0xEB6467).withOpacity(1) ,
                                     fontSize: 16,
