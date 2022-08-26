@@ -190,7 +190,7 @@ class _NewAccountState extends State<NewAccount> {
                   icon: accountIcon.codePoint,
                   color: accountColor.value,
                   balance: balance,
-                  accountType: _accountType,
+                  accountType: this._accountType,
                   creditLimit: limit,
                   description: descriptionController.text,
                   isIncludedInTotalNet: isIncludedInTotalNet,
