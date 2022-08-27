@@ -181,7 +181,7 @@ class _DebtsTabState extends State<DebtsTab> {
             ),
           ],
         ),
-        isDebt: false),
+        isDebt: true),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
