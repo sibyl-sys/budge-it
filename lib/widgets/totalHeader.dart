@@ -7,8 +7,9 @@ class TotalHeader extends StatefulWidget {
   final double value;
   final Color valueColor;
   final Widget description;
+  final bool isDebt;
 
-  const TotalHeader({Key key, this.currencySymbol, this.header, this.value, this.valueColor, this.description}) : super(key: key);
+  const TotalHeader({Key key, this.currencySymbol, this.header, this.value, this.valueColor, this.description, this.isDebt = false}) : super(key: key);
 
   @override
   _TotalHeaderState createState() => _TotalHeaderState();
@@ -16,6 +17,15 @@ class TotalHeader extends StatefulWidget {
 
 class _TotalHeaderState extends State<TotalHeader> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
+
+  String getCurrencyAndSign() {
+    if(widget.isDebt) {
+      widget.value < 0 ? "${widget.currencySymbol} " : "-${widget.currencySymbol} ";
+    } else {
+      return widget.value < 0 ? "- ${widget.currencySymbol} " : "${widget.currencySymbol} ";
+    }
+    return "${widget.currencySymbol}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +50,7 @@ class _TotalHeaderState extends State<TotalHeader> {
               children: [
                 RichText(
                   text: TextSpan(
-                      text: widget.value < 0 ? "- ${widget.currencySymbol} " : "${widget.currencySymbol} ",
+                      text: getCurrencyAndSign(),
                       style: TextStyle(
                           color: widget.valueColor,
                           fontSize: 21,
