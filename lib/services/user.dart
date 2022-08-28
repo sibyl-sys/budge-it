@@ -15,6 +15,7 @@ class User extends ChangeNotifier {
   List<Category> categories = [];
   List<Transaction> transactions = [];
   List<Transaction> transactionAlert = [];
+  List<Transaction> favoriteTransactions = [];
   int lastSelectedCategoryTo;
   int lastSelectedAccountFrom;
   int lastSelectedAccountTo;
@@ -401,6 +402,12 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addTransactionToFavorites(Transaction transaction) {
+    favoriteTransactions = List.from(favoriteTransactions)..add(transaction);
+    Hive.box('budgeItApp').put('favoriteTransactions', favoriteTransactions);
+    notifyListeners();
+  }
+
   void changePrimaryCurrency(Currency newCurrency) {
     this.primaryCurrency = newCurrency;
 
@@ -438,7 +445,7 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
-  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo, TransactionType transactionType, double spendAlertAmount, List<Transaction> transactionAlert) {
+  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo, TransactionType transactionType, double spendAlertAmount, List<Transaction> transactionAlert, List<Transaction> favoriteTransactions) {
     this.accounts = List.from(accounts);
     this.categories = List.from(categories);
     this.transactions = List.from(transactions);
@@ -449,5 +456,6 @@ class User extends ChangeNotifier {
     this.primaryCurrency = primaryCurrency;
     this.spendAlertAmount = spendAlertAmount;
     this.transactionAlert = transactionAlert;
+    this.favoriteTransactions = favoriteTransactions;
   }
 }

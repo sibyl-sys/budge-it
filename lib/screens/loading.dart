@@ -33,6 +33,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     var box = await Hive.openBox('budgeItApp');
     List<Account> accounts = List<Account>.from(box.get('accounts', defaultValue:  []));
     List<Transaction> transactionAlert = List<Transaction>.from(box.get('transactionAlert', defaultValue: []));
+    List<Transaction> favoriteTransactions = List<Transaction>.from(box.get('favoriteTransactions', defaultValue: []));
     Currency primaryCurrency =box.get('primaryCurrency', defaultValue: currencyList[0]);
     double spendAlertAmount = box.get('spendAlertAmount', defaultValue: 5000.00);
     for(Account account in accounts) {
@@ -71,7 +72,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     int selectedAccountTo = box.get('selectedAccountTo', defaultValue: 0);
     TransactionType transactionType = box.get('lastTransactionType', defaultValue: TransactionType.expense);
     User user = context.read<User>();
-    user.init(accounts, categories, transactions, selectedCategory, selectedAccount, primaryCurrency, selectedAccountTo, transactionType, spendAlertAmount, transactionAlert);
+    user.init(accounts, categories, transactions, selectedCategory, selectedAccount, primaryCurrency, selectedAccountTo, transactionType, spendAlertAmount, transactionAlert, favoriteTransactions);
     Navigator.pushReplacementNamed(context, "/home");
   }
 
