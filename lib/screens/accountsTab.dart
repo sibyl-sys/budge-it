@@ -18,7 +18,6 @@ class AccountsTab extends StatefulWidget {
 class _AccountsTabState extends State<AccountsTab> {
 
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-  //TODO ADD CALLBACK PARAMETER
 
   Widget renderCallToAction() {
     return Padding(
@@ -200,7 +199,6 @@ class _AccountsTabState extends State<AccountsTab> {
   }
 
   Widget renderAccounts(User user, List<Account> accounts) {
-    //TODO CHANGE PROGRESS CALCULATION DEPENDING ON ACCOUNT TYPE.
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

@@ -95,7 +95,6 @@ class _AccountDetailsState extends State<AccountDetails> {
 
     //TODO DATE PICKER
     //TODO IMPLEMENT DATE RANGE
-    //TODO CHANGE PROGRESS CALCULATION DEPENDING ON ACCOUNT TYPE.
 
     return currentAccount == null ? SizedBox(height: 0) : Scaffold(
       appBar: AppBar(

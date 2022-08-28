@@ -22,8 +22,6 @@ class EditCategory extends StatefulWidget {
 
 
 class _EditCategoryState extends State<EditCategory> {
-  //TODO INITIALIZE CURRENCY
-
   CategoryType _categoryType = CategoryType.expense;
   final FocusNode nameFocusNode = FocusNode();
   final TextEditingController categoryNameController = TextEditingController();

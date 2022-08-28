@@ -4,7 +4,6 @@ import 'package:money_tracker/screens/transactionDetails.dart';
 import 'package:money_tracker/services/transaction.dart';
 
 class TransactionCard extends StatefulWidget {
-  //TODO ADD FROM TO
   final IconData icon;
   final Color color;
   final String categoryName;

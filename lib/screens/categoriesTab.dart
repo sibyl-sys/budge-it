@@ -134,7 +134,6 @@ class _CategoriesTabState extends State<CategoriesTab> {
         Expanded(
           child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)
         )
-        //TODO CATEGORY PROGRESS BAR
       ],
     );
   }

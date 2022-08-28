@@ -71,9 +71,6 @@ class User extends ChangeNotifier {
     return accounts.where((element) => element.accountType == AccountType.debt && !element.isArchived && element.balance < 0).toList();
   }
 
-  //TODO CREATE I OWE ACCOUNTS
-  //TODO CREATE I AM OWED ACCOUNTS
-  //TODO CREATE FULLY PAID ACCOUNTS
 
   double get totalSavings {
     double total = 0;
@@ -217,7 +214,6 @@ class User extends ChangeNotifier {
   }
 
   double getCategoryNet({DateTime from, DateTime to, int categoryID}) {
-    //TODO IMPLEMENT CURRENCY CALCULATION
     double categoryNet = 0;
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.compareTo(from) >= 0 &&

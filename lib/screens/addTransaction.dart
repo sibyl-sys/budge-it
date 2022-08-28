@@ -40,7 +40,6 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     notesController.dispose();
   }
@@ -244,9 +243,7 @@ class _AddTransactionState extends State<AddTransaction> {
     final user = context.watch<User>();
     TransactionType transactionType = user.lastTransactionType;
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
-    
-    //TODO HIDE FROM ON TRANSFER SELECTION
-    //TODO ADD DEBT IN TRANSFER SELECTION
+
     TransactionImportance transactionImportance = user.findCategoryByID(user.lastSelectedCategoryTo).lastTransactionImportance == null ? TransactionImportance.need : user.findCategoryByID(user.lastSelectedCategoryTo).lastTransactionImportance;
 
 

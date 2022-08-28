@@ -106,7 +106,6 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
                             ),
                             child: InkWell(
                               onTap: () async {
-                                //TODO CHANGE TO DATE RANGE PICKER
                                 var results = await showDateRangePicker(
                                     context: context,
                                     firstDate: DateTime(1990),

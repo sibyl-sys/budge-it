@@ -38,7 +38,6 @@ class _EditAccountState extends State<EditAccount> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     final user = context.read<User>();
     Account currentAccount = user.findAccountByID(widget.accountIndex);
@@ -174,7 +173,6 @@ class _EditAccountState extends State<EditAccount> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              //TODO: ADD TRANSACTION FOR BALANCE DIFFERENCE (OTHERS CATEGORY)
               if(userModel.findAccountByID(widget.accountIndex).balance != balance) {
                 userModel.addTransaction(
                     Transaction(

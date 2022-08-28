@@ -18,7 +18,6 @@ class DebtsTab extends StatefulWidget {
 class _DebtsTabState extends State<DebtsTab> {
 
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-  //TODO ADD CALLBACK PARAMETER
 
   Widget renderCallToAction() {
     return Padding(

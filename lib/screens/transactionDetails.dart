@@ -55,14 +55,12 @@ class _TransactionDetailsState extends State<TransactionDetails> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     notesController.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     focusNode.addListener(() {
       final user = context.read<User>();
