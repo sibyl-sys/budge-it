@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
+import 'package:money_tracker/widgets/favTransactionButton.dart';
 import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
 import 'package:provider/provider.dart';
@@ -114,6 +116,27 @@ class _TransactionsState extends State<Transactions> {
           ),
         )),
         SizedBox(height: 8),
+        Text("Favorites", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
+        SizedBox(height: 8),
+        Container(
+          height: 50,
+          child: ListView.builder(
+              itemCount: user.favoriteTransactions.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                Transaction transaction = user.favoriteTransactions[index];
+                return FavTransactionButton(
+                  color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).color : user.findAccountByID(transaction.toID).color).withOpacity(1),
+                  icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).icon : user.findAccountByID(transaction.toID).icon, fontFamily: "MaterialIcons"),
+                  categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).name : user.findAccountByID(transaction.toID).name,
+                  value: transaction.value,
+                  type: transaction.transactionType,
+                  currencySymbol: user.primaryCurrency.symbol,
+                  importance: transaction.importance,
+                );
+              }
+          ),
+        ),
         Column(
           children: transactionListPerDay.map((e) =>
             Column(
