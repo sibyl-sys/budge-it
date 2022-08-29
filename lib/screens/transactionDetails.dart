@@ -373,6 +373,40 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   onPressed: () async {
                     Navigator.pop(context);
                     await Future.delayed(Duration(milliseconds: 200));
+                    user.addTransactionToFavorites(user.transactions[user.getTransactionIndexByID(widget.transactionID)]);
+                  },
+                  style: TextButton.styleFrom(
+                      padding: EdgeInsets.all(16),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero
+                      )
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.delete,
+                          color: Colors.red[700],
+                          size: 20,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                            "ADD TO FAVORITES",
+                            style: TextStyle(
+                                color:  Colors.red[700],
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500
+                            )
+                        )
+                      ]
+                  )
+              ),
+              OutlinedButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    await Future.delayed(Duration(milliseconds: 200));
                     user.deleteTransaction(widget.transactionID);
                   },
                   style: TextButton.styleFrom(
