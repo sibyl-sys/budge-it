@@ -387,15 +387,15 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.delete,
-                          color: Colors.red[700],
+                          Icons.star,
+                          color: Color(0xFFB6B6B6),
                           size: 20,
                         ),
                         SizedBox(width: 5),
                         Text(
                             "ADD TO FAVORITES",
                             style: TextStyle(
-                                color:  Colors.red[700],
+                                color:  Color(0xFFB6B6B6),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500
                             )
