@@ -97,67 +97,81 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            getIcon(),
-            SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      widget.categoryName,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF4F4F4F)
-                      )
-                    ),
-                    SizedBox(width: 4),
-                    getImportanceIcon()
-                  ],
-                ),
-                RichText(
-                  text: TextSpan(
-                      text: "${widget.currencySymbol} ",
-                      style: TextStyle(
-                          color: Color(0xFFB6B6B6),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500
+    return Material(
+      type: MaterialType.transparency,
+      child: Container(
+        child: Ink(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5)
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(5),
+            onTap: () {
+
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  getIcon(),
+                  SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            widget.categoryName,
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF4F4F4F)
+                            )
+                          ),
+                          SizedBox(width: 4),
+                          getImportanceIcon()
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                            text: "${moneyFormat.format(widget.value).split('.')[0]}",
+                      RichText(
+                        text: TextSpan(
+                            text: "${widget.currencySymbol} ",
                             style: TextStyle(
                                 color: Color(0xFFB6B6B6),
                                 fontSize: 12,
-                                fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500
+                            ),
+                            children: [
+                              TextSpan(
+                                  text: "${moneyFormat.format(widget.value).split('.')[0]}",
+                                  style: TextStyle(
+                                      color: Color(0xFFB6B6B6),
+                                      fontSize: 12,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500
 
-                            )
+                                  )
+                              ),
+                              TextSpan(
+                                  text: ".${moneyFormat.format(widget.value).split('.')[1]}",
+                                  style: TextStyle(
+                                      color: Color(0xFFB6B6B6),
+                                      fontSize: 11,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500
+                                  )
+                              )
+                            ]
                         ),
-                        TextSpan(
-                            text: ".${moneyFormat.format(widget.value).split('.')[1]}",
-                            style: TextStyle(
-                                color: Color(0xFFB6B6B6),
-                                fontSize: 11,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w500
-                            )
-                        )
-                      ]
-                  ),
-                )
-              ],
-            )
-          ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
-      )
+      ),
     );
   }
 }
