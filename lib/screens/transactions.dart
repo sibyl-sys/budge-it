@@ -115,10 +115,12 @@ class _TransactionsState extends State<Transactions> {
               ]
           ),
         )),
-        SizedBox(height: 8),
-        Text("Favorites", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
-        SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Text("Favorites", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
+        ),
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
           height: 50,
           child: ListView.builder(
               itemCount: user.favoriteTransactions.length,
