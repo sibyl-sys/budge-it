@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:intl/intl.dart';
+import 'package:money_tracker/services/user.dart';
+import 'package:provider/provider.dart';
+
 
 
 class FavTransactionButton extends StatefulWidget {
@@ -97,6 +101,7 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
 
   @override
   Widget build(BuildContext context) {
+    User user = context.watch<User>();
     return Material(
       type: MaterialType.transparency,
       child: Container(
@@ -108,7 +113,20 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
           child: InkWell(
             borderRadius: BorderRadius.circular(5),
             onTap: () {
+              user.selectAccountFrom(widget.fromID);
+              user.selectRecipient(widget.toID, widget.type);
+              if(user.accounts.length > 0) {
+                Navigator.of(context).push(
+                    PageRouteBuilder(
+                      barrierColor: Colors.black.withOpacity(0.25),
+                      barrierDismissible: true,
+                      opaque: false,
+                      pageBuilder: (_, __, ___) => AddTransaction(initialValue: "${widget.value}"),
+                    )
+                );
 
+                //TODO UPDATE FAVORITE TRANSACTION BASED ON THE NEW VALUE INPUT
+              }
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

@@ -19,7 +19,9 @@ enum Operator {
 }
 
 class AddTransaction extends StatefulWidget {
+  final String initialValue;
 
+  const AddTransaction({Key key, this.initialValue = ""}) : super(key: key);
 
   @override
   _AddTransactionState createState() => _AddTransactionState();
@@ -42,6 +44,16 @@ class _AddTransactionState extends State<AddTransaction> {
   void dispose() {
     super.dispose();
     notesController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.initialValue != "") {
+      setState(() {
+        firstValue = widget.initialValue;
+      });
+    }
   }
 
   void eraseDigit() {
