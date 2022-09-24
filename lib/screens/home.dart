@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accounts.dart';
+import 'package:money_tracker/screens/overview.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/categories.dart';
@@ -66,9 +67,7 @@ class _HomeState extends State<Home> {
     Accounts(),
     Categories(),
     Transactions(),
-    Text(
-        'Overview'
-    ),
+    Overview(),
     Text(
         'Add Transaction'
     ),

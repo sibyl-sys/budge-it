@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
-import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/services/transaction.dart';
