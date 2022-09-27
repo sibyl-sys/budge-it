@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
+import 'package:money_tracker/screens/overviewTab.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/services/transaction.dart';
@@ -95,7 +96,7 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
                     color: Color(0x55C9C6).withOpacity(1),
                     size: 12,
                   ),
-                  Text("0% from last month",
+                  Text("0% Total Savings",
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: Colors.grey[400],
@@ -206,24 +207,7 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
                 child: TabBarView(
                     controller: _tabController,
                     children: [
-                      CategoriesTab(
-                        categoryType: CategoryType.expense,
-                        from: from,
-                        to: to,
-                        onCategoryClick: (int categoryID) {
-                          final user = context.read<User>();
-                          user.selectRecipient(categoryID, TransactionType.expense);
-                          Navigator.of(context).push(
-                              PageRouteBuilder(
-                                barrierColor: Colors.black.withOpacity(0.25),
-                                barrierDismissible: true,
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => AddTransaction(),
-                              )
-                          );
-                        },
-                        isRearrange: false,
-                      ),
+                      OverviewTab(),
                       CategoriesTab(
                         categoryType: CategoryType.income,
                         from: from,
