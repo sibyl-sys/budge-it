@@ -99,18 +99,21 @@ class _AccountDetailsState extends State<AccountDetails> {
     return currentAccount == null ? SizedBox(height: 0) : Scaffold(
       appBar: AppBar(
         actions: [
-          FlatButton(onPressed: () {
-            Navigator.of(context).push(
-                PageRouteBuilder(
-                  barrierColor: Colors.black.withOpacity(0.25),
-                  barrierDismissible: true,
-                  opaque: false,
-                  pageBuilder: (_, __, ___) => EditAccount(accountIndex: arguments["accountIndex"]),
-                )
-            );
-          }, child: Text("EDIT",
-              style: TextStyle(color: Colors.white)
-            )
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => EditAccount(accountIndex: arguments["accountIndex"]),
+                  )
+                );
+              },
+              child: Text(
+                  "EDIT",
+                  style: TextStyle(color: Colors.white)
+              )
           )
         ],
         title: Text("Account Details")

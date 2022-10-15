@@ -104,7 +104,7 @@ class _AddSubcategoryState extends State<AddSubcategory> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      FlatButton(
+                      TextButton(
                         onPressed: (){
                           Navigator.pop(context);
                         },
@@ -116,7 +116,7 @@ class _AddSubcategoryState extends State<AddSubcategory> {
                             )
                         ),
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: (){
                           Navigator.pop(context, {
                             "iconData" : accountIcon,

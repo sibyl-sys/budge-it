@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
+
 class OverviewTab extends StatefulWidget {
   const OverviewTab({Key key}) : super(key: key);
 
@@ -16,6 +18,138 @@ List<Widget> overviewTypes = [
 class _OverviewTabState extends State<OverviewTab> {
   final List<bool> _selectedType = [true, false, false];
 
+  Widget bottomTitles(double value, TitleMeta meta) {
+    //TODO: TEMPORARILY MONTH, DO VARIATIONS DEPENDING ON DATE SET AFTER.
+    return SideTitleWidget(child: Text(value.floor().toString(), style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 10)), axisSide: meta.axisSide);
+  }
+
+  Widget leftTitles(double value, TitleMeta meta) {
+    return SideTitleWidget(child: Text(value.toString(), style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 10)), axisSide: meta.axisSide);
+  }
+
+  List<BarChartGroupData> getData() {
+    return [
+      BarChartGroupData(
+        x: 0,
+        barsSpace: 4,
+        barRods: [
+          BarChartRodData(
+              toY: 60000,
+              rodStackItems: [
+                BarChartRodStackItem(0, 30000, Colors.red),
+                BarChartRodStackItem(30000, 60000, Colors.blue),
+              ],
+              borderRadius: const BorderRadius.all(Radius.zero),
+            //TODO DYNAMIC WIDTH
+            width: 10,
+          ),
+        ]
+      ),
+      BarChartGroupData(
+          x: 1,
+          barsSpace: 4,
+          barRods: [
+            BarChartRodData(
+                toY: 60000,
+                rodStackItems: [
+                  BarChartRodStackItem(0, 30000, Colors.red),
+                  BarChartRodStackItem(30000, 60000, Colors.blue),
+                ],
+              borderRadius: const BorderRadius.all(Radius.zero),
+              width: 10,
+            ),
+          ]
+      ),
+      BarChartGroupData(
+          x: 2,
+          barsSpace: 4,
+          barRods: [
+            BarChartRodData(
+                toY: 60000,
+                rodStackItems: [
+                  BarChartRodStackItem(0, 30000, Colors.red),
+                  BarChartRodStackItem(30000, 60000, Colors.blue),
+                ],
+                borderRadius: const BorderRadius.all(Radius.zero),
+              width: 10,
+            ),
+          ]
+      ),
+      BarChartGroupData(
+          x: 3,
+          barsSpace: 4,
+          barRods: [
+            BarChartRodData(
+                toY: 60000,
+                rodStackItems: [
+                  BarChartRodStackItem(0, 30000, Colors.red),
+                  BarChartRodStackItem(30000, 60000, Colors.blue),
+                ],
+                borderRadius: const BorderRadius.all(Radius.zero),
+              width: 10,
+            ),
+          ]
+      )
+    ];
+  }
+
+  Widget generateCharts() {
+    return AspectRatio(
+      aspectRatio: 1.66,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: BarChart(
+          BarChartData(
+            alignment: BarChartAlignment.spaceEvenly,
+            barTouchData: BarTouchData(
+              enabled: false,
+            ),
+            titlesData: FlTitlesData(
+              show: true,
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 30,
+                  getTitlesWidget: bottomTitles
+                )
+              ),
+              leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 62,
+                      getTitlesWidget: leftTitles
+                  )
+              ),
+              topTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: false
+                )
+              ),
+              rightTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                      showTitles: false
+                  )
+              )
+            ),
+            gridData: FlGridData(
+              show:  true,
+              checkToShowHorizontalLine: (value) => value % 10 == 0,
+              getDrawingHorizontalLine: (value) => FlLine(
+                color: Color(0xFFe7e8ec),
+                strokeWidth: 1,
+              ),
+              drawVerticalLine: false,
+            ),
+            borderData: FlBorderData(
+                show: false
+            ),
+            groupsSpace: 4,
+            barGroups: getData(),
+          )
+        )
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +178,9 @@ class _OverviewTabState extends State<OverviewTab> {
               constraints: BoxConstraints(minHeight: 35, minWidth: 110, maxWidth: 120),
               isSelected: _selectedType,
               children: overviewTypes,
-
             ),
-          )
+          ),
+          generateCharts()
         ],
       )
     );

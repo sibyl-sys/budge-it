@@ -218,134 +218,125 @@ class _EditCategoryState extends State<EditCategory> {
                   ]
               ),
             ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: (){
-                        nameFocusNode.requestFocus();
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  nameFocusNode.requestFocus();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                             "Name",
                             style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: const Color(0xFF4F4F4F)
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
                             )
                         ),
-                        SizedBox(
-                          width: 250,
+                        SizedBox(height: 8.0),
+                        Expanded(
                           child: TextField(
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: const Color(0xFF4F4F4F)
                             ),
                             focusNode: nameFocusNode,
-                            textAlign: TextAlign.right,
                             controller: categoryNameController,
                             decoration: InputDecoration(
-                                isDense: true,
-                                border: InputBorder.none,
-                                hintText: "Untitled Account",
-                                hintStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 18,
-                                    color: const Color(0xFFBDBDBD)
-                                )
+                              isDense: true,
+                              border: InputBorder.none,
+                              hintText: "Untitled Category",
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: const Color(0xFFBDBDBD)
+                              ),
                             ),
                           ),
                         )
 
                       ],
                     ),
-                  )
-                ]
+                  ),
+                ),
+              ),
             ),
-            Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.white,
-                      height: 70,
-                      onPressed: () async{
-                        final result = await Navigator.of(context).push(
-                            PageRouteBuilder(
-                              barrierColor: Colors.black.withOpacity(0.25),
-                              barrierDismissible: true,
-                              opaque: false,
-                              pageBuilder: (_, __, ___) => CurrencySelection(),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async{
+                  final result = await Navigator.of(context).push(
+                      PageRouteBuilder(
+                        barrierColor: Colors.black.withOpacity(0.25),
+                        barrierDismissible: true,
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => CurrencySelection(),
+                      )
+                  );
+                  if(result != null) {
+                    setState(() {
+                      selectedCurrency = result;
+                    });
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                    ),
+                  ),
+                  height: 74,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            "Currency",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
                             )
-                        );
-                        if(result != null) {
-                          setState(() {
-                            selectedCurrency = result;
-                          });
-                        }
-                      },
-                      shape: Border(
-                          top: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1),
-                          bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
-                    child: IgnorePointer(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              "Currency",
+                        ),
+                        RichText(
+                          text: TextSpan(
+                              text: "${selectedCurrency.symbol} ",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: const Color(0xFF4F4F4F)
-                              )
-                          ),
-                          RichText(
-                            text: TextSpan(
-                                text: "${selectedCurrency.symbol} ",
-                                style: TextStyle(
-                                    color: Colors.green[700],
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500
+                                  color: Colors.green[700],
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500
+                              ),
+                              children: [
+                                TextSpan(
+                                    text: " (${selectedCurrency.name})",
+                                    style: TextStyle(
+                                        color: Colors.green[700],
+                                        fontSize: 18,
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w500
+                                    )
                                 ),
-                                children: [
-                                  TextSpan(
-                                      text: " (${selectedCurrency.name})",
-                                      style: TextStyle(
-                                          color: Colors.green[700],
-                                          fontSize: 18,
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w500
-                                      )
-                                  ),
-                                ]
-                            ),
+                              ]
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ]
+                ),
+              ),
             ),
             SizedBox(height: 24),
             Padding(

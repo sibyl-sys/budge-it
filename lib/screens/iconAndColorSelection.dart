@@ -115,7 +115,7 @@ class _IconAndColorSelectionState extends State<IconAndColorSelection> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          FlatButton(
+                          TextButton(
                             onPressed: (){
                               Navigator.pop(context);
                             },
@@ -127,7 +127,7 @@ class _IconAndColorSelectionState extends State<IconAndColorSelection> {
                                 )
                             ),
                           ),
-                          FlatButton(
+                          TextButton(
                             onPressed: (){
                               Navigator.pop(context, {
                                 "iconData" : accountIcon,

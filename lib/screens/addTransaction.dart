@@ -201,18 +201,19 @@ class _AddTransactionState extends State<AddTransaction> {
     return Container(
         width: width,
         height: height,
-        child: FlatButton(
-          height: height,
+        child: OutlinedButton(
           onPressed: onPressed,
-          color: color,
-          shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.zero,
-              side: BorderSide(
-                  color: Colors.grey[400].withOpacity(0.25),
-                  width: 1,
-                  style: BorderStyle.solid
-              )
-          ),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(color),
+                shape: MaterialStateProperty.all(ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                    side: BorderSide(
+                        color: Colors.grey[400].withOpacity(0.25),
+                        width: 1,
+                        style: BorderStyle.solid
+                    )
+                ))
+            ),
           child: Icon(
             icon,
             color: iconColor,
@@ -226,17 +227,18 @@ class _AddTransactionState extends State<AddTransaction> {
     return Container(
         width: width,
         height: height,
-        child: FlatButton(
-          height: height,
+        child: OutlinedButton(
           onPressed: onPressed,
-          color: color,
-          shape: ContinuousRectangleBorder(
-            borderRadius: BorderRadius.zero,
-            side: BorderSide(
-              color: Colors.grey[400].withOpacity(0.25),
-              width: 1,
-              style: BorderStyle.solid
-            )
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(color),
+            shape: MaterialStateProperty.all(ContinuousRectangleBorder(
+                borderRadius: BorderRadius.zero,
+                side: BorderSide(
+                    color: Colors.grey[400].withOpacity(0.25),
+                    width: 1,
+                    style: BorderStyle.solid
+                )
+            ))
           ),
           child: Text(
             label,

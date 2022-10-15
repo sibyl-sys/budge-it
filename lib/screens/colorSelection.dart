@@ -58,13 +58,15 @@ class _ColorSelectionState extends State<ColorSelection> {
                 padding: EdgeInsets.all(8.0),
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
-                children: accountColorList.map((color) => FlatButton(
-                    padding: EdgeInsets.all(4),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                children: accountColorList.map((color) => TextButton(
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.all(4.0)),
+                        backgroundColor: MaterialStateProperty.all(color["value"]),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
+                    ),
                     onPressed: () {
                       widget.onColorChange(color["value"], color["isDarkIcon"]);
                     },
-                    color: color["value"],
                     child: widget.colorData == color["value"] ? Container(
                       decoration: BoxDecoration(
                           border: Border.all(
