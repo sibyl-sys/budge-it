@@ -41,7 +41,7 @@ class _EditAccountState extends State<EditAccount> {
   void initState() {
     super.initState();
     final user = context.read<User>();
-    Account currentAccount = user.findAccountByID(widget.accountIndex);
+    Account currentAccount = user.findAccountByID(widget.accountIndex)!;
     setState(() {
       accountNameController.text = currentAccount.name;
       descriptionController.text = currentAccount.description;
@@ -177,16 +177,18 @@ class _EditAccountState extends State<EditAccount> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              if(userModel.findAccountByID(widget.accountIndex).balance != balance) {
+              if(userModel.findAccountByID(widget.accountIndex)!.balance != balance) {
                 userModel.addTransaction(
                     Transaction(
-                        value: userModel.findAccountByID(widget.accountIndex).balance-balance,
+                        value: userModel.findAccountByID(widget.accountIndex)!.balance-balance,
                         note: "Account adjustment " + accountNameController.text,
                         fromID: widget.accountIndex,
                         toID: 9,
                         transactionID: userModel.transactions.length,
                         timestamp: DateTime.now(),
-                        transactionType: TransactionType.expense
+                        transactionType: TransactionType.expense,
+                        importance: TransactionImportance.sudden,
+                        isArchived: false
                     )
                 );
               }

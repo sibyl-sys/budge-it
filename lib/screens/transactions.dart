@@ -38,9 +38,9 @@ class _TransactionsState extends State<Transactions> {
       children: transactions.map((transaction) =>
       //TODO compute actual value based on currency
         TransactionCard(
-          color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).color : user.findAccountByID(transaction.toID).color).withOpacity(1),
-          icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).icon : user.findAccountByID(transaction.toID).icon, fontFamily: "MaterialIcons"),
-          categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).name : user.findAccountByID(transaction.toID).name,
+          color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.color : user.findAccountByID(transaction.toID)!.color).withOpacity(1),
+          icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.icon : user.findAccountByID(transaction.toID)!.icon, fontFamily: "MaterialIcons"),
+          categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
           description: transaction.note,
           value: transaction.value,
           type: transaction.transactionType,
@@ -128,9 +128,9 @@ class _TransactionsState extends State<Transactions> {
               itemBuilder: (context, index) {
                 Transaction transaction = user.favoriteTransactions[index];
                 return FavTransactionButton(
-                  color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).color : user.findAccountByID(transaction.toID).color).withOpacity(1),
-                  icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).icon : user.findAccountByID(transaction.toID).icon, fontFamily: "MaterialIcons"),
-                  categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).name : user.findAccountByID(transaction.toID).name,
+                  color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.color : user.findAccountByID(transaction.toID)!.color).withOpacity(1),
+                  icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.icon : user.findAccountByID(transaction.toID)!.icon, fontFamily: "MaterialIcons"),
+                  categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
                   value: transaction.value,
                   type: transaction.transactionType,
                   currencySymbol: user.primaryCurrency.symbol,

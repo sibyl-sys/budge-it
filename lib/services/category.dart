@@ -35,7 +35,7 @@ class Category {
   TransactionImportance lastTransactionImportance;
 
   @HiveField(6)
-  Currency categoryCurrency;
+  Currency? categoryCurrency;
 
   @HiveField(7)
   int index;
@@ -43,6 +43,6 @@ class Category {
   @HiveField(8)
   List<Subcategory> subcategories;
 
-  Category({required this.icon,required this.color,required  this.name,required  this.categoryType,required  this.categoryID,required  this.categoryCurrency,required this.index,required this.subcategories, this.lastTransactionImportance = TransactionImportance.need});
+  Category({required this.icon,required this.color,required  this.name, required this.categoryType,required  this.categoryID, this.categoryCurrency, required this.index,required this.subcategories, this.lastTransactionImportance = TransactionImportance.need});
 
 }

@@ -37,10 +37,10 @@ class _EditCategoryState extends State<EditCategory> {
   void initState() {
     super.initState();
     User userModel = context.read<User>();
-    Category currentCategory = userModel.findCategoryByID(widget.categoryID);
+    Category currentCategory = userModel.findCategoryByID(widget.categoryID)!;
     setState(() {
       _categoryType = currentCategory.categoryType;
-      selectedCurrency = selectedCurrency == null ? userModel.primaryCurrency : currentCategory.categoryCurrency;
+      selectedCurrency = selectedCurrency == null ? userModel.primaryCurrency : currentCategory.categoryCurrency!;
       categoryNameController.text = currentCategory.name;
       categoryColor = Color(currentCategory.color).withOpacity(1);
       categoryIcon = IconData(currentCategory.icon, fontFamily: 'MaterialIcons');

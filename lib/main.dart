@@ -6,6 +6,7 @@ import 'package:money_tracker/screens/home.dart';
 import 'package:money_tracker/screens/loading.dart';
 import 'package:money_tracker/screens/newAccount.dart';
 import 'package:money_tracker/screens/rearrangeCategories.dart';
+import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,7 @@ void main() {
         initialRoute: "/loading",
         routes: {
           '/home' : (context) => Home(),
-          '/newAccount' : (context) => NewAccount(),
+          '/newAccount' : (context) => NewAccount(accountType: AccountType.wallet),
           '/addCategory' : (context) => AddCategory(),
           '/accountType' : (context) => AccountsType(),
           '/loading': (context) => LoadingScreen(),

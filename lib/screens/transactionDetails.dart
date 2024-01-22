@@ -64,7 +64,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
     super.initState();
     focusNode.addListener(() {
       final user = context.read<User>();
-      Transaction transaction = user.findTransactionByID(widget.transactionID);
+      Transaction transaction = user.findTransactionByID(widget.transactionID)!;
       transaction.note = notesController.text;
       user.updateTransaction(transaction);
     });
@@ -75,7 +75,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
     final user = context.watch<User>();
     final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
-    Transaction transaction = user.findTransactionByID(widget.transactionID);
+    Transaction transaction = user.findTransactionByID(widget.transactionID)!;
     notesController.text = transaction.note;
     return Material(
       type: MaterialType.transparency,
@@ -91,7 +91,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   children: [
                     Expanded(
                       child: Ink(
-                        color: Color(user.findAccountByID(transaction.fromID).color).withOpacity(1),
+                        color: Color(user.findAccountByID(transaction.fromID)!.color).withOpacity(1),
                         child: InkWell(
                           splashColor: Colors.white.withOpacity(0.5),
                           onTap: () async {
@@ -122,7 +122,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Icon(
-                                                IconData(user.findAccountByID(transaction.fromID).icon, fontFamily: 'MaterialIcons'),
+                                                IconData(user.findAccountByID(transaction.fromID)!.icon, fontFamily: 'MaterialIcons'),
                                                 color: Colors.white.withOpacity(0.3),
                                                 size: 50
                                             ),
@@ -147,7 +147,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                                 SizedBox(height: 4.0),
                                                 Flexible(
                                                   child: Text(
-                                                    user.findAccountByID(transaction.fromID).name,
+                                                    user.findAccountByID(transaction.fromID)!.name,
                                                     style: TextStyle(
                                                         fontSize: 14.0,
                                                         color: Colors.white,
@@ -170,7 +170,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                     ),
                     Expanded(
                       child: Ink(
-                        color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).color : user.findAccountByID(transaction.toID).color).withOpacity(1),
+                        color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.color : user.findAccountByID(transaction.toID)!.color).withOpacity(1),
                         child: InkWell(
                           splashColor: Colors.white.withOpacity(0.5),
                           onTap: () async {
@@ -202,7 +202,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Icon(
-                                                IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).icon : user.findAccountByID(transaction.toID).icon, fontFamily: 'MaterialIcons'),
+                                                IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.icon : user.findAccountByID(transaction.toID)!.icon, fontFamily: 'MaterialIcons'),
                                                 color: Colors.white.withOpacity(0.3),
                                                 size: 50
                                             ),
@@ -227,7 +227,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                                 SizedBox(height: 4.0),
                                                 Flexible(
                                                   child: Text(
-                                                    transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).name : user.findAccountByID(transaction.toID).name,
+                                                    transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
                                                     style: TextStyle(
                                                         fontSize: 16.0,
                                                         color: Colors.white,
@@ -269,7 +269,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                     SizedBox(height: 8),
                     RichText(
                       text: TextSpan(
-                          text: "${user.findAccountByID(transaction.fromID).currency.symbol}",
+                          text: "${user.findAccountByID(transaction.fromID)!.currency.symbol}",
                           style: TextStyle(
                             color: getLabelColor(transaction.transactionType),
                             fontSize: 26,

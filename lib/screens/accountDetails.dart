@@ -48,9 +48,9 @@ class _AccountDetailsState extends State<AccountDetails> {
     return Column(
         children: transactions.map((transaction) =>
             TransactionCard(
-              color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).color : user.findAccountByID(transaction.toID).color).withOpacity(1),
-              icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).icon : transaction.fromID == currentAccount.accountID ? user.findAccountByID(transaction.toID).icon : user.findAccountByID(transaction.fromID).icon, fontFamily: "MaterialIcons"),
-              categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID).name : user.findAccountByID(transaction.toID).name,
+              color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.color : user.findAccountByID(transaction.toID)!.color).withOpacity(1),
+              icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.icon : transaction.fromID == currentAccount.accountID ? user.findAccountByID(transaction.toID)!.icon : user.findAccountByID(transaction.fromID)!.icon, fontFamily: "MaterialIcons"),
+              categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
               description: transaction.note,
               value: transaction.value,
               transactionID: transaction.transactionID,
@@ -90,7 +90,7 @@ class _AccountDetailsState extends State<AccountDetails> {
     double monthlyNet = user.getMonthlyNet(from: from, to: to, accountID: arguments["accountIndex"]);
 
     final List<Map> transactionListPerDay = user.getTransactions(from: from, to: to, accountID: arguments["accountIndex"]);
-    Account currentAccount = user.findAccountByID(arguments["accountIndex"]);
+    Account currentAccount = user.findAccountByID(arguments["accountIndex"])!;
 
     //TODO DATE PICKER
     //TODO IMPLEMENT DATE RANGE
