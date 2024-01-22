@@ -7,7 +7,7 @@ class IconAndColorSelection extends StatefulWidget {
   final Color accountColor;
   final bool isDarkIcon;
 
-  const IconAndColorSelection({Key key, this.accountColor, this.accountIcon, this.isDarkIcon}) : super(key: key);
+  const IconAndColorSelection({Key? key, required this.accountColor, required this.accountIcon, required this.isDarkIcon}) : super(key: key);
 
   @override
   _IconAndColorSelectionState createState() => _IconAndColorSelectionState(accountColor : this.accountColor, accountIcon: this.accountIcon, isDarkIcon: this.isDarkIcon);
@@ -18,7 +18,7 @@ class _IconAndColorSelectionState extends State<IconAndColorSelection> {
   Color accountColor;
   bool isDarkIcon;
 
-  _IconAndColorSelectionState({this.accountIcon, this.accountColor, this.isDarkIcon});
+  _IconAndColorSelectionState({required this.accountIcon, required this.accountColor, required this.isDarkIcon});
 
   @override
   Widget build(BuildContext context) {
