@@ -21,7 +21,7 @@ enum Operator {
 class AddTransaction extends StatefulWidget {
   final String initialValue;
 
-  const AddTransaction({Key key, this.initialValue = ""}) : super(key: key);
+  const AddTransaction({Key? key, this.initialValue = ""}) : super(key: key);
 
   @override
   _AddTransactionState createState() => _AddTransactionState();
@@ -197,7 +197,7 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
 
-  Widget generateIconButton(double width, double height, IconData icon, Color color, Color iconColor, Function onPressed) {
+  Widget generateIconButton(double width, double height, IconData icon, Color color, Color iconColor, Function() onPressed) {
     return Container(
         width: width,
         height: height,
@@ -208,7 +208,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 shape: MaterialStateProperty.all(ContinuousRectangleBorder(
                     borderRadius: BorderRadius.zero,
                     side: BorderSide(
-                        color: Colors.grey[400].withOpacity(0.25),
+                        color: Colors.grey.shade400.withOpacity(0.25),
                         width: 1,
                         style: BorderStyle.solid
                     )
@@ -223,7 +223,7 @@ class _AddTransactionState extends State<AddTransaction> {
     );
   }
 
-  Widget generateButton(double width, double height, String label, Color color, Color textColor, Function onPressed) {
+  Widget generateButton(double width, double height, String label, Color color, Color textColor, Function() onPressed) {
     return Container(
         width: width,
         height: height,
@@ -234,7 +234,7 @@ class _AddTransactionState extends State<AddTransaction> {
             shape: MaterialStateProperty.all(ContinuousRectangleBorder(
                 borderRadius: BorderRadius.zero,
                 side: BorderSide(
-                    color: Colors.grey[400].withOpacity(0.25),
+                    color: Colors.grey.shade400.withOpacity(0.25),
                     width: 1,
                     style: BorderStyle.solid
                 )
@@ -517,7 +517,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                     color: Colors.white,
                                   ),
                                   radius: 7.0,
-                                  backgroundColor: Colors.yellow[700].withOpacity(0.5),
+                                  backgroundColor: Colors.yellow.shade700.withOpacity(0.5),
                                 ),
                               ],
                             ),
@@ -588,14 +588,14 @@ class _AddTransactionState extends State<AddTransaction> {
                                     )
                                   ),
                                   radius: 7.0,
-                                  backgroundColor: Colors.orange[700].withOpacity(0.5),
+                                  backgroundColor: Colors.orange.shade700.withOpacity(0.5),
                                 ),
                               ],
                             ),
                             Center(
                               child: Text("Sudden",
                                   style: TextStyle(
-                                      color: Colors.orange[700],
+                                      color: Colors.orange.shade700,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500
                                   )
@@ -680,7 +680,7 @@ class _AddTransactionState extends State<AddTransaction> {
             Container(
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(color: Colors.grey[400].withOpacity(0.25), width: 1.0),
+                  top: BorderSide(color: Colors.grey.shade400.withOpacity(0.25), width: 1.0),
                 ),
                 color: Colors.white,
               ),
