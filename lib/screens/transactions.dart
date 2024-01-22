@@ -135,6 +135,8 @@ class _TransactionsState extends State<Transactions> {
                   type: transaction.transactionType,
                   currencySymbol: user.primaryCurrency.symbol,
                   importance: transaction.importance,
+                  fromID: transaction.fromID,
+                  toID: transaction.toID
                 );
               }
           ),

@@ -19,7 +19,7 @@ class FavTransactionButton extends StatefulWidget {
   final TransactionImportance importance;
 
 
-  const FavTransactionButton({Key key, this.icon, this.color, this.categoryName, this.value, this.type, this.fromID, this.toID, this.currencySymbol, this.importance}) : super(key: key);
+  const FavTransactionButton({Key? key, required this.icon,required this.color,required this.categoryName,required this.value,required this.type,required this.fromID,required this.toID,required this.currencySymbol,required this.importance}) : super(key: key);
 
   @override
   _FavTransactionButtonState createState() => _FavTransactionButtonState();
@@ -90,7 +90,7 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
               )
           ),
           radius: 4.0,
-          backgroundColor: Colors.orange[700].withOpacity(0.5),
+          backgroundColor: Colors.orange.shade700.withOpacity(0.5),
         );
       }
     } else {

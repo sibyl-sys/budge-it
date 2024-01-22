@@ -5,9 +5,9 @@ class DateButton extends StatefulWidget {
   final String header;
   final String subtitle;
   final bool isActive;
-  final Function onTap;
+  final Function() onTap;
 
-  const DateButton({Key key, this.icon, this.header, this.subtitle, this.isActive, this.onTap}) : super(key: key);
+  const DateButton({Key? key, required this.icon, required this.header, required this.subtitle, required this.isActive, required this.onTap}) : super(key: key);
 
   @override
   _DateButtonState createState() => _DateButtonState();

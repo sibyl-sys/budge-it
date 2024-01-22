@@ -19,7 +19,7 @@ class AccountCard extends StatefulWidget {
   final String currencySymbol;
   final bool isDebt;
 
-  AccountCard({Key key, this.accountName, this.balance, this.icon, this.color, this.creditLimit, this.progress, this.description, this.accountIndex, this.onAccountTapped, this.currencySymbol, this.isDebt = false}) : super(key:key);
+  AccountCard({Key? key, required this.accountName, required this.balance, required this.icon, required this.color, required this.creditLimit, required this.progress, required this.description, required this.accountIndex, required this.onAccountTapped, required this.currencySymbol, this.isDebt = false}) : super(key:key);
 
 
   @override
@@ -34,7 +34,7 @@ class _AccountCardState extends State<AccountCard> {
     print(widget.progress);
     return Card(
       child: InkWell(
-        splashColor:  Colors.teal[700].withAlpha(50),
+        splashColor:  Colors.teal.shade700.withAlpha(50),
         onTap: () {
           widget.onAccountTapped(widget.accountIndex);
         },
@@ -52,7 +52,7 @@ class _AccountCardState extends State<AccountCard> {
                         lineWidth: 4.0,
                         percent: widget.creditLimit == 0 ? 0 : max(0, min(widget.progress / 100, 1)),
                         progressColor: Colors.lightGreen,
-                        backgroundColor: widget.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
+                        backgroundColor: widget.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey.shade300,
                         center: CircleAvatar(
                           backgroundColor: widget.color,
                           child: Icon(

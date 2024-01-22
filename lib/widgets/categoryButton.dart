@@ -11,7 +11,7 @@ class CategoryButton extends StatefulWidget {
   final double value;
   final String currencySymbol;
 
-  const CategoryButton({Key key, this.icon, this.color, this.name, this.onCategoryClick, this.categoryID, this.value, this.currencySymbol}) : super(key: key);
+  const CategoryButton({Key? key, required this.icon, required this.color,required this.name, required this.onCategoryClick, required this.categoryID, required this.value, required this.currencySymbol}) : super(key: key);
 
   @override
   _CategoryButtonState createState() => _CategoryButtonState();

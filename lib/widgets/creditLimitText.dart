@@ -8,7 +8,7 @@ class CreditLimitText extends StatefulWidget {
   final double progress;
   final String currencySymbol;
 
-  CreditLimitText({Key key, this.creditLimit, this.progress, this.currencySymbol});
+  CreditLimitText({Key? key, required this.creditLimit, required this.progress, required this.currencySymbol});
 
   @override
   _CreditLimitTextState createState() => _CreditLimitTextState();

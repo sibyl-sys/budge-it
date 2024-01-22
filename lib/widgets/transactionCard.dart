@@ -15,7 +15,7 @@ class TransactionCard extends StatefulWidget {
   final Color valueColor;
   final TransactionImportance importance;
 
-  TransactionCard({Key key, this.icon, this.color, this.description, this.value, this.type, this.categoryName, this.transactionID, this.importance, this.currencySymbol, this.valueColor});
+  TransactionCard({Key? key, required this.icon, required this.color, required this.description, required this.value, required this.type, required this.categoryName, required this.transactionID, required this.importance, required this.currencySymbol, required this.valueColor});
 
   @override
   _TransactionCardState createState() => _TransactionCardState();
@@ -86,7 +86,7 @@ class _TransactionCardState extends State<TransactionCard> {
               )
           ),
           radius: 8.0,
-          backgroundColor: Colors.orange[700].withOpacity(0.5),
+          backgroundColor: Colors.orange.shade700.withOpacity(0.5),
         );
       }
     } else {
@@ -102,7 +102,7 @@ class _TransactionCardState extends State<TransactionCard> {
 
     return Card(
       child: InkWell(
-        splashColor:  Colors.teal[700].withAlpha(50),
+        splashColor:  Colors.teal.shade700.withAlpha(50),
         onTap: () {
           Navigator.of(context).push(
               PageRouteBuilder(

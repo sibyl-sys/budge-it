@@ -10,7 +10,7 @@ class CategoryPercentBar extends StatefulWidget {
   final DateTime from;
   final DateTime to;
 
-  const CategoryPercentBar({Key key, this.categoryType, this.from, this.to}) : super(key: key);
+  const CategoryPercentBar({Key? key, required this.categoryType, required this.from, required this.to}) : super(key: key);
 
   @override
   _CategoryPercentBarState createState() => _CategoryPercentBarState();

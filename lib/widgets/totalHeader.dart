@@ -9,7 +9,7 @@ class TotalHeader extends StatefulWidget {
   final Widget description;
   final bool isDebt;
 
-  const TotalHeader({Key key, this.currencySymbol, this.header, this.value, this.valueColor, this.description, this.isDebt = false}) : super(key: key);
+  const TotalHeader({Key? key, required this.currencySymbol, required this.header, required this.value, required this.valueColor, required this.description, this.isDebt = false}) : super(key: key);
 
   @override
   _TotalHeaderState createState() => _TotalHeaderState();

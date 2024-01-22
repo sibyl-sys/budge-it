@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class BudgeitNav extends StatefulWidget {
-  const BudgeitNav({Key key}) : super(key: key);
+  const BudgeitNav({Key? key}) : super(key: key);
 
   @override
   _BudgeitNavState createState() => _BudgeitNavState();

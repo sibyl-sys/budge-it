@@ -16,7 +16,7 @@ class DateRangeBar extends StatefulWidget {
   final DateTime to;
   final Function onChanged;
 
-  const DateRangeBar({Key key, this.from, this.to, this.onChanged}) : super(key: key);
+  const DateRangeBar({Key? key, required this.from, required this.to, required this.onChanged}) : super(key: key);
 
   @override
   _DateRangeBarState createState() => _DateRangeBarState();
@@ -96,7 +96,7 @@ class _DateRangeBarState extends State<DateRangeBar> {
     return Card(
       margin: EdgeInsets.zero,
         child: InkWell(
-          splashColor:  Colors.teal[700].withAlpha(50),
+          splashColor:  Colors.teal.shade700.withAlpha(50),
           onTap: () async {
             var results = await Navigator.of(context).push(
                 PageRouteBuilder(

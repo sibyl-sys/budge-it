@@ -61,14 +61,16 @@ class _DateSelectionState extends State<DateSelection> {
                           icon: Icons.access_alarm,
                           header: "Reminder",
                           subtitle: "None",
-                          isActive: true
+                          isActive: true,
+                          onTap: (){}
                       ),
                       SizedBox(width: 16.0),
                       DateButton(
                           icon: Icons.repeat,
                           header: "Recurrence",
                           subtitle: "None",
-                          isActive: true
+                          isActive: true,
+                          onTap: (){}
                       ),
                     ],
                   ),
