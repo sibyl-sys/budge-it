@@ -7,8 +7,6 @@ import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/categoryButton.dart';
 import 'package:money_tracker/widgets/categoryPercentBar.dart';
 import 'package:provider/provider.dart';
-import 'package:drag_and_drop_gridview/devdrag.dart';
-import 'package:drag_and_drop_gridview/drag.dart';
 
 class CategoriesTab extends StatefulWidget {
   final CategoryType categoryType;
@@ -79,48 +77,48 @@ class _CategoriesTabState extends State<CategoriesTab> {
     );
   }
   
-  Widget renderDragAndDropView(User user) {
-    List categoryList = generateCategoryList(user);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-      child: DragAndDropGridView(
-
-          onWillAccept: (oldIndex, newIndex) {
-            if(oldIndex == categoryList.length) {
-              return false;
-            }
-            return true;
-          },
-          onReorder: (oldIndex, newIndex) {
-            List<Category> categories;
-            if(widget.categoryType == CategoryType.expense) {
-              categories = user.expenseCategories;
-            } else {
-              categories = user.incomeCategories;
-            }
-            if(oldIndex > newIndex) {
-              for(int i = newIndex; i < oldIndex; i++) {
-                categories[i].index = categories[i].index + 1;
-              }
-            } else {
-              for(int i = newIndex; i > oldIndex; i--) {
-                categories[i].index = categories[i].index - 1;
-              }
-            }
-            categories[oldIndex].index = newIndex;
-            user.rearrangeCategories(categories);
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 6,
-            childAspectRatio: 4/5
-          ),
-          itemBuilder: (context, index) => DragItem(isDraggable: true, isDropable: true, child: categoryList[index]),
-          itemCount: categoryList.length,
-      ),
-    );
-  }
+  // Widget renderDragAndDropView(User user) {
+  //   List categoryList = generateCategoryList(user);
+  //   return Padding(
+  //     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+  //     child: DragAndDropGridView(
+  //
+  //         onWillAccept: (oldIndex, newIndex) {
+  //           if(oldIndex == categoryList.length) {
+  //             return false;
+  //           }
+  //           return true;
+  //         },
+  //         onReorder: (oldIndex, newIndex) {
+  //           List<Category> categories;
+  //           if(widget.categoryType == CategoryType.expense) {
+  //             categories = user.expenseCategories;
+  //           } else {
+  //             categories = user.incomeCategories;
+  //           }
+  //           if(oldIndex > newIndex) {
+  //             for(int i = newIndex; i < oldIndex; i++) {
+  //               categories[i].index = categories[i].index + 1;
+  //             }
+  //           } else {
+  //             for(int i = newIndex; i > oldIndex; i--) {
+  //               categories[i].index = categories[i].index - 1;
+  //             }
+  //           }
+  //           categories[oldIndex].index = newIndex;
+  //           user.rearrangeCategories(categories);
+  //         },
+  //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //           crossAxisCount: 4,
+  //           mainAxisSpacing: 8,
+  //           crossAxisSpacing: 6,
+  //           childAspectRatio: 4/5
+  //         ),
+  //         itemBuilder: (context, index) => DragItem(isDraggable: true, isDropable: true, child: categoryList[index]),
+  //         itemCount: categoryList.length,
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +130,8 @@ class _CategoriesTabState extends State<CategoriesTab> {
         CategoryPercentBar(from: widget.from, to: widget.to, categoryType: widget.categoryType),
         SizedBox(height: 16.0),
         Expanded(
-          child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)
+          // child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)
+          child: renderStaticGridView(user)
         )
       ],
     );

@@ -55,7 +55,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       lastIndex = category.index;
     }
 
-    List<Transaction> transactions = List<Transaction>.from(box.get('transactions', defaultValue: new List<Transaction>()));
+    List<Transaction> transactions = List<Transaction>.from(box.get('transactions', defaultValue: <Transaction>[]));
 
     for(Transaction transaction in transactions) {
       if(transaction.isArchived == null) {

@@ -264,7 +264,7 @@ class User extends ChangeNotifier {
   }
 
  List<Map> getTransactions({DateTime from, DateTime to, int accountID}) {
-    List<Map> transactionsByDate = new List<Map>();
+    List<Map> transactionsByDate = <Map>[];
     for(Transaction transaction in transactions) {
       if(transaction.timestamp.compareTo(from) >= 0 && transaction.timestamp.compareTo(to) <= 0 && (accountID == -1 || transaction.fromID == accountID || (transaction.transactionType == TransactionType.transfer && transaction.toID == accountID)) && !transaction.isArchived) {
         int objectIndex = transactionsByDate.indexWhere((element) => element["day"] == transaction.timestamp.day);
@@ -274,7 +274,7 @@ class User extends ChangeNotifier {
            "weekday" : transaction.timestamp.weekday,
            "month" : transaction.timestamp.month,
            "year" : transaction.timestamp.year,
-           "transactions" : new List<Transaction>(),
+           "transactions" : <Transaction>[],
            "value" : 0
            };
             transactionObject["transactions"].add(transaction);

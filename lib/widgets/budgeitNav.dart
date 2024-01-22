@@ -6,14 +6,14 @@ import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class NavigationDrawer extends StatefulWidget {
-  const NavigationDrawer({Key key}) : super(key: key);
+class BudgeitNav extends StatefulWidget {
+  const BudgeitNav({Key key}) : super(key: key);
 
   @override
-  _NavigationDrawerState createState() => _NavigationDrawerState();
+  _BudgeitNavState createState() => _BudgeitNavState();
 }
 
-class _NavigationDrawerState extends State<NavigationDrawer> {
+class _BudgeitNavState extends State<BudgeitNav> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
   @override
