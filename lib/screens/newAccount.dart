@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class NewAccount extends StatefulWidget {
   final AccountType accountType;
 
-  const NewAccount({Key key, this.accountType}) : super(key: key);
+  const NewAccount({Key? key, required this.accountType}) : super(key: key);
 
 
   @override
@@ -33,9 +33,10 @@ class _NewAccountState extends State<NewAccount> {
   double balance = 0;
   double limit = 0;
   IconData accountIcon = Icons.account_balance_wallet_outlined;
-  Color accountColor = Colors.blue[400];
+  Color accountColor = Colors.blue.shade400;
   bool isDarkIcon = false;
-  Currency selectedCurrency;
+
+  late Currency selectedCurrency;
 
 
 
@@ -43,14 +44,14 @@ class _NewAccountState extends State<NewAccount> {
     super.initState();
     User userModel = context.read<User>();
     IconData defaultIcon = Icons.account_balance_wallet_outlined;
-    Color defaultColor = Colors.deepPurple[400];
+    Color defaultColor = Colors.deepPurple.shade400;
 
     if(widget.accountType == AccountType.savings) {
       defaultIcon = Icons.account_balance_outlined;
-      defaultColor = Colors.teal[400];
+      defaultColor = Colors.teal.shade400;
     } else if(widget.accountType == AccountType.debt) {
       defaultIcon = Icons.credit_card_outlined;
-      defaultColor = Colors.red[400];
+      defaultColor = Colors.red.shade400;
     }
 
 
@@ -63,7 +64,7 @@ class _NewAccountState extends State<NewAccount> {
   }
 
   Future<void> _selectAccountType(BuildContext context) async {
-    AccountType newAccountType = await showDialog<AccountType>(
+    AccountType? newAccountType = await showDialog<AccountType>(
         context: context,
         builder: (BuildContext context) {
           return AccountsType();
@@ -311,7 +312,7 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   height: 74,
@@ -378,7 +379,7 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,
@@ -445,7 +446,7 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,
@@ -525,7 +526,7 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,
@@ -594,7 +595,7 @@ class _NewAccountState extends State<NewAccount> {
                   height: 74,
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   child: Padding(
@@ -660,7 +661,7 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class OverviewTab extends StatefulWidget {
-  const OverviewTab({Key key}) : super(key: key);
+  const OverviewTab({Key? key}) : super(key: key);
 
   @override
   _OverviewTabState createState() => _OverviewTabState();

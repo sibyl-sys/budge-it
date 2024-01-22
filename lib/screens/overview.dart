@@ -11,7 +11,7 @@ import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:provider/provider.dart';
 
 class Overview extends StatefulWidget {
-  const Overview({Key key}) : super(key: key);
+  const Overview({Key? key}) : super(key: key);
 
   @override
   _OverviewState createState() => _OverviewState();
@@ -23,13 +23,13 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
   //TODO CREATE MONTH WIDGET
   List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
-  DateTime from;
-  DateTime to;
+  late DateTime from;
+  late DateTime to;
 
   int month = DateTime.now().month;
   int year = DateTime.now().year;
 
-  TabController _tabController;
+  late TabController _tabController;
 
   @override
   void initState() {
@@ -110,19 +110,19 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
                   child: TabBar(
                     controller: _tabController,
                     indicator: BoxDecoration(
-                        color : _tabController.index == 0 ? Colors.red[500].withOpacity(0.1) : Colors
-                            .teal[500].withOpacity(0.1),
+                        color : _tabController.index == 0 ? Colors.red.withOpacity(0.1) : Colors
+                            .teal.withOpacity(0.1),
                         border: Border(
-                            bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red[500]: Colors
-                                .teal[500])
+                            bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red: Colors
+                                .teal)
                         )
                     ),
-                    indicatorColor: _tabController.index == 0 ? Colors.red[500] : Colors
-                        .teal[500],
-                    labelColor: _tabController.index == 0 ? Colors.red[500] : Colors
-                        .teal[500],
-                    unselectedLabelColor: _tabController.index == 1 ? Colors.red[500] : Colors
-                        .teal[500],
+                    indicatorColor: _tabController.index == 0 ? Colors.red : Colors
+                        .teal,
+                    labelColor: _tabController.index == 0 ? Colors.red : Colors
+                        .teal,
+                    unselectedLabelColor: _tabController.index == 1 ? Colors.red : Colors
+                        .teal,
                     tabs: [
                       Tab(
                         child: Column(
