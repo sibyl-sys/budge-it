@@ -12,7 +12,7 @@ class TransactionDetails extends StatefulWidget {
 
   final int transactionID;
 
-  const TransactionDetails({Key key, this.transactionID}) : super(key: key);
+  const TransactionDetails({Key? key, required this.transactionID}) : super(key: key);
 
   @override
   _TransactionDetailsState createState() => _TransactionDetailsState();
@@ -300,7 +300,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
               Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    top: BorderSide(color: Colors.grey[400].withOpacity(0.25), width: 1.0),
+                    top: BorderSide(color: Colors.grey.shade400.withOpacity(0.25), width: 1.0),
                   ),
                   color: Colors.white,
                 ),

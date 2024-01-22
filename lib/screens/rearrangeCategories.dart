@@ -20,21 +20,19 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
   //TODO CREATE MONTH WIDGET
   List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
-  DateTime from;
-  DateTime to;
-
-
-  TabController _tabController;
+  late DateTime from;
+  late DateTime to;
+  late TabController _tabController;
 
   TabBar get _tabBar =>
       TabBar(
         controller: _tabController,
         indicator: BoxDecoration(
-            color : _tabController.index == 0 ? Colors.red[500].withOpacity(0.1) : Colors
-                .teal[500].withOpacity(0.1),
+            color : _tabController.index == 0 ? Colors.red.withOpacity(0.1) : Colors
+                .teal.withOpacity(0.1),
             border: Border(
-                bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red[500]: Colors
-                    .teal[500])
+                bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red: Colors
+                    .teal)
             )
         ),
         indicatorColor: _tabController.index == 0 ? Colors.red[500] : Colors
@@ -84,6 +82,10 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
         break;
       case AccountType.debt:
         break;
+      default:
+        Navigator.pushNamed(context, "/newAccount");
+        break;
+
     }
   }
 

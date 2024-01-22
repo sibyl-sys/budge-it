@@ -17,8 +17,8 @@ class Transactions extends StatefulWidget {
 
 class _TransactionsState extends State<Transactions> {
 
-  DateTime from;
-  DateTime to;
+  late DateTime from;
+  late DateTime to;
 
   int month = DateTime.now().month;
   int year = DateTime.now().year;

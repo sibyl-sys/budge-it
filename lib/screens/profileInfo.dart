@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfileInfo extends StatefulWidget {
-  const ProfileInfo({Key key}) : super(key: key);
+  const ProfileInfo({Key? key}) : super(key: key);
 
   @override
   _ProfileInfoState createState() => _ProfileInfoState();
@@ -39,7 +39,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1)
+                      bottom: BorderSide(color: Colors.grey.shade400.withOpacity(0.5), width: 1)
                     )
                    ),
                   width: double.infinity,
@@ -110,7 +110,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1)
+                              bottom: BorderSide(color: Colors.grey.shade400.withOpacity(0.5), width: 1)
                           )
                       ),
                       width: double.infinity,
@@ -144,7 +144,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1)
+                              bottom: BorderSide(color: Colors.grey.shade400.withOpacity(0.5), width: 1)
                           )
                       ),
                       width: double.infinity,
