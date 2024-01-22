@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 class EditCategory extends StatefulWidget {
   final int categoryID;
-  const EditCategory({Key key, this.categoryID}) : super(key : key);
+  const EditCategory({Key? key, required this.categoryID}) : super(key : key);
   @override
   _EditCategoryState createState() => _EditCategoryState();
 }
@@ -26,11 +26,13 @@ class _EditCategoryState extends State<EditCategory> {
   final FocusNode nameFocusNode = FocusNode();
   final TextEditingController categoryNameController = TextEditingController();
   IconData categoryIcon = Icons.account_balance_wallet;
-  Color categoryColor = Colors.blue[700];
+  Color categoryColor = Colors.blue.shade700;
   bool isDarkIcon = false;
-  Currency selectedCurrency;
-  int index;
   List<Subcategory> subcategories = [];
+
+
+  late Currency selectedCurrency;
+  late int index;
 
   void initState() {
     super.initState();
@@ -48,15 +50,18 @@ class _EditCategoryState extends State<EditCategory> {
   }
 
   Future<void> _selectCategoryType(BuildContext context) async {
-    CategoryType newCategoryType = await showDialog<CategoryType>(
+    CategoryType? newCategoryType = await showDialog<CategoryType>(
         context: context,
         builder: (BuildContext context) {
           return CategoriesType();
         }
     );
-    setState(() {
-      _categoryType = newCategoryType;
-    });
+    if(newCategoryType != null) {
+      setState(() {
+        _categoryType = newCategoryType;
+      });
+    }
+
   }
 
   TextStyle generateMoneyStyle(double value) {
@@ -227,7 +232,7 @@ class _EditCategoryState extends State<EditCategory> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   height: 74,
@@ -294,7 +299,7 @@ class _EditCategoryState extends State<EditCategory> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   height: 74,
@@ -370,7 +375,7 @@ class _EditCategoryState extends State<EditCategory> {
                                   barrierColor: Colors.black.withOpacity(0.25),
                                   barrierDismissible: true,
                                   opaque: false,
-                                  pageBuilder: (_, __, ___) => AddSubcategory(categoryColor: this.categoryColor, categoryIcon: this.categoryIcon, isDarkIcon: isDarkIcon),
+                                  pageBuilder: (_, __, ___) => AddSubcategory(categoryColor: this.categoryColor, categoryIcon: this.categoryIcon, isDarkIcon: isDarkIcon, name: ""),
                                 )
                               //TODO SUBCATEGORY ADD
                             );

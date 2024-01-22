@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class EditAccount extends StatefulWidget {
   final int accountIndex;
-  const EditAccount({Key key, this.accountIndex}) : super(key: key);
+  const EditAccount({Key? key, required this.accountIndex}) : super(key: key);
 
   @override
   _EditAccountState createState() => _EditAccountState();
@@ -32,9 +32,10 @@ class _EditAccountState extends State<EditAccount> {
   double balance = 0;
   double limit = 0;
   IconData accountIcon = Icons.account_balance_wallet;
-  Color accountColor = Colors.blue[700];
+  Color accountColor = Colors.blue.shade700;
   bool isDarkIcon = false;
-  Currency selectedCurrency;
+
+  late Currency selectedCurrency;
 
   @override
   void initState() {
@@ -55,15 +56,18 @@ class _EditAccountState extends State<EditAccount> {
   }
 
   Future<void> _selectAccountType(BuildContext context) async {
-    AccountType newAccountType = await showDialog<AccountType>(
+    AccountType? newAccountType = await showDialog<AccountType>(
         context: context,
         builder: (BuildContext context) {
           return AccountsType();
         }
     );
-    setState(() {
-      _accountType = newAccountType;
-    });
+    if(newAccountType != null) {
+      setState(() {
+        _accountType = newAccountType;
+      });
+    }
+
   }
 
 
@@ -313,7 +317,7 @@ class _EditAccountState extends State<EditAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity(0.5), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity(0.5), width: 1)
                     ),
                   ),
                   height: 74,
@@ -380,7 +384,7 @@ class _EditAccountState extends State<EditAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,
@@ -447,7 +451,7 @@ class _EditAccountState extends State<EditAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,
@@ -527,7 +531,7 @@ class _EditAccountState extends State<EditAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,
@@ -596,7 +600,7 @@ class _EditAccountState extends State<EditAccount> {
                   height: 74,
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   child: Padding(
@@ -662,7 +666,7 @@ class _EditAccountState extends State<EditAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,
@@ -747,7 +751,7 @@ class _EditAccountState extends State<EditAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,
@@ -830,7 +834,7 @@ class _EditAccountState extends State<EditAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   width: double.infinity,

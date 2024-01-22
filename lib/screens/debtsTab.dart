@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 class DebtsTab extends StatefulWidget {
   final Function(int) onAccountTapped;
 
-  const DebtsTab({Key key, this.onAccountTapped}) : super(key: key);
+  const DebtsTab({Key? key, required this.onAccountTapped}) : super(key: key);
 
   @override
   _DebtsTabState createState() => _DebtsTabState();
