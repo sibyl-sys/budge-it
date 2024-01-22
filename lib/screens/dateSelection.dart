@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 class DateSelection extends StatefulWidget {
   final DateTime currentDate;
 
-  const DateSelection({Key key, this.currentDate}) : super(key: key);
+  const DateSelection({Key? key, required this.currentDate}) : super(key: key);
 
   @override
   _DateSelectionState createState() => _DateSelectionState();
@@ -93,12 +93,6 @@ class _DateSelectionState extends State<DateSelection> {
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime(1990),
                                     lastDate: DateTime(2050),
-                                    builder: (BuildContext context, Widget child) {
-                                      return Theme(
-                                        data: ThemeData.light(),
-                                        child: child
-                                      );
-                                    },
                                 );
                                 if(results != null) {
                                   Navigator.of(context).pop(
