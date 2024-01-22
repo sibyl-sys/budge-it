@@ -23,9 +23,9 @@ class _AddCategoryState extends State<AddCategory> {
   final FocusNode nameFocusNode = FocusNode();
   final TextEditingController categoryNameController = TextEditingController();
   IconData categoryIcon = Icons.account_balance_wallet;
-  Color categoryColor = Colors.blue[400];
+  Color categoryColor = Colors.blue.shade400;
   bool isDarkIcon = false;
-  Currency selectedCurrency;
+  late Currency selectedCurrency;
   List<Subcategory> subcategories = [];
 
   void initState() {
@@ -37,15 +37,17 @@ class _AddCategoryState extends State<AddCategory> {
   }
 
   Future<void> _selectCategoryType(BuildContext context) async {
-    CategoryType newCategoryType = await showDialog<CategoryType>(
+    CategoryType? newCategoryType = await showDialog<CategoryType>(
         context: context,
         builder: (BuildContext context) {
           return CategoriesType();
         }
     );
-    setState(() {
-      _categoryType = newCategoryType;
-    });
+    if(newCategoryType != null) {
+      setState(() {
+        _categoryType = newCategoryType;
+      });
+    }
   }
 
   TextStyle generateMoneyStyle(double value) {
@@ -218,7 +220,7 @@ class _AddCategoryState extends State<AddCategory> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   height: 74,
@@ -285,7 +287,7 @@ class _AddCategoryState extends State<AddCategory> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey[400].withOpacity((0.5)), width: 1)
+                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
                   height: 74,
