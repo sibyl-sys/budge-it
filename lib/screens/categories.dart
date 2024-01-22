@@ -21,23 +21,23 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
   //TODO CREATE MONTH WIDGET
   List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
-  DateTime from;
-  DateTime to;
+  late DateTime from;
+  late DateTime to;
 
   int month = DateTime.now().month;
   int year = DateTime.now().year;
 
-  TabController _tabController;
+  late TabController _tabController;
 
   TabBar get _tabBar =>
       TabBar(
         controller: _tabController,
         indicator: BoxDecoration(
-            color : _tabController.index == 0 ? Colors.red[500].withOpacity(0.1) : Colors
-            .teal[500].withOpacity(0.1),
+            color : _tabController.index == 0 ? Colors.red.withOpacity(0.1) : Colors
+            .teal.withOpacity(0.1),
           border: Border(
-            bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red[500]: Colors
-                .teal[500])
+            bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red: Colors
+                .teal)
           )
         ),
         indicatorColor: _tabController.index == 0 ? Colors.red[500] : Colors

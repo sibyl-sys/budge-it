@@ -146,7 +146,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                               lineWidth: 4.0,
                               percent: user.getAccountProgress(currentAccount.accountID),
                               progressColor: Colors.lightGreen,
-                              backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300]!,
+                              backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey.shade300,
                               center: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 child: Icon(
