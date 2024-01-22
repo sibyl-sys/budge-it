@@ -463,15 +463,15 @@ final List<Map<String, dynamic>> accountColorList = [
 // ];
 
 final List<Category> categoryDefault = [
-  Category(color: Colors.green[400].value, categoryType: CategoryType.expense, icon: Icons.shopping_cart_outlined.codePoint, name: "Shopping", categoryID: 0, index: 0, subcategories: []),
-  Category(color: Colors.blue[400].value, categoryType: CategoryType.expense, icon: Icons.fastfood.codePoint, name: "Restaurant", categoryID: 1, index: 1, subcategories: []),
-  Category(color: Colors.red[400].value, categoryType: CategoryType.expense, icon: Icons.local_movies.codePoint, name: "Leisure", categoryID: 2, index: 2, subcategories: []),
-  Category(color: Colors.yellow[400].value, categoryType: CategoryType.expense, icon: Icons.directions_bus.codePoint, name: "Transport", categoryID: 3, index: 3, subcategories: []),
-  Category(color: Colors.teal[400].value, categoryType: CategoryType.expense, icon: Icons.healing.codePoint, name: "Health", categoryID: 4, index: 4, subcategories: []),
-  Category(color: Colors.brown[400].value, categoryType: CategoryType.expense, icon: Icons.wallet_giftcard.codePoint, name: "Gifts", categoryID: 5, index: 5, subcategories: []),
-  Category(color: Colors.deepPurple[400].value, categoryType: CategoryType.expense, icon: Icons.pets.codePoint, name: "Pet", categoryID: 6, index: 6, subcategories: []),
-  Category(color: Colors.lightGreen[400].value, categoryType: CategoryType.income, icon: Icons.money.codePoint, name: "Salary", categoryID: 7, index: 7, subcategories: []),
-  Category(color: Colors.lime[400].value, categoryType: CategoryType.income, icon: Icons.receipt.codePoint, name: "Reimbursements", categoryID: 8, index:8, subcategories: []),
+  Category(color: Colors.green.shade400.value, categoryType: CategoryType.expense, icon: Icons.shopping_cart_outlined.codePoint, name: "Shopping", categoryID: 0, index: 0, subcategories: []),
+  Category(color: Colors.blue.shade400.value, categoryType: CategoryType.expense, icon: Icons.fastfood.codePoint, name: "Restaurant", categoryID: 1, index: 1, subcategories: []),
+  Category(color: Colors.red.shade400.value, categoryType: CategoryType.expense, icon: Icons.local_movies.codePoint, name: "Leisure", categoryID: 2, index: 2, subcategories: []),
+  Category(color: Colors.yellow.shade400.value, categoryType: CategoryType.expense, icon: Icons.directions_bus.codePoint, name: "Transport", categoryID: 3, index: 3, subcategories: []),
+  Category(color: Colors.teal.shade400.value, categoryType: CategoryType.expense, icon: Icons.healing.codePoint, name: "Health", categoryID: 4, index: 4, subcategories: []),
+  Category(color: Colors.brown.shade400.value, categoryType: CategoryType.expense, icon: Icons.wallet_giftcard.codePoint, name: "Gifts", categoryID: 5, index: 5, subcategories: []),
+  Category(color: Colors.deepPurple.shade400.value, categoryType: CategoryType.expense, icon: Icons.pets.codePoint, name: "Pet", categoryID: 6, index: 6, subcategories: []),
+  Category(color: Colors.lightGreen.shade400.value, categoryType: CategoryType.income, icon: Icons.money.codePoint, name: "Salary", categoryID: 7, index: 7, subcategories: []),
+  Category(color: Colors.lime.shade400.value, categoryType: CategoryType.income, icon: Icons.receipt.codePoint, name: "Reimbursements", categoryID: 8, index:8, subcategories: []),
   Category(color: Colors.grey.value, categoryType: CategoryType.expense, icon: Icons.adjust.codePoint, name: "Untracked", categoryID: 9, index: 9, subcategories: []),
 ];
 
