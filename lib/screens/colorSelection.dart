@@ -7,7 +7,7 @@ class ColorSelection extends StatefulWidget {
   final Function onColorChange;
   final bool isDarkIcon;
 
-  const ColorSelection({Key key, this.colorData, this.onColorChange, this.isDarkIcon}) : super(key: key);
+  const ColorSelection({Key? key, required this.colorData, required this.onColorChange, required this.isDarkIcon}) : super(key: key);
 
   @override
   _ColorSelectionState createState() => _ColorSelectionState();
@@ -15,8 +15,8 @@ class ColorSelection extends StatefulWidget {
 
 class _ColorSelectionState extends State<ColorSelection> {
 
-  String colorName;
-  int colorShade;
+  late String colorName;
+  late int colorShade;
 
   void getColorData() {
     for(var map in accountColorList) {
