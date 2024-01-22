@@ -57,6 +57,16 @@ Future<void> _selectAccountType(BuildContext context) async {
           )
       );
       break;
+    default:
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          barrierColor: Colors.black.withOpacity(0.25),
+          barrierDismissible: true,
+          opaque: false,
+          pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.wallet),
+        )
+      );
+      break;
   }
 }
 
