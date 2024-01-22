@@ -15,7 +15,7 @@ class Calculator extends StatefulWidget {
   final String header;
   final bool isDebt;
 
-  const Calculator({Key key, this.valueCurrencySymbol, this.header, this.isDebt}) : super(key: key);
+  const Calculator({Key? key, required this.valueCurrencySymbol, required this.header, required this.isDebt}) : super(key: key);
 
   @override
   _CalculatorState createState() => _CalculatorState();
@@ -28,7 +28,7 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
   bool isDecimal = false;
   Operator operator = Operator.none;
 
-  TabController _tabController;
+  late TabController _tabController;
 
   TabBar get _tabBar =>
       TabBar(
@@ -360,7 +360,7 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
   }
 
 
-  Widget generateIconButton(double width, double height, IconData icon, Color color, Color iconColor, Function onPressed) {
+  Widget generateIconButton(double width, double height, IconData icon, Color color, Color iconColor, Function() onPressed) {
     return Container(
         width: width,
         height: height,
@@ -371,7 +371,7 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
                 shape: MaterialStateProperty.all(ContinuousRectangleBorder(
                     borderRadius: BorderRadius.zero,
                     side: BorderSide(
-                        color: Colors.grey[400].withOpacity(0.25),
+                        color: Colors.grey.shade400.withOpacity(0.25),
                         width: 1,
                         style: BorderStyle.solid
                     )
@@ -386,7 +386,7 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
     );
   }
 
-  Widget generateButton(double width, double height, String label, Color color, Color textColor, Function onPressed) {
+  Widget generateButton(double width, double height, String label, Color color, Color textColor, Function() onPressed) {
     return Container(
         width: width,
         height: height,
@@ -397,7 +397,7 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
               shape: MaterialStateProperty.all(ContinuousRectangleBorder(
                   borderRadius: BorderRadius.zero,
                   side: BorderSide(
-                      color: Colors.grey[400].withOpacity(0.25),
+                      color: Colors.grey.shade400.withOpacity(0.25),
                       width: 1,
                       style: BorderStyle.solid
                   )
