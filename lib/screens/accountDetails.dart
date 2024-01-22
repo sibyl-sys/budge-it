@@ -6,7 +6,6 @@ import 'package:money_tracker/screens/editAccount.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
-import 'package:money_tracker/widgets/creditLimitText.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
 import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
@@ -26,8 +25,8 @@ class _AccountDetailsState extends State<AccountDetails> {
   List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
   List weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
-  DateTime from;
-  DateTime to;
+  late DateTime from;
+  late DateTime to;
 
   getValueColor(Transaction transaction, Account currentAccount) {
     if(transaction.transactionType == TransactionType.transfer) {
@@ -86,7 +85,7 @@ class _AccountDetailsState extends State<AccountDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
     final User user = context.watch<User>();
     double monthlyNet = user.getMonthlyNet(from: from, to: to, accountID: arguments["accountIndex"]);
 
@@ -147,7 +146,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                               lineWidth: 4.0,
                               percent: user.getAccountProgress(currentAccount.accountID),
                               progressColor: Colors.lightGreen,
-                              backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300],
+                              backgroundColor: currentAccount.creditLimit == 0 ? Colors.white.withAlpha(0) : Colors.grey[300]!,
                               center: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 child: Icon(
