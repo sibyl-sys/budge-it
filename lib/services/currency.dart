@@ -13,5 +13,5 @@ class Currency {
   @HiveField(2)
   double exchangeRateToUSD;
 
-  Currency({this.name, this.symbol, this.exchangeRateToUSD});
+  Currency({required this.name,required this.symbol, required this.exchangeRateToUSD});
 }

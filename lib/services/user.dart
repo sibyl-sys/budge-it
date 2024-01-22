@@ -16,12 +16,13 @@ class User extends ChangeNotifier {
   List<Transaction> transactions = [];
   List<Transaction> transactionAlert = [];
   List<Transaction> favoriteTransactions = [];
-  int lastSelectedCategoryTo;
-  int lastSelectedAccountFrom;
-  int lastSelectedAccountTo;
-  TransactionType lastTransactionType;
-  Currency primaryCurrency;
-  double spendAlertAmount;
+
+  late TransactionType lastTransactionType;
+  late Currency primaryCurrency;
+  late double spendAlertAmount;
+  late int lastSelectedCategoryTo;
+  late int lastSelectedAccountFrom;
+  late int lastSelectedAccountTo;
 
   int get newAccountID => accounts.length < 1 ? 0 : accounts[accounts.length-1].accountID + 1 ;
   int get newCategoryID => categories.length < 1 ? 0 : categories[categories.length-1].categoryID + 1;
@@ -129,7 +130,7 @@ class User extends ChangeNotifier {
     return total;
   }
 
-  Account findAccountByID(int accountID) {
+  Account? findAccountByID(int accountID) {
     return accounts.firstWhereOrNull((account) => account.accountID == accountID);
   }
 
@@ -137,7 +138,7 @@ class User extends ChangeNotifier {
     return accounts.indexWhere((account) => account.accountID == accountID);
   }
 
-  Category findCategoryByID(int categoryID) {
+  Category? findCategoryByID(int categoryID) {
     return categories.firstWhereOrNull((category) => category.categoryID == categoryID);
   }
 
@@ -150,7 +151,7 @@ class User extends ChangeNotifier {
     return transactions.indexWhere((transaction) => transaction.transactionID == transactionID);
   }
 
-  Transaction findTransactionByID(int transactionID) {
+  Transaction? findTransactionByID(int transactionID) {
     return transactions.firstWhereOrNull((transaction) => transaction.transactionID == transactionID);
   }
 
@@ -200,7 +201,7 @@ class User extends ChangeNotifier {
     return 0;
   }
 
-  int getTransactionCount({DateTime from, DateTime to, int accountID}) {
+  int getTransactionCount({required DateTime from, required DateTime to, required int accountID}) {
     int transactionCount = 0;
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.compareTo(from) >= 0 &&
@@ -213,7 +214,7 @@ class User extends ChangeNotifier {
     return transactionCount;
   }
 
-  double getCategoryNet({DateTime from, DateTime to, int categoryID}) {
+  double getCategoryNet({required DateTime from, required DateTime to, required int categoryID}) {
     double categoryNet = 0;
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.compareTo(from) >= 0 &&
@@ -221,7 +222,7 @@ class User extends ChangeNotifier {
           transaction.toID == categoryID &&
           !transaction.isArchived &&
           transaction.transactionType != TransactionType.transfer) {
-        Account transactionAccount = findAccountByID(transaction.fromID);
+        Account transactionAccount = findAccountByID(transaction.fromID)!;
         if(transactionAccount.currency == primaryCurrency) {
           categoryNet+= transaction.value;
         } else {
@@ -232,7 +233,7 @@ class User extends ChangeNotifier {
     return categoryNet;
   }
 
-  double getCategoryTypeNet({DateTime from , DateTime to, CategoryType categoryType}) {
+  double getCategoryTypeNet({required DateTime from, required DateTime to, required CategoryType categoryType}) {
     double categoryNet = 0;
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.compareTo(from) >= 0  &&
@@ -247,7 +248,7 @@ class User extends ChangeNotifier {
     return categoryNet;
   }
 
-  double getMonthlyNet({DateTime from, DateTime to, int accountID}) {
+  double getMonthlyNet({required DateTime from, required DateTime to, required int accountID}) {
     double monthlyNet = 0;
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.compareTo(from) >= 0 &&
@@ -263,7 +264,7 @@ class User extends ChangeNotifier {
     return monthlyNet;
   }
 
- List<Map> getTransactions({DateTime from, DateTime to, int accountID}) {
+ List<Map> getTransactions({required DateTime from, required DateTime to,required int accountID}) {
     List<Map> transactionsByDate = <Map>[];
     for(Transaction transaction in transactions) {
       if(transaction.timestamp.compareTo(from) >= 0 && transaction.timestamp.compareTo(to) <= 0 && (accountID == -1 || transaction.fromID == accountID || (transaction.transactionType == TransactionType.transfer && transaction.toID == accountID)) && !transaction.isArchived) {
@@ -344,14 +345,14 @@ class User extends ChangeNotifier {
   }
 
   void deleteTransaction(int transactionID) async {
-    Transaction transaction = findTransactionByID(transactionID);
+    Transaction transaction = findTransactionByID(transactionID)!;
     if(transaction.transactionType == TransactionType.expense) {
-      findAccountByID(transaction.fromID).balance += transaction.value;
+      findAccountByID(transaction.fromID)!.balance += transaction.value;
     } else if(transaction.transactionType == TransactionType.income ) {
-      findAccountByID(transaction.fromID).balance -= transaction.value;
+      findAccountByID(transaction.fromID)!.balance -= transaction.value;
     } else if(transaction.transactionType == TransactionType.transfer) {
-      findAccountByID(transaction.fromID).balance += transaction.value;
-      findAccountByID(transaction.toID).balance -= transaction.value;
+      findAccountByID(transaction.fromID)!.balance += transaction.value;
+      findAccountByID(transaction.toID)!.balance -= transaction.value;
     }
 
     transactions.removeWhere((transaction) => transaction.transactionID == transactionID);
@@ -377,16 +378,16 @@ class User extends ChangeNotifier {
     print(transaction.transactionType);
 
     if(transaction.transactionType == TransactionType.expense) {
-      findAccountByID(transaction.fromID).balance -= transaction.value;
+      findAccountByID(transaction.fromID)!.balance -= transaction.value;
       if(transaction.value >= spendAlertAmount) {
         transactionAlert = List.from(transactionAlert)..add(transaction);
       }
     } else if(transaction.transactionType == TransactionType.income ) {
-      findAccountByID(transaction.fromID).balance += transaction.value;
+      findAccountByID(transaction.fromID)!.balance += transaction.value;
     } else if(transaction.transactionType == TransactionType.transfer) {
       print(transaction.value);
-      findAccountByID(transaction.fromID).balance -= transaction.value;
-      findAccountByID(transaction.toID).balance += transaction.value;
+      findAccountByID(transaction.fromID)!.balance -= transaction.value;
+      findAccountByID(transaction.toID)!.balance += transaction.value;
       //TODO CONVERT CURRENCIES WHEN TRANSFERRING BETWEEN TWO ACCOUNTS WITH DIFFERENT CURRENCIES.
     }
 

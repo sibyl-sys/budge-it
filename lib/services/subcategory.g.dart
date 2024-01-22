@@ -19,6 +19,7 @@ class SubcategoryAdapter extends TypeAdapter<Subcategory> {
     return Subcategory(
       icon: fields[0] as int,
       name: fields[2] as String,
+      id: fields[3] as int
     );
   }
 
@@ -29,7 +30,9 @@ class SubcategoryAdapter extends TypeAdapter<Subcategory> {
       ..writeByte(0)
       ..write(obj.icon)
       ..writeByte(2)
-      ..write(obj.name);
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.id);
   }
 
   @override

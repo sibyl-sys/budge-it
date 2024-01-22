@@ -51,5 +51,5 @@ class Account {
   @HiveField(12)
   bool isArchived;
 
-  Account({this.icon, this.color, this.name, this.accountType, this.balance, this.creditLimit, this.description, this.isIncludedInTotalNet, this.isDarkIcon, this.accountID, this.isArchived, this.currency});
+  Account({required this.icon, required this.color, required this.name, required this.accountType, required this.balance, required this.creditLimit, required this.description, required this.isIncludedInTotalNet, required this.isDarkIcon, required this.accountID, required this.isArchived, required this.currency});
 }

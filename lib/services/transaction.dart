@@ -52,5 +52,5 @@ class Transaction {
   @HiveField(8)
   TransactionImportance importance;
 
-  Transaction({this.value, this.note, this.transactionID, this.timestamp, this.toID, this.fromID, this.transactionType, this.isArchived, this.importance});
+  Transaction({required this.value,required  this.note,required  this.transactionID,required this.timestamp,required  this.toID,required  this.fromID,required this.transactionType,required this.isArchived,required this.importance});
 }

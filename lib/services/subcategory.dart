@@ -13,6 +13,6 @@ class Subcategory {
   @HiveField(3)
   int id;
 
-  Subcategory({this.icon, this.name, this.id});
+  Subcategory({required this.icon, required this.name, required this.id});
 
 }
