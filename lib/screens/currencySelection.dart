@@ -3,7 +3,7 @@ import 'package:money_tracker/constants/Constants.dart';
 
 
 class CurrencySelection extends StatefulWidget {
-  const CurrencySelection({Key key}) : super(key: key);
+  const CurrencySelection({Key? key}) : super(key: key);
 
   @override
   _CurrencySelectionState createState() => _CurrencySelectionState();

@@ -8,7 +8,7 @@ class DateRangeSelection extends StatefulWidget {
   final DateTime toDate;
   final DateTime fromDate;
 
-  const DateRangeSelection({Key key, this.fromDate, this.toDate}) : super(key: key);
+  const DateRangeSelection({Key? key, required this.fromDate, required this.toDate}) : super(key: key);
 
   @override
   _DateRangeSelectionState createState() => _DateRangeSelectionState();
@@ -110,12 +110,6 @@ class _DateRangeSelectionState extends State<DateRangeSelection> {
                                     context: context,
                                     firstDate: DateTime(1990),
                                     lastDate: DateTime(2050),
-                                    builder: (BuildContext context, Widget child) {
-                                      return Theme(
-                                        data: ThemeData.light(),
-                                        child: child
-                                      );
-                                    },
                                 );
                                 if(results != null) {
                                   Navigator.of(context).pop(
