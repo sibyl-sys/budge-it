@@ -363,7 +363,7 @@ class _AddCategoryState extends State<AddCategory> {
                                   barrierColor: Colors.black.withOpacity(0.25),
                                   barrierDismissible: true,
                                   opaque: false,
-                                  pageBuilder: (_, __, ___) => AddSubcategory(categoryColor: this.categoryColor, categoryIcon: this.categoryIcon, isDarkIcon: isDarkIcon),
+                                  pageBuilder: (_, __, ___) => AddSubcategory(categoryColor: this.categoryColor, categoryIcon: this.categoryIcon, isDarkIcon: isDarkIcon, name: ""),
                                 )
                                 //TODO SUBCATEGORY ADD
                             );

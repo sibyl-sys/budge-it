@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/screens/colorSelection.dart';
 import 'package:money_tracker/screens/iconSelection.dart';
 
 class AddSubcategory extends StatefulWidget {
@@ -8,7 +7,7 @@ class AddSubcategory extends StatefulWidget {
   final bool isDarkIcon;
   final String name;
 
-  const AddSubcategory({Key key, this.categoryColor, this.categoryIcon, this.isDarkIcon, this.name}) : super(key: key);
+  const AddSubcategory({Key? key, required this.categoryColor, required this.categoryIcon, required this.isDarkIcon, required this.name}) : super(key: key);
 
   @override
   _AddSubcategoryState createState() => _AddSubcategoryState(accountColor : this.categoryColor, accountIcon: this.categoryIcon, isDarkIcon: this.isDarkIcon, name: this.name);
@@ -21,7 +20,7 @@ class _AddSubcategoryState extends State<AddSubcategory> {
   String name;
   final TextEditingController categoryNameController = TextEditingController();
 
-  _AddSubcategoryState({this.accountIcon, this.accountColor, this.isDarkIcon, this.name});
+  _AddSubcategoryState({required this.accountIcon, required this.accountColor, required this.isDarkIcon, required this.name});
   @override
   void dispose() {
     categoryNameController.dispose();
