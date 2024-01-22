@@ -11,8 +11,8 @@ class CategorySelection extends StatefulWidget {
 
 class _CategorySelectionState extends State<CategorySelection> {
 
-  DateTime from;
-  DateTime to;
+  late DateTime from;
+  late DateTime to;
 
   int month = DateTime.now().month;
   int year = DateTime.now().year;
