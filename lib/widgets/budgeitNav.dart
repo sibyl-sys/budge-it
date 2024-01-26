@@ -119,7 +119,7 @@ class _BudgeitNavState extends State<BudgeitNav> {
                     user.changePrimaryCurrency(result);
                   }
                 },
-                subtitle: Text(user.primaryCurrency.name + " (" + user.primaryCurrency.symbol + ")", style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                subtitle: Text(user.mySettings.getPrimaryCurrency().name + " (" + user.mySettings.getPrimaryCurrency().symbol + ")", style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                 minLeadingWidth: 0,
                 leading: Container(height: double.infinity, child: Icon(Icons.account_balance_outlined, color: Color(0x3C3A5F).withOpacity(0.25))),
                 dense: true,
@@ -130,14 +130,14 @@ class _BudgeitNavState extends State<BudgeitNav> {
                 title: Text("Spend Alert"),
                 subtitle: RichText(
                   text: TextSpan(
-                      text: "${user.primaryCurrency.symbol} ",
+                      text: "${user.mySettings.getPrimaryCurrency().symbol} ",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                         fontSize: 14,
                       ),
                       children: [
                         TextSpan(
-                            text: "${moneyFormat.format(user.spendAlertAmount).split('.')[0]}",
+                            text: "${moneyFormat.format(user.mySettings.spendAlertAmount).split('.')[0]}",
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontSize: 14,
@@ -161,7 +161,7 @@ class _BudgeitNavState extends State<BudgeitNav> {
                         barrierColor: Colors.black.withOpacity(0.25),
                         barrierDismissible: true,
                         opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: user.primaryCurrency.symbol, header: "Spend Alert Amount", isDebt: false),
+                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: user.mySettings.getPrimaryCurrency().symbol, header: "Spend Alert Amount", isDebt: false),
                       )
                   );
                   if(result != null) {

@@ -43,11 +43,11 @@ class _TransactionsState extends State<Transactions> {
           categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
           description: transaction.note,
           value: transaction.value,
-          type: transaction.transactionType,
+          type: transaction.transactionType!,
           transactionID: transaction.transactionID,
-          currencySymbol: user.primaryCurrency.symbol,
+          currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
           valueColor: getValueColor(transaction),
-          importance: transaction.importance,
+          importance: transaction.importance!,
         )
       ).toList()
     );
@@ -93,7 +93,7 @@ class _TransactionsState extends State<Transactions> {
           onChanged: changeDate,
         ),
         SizedBox(height: 4),
-        TotalHeader(header: "Total Net:", valueColor: Color(0x4F4F4F).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.getMonthlyNet(from: from, to: to, accountID: -1), description:
+        TotalHeader(header: "Total Net:", valueColor: Color(0x4F4F4F).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getMonthlyNet(from: from, to: to, accountID: -1), description:
         RichText(
           text: TextSpan(
               text: "xx%",
@@ -119,28 +119,28 @@ class _TransactionsState extends State<Transactions> {
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           child: Text("Favorites", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
         ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          height: 50,
-          child: ListView.builder(
-              itemCount: user.favoriteTransactions.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                Transaction transaction = user.favoriteTransactions[index];
-                return FavTransactionButton(
-                  color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.color : user.findAccountByID(transaction.toID)!.color).withOpacity(1),
-                  icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.icon : user.findAccountByID(transaction.toID)!.icon, fontFamily: "MaterialIcons"),
-                  categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
-                  value: transaction.value,
-                  type: transaction.transactionType,
-                  currencySymbol: user.primaryCurrency.symbol,
-                  importance: transaction.importance,
-                  fromID: transaction.fromID,
-                  toID: transaction.toID
-                );
-              }
-          ),
-        ),
+        // Container(
+        //   padding: EdgeInsets.symmetric(horizontal: 16.0),
+        //   height: 50,
+        //   child: ListView.builder(
+        //       itemCount: user.favoriteTransactions.length,
+        //       scrollDirection: Axis.horizontal,
+        //       itemBuilder: (context, index) {
+        //         Transaction transaction = user.favoriteTransactions[index];
+        //         return FavTransactionButton(
+        //           color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.color : user.findAccountByID(transaction.toID)!.color).withOpacity(1),
+        //           icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.icon : user.findAccountByID(transaction.toID)!.icon, fontFamily: "MaterialIcons"),
+        //           categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
+        //           value: transaction.value,
+        //           type: transaction.transactionType,
+        //           currencySymbol: user.primaryCurrency.symbol,
+        //           importance: transaction.importance,
+        //           fromID: transaction.fromID,
+        //           toID: transaction.toID
+        //         );
+        //       }
+        //   ),
+        // ),
         Column(
           children: transactionListPerDay.map((e) =>
             Column(

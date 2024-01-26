@@ -71,7 +71,7 @@ class _DebtsTabState extends State<DebtsTab> {
             ),
             RichText(
               text: TextSpan(
-                  text: "${user.primaryCurrency.symbol} ",
+                  text: "${user.mySettings.getPrimaryCurrency().symbol} ",
                   style: TextStyle(
                     color: Color(0x55C9C6).withOpacity(1),
                     fontSize: 14,
@@ -123,7 +123,7 @@ class _DebtsTabState extends State<DebtsTab> {
             ),
             RichText(
               text: TextSpan(
-                  text: "${user.primaryCurrency.symbol} ",
+                  text: "${user.mySettings.getPrimaryCurrency().symbol} ",
                   style: TextStyle(
                     color: Color(0x55C9C6).withOpacity(1),
                     fontSize: 14,
@@ -161,7 +161,7 @@ class _DebtsTabState extends State<DebtsTab> {
     final iOwed = user.iOwedAccounts;
     return Column(
       children: [
-        TotalHeader(header: "Total Debts", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.totalDebts, description:
+        TotalHeader(header: "Total Debts", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.totalDebts, description:
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -212,7 +212,7 @@ class _DebtsTabState extends State<DebtsTab> {
               description: account.description,
               accountIndex: account.accountID,
               onAccountTapped: widget.onAccountTapped,
-              currencySymbol : account.currency.symbol,
+              currencySymbol : account.getCurrency().symbol,
               isDebt: true,
             )
         ).toList()

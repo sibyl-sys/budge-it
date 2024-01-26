@@ -39,8 +39,8 @@ class _EditCategoryState extends State<EditCategory> {
     User userModel = context.read<User>();
     Category currentCategory = userModel.findCategoryByID(widget.categoryID)!;
     setState(() {
-      _categoryType = currentCategory.categoryType;
-      selectedCurrency = selectedCurrency == null ? userModel.primaryCurrency : currentCategory.categoryCurrency!;
+      _categoryType = currentCategory.categoryType!;
+      selectedCurrency = selectedCurrency == null ? userModel.mySettings.getPrimaryCurrency() : currentCategory.getCurrency();
       categoryNameController.text = currentCategory.name;
       categoryColor = Color(currentCategory.color).withOpacity(1);
       categoryIcon = IconData(currentCategory.icon, fontFamily: 'MaterialIcons');
@@ -146,9 +146,7 @@ class _EditCategoryState extends State<EditCategory> {
                     categoryType: _categoryType,
                     icon: categoryIcon.codePoint,
                     name: categoryNameController.text,
-                    categoryID: widget.categoryID,
                     index: index,
-                    subcategories: subcategories
                   )
               );
               Navigator.pop(context);
@@ -385,7 +383,6 @@ class _EditCategoryState extends State<EditCategory> {
                                 subcategories = List.from(subcategories)..add(Subcategory(
                                     icon: result["iconData"].codePoint,
                                     name: result["name"],
-                                    id: userModel.newSubCategoryID(subcategories)
                                 ));
                               });
                             }

@@ -86,7 +86,7 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
                 to: this.to,
                 onChanged: changeDate,
               ),
-              TotalHeader(header: "Total net:", valueColor: Color(0xFF4F4F4F), currencySymbol: user.primaryCurrency.symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), description:
+              TotalHeader(header: "Total net:", valueColor: Color(0xFF4F4F4F), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), description:
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,7 +131,7 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
                             Text('Expenses', style: TextStyle(fontSize: 9, color: Color(0xFF333333))),
                             RichText(
                               text: TextSpan(
-                                  text: "${user.primaryCurrency.symbol} ",
+                                  text: "${user.mySettings.getPrimaryCurrency().symbol} ",
                                   style: TextStyle(
                                     color: Color(0xffEB6467),
                                     fontSize: 14,
@@ -169,7 +169,7 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
                             Text('Income', style: TextStyle(fontSize: 9, color: Color(0xFF333333))),
                             RichText(
                               text: TextSpan(
-                                  text: "${user.primaryCurrency.symbol} ",
+                                  text: "${user.mySettings.getPrimaryCurrency().symbol} ",
                                   style: TextStyle(
                                       color: Color(0xff55C9C6),
                                       fontSize: 14,

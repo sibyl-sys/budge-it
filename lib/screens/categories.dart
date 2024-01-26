@@ -120,7 +120,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                 to: this.to,
                 onChanged: changeDate,
               ),
-              TotalHeader(header: getHeaderText(), valueColor: getValueColor(), currencySymbol: user.primaryCurrency.symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), description:
+              TotalHeader(header: getHeaderText(), valueColor: getValueColor(), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), description:
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,

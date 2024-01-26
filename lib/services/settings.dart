@@ -30,4 +30,5 @@ class Settings {
     return TransactionType.values[selectedTransactionType];
   }
 
+
 }

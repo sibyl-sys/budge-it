@@ -71,7 +71,7 @@ class _AccountsTabState extends State<AccountsTab> {
             ),
             RichText(
               text: TextSpan(
-                  text: "${user.primaryCurrency.symbol} ",
+                  text: "${user.mySettings.getPrimaryCurrency().symbol} ",
                   style: TextStyle(
                     color: Color(0x55C9C6).withOpacity(1),
                     fontSize: 14,
@@ -124,7 +124,7 @@ class _AccountsTabState extends State<AccountsTab> {
             ),
             RichText(
               text: TextSpan(
-                  text: "${user.primaryCurrency.symbol} ",
+                  text: "${user.mySettings.getPrimaryCurrency().symbol} ",
                   style: TextStyle(
                     color: Color(0x55C9C6).withOpacity(1),
                     fontSize: 14,
@@ -163,7 +163,7 @@ class _AccountsTabState extends State<AccountsTab> {
     print(savings);
     return Column(
       children: [
-        TotalHeader(header: "Total Balance", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: user.totalRegular + user.totalSavings, description:
+        TotalHeader(header: "Total Balance", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.totalRegular + user.totalSavings, description:
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -213,7 +213,7 @@ class _AccountsTabState extends State<AccountsTab> {
           description: account.description,
           accountIndex: account.accountID,
           onAccountTapped: widget.onAccountTapped,
-          currencySymbol : account.currency.symbol,
+          currencySymbol : account.getCurrency().symbol,
         )
       ).toList()
     );

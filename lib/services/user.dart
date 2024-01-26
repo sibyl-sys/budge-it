@@ -18,6 +18,7 @@ import '../objectbox.g.dart';
 class User extends ChangeNotifier {
   List<Account> accounts = [];
   List<Category> categories = [];
+  // List<Subcategory> subcategories = [];
   List<Transaction> transactions = [];
   // List<Transaction> transactionAlert = [];
   // List<Transaction> favoriteTransactions = [];
@@ -481,7 +482,6 @@ class User extends ChangeNotifier {
     categories = objectbox.categoryBox.getAll();
     notifyListeners();
   }
-
   // void rearrangeCategories(List<Category> updatedCategories) {
   //   updatedCategories.forEach((category) {
   //     categories[this.getCategoryIndexByID(category.categoryID)] = category;

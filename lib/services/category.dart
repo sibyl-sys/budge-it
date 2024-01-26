@@ -1,6 +1,7 @@
 import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/currency.dart';
+import 'package:money_tracker/constants/Constants.dart';
 import 'package:objectbox/objectbox.dart';
 
 
@@ -70,6 +71,10 @@ class Category {
     assert(TransactionImportance.need.index == 3);
     assert(TransactionImportance.sudden.index == 4);
     assert(TransactionImportance.want.index == 5);
+  }
+
+  Currency getCurrency() {
+    return currencyList[categoryCurrencyID];
   }
 
 }

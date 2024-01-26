@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
+import 'package:money_tracker/constants/Constants.dart';
 import 'package:provider/provider.dart';
 
 
@@ -51,7 +52,7 @@ class _EditAccountState extends State<EditAccount> {
       accountIcon = IconData(currentAccount.icon, fontFamily: 'MaterialIcons');
       isIncludedInTotalNet = currentAccount.isIncludedInTotalNet;
       isDarkIcon = currentAccount.isDarkIcon;
-      selectedCurrency = currentAccount.currency;
+      selectedCurrency = currentAccount.getCurrency();
     });
   }
 
@@ -203,8 +204,7 @@ class _EditAccountState extends State<EditAccount> {
                   description: descriptionController.text,
                   isIncludedInTotalNet: isIncludedInTotalNet,
                   isDarkIcon : isDarkIcon,
-                  accountID: widget.accountIndex,
-                  currency: selectedCurrency,
+                  currencyID: currencyList.indexOf(selectedCurrency),
                   isArchived: false
                 ),
               );

@@ -218,7 +218,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                    getToLabel(transaction.transactionType),
+                                                    getToLabel(transaction.transactionType!),
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 10
@@ -259,26 +259,26 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      getValueLabel(transaction.transactionType),
+                      getValueLabel(transaction.transactionType!),
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
-                        color: getLabelColor(transaction.transactionType)
+                        color: getLabelColor(transaction.transactionType!)
                       )
                     ),
                     SizedBox(height: 8),
                     RichText(
                       text: TextSpan(
-                          text: "${user.findAccountByID(transaction.fromID)!.currency.symbol}",
+                          text: "${user.findAccountByID(transaction.fromID)!.getCurrency().symbol}",
                           style: TextStyle(
-                            color: getLabelColor(transaction.transactionType),
+                            color: getLabelColor(transaction.transactionType!),
                             fontSize: 26,
                           ),
                           children: [
                             TextSpan(
                                 text: "${moneyFormat.format(transaction.value).split('.')[0]}",
                                 style: TextStyle(
-                                    color: getLabelColor(transaction.transactionType),
+                                    color: getLabelColor(transaction.transactionType!),
                                     fontSize: 26,
                                     fontFamily: "Poppins"
                                 )
@@ -286,7 +286,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                             TextSpan(
                                 text: ".${moneyFormat.format(transaction.value).split('.')[1]}",
                                 style: TextStyle(
-                                    color: getLabelColor(transaction.transactionType),
+                                    color: getLabelColor(transaction.transactionType!),
                                     fontSize: 26,
                                     fontFamily: "Poppins"
                                 )
@@ -373,7 +373,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   onPressed: () async {
                     Navigator.pop(context);
                     await Future.delayed(Duration(milliseconds: 200));
-                    user.addTransactionToFavorites(user.transactions[user.getTransactionIndexByID(widget.transactionID)]);
+                    // user.addTransactionToFavorites(user.transactions[user.getTransactionIndexByID(widget.transactionID)]);
                   },
                   style: TextButton.styleFrom(
                       padding: EdgeInsets.all(16),

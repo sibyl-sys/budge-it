@@ -63,7 +63,7 @@ class Transaction {
     }
   }
 
-  Transaction({required this.value,required  this.note,required  this.transactionID,required this.timestamp,required  this.toID,required  this.fromID,required this.isArchived});
+  Transaction({required this.value,required  this.note,required  this.transactionID,required this.timestamp,required  this.toID,required  this.fromID,required this.isArchived, this.transactionType, this.importance});
 
   void _ensureStableEnumValues() {
     assert(TransactionType.expense.index == 0);

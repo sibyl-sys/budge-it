@@ -4,6 +4,7 @@ import 'package:money_tracker/screens/calculator.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
 import 'package:money_tracker/services/account.dart';
+import 'package:money_tracker/constants/Constants.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/user.dart';
@@ -56,7 +57,7 @@ class _NewAccountState extends State<NewAccount> {
 
 
     setState(() {
-      selectedCurrency = userModel.primaryCurrency;
+      selectedCurrency = userModel.mySettings.getPrimaryCurrency();
       _accountType = widget.accountType;
       accountColor = defaultColor;
       accountIcon = defaultIcon;
@@ -196,9 +197,8 @@ class _NewAccountState extends State<NewAccount> {
                   description: descriptionController.text,
                   isIncludedInTotalNet: isIncludedInTotalNet,
                   isDarkIcon : isDarkIcon,
-                  accountID: userModel.newAccountID,
                   isArchived: false,
-                  currency: selectedCurrency
+                  currencyID: currencyList.indexOf(selectedCurrency)
                 ),
               );
               Navigator.pop(context);

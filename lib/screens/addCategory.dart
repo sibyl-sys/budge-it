@@ -32,7 +32,7 @@ class _AddCategoryState extends State<AddCategory> {
     super.initState();
     User userModel = context.read<User>();
     setState(() {
-      selectedCurrency = userModel.primaryCurrency;
+      selectedCurrency = userModel.mySettings.getPrimaryCurrency();
     });
   }
 
@@ -128,17 +128,18 @@ class _AddCategoryState extends State<AddCategory> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              userModel.addCategory(
-                  Category(
-                    color: categoryColor.value,
-                    categoryType: _categoryType,
-                    icon: categoryIcon.codePoint,
-                    name: categoryNameController.text,
-                    categoryID: userModel.newCategoryID,
-                    index: userModel.newCategoryIndex,
-                    subcategories: subcategories
-                  )
+              Category newCategory = Category(
+                color: categoryColor.value,
+                categoryType: _categoryType,
+                icon: categoryIcon.codePoint,
+                name: categoryNameController.text,
+                index: userModel.newCategoryIndex,
+                // subcategories: subcategories
               );
+              for(Subcategory subcategory in subcategories) {
+                newCategory.subcategories.add(subcategory);
+              }
+              userModel.addCategory(newCategory);
               Navigator.pop(context);
             },)
         ],
@@ -373,7 +374,7 @@ class _AddCategoryState extends State<AddCategory> {
                                 subcategories = List.from(subcategories)..add(Subcategory(
                                   icon: result["iconData"].codePoint,
                                   name: result["name"],
-                                  id: userModel.newSubCategoryID(subcategories)
+                                  // id: userModel.newSubCategoryID(subcategories)
                                 ));
                               });
                             }
