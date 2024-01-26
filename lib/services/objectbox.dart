@@ -1,33 +1,37 @@
-import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:money_tracker/constants/Constants.dart';
-import 'package:money_tracker/services/account.dart';
-import 'package:money_tracker/services/category.dart';
-import 'package:money_tracker/services/currency.dart';
-import 'package:money_tracker/services/subcategory.dart';
-import 'package:money_tracker/services/transaction.dart';
-import 'package:money_tracker/services/user.dart';
-import 'package:provider/provider.dart';
+import '../objectbox.g.dart'; // created by `flutter pub run build_runner build`
+import './account.dart';
+import './settings.dart';
+import './category.dart';
+import './transaction.dart';
+import './subcategory.dart';
 
-class LoadingScreen extends StatefulWidget {
-  @override
-  _LoadingScreenState createState() => _LoadingScreenState();
-}
 
-class _LoadingScreenState extends State<LoadingScreen> {
-  void setupHive() async {
-    print("START HIVE INITIALIZE");
-    // await Hive.initFlutter();
-    print("HIVE INITIALIZED");
-    // Hive.registerAdapter(AccountAdapter());
-    // Hive.registerAdapter(CategoryAdapter());
-    // Hive.registerAdapter(TransactionAdapter());
-    // Hive.registerAdapter(CurrencyAdapter());
-    // Hive.registerAdapter(CategoryTypeAdapter());
-    // Hive.registerAdapter(AccountTypeAdapter());
-    // Hive.registerAdapter(TransactionTypeAdapter());
-    // Hive.registerAdapter(SubcategoryAdapter());
-    // Hive.registerAdapter(TransactionImportanceAdapter());
+class ObjectBox {
+  late final Store store;
+  late final Box<Account> accountBox;
+  late final Box<Settings> settingsBox;
+  late final Box<Category> categoryBox;
+  late final Box<Subcategory> subCategoryBox;
+  late final Box<Transaction> transactionBox;
 
+  ObjectBox._create(this.store) {
+    accountBox = store.box<Account>();
+    settingsBox = store.box<Settings>();
+    categoryBox = store.box<Category>();
+    transactionBox = store.box<Transaction>();
+    subCategoryBox = store.box<Subcategory>();
+    if(settingsBox.isEmpty()) {
+      Settings newSettings = new Settings(id: 0, primaryCurrencyID: 0, spendAlertAmount: 5000.00, selectedAccountFrom: 0, selectedAccountTo: 0, selectedCategoryTo: 0, selectedTransactionType: 0);
+      settingsBox.put(newSettings);
+    }
+
+    if(categoryBox.isEmpty()) {
+      categoryBox.putMany(categoryDefault);
+    }
+    // Add any additional setup code, e.g. build queries.
     // var box = await Hive.openBox('budgeItApp');
     // List<Account> accounts = List<Account>.from(box.get('accounts', defaultValue:  []));
     // List<Transaction> transactionAlert = List<Transaction>.from(box.get('transactionAlert', defaultValue: []));
@@ -72,27 +76,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // User user = context.read<User>();
     // user.init(accounts, categories, transactions, selectedCategory, selectedAccount, primaryCurrency, selectedAccountTo, transactionType, spendAlertAmount, transactionAlert, favoriteTransactions);
     //
-    Navigator.pushReplacementNamed(context, "/home");
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // setupHive();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Image(
-          image: AssetImage('assets/splash.png'),
-          fit: BoxFit.cover,
-          height: double.infinity,
-          width: double.infinity,
-          alignment: Alignment.center,
-        )
-      )
-    );
+  /// Create an instance of ObjectBox to use throughout the app.
+  static Future<ObjectBox> create() async {
+    final docsDir = await getApplicationDocumentsDirectory();
+    final store = await openStore(directory: p.join(docsDir.path, "budgeit"));
+    return ObjectBox._create(store);
   }
 }

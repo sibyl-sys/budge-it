@@ -9,8 +9,13 @@ import 'package:money_tracker/screens/rearrangeCategories.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
+import 'services/objectbox.dart';
 
-void main() {
+late ObjectBox objectbox;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  objectbox = await ObjectBox.create();
   runApp(ChangeNotifierProvider(
       create: (context) => User(),
       child:MaterialApp(

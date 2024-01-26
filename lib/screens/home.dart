@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accounts.dart';
 import 'package:money_tracker/screens/overview.dart';

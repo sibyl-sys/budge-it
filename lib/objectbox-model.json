@@ -1,0 +1,293 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:166402456504234215",
+      "lastPropertyId": "12:8305057102929484962",
+      "name": "Account",
+      "properties": [
+        {
+          "id": "1:7791555651347460592",
+          "name": "accountID",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8849331688642826909",
+          "name": "icon",
+          "type": 6
+        },
+        {
+          "id": "3:1007789336436199638",
+          "name": "color",
+          "type": 6
+        },
+        {
+          "id": "4:6603267915113875338",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "5:257036243639946391",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "6:4267110365644887321",
+          "name": "balance",
+          "type": 8
+        },
+        {
+          "id": "7:5194982234573914676",
+          "name": "creditLimit",
+          "type": 8
+        },
+        {
+          "id": "8:3048016850767127121",
+          "name": "isIncludedInTotalNet",
+          "type": 1
+        },
+        {
+          "id": "9:8588361961052653005",
+          "name": "isDarkIcon",
+          "type": 1
+        },
+        {
+          "id": "10:7236535467079320341",
+          "name": "currencyID",
+          "type": 6
+        },
+        {
+          "id": "11:7784705406952710739",
+          "name": "isArchived",
+          "type": 1
+        },
+        {
+          "id": "12:8305057102929484962",
+          "name": "dbAccountType",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:5591438262522025838",
+      "lastPropertyId": "8:7671964770639684222",
+      "name": "Category",
+      "properties": [
+        {
+          "id": "1:1996252383194141059",
+          "name": "categoryID",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:708224448441672261",
+          "name": "icon",
+          "type": 6
+        },
+        {
+          "id": "3:5746205017404965449",
+          "name": "color",
+          "type": 6
+        },
+        {
+          "id": "4:6808437952301056882",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "5:7961740271939257333",
+          "name": "index",
+          "type": 6
+        },
+        {
+          "id": "6:2794255354296530867",
+          "name": "dbCategoryType",
+          "type": 6
+        },
+        {
+          "id": "7:1630040688712898633",
+          "name": "categoryCurrencyID",
+          "type": 6
+        },
+        {
+          "id": "8:7671964770639684222",
+          "name": "dbLastTransactionImportance",
+          "type": 6
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:1285431702513897569",
+          "name": "subcategories",
+          "targetId": "4:7148541835359323122"
+        }
+      ]
+    },
+    {
+      "id": "3:1503650968266322760",
+      "lastPropertyId": "4:4722279864359630437",
+      "name": "Currency",
+      "properties": [
+        {
+          "id": "1:3624062280739972732",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:508472351779456068",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:5965076375368430567",
+          "name": "symbol",
+          "type": 9
+        },
+        {
+          "id": "4:4722279864359630437",
+          "name": "exchangeRateToUSD",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:7148541835359323122",
+      "lastPropertyId": "3:8209051759689410871",
+      "name": "Subcategory",
+      "properties": [
+        {
+          "id": "1:6673357979479774351",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1090289012107434123",
+          "name": "icon",
+          "type": 6
+        },
+        {
+          "id": "3:8209051759689410871",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:5949585774518277514",
+      "lastPropertyId": "9:4214703002186977694",
+      "name": "Transaction",
+      "properties": [
+        {
+          "id": "1:2498316605268335846",
+          "name": "transactionID",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2494635976145824618",
+          "name": "value",
+          "type": 8
+        },
+        {
+          "id": "3:2486963153687818515",
+          "name": "note",
+          "type": 9
+        },
+        {
+          "id": "4:6407911649427600755",
+          "name": "timestamp",
+          "type": 10
+        },
+        {
+          "id": "5:1965364009872142908",
+          "name": "toID",
+          "type": 6
+        },
+        {
+          "id": "6:8350131667560200221",
+          "name": "fromID",
+          "type": 6
+        },
+        {
+          "id": "7:9164030662150802145",
+          "name": "isArchived",
+          "type": 1
+        },
+        {
+          "id": "8:685565956456932830",
+          "name": "dbTransactionType",
+          "type": 6
+        },
+        {
+          "id": "9:4214703002186977694",
+          "name": "dbImportance",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:5385464363218912765",
+      "lastPropertyId": "7:4741175380871182387",
+      "name": "Settings",
+      "properties": [
+        {
+          "id": "1:8928975402929862221",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2913812890743301887",
+          "name": "primaryCurrencyID",
+          "type": 6
+        },
+        {
+          "id": "3:193672008847672734",
+          "name": "spendAlertAmount",
+          "type": 8
+        },
+        {
+          "id": "4:2432796752218068314",
+          "name": "selectedCategoryTo",
+          "type": 6
+        },
+        {
+          "id": "5:2265429933256501649",
+          "name": "selectedAccountFrom",
+          "type": 6
+        },
+        {
+          "id": "6:5571649052621771703",
+          "name": "selectedAccountTo",
+          "type": 6
+        },
+        {
+          "id": "7:4741175380871182387",
+          "name": "selectedTransactionType",
+          "type": 6
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "6:5385464363218912765",
+  "lastIndexId": "0:0",
+  "lastRelationId": "1:1285431702513897569",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
