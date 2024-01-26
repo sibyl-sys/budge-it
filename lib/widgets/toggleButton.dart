@@ -13,9 +13,6 @@ class ToggleButton extends StatelessWidget {
       firstChild: Container(
         width: double.infinity,
         child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-          ),
           child: childUnselected,
           onPressed: () {
             onChange();

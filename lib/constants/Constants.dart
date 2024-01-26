@@ -463,16 +463,16 @@ final List<Map<String, dynamic>> accountColorList = [
 // ];
 
 final List<Category> categoryDefault = [
-  Category(color: Colors.green.shade400.value, categoryType: CategoryType.expense, icon: Icons.shopping_cart_outlined.codePoint, name: "Shopping", categoryID: 0, index: 0, subcategories: []),
-  Category(color: Colors.blue.shade400.value, categoryType: CategoryType.expense, icon: Icons.fastfood.codePoint, name: "Restaurant", categoryID: 1, index: 1, subcategories: []),
-  Category(color: Colors.red.shade400.value, categoryType: CategoryType.expense, icon: Icons.local_movies.codePoint, name: "Leisure", categoryID: 2, index: 2, subcategories: []),
-  Category(color: Colors.yellow.shade400.value, categoryType: CategoryType.expense, icon: Icons.directions_bus.codePoint, name: "Transport", categoryID: 3, index: 3, subcategories: []),
-  Category(color: Colors.teal.shade400.value, categoryType: CategoryType.expense, icon: Icons.healing.codePoint, name: "Health", categoryID: 4, index: 4, subcategories: []),
-  Category(color: Colors.brown.shade400.value, categoryType: CategoryType.expense, icon: Icons.wallet_giftcard.codePoint, name: "Gifts", categoryID: 5, index: 5, subcategories: []),
-  Category(color: Colors.deepPurple.shade400.value, categoryType: CategoryType.expense, icon: Icons.pets.codePoint, name: "Pet", categoryID: 6, index: 6, subcategories: []),
-  Category(color: Colors.lightGreen.shade400.value, categoryType: CategoryType.income, icon: Icons.money.codePoint, name: "Salary", categoryID: 7, index: 7, subcategories: []),
-  Category(color: Colors.lime.shade400.value, categoryType: CategoryType.income, icon: Icons.receipt.codePoint, name: "Reimbursements", categoryID: 8, index:8, subcategories: []),
-  Category(color: Colors.grey.value, categoryType: CategoryType.expense, icon: Icons.adjust.codePoint, name: "Untracked", categoryID: 9, index: 9, subcategories: []),
+  Category(color: Colors.green.shade400.value, categoryType: CategoryType.expense, icon: Icons.shopping_cart_outlined.codePoint, name: "Shopping", index: 0),
+  Category(color: Colors.blue.shade400.value, categoryType: CategoryType.expense, icon: Icons.fastfood.codePoint, name: "Restaurant", index: 1),
+  Category(color: Colors.red.shade400.value, categoryType: CategoryType.expense, icon: Icons.local_movies.codePoint, name: "Leisure", index: 2),
+  Category( color: Colors.yellow.shade400.value, categoryType: CategoryType.expense, icon: Icons.directions_bus.codePoint, name: "Transport", index: 3),
+  Category(color: Colors.teal.shade400.value, categoryType: CategoryType.expense, icon: Icons.healing.codePoint, name: "Health", index: 4),
+  Category(color: Colors.brown.shade400.value, categoryType: CategoryType.expense, icon: Icons.wallet_giftcard.codePoint, name: "Gifts",index: 5),
+  Category(color: Colors.deepPurple.shade400.value, categoryType: CategoryType.expense, icon: Icons.pets.codePoint, name: "Pet", index: 6),
+  Category(color: Colors.lightGreen.shade400.value, categoryType: CategoryType.income, icon: Icons.money.codePoint, name: "Salary", index: 7),
+  Category(color: Colors.lime.shade400.value, categoryType: CategoryType.income, icon: Icons.receipt.codePoint, name: "Reimbursements", index:8),
+  Category(color: Colors.grey.value, categoryType: CategoryType.expense, icon: Icons.adjust.codePoint, name: "Untracked", index: 9),
 ];
 
 final List<Currency> currencyList = [

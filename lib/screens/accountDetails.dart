@@ -54,10 +54,10 @@ class _AccountDetailsState extends State<AccountDetails> {
               description: transaction.note,
               value: transaction.value,
               transactionID: transaction.transactionID,
-              currencySymbol: user.primaryCurrency.symbol,
-              type: transaction.transactionType,
+              currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+              type: transaction.transactionType!,
               valueColor: getValueColor(transaction, currentAccount),
-              importance: transaction.importance,
+              importance: transaction.importance!,
             )
         ).toList()
     );
@@ -393,7 +393,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                     ],
                   ),
                 ),
-                TotalHeader(header: "Balance:", valueColor: Color(0x55C9C6).withOpacity(1), currencySymbol: user.primaryCurrency.symbol, value: currentAccount.balance, description:
+                TotalHeader(header: "Balance:", valueColor: Color(0x55C9C6).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: currentAccount.balance, description:
                 Text(user.getTransactionCount(from: from, to: to, accountID: currentAccount.accountID).toString() + " Transactions",
                     style: TextStyle(
                         fontSize: 12,

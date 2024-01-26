@@ -1,48 +1,75 @@
-import 'package:hive/hive.dart';
 import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/currency.dart';
+import 'package:objectbox/objectbox.dart';
 
 
-part 'category.g.dart';
-
-@HiveType(typeId: 4)
 enum CategoryType {
-  @HiveField(0)
   expense,
-  @HiveField(1)
   income
 }
 
-@HiveType(typeId: 1)
+@Entity()
 class Category {
-  @HiveField(0)
+  @Id()
+  int categoryID = 0;
+
   int icon;
-  
-  @HiveField(1)
+
   int color;
-  
-  @HiveField(2)
+
   String name;
-  
-  @HiveField(3)
-  CategoryType categoryType;
 
-  @HiveField(4)
-  int categoryID;
+  @Transient()
+  CategoryType? categoryType;
 
-  @HiveField(5)
-  TransactionImportance lastTransactionImportance;
+  @Transient()
+  TransactionImportance? lastTransactionImportance;
 
-  @HiveField(6)
-  Currency? categoryCurrency;
+  int categoryCurrencyID = -1;
 
-  @HiveField(7)
   int index;
 
-  @HiveField(8)
-  List<Subcategory> subcategories;
+  final subcategories = ToMany<Subcategory>();
 
-  Category({required this.icon,required this.color,required  this.name, required this.categoryType,required  this.categoryID, this.categoryCurrency, required this.index,required this.subcategories, this.lastTransactionImportance = TransactionImportance.need});
+  int? get dbCategoryType {
+    _ensureStableEnumValues();
+    return categoryType?.index;
+  }
+
+  set dbCategoryType(int? value) {
+    _ensureStableEnumValues();
+    if(value == null) {
+      categoryType = null;
+    } else {
+      categoryType = CategoryType.values[value];
+    }
+  }
+
+  int? get dbLastTransactionImportance {
+    _ensureStableEnumValues();
+    return lastTransactionImportance?.index;
+  }
+
+  set dbLastTransactionImportance(int? value) {
+    _ensureStableEnumValues();
+    if(value == null) {
+      lastTransactionImportance = null;
+    } else {
+      lastTransactionImportance = TransactionImportance.values[value];
+    }
+  }
+
+
+
+  Category({required this.icon,required this.color,required  this.name, required this.index, this.lastTransactionImportance = TransactionImportance.need, this.categoryType});
+
+  void _ensureStableEnumValues() {
+    assert(CategoryType.expense.index == 0);
+    assert(CategoryType.income.index == 1);
+    assert(TransactionImportance.need.index == 3);
+    assert(TransactionImportance.sudden.index == 4);
+    assert(TransactionImportance.want.index == 5);
+  }
 
 }

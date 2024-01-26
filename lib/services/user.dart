@@ -2,39 +2,39 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
+import 'package:money_tracker/services/settings.dart';
+import 'package:money_tracker/constants/Constants.dart';
+import 'package:money_tracker/main.dart';
 import 'package:collection/collection.dart';
+import 'package:objectbox/objectbox.dart';
+
+import '../objectbox.g.dart';
 
 class User extends ChangeNotifier {
   List<Account> accounts = [];
   List<Category> categories = [];
   List<Transaction> transactions = [];
-  List<Transaction> transactionAlert = [];
-  List<Transaction> favoriteTransactions = [];
+  // List<Transaction> transactionAlert = [];
+  // List<Transaction> favoriteTransactions = [];
 
-  late TransactionType lastTransactionType;
-  late Currency primaryCurrency;
-  late double spendAlertAmount;
-  late int lastSelectedCategoryTo;
-  late int lastSelectedAccountFrom;
-  late int lastSelectedAccountTo;
+  late Settings mySettings;
 
-  int get newAccountID => accounts.length < 1 ? 0 : accounts[accounts.length-1].accountID + 1 ;
-  int get newCategoryID => categories.length < 1 ? 0 : categories[categories.length-1].categoryID + 1;
-  int get newTransactionID => transactions.length < 1 ? 0 : transactions[transactions.length-1].transactionID + 1;
+  // int get newAccountID => accounts.length < 1 ? 0 : accounts[accounts.length-1].accountID + 1 ;
+  // int get newCategoryID => categories.length < 1 ? 0 : categories[categories.length-1].categoryID + 1;
+  // int get newTransactionID => transactions.length < 1 ? 0 : transactions[transactions.length-1].transactionID + 1;
 
-  int newSubCategoryID(List<Subcategory> subcategories) {
-    int subcategoryID = 0;
-    if(transactions.length > 0) {
-      subcategoryID = subcategories[subcategories.length - 1].id + 1;
-    }
-    return subcategoryID;
-  }
+  // int newSubCategoryID(List<Subcategory> subcategories) {
+  //   int subcategoryID = 0;
+  //   if(transactions.length > 0) {
+  //     subcategoryID = subcategories[subcategories.length - 1].id + 1;
+  //   }
+  //   return subcategoryID;
+  // }
 
   int get newCategoryIndex {
     int maxIndex = 1;
@@ -45,58 +45,75 @@ class User extends ChangeNotifier {
   }
 
   List<Category> get expenseCategories {
-    List<Category> expenseCategory = categories.where((element) => element.categoryType == CategoryType.expense).toList();
-    expenseCategory.sort((a,b) => a.index.compareTo(b.index));
-    return expenseCategory;
+    Query<Category> expenseQuery = objectbox.categoryBox.query(Category_.dbCategoryType.equals(0)).build();
+    List<Category> expenseCategories = expenseQuery.find();
+    expenseQuery.close();
+    return expenseCategories;
   }
 
   List<Category> get incomeCategories {
-    List<Category> incomeCategory = categories.where((element) => element.categoryType == CategoryType.income).toList();
-    incomeCategory.sort((a,b) => a.index.compareTo(b.index));
-    return incomeCategory;
+    Query<Category> incomeQuery = objectbox.categoryBox.query(Category_.dbCategoryType.equals(1)).build();
+    List<Category> incomeCategories = incomeQuery.find();
+    incomeQuery.close();
+    return incomeCategories;
   }
 
   List<Account> get stashAccounts {
-    return accounts.where((element) => element.accountType == AccountType.wallet && !element.isArchived).toList();
+    Query<Account> stashQuery = objectbox.accountBox.query(Account_.dbAccountType.equals(0).and(Account_.isArchived.equals(false))).build();
+    List<Account> stashAccounts = stashQuery.find();
+    stashQuery.close();
+    return stashAccounts;
   }
 
   List<Account> get savingsAccounts {
-    return accounts.where((element) => element.accountType == AccountType.savings && !element.isArchived).toList();
+    Query<Account> savingsQuery = objectbox.accountBox.query(Account_.dbAccountType.equals(1).and(Account_.isArchived.equals(false))).build();
+    List<Account> savingsAccounts = savingsQuery.find();
+    savingsQuery.close();
+    return savingsAccounts;
+  }
+
+  List<Account> get debtAccounts {
+    Query<Account> debtQuery = objectbox.accountBox.query(Account_.dbAccountType.equals(2) & Account_.isArchived.equals(false)).build();
+    List<Account> debtAccounts = debtQuery.find();
+    debtQuery.close();
+    return debtAccounts;
   }
 
   List<Account> get iAmOwedAccounts {
-    return accounts.where((element) => element.accountType == AccountType.debt && !element.isArchived && element.balance >= 0).toList();
+    Query<Account> iAmOwedQuery = objectbox.accountBox.query(Account_.dbAccountType.equals(2) & Account_.isArchived.equals(false) & (Account_.balance.greaterThan(0) | Account_.balance.between(0,0))).build();
+    List<Account> iAmOwedAccounts = iAmOwedQuery.find();
+    iAmOwedQuery.close();
+    return iAmOwedAccounts;
   }
 
   List<Account> get iOwedAccounts {
-    return accounts.where((element) => element.accountType == AccountType.debt && !element.isArchived && element.balance < 0).toList();
+    Query<Account> iOwedQuery = objectbox.accountBox.query(Account_.dbAccountType.equals(2) & Account_.isArchived.equals(false) & Account_.balance.lessThan(0)).build();
+    List<Account> iOwedAccounts = iOwedQuery.find();
+    iOwedQuery.close();
+    return iOwedAccounts;
   }
 
 
   double get totalSavings {
     double total = 0;
-    for(var account in accounts) {
-      if(account.accountType == AccountType.savings && !account.isArchived) {
-        if(account.currency == primaryCurrency) {
-          total += account.balance;
-        } else {
-          total += exchangeCurrency(account.balance, account.currency, primaryCurrency);
-        }
-        print(total);
+    for(var account in savingsAccounts) {
+      if(account.getCurrency() == mySettings.getPrimaryCurrency()) {
+        total += account.balance;
+      } else {
+        total += exchangeCurrency(account.balance, account.getCurrency(), mySettings.getPrimaryCurrency());
       }
+      print(total);
     }
     return total;
   }
 
   double get totalRegular {
     double total = 0;
-    for(var account in accounts) {
-      if(account.accountType == AccountType.wallet && !account.isArchived) {
-        if(account.currency == primaryCurrency) {
-          total += account.balance;
-        } else {
-          total += exchangeCurrency(account.balance, account.currency, primaryCurrency);
-        }
+    for(var account in stashAccounts) {
+      if(account.getCurrency() == mySettings.getPrimaryCurrency()) {
+        total += account.balance;
+      } else {
+        total += exchangeCurrency(account.balance, account.getCurrency(), mySettings.getPrimaryCurrency());
       }
     }
     return total;
@@ -104,13 +121,11 @@ class User extends ChangeNotifier {
 
   double get totalDebts {
     double total = 0;
-    for(var account in accounts) {
-      if(account.accountType == AccountType.debt && !account.isArchived) {
-        if(account.currency == primaryCurrency) {
-          total += account.balance;
-        } else {
-          total += exchangeCurrency(account.balance, account.currency, primaryCurrency);
-        }
+    for(var account in debtAccounts) {
+      if(account.getCurrency() == mySettings.getPrimaryCurrency()) {
+        total += account.balance;
+      } else {
+        total += exchangeCurrency(account.balance, account.getCurrency(), mySettings.getPrimaryCurrency());
       }
     }
     return total;
@@ -120,10 +135,10 @@ class User extends ChangeNotifier {
     double total = 0;
     for(var account in accounts) {
       if(account.isIncludedInTotalNet && !account.isArchived) {
-        if(account.currency == primaryCurrency) {
+        if(account.getCurrency() == mySettings.getPrimaryCurrency()) {
           total += account.balance;
         } else {
-          total += exchangeCurrency(account.balance, account.currency, primaryCurrency);
+          total += exchangeCurrency(account.balance, account.getCurrency(), mySettings.getPrimaryCurrency());
         }
       }
     }
@@ -131,24 +146,11 @@ class User extends ChangeNotifier {
   }
 
   Account? findAccountByID(int accountID) {
-    return accounts.firstWhereOrNull((account) => account.accountID == accountID);
-  }
-
-  int getAccountIndexByID(int accountID) {
-    return accounts.indexWhere((account) => account.accountID == accountID);
+    return objectbox.accountBox.get(accountID);
   }
 
   Category? findCategoryByID(int categoryID) {
-    return categories.firstWhereOrNull((category) => category.categoryID == categoryID);
-  }
-
-  int getCategoryIndexByID(int categoryID) {
-    return categories.indexWhere((category) => category.categoryID == categoryID);
-  }
-
-
-  int getTransactionIndexByID(int transactionID) {
-    return transactions.indexWhere((transaction) => transaction.transactionID == transactionID);
+    return objectbox.categoryBox.get(categoryID);
   }
 
   Transaction? findTransactionByID(int transactionID) {
@@ -160,25 +162,21 @@ class User extends ChangeNotifier {
   }
 
   void updateAccount(Account account) async {
-    accounts[this.getAccountIndexByID(account.accountID)] = account;
-
-    Hive.box('budgeItApp').put('accounts', accounts);
-    print(Hive.box('budgeItApp').get('accounts'));
+    objectbox.accountBox.put(account);
+    accounts = objectbox.accountBox.getAll();
     notifyListeners();
   }
 
-
+  //TODO MERGE WITH UPDATE ACCOUNT;
   void addAccount(Account account) async {
-    accounts = List.from(accounts)..add(account);
-
-    Hive.box('budgeItApp').put('accounts', accounts);
-    print(Hive.box('budgeItApp').get('accounts'));
+    objectbox.accountBox.put(account);
+    accounts = objectbox.accountBox.getAll();
     notifyListeners();
   }
 
+  //TODO TRANSLATE TO QUERY
   double getAccountExpenses(int accountID, int month, int year) {
     double accountExpenses = 0;
-    //TODO LIMIT TO CURRENT MONTH
     for(var transaction in transactions) {
       if(transaction.fromID == accountID && transaction.timestamp.month == month && transaction.timestamp.year == year && !transaction.isArchived) {
         accountExpenses += transaction.value;
@@ -188,19 +186,23 @@ class User extends ChangeNotifier {
   }
 
   double getAccountProgress(int accountID) {
-    int accountIndex = getAccountIndexByID(accountID);
+    Account? currentAccount = objectbox.accountBox.get(accountID);
 
-    if(accounts[accountIndex].accountType == AccountType.debt) {
+    if(currentAccount == null)
       return 0;
-    } else if (accounts[accountIndex].accountType == AccountType.savings) {
-      accounts[accountIndex].creditLimit > 0 ? max(0, min(accounts[accountIndex].balance / accounts[accountIndex].creditLimit, 1)) : 0;
-    } else if(accounts[accountIndex].accountType == AccountType.wallet) {
-      this.getAccountExpenses(accountID, DateTime.now().month, DateTime.now().year) / accounts[accountIndex].creditLimit * 100;
+
+    if(currentAccount.accountType == AccountType.debt) {
+      return 0;
+    } else if (currentAccount.accountType == AccountType.savings) {
+      return currentAccount.creditLimit > 0 ? max(0, min(currentAccount.balance / currentAccount.creditLimit, 1)) : 0;
+    } else if(currentAccount.accountType == AccountType.wallet) {
+      return this.getAccountExpenses(accountID, DateTime.now().month, DateTime.now().year) / currentAccount.creditLimit * 100;
     }
 
     return 0;
   }
 
+  //TODO TRANSLATE TO QUERY
   int getTransactionCount({required DateTime from, required DateTime to, required int accountID}) {
     int transactionCount = 0;
     for(Transaction transaction in transactions) {
@@ -214,6 +216,8 @@ class User extends ChangeNotifier {
     return transactionCount;
   }
 
+
+  //TODO TRANSLATE TO QUERY
   double getCategoryNet({required DateTime from, required DateTime to, required int categoryID}) {
     double categoryNet = 0;
     for(Transaction transaction in transactions) {
@@ -223,16 +227,17 @@ class User extends ChangeNotifier {
           !transaction.isArchived &&
           transaction.transactionType != TransactionType.transfer) {
         Account transactionAccount = findAccountByID(transaction.fromID)!;
-        if(transactionAccount.currency == primaryCurrency) {
+        if(transactionAccount.getCurrency() == mySettings.getPrimaryCurrency()) {
           categoryNet+= transaction.value;
         } else {
-          categoryNet+= exchangeCurrency(transaction.value, transactionAccount.currency, primaryCurrency);
+          categoryNet+= exchangeCurrency(transaction.value, transactionAccount.getCurrency(), mySettings.getPrimaryCurrency());
         }
       }
     }
     return categoryNet;
   }
 
+  //TODO TRANSLATE TO QUERY
   double getCategoryTypeNet({required DateTime from, required DateTime to, required CategoryType categoryType}) {
     double categoryNet = 0;
     for(Transaction transaction in transactions) {
@@ -248,6 +253,7 @@ class User extends ChangeNotifier {
     return categoryNet;
   }
 
+  //TODO TRANSLATE TO QUERY
   double getMonthlyNet({required DateTime from, required DateTime to, required int accountID}) {
     double monthlyNet = 0;
     for(Transaction transaction in transactions) {
@@ -264,7 +270,8 @@ class User extends ChangeNotifier {
     return monthlyNet;
   }
 
- List<Map> getTransactions({required DateTime from, required DateTime to,required int accountID}) {
+  //TODO TRANSLATE TO QUERY
+  List<Map> getTransactions({required DateTime from, required DateTime to,required int accountID}) {
     List<Map> transactionsByDate = <Map>[];
     for(Transaction transaction in transactions) {
       if(transaction.timestamp.compareTo(from) >= 0 && transaction.timestamp.compareTo(to) <= 0 && (accountID == -1 || transaction.fromID == accountID || (transaction.transactionType == TransactionType.transfer && transaction.toID == accountID)) && !transaction.isArchived) {
@@ -300,159 +307,197 @@ class User extends ChangeNotifier {
   }
   
   void archiveAccount(int accountID) async {
-    accounts[this.getAccountIndexByID(accountID)].isArchived = true;
+    Account? toArchive = objectbox.accountBox.get(accountID);
+    if(toArchive == null)
+      return;
+    toArchive.isArchived = true;
+    objectbox.accountBox.put(toArchive);
 
+
+    //TODO CHANGE TO QUERY
     for(Transaction transaction in transactions) {
       if (transaction.fromID == accountID) {
         transaction.isArchived = true;
       }
     }
 
-    Hive.box('budgeItApp').put('accounts', accounts);
-    Hive.box('budgeItApp').put('transactions', transactions);
-    print(Hive.box('budgeItApp').get('accounts'));
+    objectbox.transactionBox.putMany(transactions);
+
+    accounts = objectbox.accountBox.getAll();
+    transactions = objectbox.transactionBox.getAll();
+    // Hive.box('budgeItApp').put('accounts', accounts);
+    // Hive.box('budgeItApp').put('transactions', transactions);
+    // print(Hive.box('budgeItApp').get('accounts'));
     notifyListeners();
   }
 
   void deleteAccount(int accountID) async {
-    accounts.removeWhere((account) => account.accountID == accountID);
-    transactions.removeWhere((transaction) => transaction.fromID == accountID);
+    for(Transaction transaction in transactions) {
+      if (transaction.fromID == accountID) {
+        objectbox.transactionBox.remove(transaction.transactionID);
+      }
+    }
+    objectbox.accountBox.remove(accountID);
 
-
-    Hive.box('budgeItApp').put('accounts', accounts);
-    Hive.box('budgeItApp').put('transactions', transactions);
-    print(Hive.box('budgeItApp').get('accounts'));
+    accounts = objectbox.accountBox.getAll();
+    transactions = objectbox.transactionBox.getAll();
     notifyListeners();
   }
 
   void selectAccountFrom(int accountIndex) async {
-    lastSelectedAccountFrom = accountIndex;
-    Hive.box('budgeItApp').put('selectedAccountFrom', lastSelectedAccountFrom);
+    mySettings.selectedAccountFrom = accountIndex;
+    objectbox.settingsBox.put(mySettings);
+    // Hive.box('budgeItApp').put('selectedAccountFrom', lastSelectedAccountFrom);
     notifyListeners();
   }
 
   void selectRecipient(int toIndex, TransactionType transactionType) async {
     if(transactionType == TransactionType.transfer) {
-      lastSelectedAccountTo = toIndex;
+      mySettings.selectedAccountTo = toIndex;
     } else {
-      lastSelectedCategoryTo = toIndex;
+      mySettings.selectedCategoryTo = toIndex;
+
     }
-    lastTransactionType = transactionType;
-    Hive.box('budgeItApp').put('lastTransactionType', lastTransactionType);
-    Hive.box('budgeItApp').put('selectedAccountTo', lastSelectedAccountTo);
-    Hive.box('budgeItApp').put('selectedCategoryTo', lastSelectedCategoryTo);
+    mySettings.selectedTransactionType = transactionType.index;
+    objectbox.settingsBox.put(mySettings);
+
+    // Hive.box('budgeItApp').put('lastTransactionType', lastTransactionType);
+    // Hive.box('budgeItApp').put('selectedAccountTo', lastSelectedAccountTo);
+    // Hive.box('budgeItApp').put('selectedCategoryTo', lastSelectedCategoryTo);
     notifyListeners();
   }
 
   void deleteTransaction(int transactionID) async {
-    Transaction transaction = findTransactionByID(transactionID)!;
-    if(transaction.transactionType == TransactionType.expense) {
-      findAccountByID(transaction.fromID)!.balance += transaction.value;
-    } else if(transaction.transactionType == TransactionType.income ) {
-      findAccountByID(transaction.fromID)!.balance -= transaction.value;
-    } else if(transaction.transactionType == TransactionType.transfer) {
-      findAccountByID(transaction.fromID)!.balance += transaction.value;
-      findAccountByID(transaction.toID)!.balance -= transaction.value;
+    Transaction? toRemove = objectbox.transactionBox.get(transactionID);
+    if(toRemove == null)
+      return;
+    if(toRemove.transactionType == TransactionType.expense) {
+      Account? updatedAccount = findAccountByID(toRemove.fromID);
+      if(updatedAccount == null)
+        return;
+      updatedAccount.balance += toRemove.value;
+      objectbox.accountBox.put(updatedAccount);
+    } else if(toRemove.transactionType == TransactionType.income ) {
+      Account? updatedAccount = findAccountByID(toRemove.fromID);
+      if(updatedAccount == null)
+        return;
+      updatedAccount.balance -= toRemove.value;
+      objectbox.accountBox.put(updatedAccount);
+    } else if(toRemove.transactionType == TransactionType.transfer) {
+
+      Account? updatedAccount1 = findAccountByID(toRemove.fromID);
+      Account? updatedAccount2 = findAccountByID(toRemove.toID);
+      if(updatedAccount1 == null || updatedAccount2 == null)
+        return;
+      updatedAccount1.balance += toRemove.value;
+      updatedAccount2.balance -= toRemove.value;
+      objectbox.accountBox.put(updatedAccount1);
+      objectbox.accountBox.put(updatedAccount2);
     }
 
-    transactions.removeWhere((transaction) => transaction.transactionID == transactionID);
+    objectbox.transactionBox.remove(transactionID);
 
-    Hive.box('budgeItApp').put('accounts', accounts);
-    Hive.box('budgeItApp').put('transactions', transactions);
-    print(Hive.box('budgeItApp').get('accounts'));
+    accounts = objectbox.accountBox.getAll();
+    transactions = objectbox.transactionBox.getAll();
     notifyListeners();
   }
 
   void updateTransaction(Transaction transaction) {
-    print(transaction.transactionID);
-    transactions[this.getTransactionIndexByID(transaction.transactionID)] = transaction;
+    objectbox.transactionBox.put(transaction);
 
-    Hive.box('budgeItApp').put('transactions', transactions);
-    print(Hive.box('budgeItApp').get('transactions'));
+    transactions = objectbox.transactionBox.getAll();
     notifyListeners();
   }
   
 
   void addTransaction(Transaction transaction) async {
-    transactions = List.from(transactions)..add(transaction);
-    print(transaction.transactionType);
+    objectbox.transactionBox.put(transaction);
 
     if(transaction.transactionType == TransactionType.expense) {
-      findAccountByID(transaction.fromID)!.balance -= transaction.value;
-      if(transaction.value >= spendAlertAmount) {
-        transactionAlert = List.from(transactionAlert)..add(transaction);
+      Account? updatedAccount = findAccountByID(transaction.fromID);
+      if(updatedAccount == null)
+        return;
+      updatedAccount.balance -= transaction.value;
+      objectbox.accountBox.put(updatedAccount);
+      //TODO IMPLEMENT TRANSACTION ALERT
+      if(transaction.value >= mySettings.spendAlertAmount) {
+        // transactionAlert = List.from(transactionAlert)..add(transaction);
       }
     } else if(transaction.transactionType == TransactionType.income ) {
-      findAccountByID(transaction.fromID)!.balance += transaction.value;
+      Account? updatedAccount = findAccountByID(transaction.fromID);
+      if(updatedAccount == null)
+        return;
+      updatedAccount.balance += transaction.value;
+      objectbox.accountBox.put(updatedAccount);
     } else if(transaction.transactionType == TransactionType.transfer) {
-      print(transaction.value);
-      findAccountByID(transaction.fromID)!.balance -= transaction.value;
-      findAccountByID(transaction.toID)!.balance += transaction.value;
+      Account? updatedAccount1 = findAccountByID(transaction.fromID);
+      Account? updatedAccount2 = findAccountByID(transaction.toID);
+      if(updatedAccount1 == null || updatedAccount2 == null)
+        return;
+      updatedAccount1.balance -= transaction.value;
+      updatedAccount2.balance += transaction.value;
+      objectbox.accountBox.put(updatedAccount1);
+      objectbox.accountBox.put(updatedAccount2);
       //TODO CONVERT CURRENCIES WHEN TRANSFERRING BETWEEN TWO ACCOUNTS WITH DIFFERENT CURRENCIES.
     }
-
-
-    Hive.box('budgeItApp').put('accounts', accounts);
-    Hive.box('budgeItApp').put('transactions', transactions);
-    Hive.box('budgeItApp').put('transactionAlert', transactionAlert);
-    print(Hive.box('budgeItApp').get('transactions'));
+    transactions = objectbox.transactionBox.getAll();
+    accounts = objectbox.accountBox.getAll();
+    // Hive.box('budgeItApp').put('accounts', accounts);
+    // Hive.box('budgeItApp').put('transactions', transactions);
+    // Hive.box('budgeItApp').put('transactionAlert', transactionAlert);
+    // print(Hive.box('budgeItApp').get('transactions'));
     notifyListeners();
   }
 
+  //TODO IMPLEMENT FAVORITES
   void addTransactionToFavorites(Transaction transaction) {
-    favoriteTransactions = List.from(favoriteTransactions)..add(transaction);
-    Hive.box('budgeItApp').put('favoriteTransactions', favoriteTransactions);
+    // favoriteTransactions = List.from(favoriteTransactions)..add(transaction);
+    // Hive.box('budgeItApp').put('favoriteTransactions', favoriteTransactions);
     notifyListeners();
   }
 
   void changePrimaryCurrency(Currency newCurrency) {
-    this.primaryCurrency = newCurrency;
-
-    Hive.box('budgeItApp').put('primaryCurrency', primaryCurrency);
+    mySettings.primaryCurrencyID = currencyList.indexOf(newCurrency);
+    objectbox.settingsBox.put(mySettings);
     notifyListeners();
   }
 
   void changeSpendAlertAmount(double value) {
-    this.spendAlertAmount = value;
-    Hive.box('budgeItApp').put('spendAlertAmount', spendAlertAmount);
+    mySettings.spendAlertAmount = value;
+    objectbox.settingsBox.put(mySettings);
     notifyListeners();
   }
 
+  //TODO MERGE WITH UPDATE CATEGORY
   void addCategory(Category newCategory) {
-    categories = List.from(categories)..add(newCategory);
+    objectbox.categoryBox.put(newCategory);
 
-    Hive.box('budgeItApp').put('categories', categories);
+    categories = objectbox.categoryBox.getAll();
     notifyListeners();
   }
 
   void updateCategory(Category category) {
-    categories[this.getCategoryIndexByID(category.categoryID)] = category;
-
-    Hive.box('budgeItApp').put('categories', categories);
+    objectbox.categoryBox.put(category);
+    categories = objectbox.categoryBox.getAll();
     notifyListeners();
   }
 
-  void rearrangeCategories(List<Category> updatedCategories) {
-    updatedCategories.forEach((category) {
-      categories[this.getCategoryIndexByID(category.categoryID)] = category;
-    });
+  // void rearrangeCategories(List<Category> updatedCategories) {
+  //   updatedCategories.forEach((category) {
+  //     categories[this.getCategoryIndexByID(category.categoryID)] = category;
+  //   });
+  //
+  //   // Hive.box('budgeItApp').put('categories', categories);
+  //   // print(Hive.box('budgeItApp').get('categories'));
+  //   notifyListeners();
+  // }
 
-    Hive.box('budgeItApp').put('categories', categories);
-    print(Hive.box('budgeItApp').get('categories'));
-    notifyListeners();
-  }
-
-  void init(List<Account> accounts, List<Category> categories, List<Transaction> transactions, int lastSelectedCategory, int lastSelectedAccount, Currency primaryCurrency, int lastSelectedAccountTo, TransactionType transactionType, double spendAlertAmount, List<Transaction> transactionAlert, List<Transaction> favoriteTransactions) {
-    this.accounts = List.from(accounts);
-    this.categories = List.from(categories);
-    this.transactions = List.from(transactions);
-    this.lastSelectedAccountFrom = lastSelectedAccount;
-    this.lastSelectedCategoryTo = lastSelectedCategory;
-    this.lastSelectedAccountTo = lastSelectedAccountTo;
-    this.lastTransactionType = transactionType;
-    this.primaryCurrency = primaryCurrency;
-    this.spendAlertAmount = spendAlertAmount;
-    this.transactionAlert = transactionAlert;
-    this.favoriteTransactions = favoriteTransactions;
+  void init() {
+    this.accounts = objectbox.accountBox.getAll();
+    this.categories = objectbox.categoryBox.getAll();
+    this.transactions = objectbox.transactionBox.getAll();
+    this.mySettings = objectbox.settingsBox.getAll()[0];
+    // this.transactionAlert = transactionAlert;
+    // this.favoriteTransactions = favoriteTransactions;
   }
 }

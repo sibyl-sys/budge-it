@@ -1,56 +1,76 @@
-import 'package:hive/hive.dart';
+import 'package:objectbox/objectbox.dart';
 
-part 'transaction.g.dart';
 
-@HiveType(typeId: 6)
 enum TransactionType {
-  @HiveField(0)
   expense,
-  @HiveField(1)
   income,
-  @HiveField(2)
   transfer
 }
 
-@HiveType(typeId: 7)
 enum TransactionImportance {
-  @HiveField(0)
   need,
-  @HiveField(1)
   want,
-  @HiveField(2)
   sudden
 }
 
-@HiveType(typeId: 2)
+@Entity()
 class Transaction {
-  
-  @HiveField(0)
-  double value;
-  
-  @HiveField(1)
-  String note;
-  
-  @HiveField(2)
-  DateTime timestamp;
-
-  @HiveField(3)
+  @Id()
   int transactionID;
 
-  @HiveField(4)
+  double value;
+
+  String note;
+
+  @Property(type: PropertyType.date)
+  DateTime timestamp;
+
   int toID;
 
-  @HiveField(5)
   int fromID;
 
-  @HiveField(6)
-  TransactionType transactionType;
+  TransactionType? transactionType;
 
-  @HiveField(7)
   bool isArchived;
 
-  @HiveField(8)
-  TransactionImportance importance;
+  TransactionImportance? importance;
 
-  Transaction({required this.value,required  this.note,required  this.transactionID,required this.timestamp,required  this.toID,required  this.fromID,required this.transactionType,required this.isArchived,required this.importance});
+  int? get dbTransactionType {
+    _ensureStableEnumValues();
+    return transactionType?.index;
+  }
+
+  set dbTransactionType(int? value) {
+    _ensureStableEnumValues();
+    if(value == null) {
+      transactionType = null;
+    } else {
+      transactionType = TransactionType.values[value];
+    }
+  }
+
+  int? get dbImportance {
+    _ensureStableEnumValues();
+    return importance?.index;
+  }
+
+  set dbImportance(int? value) {
+    _ensureStableEnumValues();
+    if(value == null) {
+      importance = null;
+    } else {
+      importance = TransactionImportance.values[value];
+    }
+  }
+
+  Transaction({required this.value,required  this.note,required  this.transactionID,required this.timestamp,required  this.toID,required  this.fromID,required this.isArchived});
+
+  void _ensureStableEnumValues() {
+    assert(TransactionType.expense.index == 0);
+    assert(TransactionType.income.index == 1);
+    assert(TransactionType.transfer.index == 2);
+    assert(TransactionImportance.need.index == 3);
+    assert(TransactionImportance.sudden.index == 4);
+    assert(TransactionImportance.want.index == 5);
+  }
 }
