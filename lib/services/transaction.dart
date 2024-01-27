@@ -29,10 +29,12 @@ class Transaction {
 
   int fromID;
 
+  @Transient()
   TransactionType? transactionType;
 
   bool isArchived;
 
+  @Transient()
   TransactionImportance? importance;
 
   int? get dbTransactionType {
