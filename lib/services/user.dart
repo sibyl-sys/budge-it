@@ -172,6 +172,12 @@ class User extends ChangeNotifier {
   void addAccount(Account account) async {
     objectbox.accountBox.put(account);
     accounts = objectbox.accountBox.getAll();
+
+    if(mySettings.selectedAccountTo == 0 || mySettings.selectedAccountFrom == 0) {
+      mySettings.selectedAccountTo = accounts[0].accountID;
+      mySettings.selectedAccountFrom = accounts[0].accountID;
+    }
+    objectbox.settingsBox.put(mySettings);
     notifyListeners();
   }
 

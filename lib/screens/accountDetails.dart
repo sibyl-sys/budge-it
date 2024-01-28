@@ -111,7 +111,6 @@ class _AccountDetailsState extends State<AccountDetails> {
               },
               child: Text(
                   "EDIT",
-                  style: TextStyle(color: Colors.white)
               )
           )
         ],

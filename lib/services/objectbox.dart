@@ -23,13 +23,17 @@ class ObjectBox {
     categoryBox = store.box<Category>();
     transactionBox = store.box<Transaction>();
     subCategoryBox = store.box<Subcategory>();
-    if(settingsBox.isEmpty()) {
-      Settings newSettings = new Settings(id: 0, primaryCurrencyID: 0, spendAlertAmount: 5000.00, selectedAccountFrom: 0, selectedAccountTo: 0, selectedCategoryTo: 0, selectedTransactionType: 0);
-      settingsBox.put(newSettings);
-    }
+
 
     if(categoryBox.isEmpty()) {
       categoryBox.putMany(categoryDefault);
+    }
+
+    settingsBox.removeAll();
+    if(settingsBox.isEmpty()) {
+      Category firstCategory = categoryBox.getAll()[0];
+      Settings newSettings = new Settings(id: 0, primaryCurrencyID: 0, spendAlertAmount: 5000.00, selectedAccountFrom: 0, selectedAccountTo: 0, selectedCategoryTo: firstCategory.categoryID, selectedTransactionType: 0);
+      settingsBox.put(newSettings);
     }
     // Add any additional setup code, e.g. build queries.
     // var box = await Hive.openBox('budgeItApp');

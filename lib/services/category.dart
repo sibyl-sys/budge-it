@@ -27,7 +27,7 @@ class Category {
   @Transient()
   TransactionImportance? lastTransactionImportance;
 
-  int categoryCurrencyID = 0;
+  int categoryCurrencyID = -1;
 
   int index;
 
@@ -73,7 +73,10 @@ class Category {
     assert(TransactionImportance.sudden.index == 2);
   }
 
-  Currency getCurrency() {
+  Currency? getCurrency() {
+    if(categoryCurrencyID == -1) {
+      return null;
+    }
     return currencyList[categoryCurrencyID];
   }
 
