@@ -193,21 +193,19 @@ class _EditAccountState extends State<EditAccount> {
                     )
                 );
               }
-              userModel.updateAccount(
-                Account(
-                  name: accountNameController.text,
-                  icon: accountIcon.codePoint,
-                  color: accountColor.value,
-                  balance: balance,
-                  accountType: _accountType,
-                  creditLimit: limit,
-                  description: descriptionController.text,
-                  isIncludedInTotalNet: isIncludedInTotalNet,
-                  isDarkIcon : isDarkIcon,
-                  currencyID: currencyList.indexOf(selectedCurrency),
-                  isArchived: false
-                ),
-              );
+              Account toUpdate = userModel.findAccountByID(widget.accountIndex)!;
+              toUpdate.name = accountNameController.text;
+              toUpdate.icon = accountIcon.codePoint;
+              toUpdate.color = accountColor.value;
+              toUpdate.balance = balance;
+              toUpdate.accountType = _accountType;
+              toUpdate.creditLimit = limit;
+              toUpdate.description = descriptionController.text;
+              toUpdate.isIncludedInTotalNet = isIncludedInTotalNet;
+              toUpdate.isDarkIcon = isDarkIcon;
+              toUpdate.currencyID = currencyList.indexOf(selectedCurrency);
+              toUpdate.isArchived = false;
+              userModel.updateAccount(toUpdate);
               Navigator.pop(context);
             },)
         ],
