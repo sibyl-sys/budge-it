@@ -71,8 +71,8 @@ class Transaction {
     assert(TransactionType.expense.index == 0);
     assert(TransactionType.income.index == 1);
     assert(TransactionType.transfer.index == 2);
-    assert(TransactionImportance.need.index == 3);
-    assert(TransactionImportance.sudden.index == 4);
-    assert(TransactionImportance.want.index == 5);
+    assert(TransactionImportance.need.index == 0);
+    assert(TransactionImportance.want.index == 1);
+    assert(TransactionImportance.sudden.index == 2);
   }
 }

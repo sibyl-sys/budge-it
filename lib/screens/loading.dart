@@ -14,71 +14,17 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  void setupHive() async {
-    print("START HIVE INITIALIZE");
-    // await Hive.initFlutter();
-    print("HIVE INITIALIZED");
-    // Hive.registerAdapter(AccountAdapter());
-    // Hive.registerAdapter(CategoryAdapter());
-    // Hive.registerAdapter(TransactionAdapter());
-    // Hive.registerAdapter(CurrencyAdapter());
-    // Hive.registerAdapter(CategoryTypeAdapter());
-    // Hive.registerAdapter(AccountTypeAdapter());
-    // Hive.registerAdapter(TransactionTypeAdapter());
-    // Hive.registerAdapter(SubcategoryAdapter());
-    // Hive.registerAdapter(TransactionImportanceAdapter());
-
-    // var box = await Hive.openBox('budgeItApp');
-    // List<Account> accounts = List<Account>.from(box.get('accounts', defaultValue:  []));
-    // List<Transaction> transactionAlert = List<Transaction>.from(box.get('transactionAlert', defaultValue: []));
-    // List<Transaction> favoriteTransactions = List<Transaction>.from(box.get('favoriteTransactions', defaultValue: []));
-    // Currency primaryCurrency = box.get('primaryCurrency', defaultValue: currencyList[0]);
-    // double spendAlertAmount = box.get('spendAlertAmount', defaultValue: 5000.00);
-    // for(Account account in accounts) {
-    //   if(account.currency == null) {
-    //     account.currency = primaryCurrency;
-    //   }
-    //
-    //   if(account.isArchived == null) {
-    //     account.isArchived = false;
-    //   }
-    // }
-
-    // List<Category> categories = List<Category>.from(box.get('categories', defaultValue: categoryDefault));
-    // int lastIndex = 0;
-    // for(Category category in categories) {
-    //   if(category.index == null) {
-    //     category.index = lastIndex + 1;
-    //   }
-    //   lastIndex = category.index;
-    // }
-
-    // List<Transaction> transactions = List<Transaction>.from(box.get('transactions', defaultValue: <Transaction>[]));
-    //
-    // for(Transaction transaction in transactions) {
-    //   if(transaction.isArchived == null) {
-    //     transaction.isArchived = false;
-    //   }
-    //
-    //   if(transaction.importance == null) {
-    //     transaction.importance = TransactionImportance.need;
-    //   }
-    // }
-
-    // int selectedCategory = box.get('selectedCategoryTo', defaultValue: 0);
-    // int selectedAccount = box.get('selectedAccountFrom', defaultValue: 0);
-    // int selectedAccountTo = box.get('selectedAccountTo', defaultValue: 0);
-    // TransactionType transactionType = box.get('lastTransactionType', defaultValue: TransactionType.expense);
-    // User user = context.read<User>();
-    // user.init(accounts, categories, transactions, selectedCategory, selectedAccount, primaryCurrency, selectedAccountTo, transactionType, spendAlertAmount, transactionAlert, favoriteTransactions);
-    //
-    Navigator.pushReplacementNamed(context, "/home");
+  void setupObjectbox() async {
+    User user = context.read<User>();
+    user.init();
+    print("OBJECTBOX INITIALIZED");
   }
 
   @override
   void initState() {
     super.initState();
-    // setupHive();
+    setupObjectbox();
+    WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.pushReplacementNamed(context, "/home"));
   }
 
   @override

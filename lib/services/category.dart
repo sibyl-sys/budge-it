@@ -68,9 +68,9 @@ class Category {
   void _ensureStableEnumValues() {
     assert(CategoryType.expense.index == 0);
     assert(CategoryType.income.index == 1);
-    assert(TransactionImportance.need.index == 3);
-    assert(TransactionImportance.sudden.index == 4);
-    assert(TransactionImportance.want.index == 5);
+    assert(TransactionImportance.need.index == 0);
+    assert(TransactionImportance.want.index == 1);
+    assert(TransactionImportance.sudden.index == 2);
   }
 
   Currency getCurrency() {
