@@ -204,7 +204,6 @@ class _AccountDetailsState extends State<AccountDetails> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        width: 85,
                         height: 65,
                         child: OutlinedButton(
                           onPressed: () {
@@ -257,7 +256,6 @@ class _AccountDetailsState extends State<AccountDetails> {
                         ),
                       ),
                       Container(
-                        width: 85,
                         height: 65,
                         child: OutlinedButton(
                           onPressed: () {
@@ -310,7 +308,6 @@ class _AccountDetailsState extends State<AccountDetails> {
                         ),
                       ),
                       Container(
-                        width: 85,
                         height: 65,
                         child: OutlinedButton(
                           onPressed: () {},
@@ -351,7 +348,6 @@ class _AccountDetailsState extends State<AccountDetails> {
                         ),
                       ),
                       Container(
-                        width: 85,
                         height: 65,
                         child: OutlinedButton(
                           onPressed: () {},
