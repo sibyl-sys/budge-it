@@ -131,6 +131,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                 height: 75,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                           children : [
@@ -139,10 +140,10 @@ class _AccountDetailsState extends State<AccountDetails> {
                               child: Icon(
                                   IconData(currentAccount.icon, fontFamily: 'MaterialIcons'),
                                   color: Color(currentAccount.color).withOpacity(1),
-                                  size: 25
+                                  size: 24
                               ),
                             ) :CircularPercentIndicator(
-                              radius: 48,
+                              radius: 24,
                               lineWidth: 4.0,
                               percent: user.getAccountProgress(currentAccount.accountID),
                               progressColor: Colors.lightGreen,
@@ -152,7 +153,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                                 child: Icon(
                                     IconData(currentAccount.icon, fontFamily: 'MaterialIcons'),
                                     color: Color(currentAccount.color).withOpacity(1),
-                                    size: 25
+                                    size: 24
                                 ),
                               ),
                             ),
