@@ -48,7 +48,7 @@ class _AccountCardState extends State<AccountCard> {
                 Row(
                   children : [
                     CircularPercentIndicator(
-                        radius: 48,
+                        radius: 24,
                         lineWidth: 4.0,
                         percent: widget.creditLimit == 0 ? 0 : max(0, min(widget.progress / 100, 1)),
                         progressColor: Colors.lightGreen,
