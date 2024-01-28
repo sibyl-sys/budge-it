@@ -27,7 +27,7 @@ class Category {
   @Transient()
   TransactionImportance? lastTransactionImportance;
 
-  int categoryCurrencyID = -1;
+  int categoryCurrencyID = 0;
 
   int index;
 

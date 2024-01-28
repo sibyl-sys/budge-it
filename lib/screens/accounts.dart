@@ -38,6 +38,7 @@ class _AccountsState extends State<Accounts> {
 
     return Material(
       child: Container(
+        color: Color(0xFFFBFBFB),
         child: DefaultTabController(
             length: 2,
             child: Column(

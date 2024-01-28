@@ -163,6 +163,7 @@ class _AccountsTabState extends State<AccountsTab> {
     print(savings);
     return Column(
       children: [
+        SizedBox(height: 2),
         TotalHeader(header: "Total Balance", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.totalRegular + user.totalSavings, description:
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

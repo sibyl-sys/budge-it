@@ -95,6 +95,7 @@ class _DateRangeBarState extends State<DateRangeBar> {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.zero,
+        surfaceTintColor: Colors.white,
         child: InkWell(
           splashColor:  Colors.teal.shade700.withAlpha(50),
           onTap: () async {

@@ -33,6 +33,7 @@ class _AccountCardState extends State<AccountCard> {
   Widget build(BuildContext context) {
     print(widget.progress);
     return Card(
+      surfaceTintColor: Colors.white,
       child: InkWell(
         splashColor:  Colors.teal.shade700.withAlpha(50),
         onTap: () {
