@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
   Widget generateAppbarAction(int index) {
     if(index == 1) {
       return IconButton(
-          icon: Icon(Icons.edit),
+          icon: Icon(Icons.edit, color: Colors.white),
           onPressed: (){
             Navigator.of(context).pushNamed("/rearrangeCategories");
           });
@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
       return SizedBox(height: 0);
     } else {
       return IconButton(
-        icon: Icon(Icons.add),
+        icon: Icon(Icons.add, color: Colors.white),
         onPressed: (){
           _selectAccountType(context);
         });
@@ -137,13 +137,16 @@ class _HomeState extends State<Home> {
           actions: [
             generateAppbarAction(_selectedIndex)
           ],
+          iconTheme: IconThemeData(color: Colors.white),
           title: Text(
             _headerOptions[_selectedIndex],
             style: TextStyle(
                 fontSize: 15.0,
-                fontWeight: FontWeight.w500
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
             ),
           ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           //TODO CHANGE ACTION DEPENDING ON TAB
       ),
       drawer: BudgeitNav(),
