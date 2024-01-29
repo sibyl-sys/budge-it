@@ -17,6 +17,9 @@ class ToggleButton extends StatelessWidget {
           onPressed: () {
             onChange();
           },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white
+          )
         ),
       ),
       secondChild: Container(

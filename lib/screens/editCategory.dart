@@ -158,6 +158,7 @@ class _EditCategoryState extends State<EditCategory> {
       backgroundColor: const Color(0xFFF2F2F2),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 20.0, 16.0, 20.0),
@@ -300,7 +301,8 @@ class _EditCategoryState extends State<EditCategory> {
                         bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  height: 74,
+                  width: double.infinity,
+                  height: 78,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
                     child: Column(
@@ -318,16 +320,16 @@ class _EditCategoryState extends State<EditCategory> {
                           text: TextSpan(
                               text: "${selectedCurrency.symbol} ",
                               style: TextStyle(
-                                  color: Colors.green[700],
-                                  fontSize: 18,
+                                  color: const Color(0xFF4F4F4F),
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500
                               ),
                               children: [
                                 TextSpan(
                                     text: " (${selectedCurrency.name})",
                                     style: TextStyle(
-                                        color: Colors.green[700],
-                                        fontSize: 18,
+                                        color: const Color(0xFF4F4F4F),
+                                        fontSize: 16,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500
                                     )

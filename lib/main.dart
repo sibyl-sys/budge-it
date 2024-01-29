@@ -35,7 +35,8 @@ Future<void> main() async {
             secondary: Color(0xEB6467).withOpacity(1.0),
           ),
           primaryColor: Color(0x3C3A5F).withOpacity(1.0),
-          fontFamily: 'Poppins'
+          fontFamily: 'Poppins',
+          useMaterial3: false
         )
       )
   ));

@@ -203,16 +203,16 @@ class _AddTransactionState extends State<AddTransaction> {
         height: height,
         child: OutlinedButton(
           onPressed: onPressed,
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(color),
-                shape: MaterialStateProperty.all(ContinuousRectangleBorder(
+            style: OutlinedButton.styleFrom(
+                backgroundColor: color,
+                shape: ContinuousRectangleBorder(
                     borderRadius: BorderRadius.zero,
                     side: BorderSide(
                         color: Colors.grey.shade400.withOpacity(0.25),
-                        width: 1,
+                        width: 0.5,
                         style: BorderStyle.solid
                     )
-                ))
+                )
             ),
           child: Icon(
             icon,
@@ -229,16 +229,16 @@ class _AddTransactionState extends State<AddTransaction> {
         height: height,
         child: OutlinedButton(
           onPressed: onPressed,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(color),
-            shape: MaterialStateProperty.all(ContinuousRectangleBorder(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: color,
+            shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.zero,
                 side: BorderSide(
                     color: Colors.grey.shade400.withOpacity(0.25),
                     width: 1,
                     style: BorderStyle.solid
                 )
-            ))
+            )
           ),
           child: Text(
             label,
