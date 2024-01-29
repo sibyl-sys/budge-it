@@ -7,6 +7,7 @@ import './settings.dart';
 import './category.dart';
 import './transaction.dart';
 import './subcategory.dart';
+import './favoriteTransaction.dart';
 
 
 class ObjectBox {
@@ -16,6 +17,7 @@ class ObjectBox {
   late final Box<Category> categoryBox;
   late final Box<Subcategory> subCategoryBox;
   late final Box<Transaction> transactionBox;
+  late final Box<FavoriteTransaction> favoriteTransactionBox;
 
   ObjectBox._create(this.store) {
     accountBox = store.box<Account>();
@@ -23,6 +25,7 @@ class ObjectBox {
     categoryBox = store.box<Category>();
     transactionBox = store.box<Transaction>();
     subCategoryBox = store.box<Subcategory>();
+    favoriteTransactionBox = store.box<FavoriteTransaction>();
 
 
     if(categoryBox.isEmpty()) {

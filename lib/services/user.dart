@@ -8,6 +8,7 @@ import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/settings.dart';
+import 'package:money_tracker/services/favoriteTransaction.dart';
 import 'package:money_tracker/constants/Constants.dart';
 import 'package:money_tracker/main.dart';
 import 'package:collection/collection.dart';
@@ -21,7 +22,7 @@ class User extends ChangeNotifier {
   // List<Subcategory> subcategories = [];
   List<Transaction> transactions = [];
   // List<Transaction> transactionAlert = [];
-  // List<Transaction> favoriteTransactions = [];
+  List<FavoriteTransaction> favoriteTransactions = [];
 
   late Settings mySettings;
 
@@ -457,7 +458,9 @@ class User extends ChangeNotifier {
   }
 
   //TODO IMPLEMENT FAVORITES
-  void addTransactionToFavorites(Transaction transaction) {
+  void addTransactionToFavorites(FavoriteTransaction transaction) {
+    objectbox.favoriteTransactionBox.put(transaction);
+    favoriteTransactions = objectbox.favoriteTransactionBox.getAll();
     // favoriteTransactions = List.from(favoriteTransactions)..add(transaction);
     // Hive.box('budgeItApp').put('favoriteTransactions', favoriteTransactions);
     notifyListeners();
@@ -503,6 +506,7 @@ class User extends ChangeNotifier {
     this.categories = objectbox.categoryBox.getAll();
     this.transactions = objectbox.transactionBox.getAll();
     this.mySettings = objectbox.settingsBox.getAll()[0];
+    this.favoriteTransactions = objectbox.favoriteTransactionBox.getAll();
     // this.transactionAlert = transactionAlert;
     // this.favoriteTransactions = favoriteTransactions;
   }

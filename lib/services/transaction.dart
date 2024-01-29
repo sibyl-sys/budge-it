@@ -16,7 +16,7 @@ enum TransactionImportance {
 @Entity()
 class Transaction {
   @Id()
-  int transactionID;
+  int transactionID = 0;
 
   double value;
 
@@ -65,7 +65,7 @@ class Transaction {
     }
   }
 
-  Transaction({required this.value,required  this.note,required  this.transactionID,required this.timestamp,required  this.toID,required  this.fromID,required this.isArchived, this.transactionType, this.importance});
+  Transaction({required this.value,required  this.note, required this.timestamp,required  this.toID,required  this.fromID,required this.isArchived, this.transactionType, this.importance});
 
   void _ensureStableEnumValues() {
     assert(TransactionType.expense.index == 0);

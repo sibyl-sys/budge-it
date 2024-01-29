@@ -4,6 +4,7 @@ import 'package:money_tracker/screens/categorySelection.dart';
 import 'package:money_tracker/screens/dateSelection.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
+import 'package:money_tracker/services/favoriteTransaction.dart';
 import 'package:money_tracker/widgets/toggleButton.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -373,6 +374,16 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                   onPressed: () async {
                     Navigator.pop(context);
                     await Future.delayed(Duration(milliseconds: 200));
+                    Transaction toFavorite = user.findTransactionByID(widget.transactionID)!;
+                    user.addTransactionToFavorites(
+                      FavoriteTransaction(
+                        toID: toFavorite.toID,
+                        fromID: toFavorite.fromID,
+                        isArchived: toFavorite.isArchived,
+                        transactionType: toFavorite.transactionType,
+                        importance: toFavorite.importance
+                      )
+                    );
                     // user.addTransactionToFavorites(user.transactions[user.getTransactionIndexByID(widget.transactionID)]);
                   },
                   style: TextButton.styleFrom(
