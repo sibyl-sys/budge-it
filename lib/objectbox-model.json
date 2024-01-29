@@ -280,7 +280,7 @@
     },
     {
       "id": "7:562735512304116534",
-      "lastPropertyId": "6:4340518476120779236",
+      "lastPropertyId": "7:7658815484122720605",
       "name": "FavoriteTransaction",
       "properties": [
         {
@@ -313,6 +313,11 @@
           "id": "6:4340518476120779236",
           "name": "dbImportance",
           "type": 6
+        },
+        {
+          "id": "7:7658815484122720605",
+          "name": "value",
+          "type": 8
         }
       ],
       "relations": []

@@ -381,7 +381,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                         fromID: toFavorite.fromID,
                         isArchived: toFavorite.isArchived,
                         transactionType: toFavorite.transactionType,
-                        importance: toFavorite.importance
+                        importance: toFavorite.importance,
+                        value: toFavorite.value
                       )
                     );
                     // user.addTransactionToFavorites(user.transactions[user.getTransactionIndexByID(widget.transactionID)]);

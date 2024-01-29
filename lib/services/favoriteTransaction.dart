@@ -11,6 +11,8 @@ class FavoriteTransaction {
 
   int fromID;
 
+  double value;
+
   @Transient()
   TransactionType? transactionType;
 
@@ -43,6 +45,6 @@ class FavoriteTransaction {
     }
   }
 
-  FavoriteTransaction({required this.toID, required this.fromID, required this.isArchived, this.transactionType, this.importance});
+  FavoriteTransaction({required this.toID, required this.fromID, required this.isArchived, this.transactionType, this.importance, required this.value});
 
 }

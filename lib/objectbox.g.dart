@@ -302,7 +302,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(7, 562735512304116534),
       name: 'FavoriteTransaction',
-      lastPropertyId: const IdUid(6, 4340518476120779236),
+      lastPropertyId: const IdUid(7, 7658815484122720605),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -334,6 +334,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(6, 4340518476120779236),
             name: 'dbImportance',
             type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 7658815484122720605),
+            name: 'value',
+            type: 8,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -678,13 +683,14 @@ ModelDefinition getObjectBoxModel() {
           object.favoriteID = id;
         },
         objectToFB: (FavoriteTransaction object, fb.Builder fbb) {
-          fbb.startTable(7);
+          fbb.startTable(8);
           fbb.addInt64(0, object.favoriteID);
           fbb.addInt64(1, object.toID);
           fbb.addInt64(2, object.fromID);
           fbb.addBool(3, object.isArchived);
           fbb.addInt64(4, object.dbTransactionType);
           fbb.addInt64(5, object.dbImportance);
+          fbb.addFloat64(6, object.value);
           fbb.finish(fbb.endTable());
           return object.favoriteID;
         },
@@ -697,8 +703,13 @@ ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
           final isArchivedParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false);
+          final valueParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0);
           final object = FavoriteTransaction(
-              toID: toIDParam, fromID: fromIDParam, isArchived: isArchivedParam)
+              toID: toIDParam,
+              fromID: fromIDParam,
+              isArchived: isArchivedParam,
+              value: valueParam)
             ..favoriteID =
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbTransactionType =
@@ -926,4 +937,8 @@ class FavoriteTransaction_ {
   /// see [FavoriteTransaction.dbImportance]
   static final dbImportance =
       QueryIntegerProperty<FavoriteTransaction>(_entities[6].properties[5]);
+
+  /// see [FavoriteTransaction.value]
+  static final value =
+      QueryDoubleProperty<FavoriteTransaction>(_entities[6].properties[6]);
 }
