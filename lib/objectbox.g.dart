@@ -17,6 +17,7 @@ import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 import 'services/account.dart';
 import 'services/category.dart';
 import 'services/currency.dart';
+import 'services/favoriteTransaction.dart';
 import 'services/settings.dart';
 import 'services/subcategory.dart';
 import 'services/transaction.dart';
@@ -297,6 +298,45 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(7, 562735512304116534),
+      name: 'FavoriteTransaction',
+      lastPropertyId: const IdUid(6, 4340518476120779236),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 2776013490455948783),
+            name: 'favoriteID',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 1881693453013842057),
+            name: 'toID',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 4281251359593087188),
+            name: 'fromID',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7329229538790752249),
+            name: 'isArchived',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 8046700573976391250),
+            name: 'dbTransactionType',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 4340518476120779236),
+            name: 'dbImportance',
+            type: 6,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -327,7 +367,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(6, 5385464363218912765),
+      lastEntityId: const IdUid(7, 562735512304116534),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(1, 1285431702513897569),
       lastSequenceId: const IdUid(0, 0),
@@ -557,8 +597,6 @@ ModelDefinition getObjectBoxModel() {
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0);
           final noteParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 8, '');
-          final transactionIDParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final timestampParam = DateTime.fromMillisecondsSinceEpoch(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0));
           final toIDParam =
@@ -570,11 +608,12 @@ ModelDefinition getObjectBoxModel() {
           final object = Transaction(
               value: valueParam,
               note: noteParam,
-              transactionID: transactionIDParam,
               timestamp: timestampParam,
               toID: toIDParam,
               fromID: fromIDParam,
               isArchived: isArchivedParam)
+            ..transactionID =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbTransactionType =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 18)
             ..dbImportance = const fb.Int64Reader()
@@ -627,6 +666,45 @@ ModelDefinition getObjectBoxModel() {
               selectedAccountTo: selectedAccountToParam,
               selectedAccountFrom: selectedAccountFromParam,
               selectedTransactionType: selectedTransactionTypeParam);
+
+          return object;
+        }),
+    FavoriteTransaction: EntityDefinition<FavoriteTransaction>(
+        model: _entities[6],
+        toOneRelations: (FavoriteTransaction object) => [],
+        toManyRelations: (FavoriteTransaction object) => {},
+        getId: (FavoriteTransaction object) => object.favoriteID,
+        setId: (FavoriteTransaction object, int id) {
+          object.favoriteID = id;
+        },
+        objectToFB: (FavoriteTransaction object, fb.Builder fbb) {
+          fbb.startTable(7);
+          fbb.addInt64(0, object.favoriteID);
+          fbb.addInt64(1, object.toID);
+          fbb.addInt64(2, object.fromID);
+          fbb.addBool(3, object.isArchived);
+          fbb.addInt64(4, object.dbTransactionType);
+          fbb.addInt64(5, object.dbImportance);
+          fbb.finish(fbb.endTable());
+          return object.favoriteID;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final toIDParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
+          final fromIDParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          final isArchivedParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false);
+          final object = FavoriteTransaction(
+              toID: toIDParam, fromID: fromIDParam, isArchived: isArchivedParam)
+            ..favoriteID =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..dbTransactionType =
+                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 12)
+            ..dbImportance = const fb.Int64Reader()
+                .vTableGetNullable(buffer, rootOffset, 14);
 
           return object;
         })
@@ -821,4 +899,31 @@ class Settings_ {
   /// see [Settings.selectedTransactionType]
   static final selectedTransactionType =
       QueryIntegerProperty<Settings>(_entities[5].properties[6]);
+}
+
+/// [FavoriteTransaction] entity fields to define ObjectBox queries.
+class FavoriteTransaction_ {
+  /// see [FavoriteTransaction.favoriteID]
+  static final favoriteID =
+      QueryIntegerProperty<FavoriteTransaction>(_entities[6].properties[0]);
+
+  /// see [FavoriteTransaction.toID]
+  static final toID =
+      QueryIntegerProperty<FavoriteTransaction>(_entities[6].properties[1]);
+
+  /// see [FavoriteTransaction.fromID]
+  static final fromID =
+      QueryIntegerProperty<FavoriteTransaction>(_entities[6].properties[2]);
+
+  /// see [FavoriteTransaction.isArchived]
+  static final isArchived =
+      QueryBooleanProperty<FavoriteTransaction>(_entities[6].properties[3]);
+
+  /// see [FavoriteTransaction.dbTransactionType]
+  static final dbTransactionType =
+      QueryIntegerProperty<FavoriteTransaction>(_entities[6].properties[4]);
+
+  /// see [FavoriteTransaction.dbImportance]
+  static final dbImportance =
+      QueryIntegerProperty<FavoriteTransaction>(_entities[6].properties[5]);
 }

@@ -277,9 +277,48 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "7:562735512304116534",
+      "lastPropertyId": "6:4340518476120779236",
+      "name": "FavoriteTransaction",
+      "properties": [
+        {
+          "id": "1:2776013490455948783",
+          "name": "favoriteID",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1881693453013842057",
+          "name": "toID",
+          "type": 6
+        },
+        {
+          "id": "3:4281251359593087188",
+          "name": "fromID",
+          "type": 6
+        },
+        {
+          "id": "4:7329229538790752249",
+          "name": "isArchived",
+          "type": 1
+        },
+        {
+          "id": "5:8046700573976391250",
+          "name": "dbTransactionType",
+          "type": 6
+        },
+        {
+          "id": "6:4340518476120779236",
+          "name": "dbImportance",
+          "type": 6
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "6:5385464363218912765",
+  "lastEntityId": "7:562735512304116534",
   "lastIndexId": "0:0",
   "lastRelationId": "1:1285431702513897569",
   "lastSequenceId": "0:0",
