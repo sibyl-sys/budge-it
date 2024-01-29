@@ -140,15 +140,13 @@ class _EditCategoryState extends State<EditCategory> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              userModel.updateCategory(
-                  Category(
-                    color: categoryColor.value,
-                    categoryType: _categoryType,
-                    icon: categoryIcon.codePoint,
-                    name: categoryNameController.text,
-                    index: index,
-                  )
-              );
+              Category toUpdate = userModel.findCategoryByID(widget.categoryID)!;
+              toUpdate.color = categoryColor.value;
+              toUpdate.categoryType = _categoryType;
+              toUpdate.icon = categoryIcon.codePoint;
+              toUpdate.name = categoryNameController.text;
+              toUpdate.index = index;
+              userModel.updateCategory(toUpdate);
               Navigator.pop(context);
             },)
         ],
