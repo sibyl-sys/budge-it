@@ -770,7 +770,6 @@ class _AddTransactionState extends State<AddTransaction> {
                         note: notesController.text,
                         fromID: user.mySettings.selectedAccountFrom,
                         toID: transactionType == TransactionType.transfer ? user.mySettings.selectedAccountTo : user.mySettings.selectedCategoryTo,
-                        transactionID: userModel.transactions.length,
                         timestamp: currentDate,
                         transactionType: transactionType,
                         isArchived: false,

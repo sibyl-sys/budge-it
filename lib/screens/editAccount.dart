@@ -185,7 +185,6 @@ class _EditAccountState extends State<EditAccount> {
                         note: "Account adjustment " + accountNameController.text,
                         fromID: widget.accountIndex,
                         toID: 9,
-                        transactionID: userModel.transactions.length,
                         timestamp: DateTime.now(),
                         transactionType: TransactionType.expense,
                         importance: TransactionImportance.sudden,
