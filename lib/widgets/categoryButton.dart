@@ -21,6 +21,7 @@ class _CategoryButtonState extends State<CategoryButton> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   @override
   Widget build(BuildContext context) {
+
     return Ink(
       color: Colors.white,
       child: InkWell(

@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/categoryButton.dart';
 import 'package:money_tracker/widgets/categoryPercentBar.dart';
 import 'package:provider/provider.dart';
+import 'package:reorderable_grid/reorderable_grid.dart';
 
 class CategoriesTab extends StatefulWidget {
   final CategoryType categoryType;
@@ -28,6 +28,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
     if(widget.categoryType == CategoryType.expense) {
       user.expenseCategories.forEach((e) => categoryList.add(
           CategoryButton(
+              key: Key(e.categoryID.toString()),
               color: Color(e.color).withOpacity(1),
               icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
               name: e.name,
@@ -40,6 +41,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
     } else {
       user.incomeCategories.forEach((e) => categoryList.add(
           CategoryButton(
+              key: Key(e.categoryID.toString()),
               color: Color(e.color).withOpacity(1),
               icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
               name: e.name,
@@ -53,6 +55,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
     if(widget.isRearrange) {
       categoryList.add(
         IconButton(
+            key: Key("Add"),
             icon: Icon(Icons.add_circle_outline),
             iconSize: 50,
             color: Theme.of(context).primaryColor,
@@ -77,10 +80,66 @@ class _CategoriesTabState extends State<CategoriesTab> {
     );
   }
   
-  // Widget renderDragAndDropView(User user) {
-  //   List categoryList = generateCategoryList(user);
-  //   return Padding(
-  //     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+  Widget renderDragAndDropView(User user) {
+    List<Widget> categoryList = generateCategoryList(user);
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+        child: ReorderableGridView(
+          onReorder: (oldIndex, newIndex) {
+            List<Category> categories;
+            if (widget.categoryType == CategoryType.expense) {
+              categories = user.expenseCategories;
+            } else {
+              categories = user.incomeCategories;
+            }
+            if (oldIndex > newIndex) {
+              for (int i = newIndex; i < oldIndex; i++) {
+                categories[i].index = categories[i].index + 1;
+              }
+            } else {
+              for (int i = newIndex; i > oldIndex; i--) {
+                categories[i].index = categories[i].index - 1;
+              }
+            }
+            categories[oldIndex].index = newIndex;
+            user.updateCategories(categories);
+          },
+          children: categoryList,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 6,
+            childAspectRatio: 4/5
+          )
+        )
+        // child: ReorderableBuilder(
+        //   children: categoryList,
+        //   enableDraggable: true,
+        //   scrollController: _scrollController,
+        //   onReorder: (List<OrderUpdateEntity> orderUpdateEntities) {
+        //     List<Category> categories;
+        //     if(widget.categoryType == CategoryType.expense) {
+        //       categories = user.expenseCategories;
+        //     } else {
+        //       categories = user.incomeCategories;
+        //     }
+        //     for(final orderUpdateEntity in orderUpdateEntities) {
+        //       final category = categories.removeAt(orderUpdateEntity.oldIndex);
+        //       categories.insert(orderUpdateEntity.newIndex, category);
+        //     }
+        //     user.updateCategories(categories);
+        //   },
+        //   builder: (children) {
+        //     return GridView(
+        //       children: children,
+        //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        //         crossAxisCount: 4,
+        //         mainAxisSpacing: 8,
+        //         crossAxisSpacing: 6,
+        //         childAspectRatio: 4/5
+        //       ));
+        //   }
+        // )
   //     child: DragAndDropGridView(
   //
   //         onWillAccept: (oldIndex, newIndex) {
@@ -117,8 +176,8 @@ class _CategoriesTabState extends State<CategoriesTab> {
   //         itemBuilder: (context, index) => DragItem(isDraggable: true, isDropable: true, child: categoryList[index]),
   //         itemCount: categoryList.length,
   //     ),
-  //   );
-  // }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +189,8 @@ class _CategoriesTabState extends State<CategoriesTab> {
         CategoryPercentBar(from: widget.from, to: widget.to, categoryType: widget.categoryType),
         SizedBox(height: 16.0),
         Expanded(
-          // child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)
-          child: renderStaticGridView(user)
+          child: widget.isRearrange ? renderDragAndDropView(user) : renderStaticGridView(user)
+          // child: renderStaticGridView(user)
         )
       ],
     );

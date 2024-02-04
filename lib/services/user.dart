@@ -47,14 +47,14 @@ class User extends ChangeNotifier {
   }
 
   List<Category> get expenseCategories {
-    Query<Category> expenseQuery = objectbox.categoryBox.query(Category_.dbCategoryType.equals(0)).build();
+    Query<Category> expenseQuery = objectbox.categoryBox.query(Category_.dbCategoryType.equals(0)).order(Category_.index).build();
     List<Category> expenseCategories = expenseQuery.find();
     expenseQuery.close();
     return expenseCategories;
   }
 
   List<Category> get incomeCategories {
-    Query<Category> incomeQuery = objectbox.categoryBox.query(Category_.dbCategoryType.equals(1)).build();
+    Query<Category> incomeQuery = objectbox.categoryBox.query(Category_.dbCategoryType.equals(1)).order(Category_.index).build();
     List<Category> incomeCategories = incomeQuery.find();
     incomeQuery.close();
     return incomeCategories;
@@ -491,15 +491,15 @@ class User extends ChangeNotifier {
     categories = objectbox.categoryBox.getAll();
     notifyListeners();
   }
-  // void rearrangeCategories(List<Category> updatedCategories) {
-  //   updatedCategories.forEach((category) {
-  //     categories[this.getCategoryIndexByID(category.categoryID)] = category;
-  //   });
-  //
-  //   // Hive.box('budgeItApp').put('categories', categories);
-  //   // print(Hive.box('budgeItApp').get('categories'));
-  //   notifyListeners();
-  // }
+
+  void updateCategories(List<Category> updatedCategories) {
+    objectbox.categoryBox.putMany(updatedCategories);
+    categories = objectbox.categoryBox.getAll();
+    // categories.forEach((category) => {
+    //   print(category.name)
+    // });
+    notifyListeners();
+  }
 
   void init() {
     this.accounts = objectbox.accountBox.getAll();
