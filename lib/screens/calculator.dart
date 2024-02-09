@@ -147,7 +147,6 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
               ]
           ),
         );
-        break;
       case Operator.subtraction:
         return RichText(
           text: TextSpan(
@@ -185,7 +184,6 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
               ]
           ),
         );
-        break;
       case Operator.multiplication:
         return RichText(
           text: TextSpan(
@@ -223,7 +221,6 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
               ]
           ),
         );
-        break;
       case Operator.division:
         return RichText(
           text: TextSpan(
@@ -261,7 +258,6 @@ class _CalculatorState extends State<Calculator> with SingleTickerProviderStateM
               ]
           ),
         );
-        break;
       default:
         return RichText(
           text: TextSpan(
