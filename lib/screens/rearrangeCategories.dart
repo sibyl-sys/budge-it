@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
-import 'package:money_tracker/screens/editAccount.dart';
 import 'package:money_tracker/screens/editCategory.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';

@@ -12,7 +12,6 @@ import 'package:money_tracker/services/favoriteTransaction.dart';
 import 'package:money_tracker/constants/Constants.dart';
 import 'package:money_tracker/main.dart';
 import 'package:collection/collection.dart';
-import 'package:objectbox/objectbox.dart';
 
 import '../objectbox.g.dart';
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:money_tracker/screens/accountSelection.dart';
 import 'package:money_tracker/screens/categorySelection.dart';
 import 'package:money_tracker/screens/dateSelection.dart';
@@ -114,16 +113,12 @@ class _AddTransactionState extends State<AddTransaction> {
     switch(operator) {
       case Operator.addition:
         return firstValue + " + " + secondValue;
-        break;
       case Operator.subtraction:
         return firstValue + " - " + secondValue;
-        break;
       case Operator.multiplication:
         return firstValue + " x " + secondValue;
-        break;
       case Operator.division:
         return firstValue + " ÷ " + secondValue;
-        break;
       default:
         return firstValue;
     }
