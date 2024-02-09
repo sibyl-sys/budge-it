@@ -27,7 +27,6 @@ class ObjectBox {
     subCategoryBox = store.box<Subcategory>();
     favoriteTransactionBox = store.box<FavoriteTransaction>();
 
-    categoryBox.removeAll();
     if(categoryBox.isEmpty()) {
       categoryBox.putMany(categoryDefault);
     }

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:money_tracker/services/category.dart';
+import 'package:money_tracker/services/user.dart';
+import 'package:provider/provider.dart';
 
 class OverviewTab extends StatefulWidget {
-  const OverviewTab({Key? key}) : super(key: key);
+  final DateTime from;
+  final DateTime to;
+  final CategoryType categoryType;
+
+  const OverviewTab({Key? key, required this.from, required this.to, required this.categoryType}) : super(key: key);
 
   @override
   _OverviewTabState createState() => _OverviewTabState();
@@ -27,82 +34,65 @@ class _OverviewTabState extends State<OverviewTab> {
     return SideTitleWidget(child: Text(value.toString(), style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 10)), axisSide: meta.axisSide);
   }
 
-  List<BarChartGroupData> getData() {
-    return [
-      BarChartGroupData(
-        x: 0,
-        barsSpace: 4,
-        barRods: [
-          BarChartRodData(
-              toY: 60000,
-              rodStackItems: [
-                BarChartRodStackItem(0, 30000, Colors.red),
-                BarChartRodStackItem(30000, 60000, Colors.blue),
-              ],
-              borderRadius: const BorderRadius.all(Radius.zero),
-            //TODO DYNAMIC WIDTH
-            width: 10,
-          ),
-        ]
-      ),
-      BarChartGroupData(
-          x: 1,
-          barsSpace: 4,
-          barRods: [
-            BarChartRodData(
-                toY: 60000,
-                rodStackItems: [
-                  BarChartRodStackItem(0, 30000, Colors.red),
-                  BarChartRodStackItem(30000, 60000, Colors.blue),
-                ],
-              borderRadius: const BorderRadius.all(Radius.zero),
-              width: 10,
-            ),
-          ]
-      ),
-      BarChartGroupData(
-          x: 2,
-          barsSpace: 4,
-          barRods: [
-            BarChartRodData(
-                toY: 60000,
-                rodStackItems: [
-                  BarChartRodStackItem(0, 30000, Colors.red),
-                  BarChartRodStackItem(30000, 60000, Colors.blue),
-                ],
+  List<BarChartGroupData> getData(DateTime from, DateTime to, List<Category> categories, User user) {
+    int noDays = (to.difference(from).inHours / 24).round();
+    List<BarChartGroupData> groupData = [];
+
+    for(int i = from.day; i <= noDays; i++) {
+      //BARCHARTGROUPDATA
+      List categoryValues = [];
+      List<BarChartRodStackItem> rodData = [];
+      double total = 0;
+      double lastValue = 0;
+      categories.forEach((category) {
+        double categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
+        print(DateTime(from.year, from.month, i));
+        print(categoryValue);
+        total += categoryValue;
+        categoryValues.add(
+          {
+            "value" : categoryValue,
+            "color" : category.color
+          }
+        );
+        //ROD DATA
+      });
+      categoryValues.sort((a, b) => b["value"].compareTo(a["value"]));
+      categoryValues.forEach((e) {
+        if(e["value"] != 0) {
+          print(e["value"]);
+          rodData.add(BarChartRodStackItem(lastValue, lastValue + e["value"], Color(e["color"]).withOpacity(1)));
+          lastValue += e["value"];
+        }
+      });
+        groupData.add(
+          BarChartGroupData(
+            x: i,
+            barsSpace: 2,
+            barRods: [
+              BarChartRodData(
+                toY: total,
+                rodStackItems: rodData,
                 borderRadius: const BorderRadius.all(Radius.zero),
-              width: 10,
-            ),
-          ]
-      ),
-      BarChartGroupData(
-          x: 3,
-          barsSpace: 4,
-          barRods: [
-            BarChartRodData(
-                toY: 60000,
-                rodStackItems: [
-                  BarChartRodStackItem(0, 30000, Colors.red),
-                  BarChartRodStackItem(30000, 60000, Colors.blue),
-                ],
-                borderRadius: const BorderRadius.all(Radius.zero),
-              width: 10,
-            ),
-          ]
-      )
-    ];
+              )
+            ]
+          )
+        );
+
+    }
+    return groupData;
   }
 
-  Widget generateCharts() {
+  Widget generateCharts(List<Category> categories, User user) {
     return AspectRatio(
       aspectRatio: 1.66,
       child: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
+        padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
         child: BarChart(
           BarChartData(
-            alignment: BarChartAlignment.spaceEvenly,
+            alignment: BarChartAlignment.spaceBetween,
             barTouchData: BarTouchData(
-              enabled: false,
+              enabled: true,
             ),
             titlesData: FlTitlesData(
               show: true,
@@ -115,9 +105,10 @@ class _OverviewTabState extends State<OverviewTab> {
               ),
               leftTitles: AxisTitles(
                   sideTitles: SideTitles(
-                      showTitles: true,
+                      showTitles: false,
                       reservedSize: 62,
-                      getTitlesWidget: leftTitles
+                      getTitlesWidget: leftTitles,
+
                   )
               ),
               topTitles: AxisTitles(
@@ -144,7 +135,7 @@ class _OverviewTabState extends State<OverviewTab> {
                 show: false
             ),
             groupsSpace: 4,
-            barGroups: getData(),
+            barGroups: getData(widget.from, widget.to, categories, user),
           )
         )
       )
@@ -153,6 +144,15 @@ class _OverviewTabState extends State<OverviewTab> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<User>();
+    List<Category> categories = [];
+
+    if(widget.categoryType == CategoryType.expense) {
+      categories = user.expenseCategories;
+    } else {
+      categories = user.incomeCategories;
+    }
+
     return Container(
       child: Column(
         children: [
@@ -180,7 +180,7 @@ class _OverviewTabState extends State<OverviewTab> {
               children: overviewTypes,
             ),
           ),
-          generateCharts()
+          generateCharts(categories, user)
         ],
       )
     );

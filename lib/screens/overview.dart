@@ -207,7 +207,7 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
                 child: TabBarView(
                     controller: _tabController,
                     children: [
-                      OverviewTab(),
+                      OverviewTab(from: this.from, to: this.to, categoryType: getCategoryType()),
                       CategoriesTab(
                         categoryType: CategoryType.income,
                         from: from,
