@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:money_tracker/services/category.dart';
+import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
@@ -25,9 +26,23 @@ List<Widget> overviewTypes = [
 class _OverviewTabState extends State<OverviewTab> {
   final List<bool> _selectedType = [true, false, false];
 
+  int getSelectedType() {
+    for(int i = 0; i < _selectedType.length; i++) {
+      if(_selectedType[i] == true) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
+
   Widget bottomTitles(double value, TitleMeta meta) {
     //TODO: TEMPORARILY MONTH, DO VARIATIONS DEPENDING ON DATE SET AFTER.
-    return SideTitleWidget(child: Text(value.floor().toString(), style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 10)), axisSide: meta.axisSide);
+    String text = "";
+    if(value.floor() % 5 == 0 || value.floor() == 1) {
+      text = value.floor().toString();
+    }
+    return SideTitleWidget(child: Text(text, style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 10)), axisSide: meta.axisSide);
   }
 
   Widget leftTitles(double value, TitleMeta meta) {
@@ -35,30 +50,48 @@ class _OverviewTabState extends State<OverviewTab> {
   }
 
   List<BarChartGroupData> getData(DateTime from, DateTime to, List<Category> categories, User user) {
+    //TODO: HANDLE DIFFERENT VARIATIONS FOR WEEKLY/YEARLY AND IMPORTANCE/TYPE
     int noDays = (to.difference(from).inHours / 24).round();
     List<BarChartGroupData> groupData = [];
 
     for(int i = from.day; i <= noDays; i++) {
       //BARCHARTGROUPDATA
-      List categoryValues = [];
+      List rodValues = [];
       List<BarChartRodStackItem> rodData = [];
       double total = 0;
       double lastValue = 0;
-      categories.forEach((category) {
-        double categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
-        print(DateTime(from.year, from.month, i));
-        print(categoryValue);
-        total += categoryValue;
-        categoryValues.add(
-          {
-            "value" : categoryValue,
-            "color" : category.color
-          }
-        );
-        //ROD DATA
-      });
-      categoryValues.sort((a, b) => b["value"].compareTo(a["value"]));
-      categoryValues.forEach((e) {
+      if(getSelectedType() == 0) {
+        categories.forEach((category) {
+          double categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
+          total += categoryValue;
+          rodValues.add(
+            {
+              "value" : categoryValue,
+              "color" : category.color
+            }
+          );
+          //ROD DATA
+        });
+      } else if(getSelectedType() == 1) {
+        TransactionImportance.values.forEach((importance) {
+          double categoryValue = user.getImportanceNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), transactionImportance: importance);
+          total += categoryValue;
+          int importanceColor = Theme.of(context).primaryColor.value;
+          if(importance == TransactionImportance.want)
+            importanceColor = Colors.yellow.shade700.value;
+          else if(importance == TransactionImportance.sudden)
+            importanceColor = Colors.orange.shade700.value;
+
+          rodValues.add(
+              {
+                "value" : categoryValue,
+                "color" : importanceColor
+              }
+          );
+        });
+      }
+      rodValues.sort((a, b) => b["value"].compareTo(a["value"]));
+      rodValues.forEach((e) {
         if(e["value"] != 0) {
           print(e["value"]);
           rodData.add(BarChartRodStackItem(lastValue, lastValue + e["value"], Color(e["color"]).withOpacity(1)));

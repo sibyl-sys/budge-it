@@ -79,7 +79,7 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
             color: Colors.white,
           ),
           radius: 6.0,
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Colors.yellow.shade700.withOpacity(0.5),
         );
       } else if (widget.importance == TransactionImportance.sudden) {
         return CircleAvatar(

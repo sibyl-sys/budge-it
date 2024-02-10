@@ -260,6 +260,25 @@ class User extends ChangeNotifier {
     return categoryNet;
   }
 
+  double getImportanceNet({required DateTime from, required DateTime to, required TransactionImportance transactionImportance}) {
+    double importanceNet = 0;
+    for(Transaction transaction in transactions) {
+      if (transaction.timestamp.compareTo(from) >= 0 &&
+          transaction.timestamp.compareTo(to) <= 0 &&
+          transaction.importance == transactionImportance &&
+          !transaction.isArchived &&
+          transaction.transactionType != TransactionType.transfer) {
+        Account transactionAccount = findAccountByID(transaction.fromID)!;
+        if(transactionAccount.getCurrency() == mySettings.getPrimaryCurrency()) {
+          importanceNet+= transaction.value;
+        } else {
+          importanceNet+= exchangeCurrency(transaction.value, transactionAccount.getCurrency(), mySettings.getPrimaryCurrency());
+        }
+      }
+    }
+    return importanceNet;
+  }
+
   //TODO TRANSLATE TO QUERY
   double getMonthlyNet({required DateTime from, required DateTime to, required int accountID}) {
     double monthlyNet = 0;
