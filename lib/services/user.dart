@@ -280,12 +280,27 @@ class User extends ChangeNotifier {
   }
 
   //TODO TRANSLATE TO QUERY
-  double getMonthlyNet({required DateTime from, required DateTime to, required int accountID}) {
+  double getAccountNet({required DateTime from, required DateTime to, required int accountID}) {
     double monthlyNet = 0;
     for(Transaction transaction in transactions) {
       if (transaction.timestamp.compareTo(from) >= 0 &&
           transaction.timestamp.compareTo(to) <= 0 &&
           (accountID == -1 || transaction.fromID == accountID)) {
+        if (transaction.transactionType == TransactionType.expense && !transaction.isArchived) {
+          monthlyNet -= transaction.value;
+        } else if (transaction.transactionType == TransactionType.income && !transaction.isArchived) {
+          monthlyNet += transaction.value;
+        }
+      }
+    }
+    return monthlyNet;
+  }
+
+  double getRangeNet({required DateTime from, required DateTime to}) {
+    double monthlyNet = 0;
+    for(Transaction transaction in transactions) {
+      if (transaction.timestamp.compareTo(from) >= 0 &&
+          transaction.timestamp.compareTo(to) <= 0) {
         if (transaction.transactionType == TransactionType.expense && !transaction.isArchived) {
           monthlyNet -= transaction.value;
         } else if (transaction.transactionType == TransactionType.income && !transaction.isArchived) {

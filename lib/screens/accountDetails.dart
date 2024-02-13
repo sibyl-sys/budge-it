@@ -85,7 +85,7 @@ class _AccountDetailsState extends State<AccountDetails> {
   Widget build(BuildContext context) {
     final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
     final User user = context.watch<User>();
-    double monthlyNet = user.getMonthlyNet(from: from, to: to, accountID: arguments["accountIndex"]);
+    double monthlyNet = user.getAccountNet(from: from, to: to, accountID: arguments["accountIndex"]);
 
     final List<Map> transactionListPerDay = user.getTransactions(from: from, to: to, accountID: arguments["accountIndex"]);
     Account currentAccount = user.findAccountByID(arguments["accountIndex"])!;

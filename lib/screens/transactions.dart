@@ -79,7 +79,7 @@ class _TransactionsState extends State<Transactions> {
     //TODO CREATE MONTH WIDGET
     List months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     List weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
-    double monthlyNet = user.getMonthlyNet(from: from, to: to, accountID: -1);
+    double monthlyNet = user.getAccountNet(from: from, to: to, accountID: -1);
 
 
     final List<Map> transactionListPerDay = user.getTransactions(from: from, to: to, accountID: -1);
@@ -93,7 +93,7 @@ class _TransactionsState extends State<Transactions> {
           onChanged: changeDate,
         ),
         SizedBox(height: 4),
-        TotalHeader(header: "Total Net:", valueColor: Color(0x4F4F4F).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getMonthlyNet(from: from, to: to, accountID: -1), description:
+        TotalHeader(header: "Total Net:", valueColor: Color(0x4F4F4F).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getAccountNet(from: from, to: to, accountID: -1), description:
         RichText(
           text: TextSpan(
               text: "xx%",

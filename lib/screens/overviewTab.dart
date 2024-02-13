@@ -89,6 +89,15 @@ class _OverviewTabState extends State<OverviewTab> {
               }
           );
         });
+      } else {
+        double netValue = user.getRangeNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)));
+        total = netValue;
+        rodValues.add(
+            {
+              "value": netValue,
+              "color": netValue < 0 ? Colors.red.shade500.value : Colors.teal.shade500.value
+            }
+        );
       }
       rodValues.sort((a, b) => b["value"].compareTo(a["value"]));
       rodValues.forEach((e) {
