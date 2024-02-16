@@ -4,13 +4,19 @@ import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+
+enum DateRangeType {
+  DAILY,
+  WEEKLY,
+  MONTHLY
+}
 
 class OverviewTab extends StatefulWidget {
   final DateTime from;
   final DateTime to;
-  final CategoryType categoryType;
 
-  const OverviewTab({Key? key, required this.from, required this.to, required this.categoryType}) : super(key: key);
+  const OverviewTab({Key? key, required this.from, required this.to}) : super(key: key);
 
   @override
   _OverviewTabState createState() => _OverviewTabState();
@@ -23,8 +29,40 @@ List<Widget> overviewTypes = [
   Container(child: Text('Type'))
 ];
 
-class _OverviewTabState extends State<OverviewTab> {
+class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStateMixin {
   final List<bool> _selectedType = [true, false, false];
+  final moneyFormat = new NumberFormat("#,##0.00", "en_US");
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
+    _tabController.addListener(_handleTabChange);
+  }
+
+  void _handleTabChange() {
+    setState(() {
+    });
+  }
+
+  int monthsBetween(DateTime startDate, DateTime endDate) {
+    int years = endDate.year - startDate.year;
+    int months = endDate.month - startDate.month;
+
+    // Adjust for negative months in the same year
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    // Consider days in the last month
+    if (endDate.day < startDate.day) {
+      months--;
+    }
+
+    return years * 12 + months;
+  }
 
   int getSelectedType() {
     for(int i = 0; i < _selectedType.length; i++) {
@@ -34,6 +72,14 @@ class _OverviewTabState extends State<OverviewTab> {
     }
 
     return 0;
+  }
+
+  CategoryType getCategoryType() {
+    if(_tabController.index == 0) {
+      return CategoryType.expense;
+    } else {
+      return CategoryType.income;
+    }
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {
@@ -50,11 +96,19 @@ class _OverviewTabState extends State<OverviewTab> {
   }
 
   List<BarChartGroupData> getData(DateTime from, DateTime to, List<Category> categories, User user) {
-    //TODO: HANDLE DIFFERENT VARIATIONS FOR WEEKLY/YEARLY AND IMPORTANCE/TYPE
+    DateRangeType rangeType = DateRangeType.DAILY;
     int noDays = (to.difference(from).inHours / 24).round();
-    List<BarChartGroupData> groupData = [];
+    int noMonths = monthsBetween(from, to);
+    if(noDays == 7) {
+      rangeType = DateRangeType.WEEKLY;
+    } else if(noDays > 31) {
+      rangeType = DateRangeType.MONTHLY;
+    }
 
-    for(int i = from.day; i <= noDays; i++) {
+    int barCount = rangeType == DateRangeType.MONTHLY ? noMonths - 1 : noDays;
+    int barStart = rangeType == DateRangeType.MONTHLY ? 0 : from.day;
+    List<BarChartGroupData> groupData = [];
+    for(int i = barStart; i <= barCount; i++) {
       //BARCHARTGROUPDATA
       List rodValues = [];
       List<BarChartRodStackItem> rodData = [];
@@ -62,7 +116,12 @@ class _OverviewTabState extends State<OverviewTab> {
       double lastValue = 0;
       if(getSelectedType() == 0) {
         categories.forEach((category) {
-          double categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
+          double categoryValue = 0;
+          if(rangeType == DateRangeType.MONTHLY) {
+            categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
+          } else {
+            categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
+          }
           total += categoryValue;
           rodValues.add(
             {
@@ -74,7 +133,12 @@ class _OverviewTabState extends State<OverviewTab> {
         });
       } else if(getSelectedType() == 1) {
         TransactionImportance.values.forEach((importance) {
-          double categoryValue = user.getImportanceNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), transactionImportance: importance);
+          double categoryValue = 0;
+          if(rangeType == DateRangeType.MONTHLY) {
+            categoryValue = user.getImportanceNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(seconds: 1)), transactionImportance: importance);
+          } else {
+            categoryValue = user.getImportanceNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), transactionImportance: importance);
+          }
           total += categoryValue;
           int importanceColor = Theme.of(context).primaryColor.value;
           if(importance == TransactionImportance.want)
@@ -90,7 +154,13 @@ class _OverviewTabState extends State<OverviewTab> {
           );
         });
       } else {
-        double netValue = user.getRangeNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)));
+        double netValue = 0;
+        if(rangeType == DateRangeType.MONTHLY) {
+          netValue = user.getRangeNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(seconds: 1)));
+        } else {
+          netValue = user.getRangeNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)));
+        }
+
         total = netValue;
         rodValues.add(
             {
@@ -109,7 +179,7 @@ class _OverviewTabState extends State<OverviewTab> {
       });
         groupData.add(
           BarChartGroupData(
-            x: i,
+            x: rangeType == DateRangeType.MONTHLY ? from.month + i : rangeType == DateRangeType.WEEKLY ? DateTime(from.year, from.month, i).weekday : i,
             barsSpace: 2,
             barRods: [
               BarChartRodData(
@@ -189,7 +259,7 @@ class _OverviewTabState extends State<OverviewTab> {
     final user = context.watch<User>();
     List<Category> categories = [];
 
-    if(widget.categoryType == CategoryType.expense) {
+    if(getCategoryType() == CategoryType.expense) {
       categories = user.expenseCategories;
     } else {
       categories = user.incomeCategories;
@@ -222,7 +292,105 @@ class _OverviewTabState extends State<OverviewTab> {
               children: overviewTypes,
             ),
           ),
-          generateCharts(categories, user)
+          generateCharts(categories, user),
+          ColoredBox(
+              color: Colors.white,
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                    color : _tabController.index == 0 ? Colors.red.withOpacity(0.1) : Colors
+                        .teal.withOpacity(0.1),
+                    border: Border(
+                        bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red: Colors
+                            .teal)
+                    )
+                ),
+                indicatorColor: _tabController.index == 0 ? Colors.red : Colors
+                    .teal,
+                labelColor: _tabController.index == 0 ? Colors.red : Colors
+                    .teal,
+                unselectedLabelColor: _tabController.index == 1 ? Colors.red : Colors
+                    .teal,
+                tabs: [
+                  Tab(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Expenses', style: TextStyle(fontSize: 9, color: Color(0xFF333333))),
+                        RichText(
+                          text: TextSpan(
+                              text: "${user.mySettings.getPrimaryCurrency().symbol} ",
+                              style: TextStyle(
+                                  color: Color(0xffEB6467),
+                                  fontSize: 14,
+                                  fontWeight: _tabController.index == 0 ? FontWeight.w500 : FontWeight.w400
+                              ),
+                              children: [
+                                TextSpan(
+                                    text: "${moneyFormat.format(user.getCategoryTypeNet(from: widget.from, to: widget.to, categoryType: CategoryType.expense).abs()).split('.')[0]}",
+                                    style: TextStyle(
+                                        color: Color(0xffEB6467),
+                                        fontSize: 14,
+                                        fontFamily: "Poppins",
+                                        fontWeight: _tabController.index == 0 ? FontWeight.w500 : FontWeight.w400
+                                    )
+                                ),
+                                TextSpan(
+                                    text: ".${moneyFormat.format(user.getCategoryTypeNet(from: widget.from, to: widget.to, categoryType: CategoryType.expense).abs()).split('.')[1]}",
+                                    style: TextStyle(
+                                        color: Color(0xffEB6467),
+                                        fontSize: 12,
+                                        fontFamily: "Poppins",
+                                        fontWeight: _tabController.index == 0 ? FontWeight.w500 : FontWeight.w400
+                                    )
+                                )
+                              ]
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Income', style: TextStyle(fontSize: 9, color: Color(0xFF333333))),
+                        RichText(
+                          text: TextSpan(
+                              text: "${user.mySettings.getPrimaryCurrency().symbol} ",
+                              style: TextStyle(
+                                  color: Color(0xff55C9C6),
+                                  fontSize: 14,
+                                  fontWeight: _tabController.index == 1 ? FontWeight.w500 : FontWeight.w400
+                              ),
+                              children: [
+                                TextSpan(
+                                    text: "${moneyFormat.format(user.getCategoryTypeNet(from: widget.from, to: widget.to, categoryType: CategoryType.income).abs()).split('.')[0]}",
+                                    style: TextStyle(
+                                        color: Color(0xff55C9C6),
+                                        fontSize: 14,
+                                        fontFamily: "Poppins",
+                                        fontWeight: _tabController.index == 1 ? FontWeight.w500 : FontWeight.w400
+                                    )
+                                ),
+                                TextSpan(
+                                    text: ".${moneyFormat.format(user.getCategoryTypeNet(from: widget.from, to: widget.to, categoryType: CategoryType.income).abs()).split('.')[1]}",
+                                    style: TextStyle(
+                                        color: Color(0xff55C9C6),
+                                        fontSize: 12,
+                                        fontFamily: "Poppins",
+                                        fontWeight: _tabController.index == 1 ? FontWeight.w500 : FontWeight.w400
+                                    )
+                                )
+                              ]
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+          ),
         ],
       )
     );
