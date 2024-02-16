@@ -32,6 +32,8 @@ List<Widget> overviewTypes = [
 class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStateMixin {
   final List<bool> _selectedType = [true, false, false];
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
+  final monthFormat = new DateFormat('MMM', "en_US");
+  final weekFormat = new DateFormat('E', "en_US");
   late TabController _tabController;
 
   @override
@@ -39,6 +41,7 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
     super.initState();
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
+    print(DateTime(widget.from.year, widget.from.month, 32));
   }
 
   void _handleTabChange() {
@@ -85,8 +88,21 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
   Widget bottomTitles(double value, TitleMeta meta) {
     //TODO: TEMPORARILY MONTH, DO VARIATIONS DEPENDING ON DATE SET AFTER.
     String text = "";
-    if(value.floor() % 5 == 0 || value.floor() == 1) {
+    DateRangeType rangeType = DateRangeType.DAILY;
+    int noDays = (widget.to.difference(widget.from).inHours / 24).round();
+    if(noDays > 31) {
+      rangeType = DateRangeType.MONTHLY;
+    } else if(noDays == 6) {
+      rangeType = DateRangeType.WEEKLY;
+    }
+    if(rangeType == DateRangeType.DAILY && (value.floor() % 5 == 0 || value.floor() == 1)) {
       text = value.floor().toString();
+    } else if(rangeType == DateRangeType.MONTHLY) {
+      text = monthFormat.format(DateTime(widget.from.year, widget.from.month, 1).add(Duration(days: 30 * value.floor() - 1)));
+    } else if(rangeType == DateRangeType.WEEKLY) {
+      text = weekFormat.format(DateTime(widget.from.year, widget.from.month, widget.from.day).add(Duration(days: value.floor())));
+      print(DateTime(widget.from.year, widget.from.month, widget.from.day));
+      print(value.floor().toString() + " " + text);
     }
     return SideTitleWidget(child: Text(text, style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 10)), axisSide: meta.axisSide);
   }
@@ -99,16 +115,15 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
     DateRangeType rangeType = DateRangeType.DAILY;
     int noDays = (to.difference(from).inHours / 24).round();
     int noMonths = monthsBetween(from, to);
-    if(noDays == 7) {
-      rangeType = DateRangeType.WEEKLY;
-    } else if(noDays > 31) {
+    if(noDays > 31) {
       rangeType = DateRangeType.MONTHLY;
+    } else if(noDays == 6) {
+      rangeType = DateRangeType.WEEKLY;
     }
 
-    int barCount = rangeType == DateRangeType.MONTHLY ? noMonths - 1 : noDays;
-    int barStart = rangeType == DateRangeType.MONTHLY ? 0 : from.day;
+    int barCount = rangeType == DateRangeType.MONTHLY ? noMonths : noDays;
     List<BarChartGroupData> groupData = [];
-    for(int i = barStart; i <= barCount; i++) {
+    for(int i = 0; i <= barCount; i++) {
       //BARCHARTGROUPDATA
       List rodValues = [];
       List<BarChartRodStackItem> rodData = [];
@@ -120,7 +135,7 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
           if(rangeType == DateRangeType.MONTHLY) {
             categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
           } else {
-            categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
+            categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i + from.day), to: DateTime(from.year, from.month, from.day + i + 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
           }
           total += categoryValue;
           rodValues.add(
@@ -179,7 +194,7 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
       });
         groupData.add(
           BarChartGroupData(
-            x: rangeType == DateRangeType.MONTHLY ? from.month + i : rangeType == DateRangeType.WEEKLY ? DateTime(from.year, from.month, i).weekday : i,
+            x: rangeType == DateRangeType.MONTHLY ? from.month + i : rangeType == DateRangeType.WEEKLY ? i : from.add(Duration(days: i)).day,
             barsSpace: 2,
             barRods: [
               BarChartRodData(
