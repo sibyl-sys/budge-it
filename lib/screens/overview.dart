@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/screens/addTransaction.dart';
-import 'package:money_tracker/screens/categoriesTab.dart';
 import 'package:money_tracker/screens/overviewTab.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
-import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
 import 'package:money_tracker/widgets/totalHeader.dart';
@@ -86,7 +83,7 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
                 to: this.to,
                 onChanged: changeDate,
               ),
-              TotalHeader(header: "Total net:", valueColor: Color(0xFF4F4F4F), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), description:
+              TotalHeader(header: "Total net:", valueColor: Color(0xFF4F4F4F), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getRangeNet(from: this.from, to: this.to), description:
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
