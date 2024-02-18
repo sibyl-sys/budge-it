@@ -155,7 +155,7 @@ class User extends ChangeNotifier {
   }
 
   Transaction? findTransactionByID(int transactionID) {
-    return transactions.firstWhereOrNull((transaction) => transaction.transactionID == transactionID);
+    return objectbox.transactionBox.get(transactionID);
   }
 
   double exchangeCurrency(double value, Currency from, Currency to) {
@@ -181,13 +181,13 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO TRANSLATE TO QUERY
   double getAccountExpenses(int accountID, int month, int year) {
     double accountExpenses = 0;
-    for(var transaction in transactions) {
-      if(transaction.fromID == accountID && transaction.timestamp.month == month && transaction.timestamp.year == year && !transaction.isArchived) {
+    Query<Transaction> monthlyQuery = objectbox.transactionBox.query(Transaction_.fromID.equals(accountID).and(Transaction_.timestamp.between(DateTime(year, month).millisecondsSinceEpoch, DateTime(year, month+1).millisecondsSinceEpoch - 1))).build();
+    List<Transaction> currentMonthTransactions = monthlyQuery.find();
+    monthlyQuery.close();
+    for(var transaction in currentMonthTransactions) {
         accountExpenses += transaction.value;
-      }
     }
     return accountExpenses;
   }
@@ -209,52 +209,40 @@ class User extends ChangeNotifier {
     return 0;
   }
 
-  //TODO TRANSLATE TO QUERY
   int getTransactionCount({required DateTime from, required DateTime to, required int accountID}) {
-    int transactionCount = 0;
-    for(Transaction transaction in transactions) {
-      if (transaction.timestamp.compareTo(from) >= 0 &&
-          transaction.timestamp.compareTo(to) <= 0 &&
-          (accountID == -1 || transaction.fromID == accountID) &&
-          !transaction.isArchived) {
-        transactionCount++;
-      }
-    }
-    return transactionCount;
+    Query<Transaction> transactionCountQuery = objectbox.transactionBox.query(Transaction_.fromID.equals(accountID).and(Transaction_.timestamp.between(from.millisecondsSinceEpoch, DateTime(to.year, to.month, to.day+1).millisecondsSinceEpoch - 1)).and(Transaction_.isArchived.equals(false))).build();
+    List<Transaction> transactionsToCount = transactionCountQuery.find();
+    transactionCountQuery.close();
+
+    return transactionsToCount.length;
   }
 
-
-  //TODO TRANSLATE TO QUERY
   double getCategoryNet({required DateTime from, required DateTime to, required int categoryID}) {
     double categoryNet = 0;
-    for(Transaction transaction in transactions) {
-      if (transaction.timestamp.compareTo(from) >= 0 &&
-          transaction.timestamp.compareTo(to) <= 0 &&
-          transaction.toID == categoryID &&
-          !transaction.isArchived &&
-          transaction.transactionType != TransactionType.transfer) {
-        Account transactionAccount = findAccountByID(transaction.fromID)!;
-        if(transactionAccount.getCurrency() == mySettings.getPrimaryCurrency()) {
-          categoryNet+= transaction.value;
-        } else {
-          categoryNet+= exchangeCurrency(transaction.value, transactionAccount.getCurrency(), mySettings.getPrimaryCurrency());
-        }
+    Query<Transaction> categoryTransactionQuery = objectbox.transactionBox.query(Transaction_.isArchived.equals(false).and(Transaction_.timestamp.between(from.millisecondsSinceEpoch, DateTime(to.year, to.month, to.day+1).millisecondsSinceEpoch - 1)).and(Transaction_.toID.equals(categoryID)).and(Transaction_.dbTransactionType.notEquals(TransactionType.transfer.index))).build();
+    List<Transaction> categoryTransactions = categoryTransactionQuery.find();
+    categoryTransactionQuery.close();
+    for(Transaction transaction in categoryTransactions) {
+      Account transactionAccount = findAccountByID(transaction.fromID)!;
+      if(transactionAccount.getCurrency() == mySettings.getPrimaryCurrency()) {
+        categoryNet+= transaction.value;
+      } else {
+        categoryNet+= exchangeCurrency(transaction.value, transactionAccount.getCurrency(), mySettings.getPrimaryCurrency());
       }
     }
     return categoryNet;
   }
 
-  //TODO TRANSLATE TO QUERY
   double getCategoryTypeNet({required DateTime from, required DateTime to, required CategoryType categoryType}) {
     double categoryNet = 0;
-    for(Transaction transaction in transactions) {
-      if (transaction.timestamp.compareTo(from) >= 0  &&
-          transaction.timestamp.compareTo(to) <= 0) {
-        if (transaction.transactionType == TransactionType.expense && categoryType == CategoryType.expense && !transaction.isArchived) {
-          categoryNet -= transaction.value;
-        } else if (transaction.transactionType == TransactionType.income && categoryType == CategoryType.income && !transaction.isArchived) {
-          categoryNet += transaction.value;
-        }
+    Query<Transaction> dateRangeQuery = objectbox.transactionBox.query(Transaction_.timestamp.between(from.millisecondsSinceEpoch, DateTime(to.year, to.month, to.day+1).millisecondsSinceEpoch - 1).and(Transaction_.isArchived.equals(false))).build();
+    List<Transaction> dateRangeTransactions = dateRangeQuery.find();
+    dateRangeQuery.close();
+    for(Transaction transaction in dateRangeTransactions) {
+      if (transaction.transactionType == TransactionType.expense && categoryType == CategoryType.expense) {
+        categoryNet -= transaction.value;
+      } else if (transaction.transactionType == TransactionType.income && categoryType == CategoryType.income) {
+        categoryNet += transaction.value;
       }
     }
     return categoryNet;
@@ -262,50 +250,46 @@ class User extends ChangeNotifier {
 
   double getImportanceNet({required DateTime from, required DateTime to, required TransactionImportance transactionImportance}) {
     double importanceNet = 0;
-    for(Transaction transaction in transactions) {
-      if (transaction.timestamp.compareTo(from) >= 0 &&
-          transaction.timestamp.compareTo(to) <= 0 &&
-          transaction.importance == transactionImportance &&
-          !transaction.isArchived &&
-          transaction.transactionType != TransactionType.transfer) {
-        Account transactionAccount = findAccountByID(transaction.fromID)!;
-        if(transactionAccount.getCurrency() == mySettings.getPrimaryCurrency()) {
-          importanceNet+= transaction.value;
-        } else {
-          importanceNet+= exchangeCurrency(transaction.value, transactionAccount.getCurrency(), mySettings.getPrimaryCurrency());
-        }
+
+    Query<Transaction> importanceTransactionQuery = objectbox.transactionBox.query(Transaction_.isArchived.equals(false).and(Transaction_.timestamp.between(from.millisecondsSinceEpoch, DateTime(to.year, to.month, to.day+1).millisecondsSinceEpoch - 1)).and(Transaction_.dbImportance.equals(transactionImportance.index)).and(Transaction_.dbTransactionType.notEquals(TransactionType.transfer.index))).build();
+    List<Transaction> importanceTransactions = importanceTransactionQuery.find();
+    importanceTransactionQuery.close();
+    for(Transaction transaction in importanceTransactions) {
+      Account transactionAccount = findAccountByID(transaction.fromID)!;
+      if(transactionAccount.getCurrency() == mySettings.getPrimaryCurrency()) {
+        importanceNet+= transaction.value;
+      } else {
+        importanceNet+= exchangeCurrency(transaction.value, transactionAccount.getCurrency(), mySettings.getPrimaryCurrency());
       }
     }
     return importanceNet;
   }
 
-  //TODO TRANSLATE TO QUERY
   double getAccountNet({required DateTime from, required DateTime to, required int accountID}) {
     double monthlyNet = 0;
-    for(Transaction transaction in transactions) {
-      if (transaction.timestamp.compareTo(from) >= 0 &&
-          transaction.timestamp.compareTo(to) <= 0 &&
-          (accountID == -1 || transaction.fromID == accountID)) {
-        if (transaction.transactionType == TransactionType.expense && !transaction.isArchived) {
+    Query<Transaction> accountTransactionQuery = objectbox.transactionBox.query(Transaction_.fromID.equals(accountID).and(Transaction_.timestamp.between(from.millisecondsSinceEpoch, DateTime(to.year, to.month, to.day+1).millisecondsSinceEpoch - 1)).and(Transaction_.isArchived.equals(false))).build();
+    List<Transaction> accountTransactions = accountTransactionQuery.find();
+    accountTransactionQuery.close();
+    for(Transaction transaction in accountTransactions) {
+        if (transaction.transactionType == TransactionType.expense) {
           monthlyNet -= transaction.value;
-        } else if (transaction.transactionType == TransactionType.income && !transaction.isArchived) {
+        } else if (transaction.transactionType == TransactionType.income) {
           monthlyNet += transaction.value;
         }
-      }
     }
     return monthlyNet;
   }
 
   double getRangeNet({required DateTime from, required DateTime to}) {
     double monthlyNet = 0;
-    for(Transaction transaction in transactions) {
-      if (transaction.timestamp.compareTo(from) >= 0 &&
-          transaction.timestamp.compareTo(to) <= 0) {
-        if (transaction.transactionType == TransactionType.expense && !transaction.isArchived) {
-          monthlyNet -= transaction.value;
-        } else if (transaction.transactionType == TransactionType.income && !transaction.isArchived) {
-          monthlyNet += transaction.value;
-        }
+    Query<Transaction> rangeQuery = objectbox.transactionBox.query(Transaction_.timestamp.between(from.millisecondsSinceEpoch, DateTime(to.year, to.month, to.day+1).millisecondsSinceEpoch - 1).and(Transaction_.isArchived.equals(false))).build();
+    List<Transaction> rangeTransactions = rangeQuery.find();
+    rangeQuery.close();
+    for(Transaction transaction in rangeTransactions) {
+      if (transaction.transactionType == TransactionType.expense) {
+        monthlyNet -= transaction.value;
+      } else if (transaction.transactionType == TransactionType.income) {
+        monthlyNet += transaction.value;
       }
     }
     return monthlyNet;
@@ -366,9 +350,6 @@ class User extends ChangeNotifier {
 
     accounts = objectbox.accountBox.getAll();
     transactions = objectbox.transactionBox.getAll();
-    // Hive.box('budgeItApp').put('accounts', accounts);
-    // Hive.box('budgeItApp').put('transactions', transactions);
-    // print(Hive.box('budgeItApp').get('accounts'));
     notifyListeners();
   }
 
@@ -388,7 +369,6 @@ class User extends ChangeNotifier {
   void selectAccountFrom(int accountIndex) async {
     mySettings.selectedAccountFrom = accountIndex;
     objectbox.settingsBox.put(mySettings);
-    // Hive.box('budgeItApp').put('selectedAccountFrom', lastSelectedAccountFrom);
     notifyListeners();
   }
 
@@ -401,10 +381,6 @@ class User extends ChangeNotifier {
     }
     mySettings.selectedTransactionType = transactionType.index;
     objectbox.settingsBox.put(mySettings);
-
-    // Hive.box('budgeItApp').put('lastTransactionType', lastTransactionType);
-    // Hive.box('budgeItApp').put('selectedAccountTo', lastSelectedAccountTo);
-    // Hive.box('budgeItApp').put('selectedCategoryTo', lastSelectedCategoryTo);
     notifyListeners();
   }
 

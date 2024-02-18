@@ -133,9 +133,9 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
         categories.forEach((category) {
           double categoryValue = 0;
           if(rangeType == DateRangeType.MONTHLY) {
-            categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
+            categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(days: 1)), categoryID: category.categoryID);
           } else {
-            categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i + from.day), to: DateTime(from.year, from.month, from.day + i + 1).subtract(Duration(seconds: 1)), categoryID: category.categoryID);
+            categoryValue = user.getCategoryNet(from: DateTime(from.year, from.month, i + from.day), to: DateTime(from.year, from.month, from.day + i), categoryID: category.categoryID);
           }
           total += categoryValue;
           rodValues.add(
@@ -150,9 +150,9 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
         TransactionImportance.values.forEach((importance) {
           double categoryValue = 0;
           if(rangeType == DateRangeType.MONTHLY) {
-            categoryValue = user.getImportanceNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(seconds: 1)), transactionImportance: importance);
+            categoryValue = user.getImportanceNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(days: 1)), transactionImportance: importance);
           } else {
-            categoryValue = user.getImportanceNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)), transactionImportance: importance);
+            categoryValue = user.getImportanceNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i), transactionImportance: importance);
           }
           total += categoryValue;
           int importanceColor = Theme.of(context).primaryColor.value;
@@ -171,9 +171,9 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
       } else {
         double netValue = 0;
         if(rangeType == DateRangeType.MONTHLY) {
-          netValue = user.getRangeNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(seconds: 1)));
+          netValue = user.getRangeNet(from: DateTime(from.year, from.month + i, 1), to: DateTime(from.year, from.month + i + 1, 1).subtract(Duration(days: 1)));
         } else {
-          netValue = user.getRangeNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i + 1).subtract(Duration(seconds: 1)));
+          netValue = user.getRangeNet(from: DateTime(from.year, from.month, i), to: DateTime(from.year, from.month, i));
         }
 
         total = netValue;
