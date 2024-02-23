@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accounts.dart';
+import 'package:money_tracker/screens/budget.dart';
 import 'package:money_tracker/screens/overview.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
@@ -76,16 +77,16 @@ class _HomeState extends State<Home> {
     Accounts(),
     Categories(),
     Transactions(),
+    Budget(),
     Overview(),
-    Text(
-        'Add Transaction'
-    ),
+
   ];
 
   List<String> _headerOptions = [
     "Accounts",
     "Categories",
     "Transactions",
+    "Budget",
     "Overview"
   ];
 
@@ -108,7 +109,7 @@ class _HomeState extends State<Home> {
   }
 
   void _onItemTapped(int index) {
-    if(index == 4) {
+    if(index == 5) {
 
       final user = context.read<User>();
       //TODO POPUP ADD ACCOUNT
@@ -164,6 +165,10 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.receipt),
               label: 'Transactions'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.grading),
+              label: 'Budget'
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.leaderboard),
