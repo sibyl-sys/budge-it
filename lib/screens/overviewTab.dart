@@ -33,7 +33,9 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
   final List<bool> _selectedType = [true, false, false];
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   final monthFormat = new DateFormat('MMM', "en_US");
+  final monthlyFormat = new DateFormat('yMMM', "en_US");
   final weekFormat = new DateFormat('E', "en_US");
+  final toolTipFormat = new DateFormat('yMMMMd', 'en_US');
   late TabController _tabController;
 
   @override
@@ -75,6 +77,29 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
     }
 
     return 0;
+  }
+
+  BarTooltipItem getTooltipItem(group, groupIndex, rod, rodIndex) {
+    DateRangeType rangeType = DateRangeType.DAILY;
+    int noDays = (widget.to.difference(widget.from).inHours / 24).round();
+    if(noDays > 31) {
+      rangeType = DateRangeType.MONTHLY;
+    } else if(noDays == 6) {
+      rangeType = DateRangeType.WEEKLY;
+    }
+    String text = "";if(rangeType == DateRangeType.MONTHLY) {
+      text = monthlyFormat.format(DateTime(widget.from.year, widget.from.month)) + ": " + rod.toY.toString();
+    } else {
+      text = toolTipFormat.format(DateTime(widget.from.year, widget.from.month, group.x.toInt())) + ": " + rod.toY.toString();
+    }
+    return BarTooltipItem(
+      text,
+      TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 12
+      )
+    );
   }
 
   CategoryType getCategoryType() {
@@ -220,6 +245,11 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
             alignment: BarChartAlignment.spaceBetween,
             barTouchData: BarTouchData(
               enabled: true,
+              touchTooltipData: BarTouchTooltipData(
+                getTooltipItem: getTooltipItem,
+                tooltipMargin: 1.0,
+                maxContentWidth: 300
+              ),
             ),
             titlesData: FlTitlesData(
               show: true,
