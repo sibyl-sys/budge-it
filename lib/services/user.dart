@@ -251,7 +251,7 @@ class User extends ChangeNotifier {
   double getImportanceNet({required DateTime from, required DateTime to, required TransactionImportance transactionImportance}) {
     double importanceNet = 0;
 
-    Query<Transaction> importanceTransactionQuery = objectbox.transactionBox.query(Transaction_.isArchived.equals(false).and(Transaction_.timestamp.between(from.millisecondsSinceEpoch, DateTime(to.year, to.month, to.day+1).millisecondsSinceEpoch - 1)).and(Transaction_.dbImportance.equals(transactionImportance.index)).and(Transaction_.dbTransactionType.notEquals(TransactionType.transfer.index))).build();
+    Query<Transaction> importanceTransactionQuery = objectbox.transactionBox.query(Transaction_.isArchived.equals(false).and(Transaction_.timestamp.between(from.millisecondsSinceEpoch, DateTime(to.year, to.month, to.day+1).millisecondsSinceEpoch - 1)).and(Transaction_.dbImportance.equals(transactionImportance.index)).and(Transaction_.dbTransactionType.equals(TransactionType.expense.index))).build();
     List<Transaction> importanceTransactions = importanceTransactionQuery.find();
     importanceTransactionQuery.close();
     for(Transaction transaction in importanceTransactions) {
