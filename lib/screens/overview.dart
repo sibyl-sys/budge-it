@@ -14,7 +14,7 @@ class Overview extends StatefulWidget {
   _OverviewState createState() => _OverviewState();
 }
 
-class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin {
+class _OverviewState extends State<Overview> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   String _value = 'all';
   //TODO CREATE MONTH WIDGET
@@ -26,13 +26,9 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
   int month = DateTime.now().month;
   int year = DateTime.now().year;
 
-  late TabController _tabController;
-
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: 2, vsync: this);
-    _tabController.addListener(_handleTabChange);
 
     var now = new DateTime.now();
     setState(() {
@@ -40,33 +36,11 @@ class _OverviewState extends State<Overview> with SingleTickerProviderStateMixin
       to = DateTime(now.year, now.month + 1, 0);
     });
   }
-
-  void _handleTabChange() {
-    setState(() {
-    });
-  }
-
   changeDate(Map dateMap) {
     setState(() {
       from = dateMap["from"];
       to = dateMap["to"];
     });
-  }
-
-  getCategoryType() {
-    if(_tabController.index == 0) {
-      return CategoryType.expense;
-    } else {
-      return CategoryType.income;
-    }
-  }
-
-  getValueColor() {
-    if(_tabController.index == 0) {
-      return Color(0xEB6467).withOpacity(1);
-    } else {
-      return Color(0x55C9C6).withOpacity(1);
-    }
   }
 
 
