@@ -15,6 +15,8 @@ import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'services/account.dart';
+import 'services/budget.dart';
+import 'services/budgetCap.dart';
 import 'services/category.dart';
 import 'services/currency.dart';
 import 'services/favoriteTransaction.dart';
@@ -342,6 +344,83 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(8, 6907309110845189906),
+      name: 'Budget',
+      lastPropertyId: const IdUid(6, 5608647318040087238),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 1549882607133597199),
+            name: 'budgetID',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 7655388425739774901),
+            name: 'icon',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 6712458917664138391),
+            name: 'color',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 5136600631658749861),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 2343707797326796135),
+            name: 'budgetCurrencyID',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 5608647318040087238),
+            name: 'willCarryOver',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(2, 6494261179901916418),
+            name: 'toTrack',
+            targetId: const IdUid(2, 5591438262522025838)),
+        ModelRelation(
+            id: const IdUid(3, 4019700745509467872),
+            name: 'budgetCap',
+            targetId: const IdUid(9, 6551503317915763204))
+      ],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(9, 6551503317915763204),
+      name: 'BudgetCap',
+      lastPropertyId: const IdUid(4, 4420009488407882880),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 401860051019746473),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 7282642056396858248),
+            name: 'month',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 8236896728602898099),
+            name: 'year',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 4420009488407882880),
+            name: 'cap',
+            type: 8,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -372,9 +451,9 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(7, 562735512304116534),
+      lastEntityId: const IdUid(9, 6551503317915763204),
       lastIndexId: const IdUid(0, 0),
-      lastRelationId: const IdUid(1, 1285431702513897569),
+      lastRelationId: const IdUid(3, 4019700745509467872),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
@@ -718,6 +797,87 @@ ModelDefinition getObjectBoxModel() {
                 .vTableGetNullable(buffer, rootOffset, 14);
 
           return object;
+        }),
+    Budget: EntityDefinition<Budget>(
+        model: _entities[7],
+        toOneRelations: (Budget object) => [],
+        toManyRelations: (Budget object) => {
+              RelInfo<Budget>.toMany(2, object.budgetID): object.toTrack,
+              RelInfo<Budget>.toMany(3, object.budgetID): object.budgetCap
+            },
+        getId: (Budget object) => object.budgetID,
+        setId: (Budget object, int id) {
+          object.budgetID = id;
+        },
+        objectToFB: (Budget object, fb.Builder fbb) {
+          final nameOffset = fbb.writeString(object.name);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.budgetID);
+          fbb.addInt64(1, object.icon);
+          fbb.addInt64(2, object.color);
+          fbb.addOffset(3, nameOffset);
+          fbb.addInt64(4, object.budgetCurrencyID);
+          fbb.addBool(5, object.willCarryOver);
+          fbb.finish(fbb.endTable());
+          return object.budgetID;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final iconParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
+          final colorParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 10, '');
+          final willCarryOverParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 14, false);
+          final object = Budget(
+              icon: iconParam,
+              color: colorParam,
+              name: nameParam,
+              willCarryOver: willCarryOverParam)
+            ..budgetID =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..budgetCurrencyID =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+          InternalToManyAccess.setRelInfo<Budget>(object.toTrack, store,
+              RelInfo<Budget>.toMany(2, object.budgetID));
+          InternalToManyAccess.setRelInfo<Budget>(object.budgetCap, store,
+              RelInfo<Budget>.toMany(3, object.budgetID));
+          return object;
+        }),
+    BudgetCap: EntityDefinition<BudgetCap>(
+        model: _entities[8],
+        toOneRelations: (BudgetCap object) => [],
+        toManyRelations: (BudgetCap object) => {},
+        getId: (BudgetCap object) => object.id,
+        setId: (BudgetCap object, int id) {
+          object.id = id;
+        },
+        objectToFB: (BudgetCap object, fb.Builder fbb) {
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.month);
+          fbb.addInt64(2, object.year);
+          fbb.addFloat64(3, object.cap);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final monthParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
+          final yearParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          final capParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0);
+          final object = BudgetCap(
+              month: monthParam, year: yearParam, cap: capParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+
+          return object;
         })
   };
 
@@ -941,4 +1101,53 @@ class FavoriteTransaction_ {
   /// see [FavoriteTransaction.value]
   static final value =
       QueryDoubleProperty<FavoriteTransaction>(_entities[6].properties[6]);
+}
+
+/// [Budget] entity fields to define ObjectBox queries.
+class Budget_ {
+  /// see [Budget.budgetID]
+  static final budgetID =
+      QueryIntegerProperty<Budget>(_entities[7].properties[0]);
+
+  /// see [Budget.icon]
+  static final icon = QueryIntegerProperty<Budget>(_entities[7].properties[1]);
+
+  /// see [Budget.color]
+  static final color = QueryIntegerProperty<Budget>(_entities[7].properties[2]);
+
+  /// see [Budget.name]
+  static final name = QueryStringProperty<Budget>(_entities[7].properties[3]);
+
+  /// see [Budget.budgetCurrencyID]
+  static final budgetCurrencyID =
+      QueryIntegerProperty<Budget>(_entities[7].properties[4]);
+
+  /// see [Budget.willCarryOver]
+  static final willCarryOver =
+      QueryBooleanProperty<Budget>(_entities[7].properties[5]);
+
+  /// see [Budget.toTrack]
+  static final toTrack =
+      QueryRelationToMany<Budget, Category>(_entities[7].relations[0]);
+
+  /// see [Budget.budgetCap]
+  static final budgetCap =
+      QueryRelationToMany<Budget, BudgetCap>(_entities[7].relations[1]);
+}
+
+/// [BudgetCap] entity fields to define ObjectBox queries.
+class BudgetCap_ {
+  /// see [BudgetCap.id]
+  static final id = QueryIntegerProperty<BudgetCap>(_entities[8].properties[0]);
+
+  /// see [BudgetCap.month]
+  static final month =
+      QueryIntegerProperty<BudgetCap>(_entities[8].properties[1]);
+
+  /// see [BudgetCap.year]
+  static final year =
+      QueryIntegerProperty<BudgetCap>(_entities[8].properties[2]);
+
+  /// see [BudgetCap.cap]
+  static final cap = QueryDoubleProperty<BudgetCap>(_entities[8].properties[3]);
 }

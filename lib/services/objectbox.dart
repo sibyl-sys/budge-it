@@ -6,6 +6,8 @@ import './account.dart';
 import './settings.dart';
 import './category.dart';
 import './transaction.dart';
+import './budget.dart';
+import './budgetCap.dart';
 import './subcategory.dart';
 import './favoriteTransaction.dart';
 
@@ -18,6 +20,8 @@ class ObjectBox {
   late final Box<Subcategory> subCategoryBox;
   late final Box<Transaction> transactionBox;
   late final Box<FavoriteTransaction> favoriteTransactionBox;
+  late final Box<Budget> budgetBox;
+  late final Box<BudgetCap> budgetCapBox;
 
   ObjectBox._create(this.store) {
     accountBox = store.box<Account>();
@@ -26,6 +30,8 @@ class ObjectBox {
     transactionBox = store.box<Transaction>();
     subCategoryBox = store.box<Subcategory>();
     favoriteTransactionBox = store.box<FavoriteTransaction>();
+    budgetBox = store.box<Budget>();
+    budgetCapBox = store.box<BudgetCap>();
 
     if(categoryBox.isEmpty()) {
       categoryBox.putMany(categoryDefault);
