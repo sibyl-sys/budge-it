@@ -338,7 +338,7 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
             ),
           ),
           generateCharts(categories, user),
-          ColoredBox(
+          getSelectedType() == 0 ? ColoredBox(
               color: Colors.white,
               child: TabBar(
                 controller: _tabController,
@@ -435,7 +435,7 @@ class _OverviewTabState extends State<OverviewTab> with SingleTickerProviderStat
                   ),
                 ],
               )
-          ),
+          ) : SizedBox(),
         ],
       )
     );
