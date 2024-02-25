@@ -85,6 +85,25 @@ class _BudgetState extends State<Budget> {
                 color: const Color(0xFF9CCC65),
                 icon: Icons.wallet,
                 currencySymbol: "\$"
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Current Total", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
+                    Text("\$ 300,000.00", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16, fontWeight: FontWeight.w400))
+                  ]
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("/ \$ 600,000.00", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w400))
+                    ]
+                ),
               )
             ],
           )
