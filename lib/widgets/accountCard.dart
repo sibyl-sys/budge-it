@@ -31,7 +31,6 @@ class _AccountCardState extends State<AccountCard> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   @override
   Widget build(BuildContext context) {
-    print(widget.progress);
     return Card(
       surfaceTintColor: Colors.white,
       child: InkWell(

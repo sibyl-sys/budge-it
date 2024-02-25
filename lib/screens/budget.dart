@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
 import 'package:money_tracker/widgets/totalHeader.dart';
+import 'package:money_tracker/widgets/budgetCard.dart';
+
 
 class Budget extends StatefulWidget {
   const Budget({Key? key}) : super(key: key);
@@ -75,6 +77,15 @@ class _BudgetState extends State<Budget> {
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: Text("Main Budget", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
               ),
+              BudgetCard(
+                name: "Regular Expenses",
+                amount: 50000.00,
+                cap: 100000.00,
+                id: 0,
+                color: const Color(0xFF9CCC65),
+                icon: Icons.wallet,
+                currencySymbol: "\$"
+              )
             ],
           )
       ),
