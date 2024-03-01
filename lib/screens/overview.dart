@@ -15,7 +15,6 @@ class Overview extends StatefulWidget {
 
 class _OverviewState extends State<Overview> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-  String _value = 'all';
   //TODO CREATE MONTH WIDGET
   List months = [
     "JANUARY",
