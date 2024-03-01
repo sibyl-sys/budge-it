@@ -4,6 +4,7 @@ import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
+import 'package:money_tracker/screens/categorySelection.dart';
 import 'package:provider/provider.dart';
 
 class AddBudget extends StatefulWidget {
@@ -31,8 +32,36 @@ class _AddBudgetState extends State<AddBudget> {
     });
   }
 
+  Widget renderCategoryList() {
+    return Column(
+        children: categories
+            .map((e) => Card(
+                    child: Container(
+                  height: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                    child: Row(children: [
+                      Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          IconData(e.icon, fontFamily: "MaterialIcons"),
+                          color: Color(e.color).withOpacity(1),
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      Text(e.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: categoryColor))
+                    ]),
+                  ),
+                )))
+            .toList());
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<User>();
     return Scaffold(
         appBar: AppBar(
           actions: [
@@ -196,6 +225,58 @@ class _AddBudgetState extends State<AddBudget> {
                     ),
                   ),
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              child: Column(
+                children: [
+                  renderCategoryList(),
+                  Card(
+                      child: Container(
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () async {
+                        final results =
+                            await Navigator.of(context).push(PageRouteBuilder(
+                          barrierColor: Colors.black.withOpacity(0.25),
+                          barrierDismissible: true,
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => CategorySelection(),
+                        ));
+                        if (results != null) {
+                          Category categoryToAdd =
+                              user.findCategoryByID(results["recipientID"])!;
+                          setState(() {
+                            categories = List.from(categories)
+                              ..add(categoryToAdd);
+                          });
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                      ),
+                      child: Row(children: [
+                        Container(
+                            padding: EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.25))),
+                            child: Icon(
+                              Icons.add,
+                              color: categoryColor,
+                            )),
+                        SizedBox(width: 20),
+                        Text("Track Category",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: categoryColor))
+                      ]),
+                    ),
+                  )),
+                ],
               ),
             ),
           ]),
