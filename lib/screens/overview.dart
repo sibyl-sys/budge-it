@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/overviewTab.dart';
-import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
@@ -18,7 +17,20 @@ class _OverviewState extends State<Overview> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   String _value = 'all';
   //TODO CREATE MONTH WIDGET
-  List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  List months = [
+    "JANUARY",
+    "FEBRUARY",
+    "MARCH",
+    "APRIL",
+    "MAY",
+    "JUNE",
+    "JULY",
+    "AUGUST",
+    "SEPTEMER",
+    "OCTOBER",
+    "NOVEMBER",
+    "DECEMBER"
+  ];
 
   late DateTime from;
   late DateTime to;
@@ -36,13 +48,13 @@ class _OverviewState extends State<Overview> {
       to = DateTime(now.year, now.month + 1, 0);
     });
   }
+
   changeDate(Map dateMap) {
     setState(() {
       from = dateMap["from"];
       to = dateMap["to"];
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +63,18 @@ class _OverviewState extends State<Overview> {
     return Material(
       child: Container(
           child: Column(
-            children: [
-              DateRangeBar(
-                from: this.from,
-                to: this.to,
-                onChanged: changeDate,
-              ),
-              TotalHeader(header: "Total net:", valueColor: Color(0xFF4F4F4F), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getRangeNet(from: this.from, to: this.to), description:
-              Row(
+        children: [
+          DateRangeBar(
+            from: this.from,
+            to: this.to,
+            onChanged: changeDate,
+          ),
+          TotalHeader(
+              header: "Total net:",
+              valueColor: Color(0xFF4F4F4F),
+              currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+              value: user.getRangeNet(from: this.from, to: this.to),
+              description: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -72,14 +88,12 @@ class _OverviewState extends State<Overview> {
                         fontWeight: FontWeight.w400,
                         color: Colors.grey[400],
                         fontSize: 12,
-                      )
-                  ),
+                      )),
                 ],
               )),
-              Expanded(child: OverviewTab(from: this.from, to: this.to)),
-            ],
-          )
-      ),
+          Expanded(child: OverviewTab(from: this.from, to: this.to)),
+        ],
+      )),
     );
   }
 }

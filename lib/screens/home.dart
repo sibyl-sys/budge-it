@@ -4,6 +4,7 @@ import 'package:money_tracker/screens/budget.dart';
 import 'package:money_tracker/screens/overview.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
+import 'package:money_tracker/screens/addBudget.dart';
 import 'package:money_tracker/screens/categories.dart';
 import 'package:money_tracker/screens/newAccount.dart';
 import 'package:money_tracker/screens/transactions.dart';
@@ -13,12 +14,10 @@ import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/budgeitNav.dart';
 import 'package:provider/provider.dart';
 
-
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
-
 
 Future<void> _selectAccountType(BuildContext context) async {
   switch (await showDialog<AccountType>(
@@ -27,44 +26,39 @@ Future<void> _selectAccountType(BuildContext context) async {
         return AccountsType();
       })) {
     case AccountType.wallet:
-      Navigator.of(context).push(
-          PageRouteBuilder(
-            barrierColor: Colors.black.withOpacity(0.25),
-            barrierDismissible: true,
-            opaque: false,
-            pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.wallet),
-          )
-      );
+      Navigator.of(context).push(PageRouteBuilder(
+        barrierColor: Colors.black.withOpacity(0.25),
+        barrierDismissible: true,
+        opaque: false,
+        pageBuilder: (_, __, ___) =>
+            NewAccount(accountType: AccountType.wallet),
+      ));
       break;
     case AccountType.savings:
-      Navigator.of(context).push(
-          PageRouteBuilder(
-            barrierColor: Colors.black.withOpacity(0.25),
-            barrierDismissible: true,
-            opaque: false,
-            pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.savings),
-          )
-      );
+      Navigator.of(context).push(PageRouteBuilder(
+        barrierColor: Colors.black.withOpacity(0.25),
+        barrierDismissible: true,
+        opaque: false,
+        pageBuilder: (_, __, ___) =>
+            NewAccount(accountType: AccountType.savings),
+      ));
       break;
     case AccountType.debt:
-      Navigator.of(context).push(
-          PageRouteBuilder(
-            barrierColor: Colors.black.withOpacity(0.25),
-            barrierDismissible: true,
-            opaque: false,
-            pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.debt),
-          )
-      );
+      Navigator.of(context).push(PageRouteBuilder(
+        barrierColor: Colors.black.withOpacity(0.25),
+        barrierDismissible: true,
+        opaque: false,
+        pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.debt),
+      ));
       break;
     default:
-      Navigator.of(context).push(
-        PageRouteBuilder(
-          barrierColor: Colors.black.withOpacity(0.25),
-          barrierDismissible: true,
-          opaque: false,
-          pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.wallet),
-        )
-      );
+      Navigator.of(context).push(PageRouteBuilder(
+        barrierColor: Colors.black.withOpacity(0.25),
+        barrierDismissible: true,
+        opaque: false,
+        pageBuilder: (_, __, ___) =>
+            NewAccount(accountType: AccountType.wallet),
+      ));
       break;
   }
 }
@@ -79,7 +73,6 @@ class _HomeState extends State<Home> {
     Transactions(),
     Budget(),
     Overview(),
-
   ];
 
   List<String> _headerOptions = [
@@ -91,37 +84,45 @@ class _HomeState extends State<Home> {
   ];
 
   Widget generateAppbarAction(int index) {
-    if(index == 1) {
+    if (index == 1) {
       return IconButton(
           icon: Icon(Icons.edit, color: Colors.white),
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).pushNamed("/rearrangeCategories");
           });
-    } else if(index == 2) {
+    } else if (index == 2) {
       return SizedBox(height: 0);
+    } else if (index == 3) {
+      return IconButton(
+          icon: Icon(Icons.add, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).push(PageRouteBuilder(
+              barrierColor: Colors.black.withOpacity(0.25),
+              barrierDismissible: true,
+              opaque: false,
+              pageBuilder: (_, __, ___) => AddBudget(),
+            ));
+          });
     } else {
       return IconButton(
-        icon: Icon(Icons.add, color: Colors.white),
-        onPressed: (){
-          _selectAccountType(context);
-        });
+          icon: Icon(Icons.add, color: Colors.white),
+          onPressed: () {
+            _selectAccountType(context);
+          });
     }
   }
 
   void _onItemTapped(int index) {
-    if(index == 5) {
-
+    if (index == 5) {
       final user = context.read<User>();
       //TODO POPUP ADD ACCOUNT
-      if(user.accounts.length > 0) {
-        Navigator.of(context).push(
-            PageRouteBuilder(
-              barrierColor: Colors.black.withOpacity(0.25),
-              barrierDismissible: true,
-              opaque: false,
-              pageBuilder: (_, __, ___) => AddTransaction(),
-            )
-        );
+      if (user.accounts.length > 0) {
+        Navigator.of(context).push(PageRouteBuilder(
+          barrierColor: Colors.black.withOpacity(0.25),
+          barrierDismissible: true,
+          opaque: false,
+          pageBuilder: (_, __, ___) => AddTransaction(),
+        ));
       }
     } else {
       setState(() {
@@ -132,52 +133,35 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<User>();
     return Scaffold(
       appBar: AppBar(
-          actions: [
-            generateAppbarAction(_selectedIndex)
-          ],
-          iconTheme: IconThemeData(color: Colors.white),
-          title: Text(
-            _headerOptions[_selectedIndex],
-            style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-            ),
+        actions: [generateAppbarAction(_selectedIndex)],
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          _headerOptions[_selectedIndex],
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          //TODO CHANGE ACTION DEPENDING ON TAB
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        //TODO CHANGE ACTION DEPENDING ON TAB
       ),
       drawer: BudgeitNav(),
       body: _bodyOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
+          BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Accounts'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.payment),
-            label: 'Accounts'
-          ),
+              icon: Icon(Icons.donut_large), label: 'Categories'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.donut_large),
-              label: 'Categories'
-          ),
+              icon: Icon(Icons.receipt), label: 'Transactions'),
+          BottomNavigationBarItem(icon: Icon(Icons.grading), label: 'Budget'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.receipt),
-              label: 'Transactions'
-          ),
+              icon: Icon(Icons.leaderboard), label: 'Overview'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.grading),
-              label: 'Budget'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.leaderboard),
-              label: 'Overview'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Add Transaction'
-          ),
+              icon: Icon(Icons.add), label: 'Add Transaction'),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.grey[600],

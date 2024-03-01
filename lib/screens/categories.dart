@@ -14,12 +14,24 @@ class Categories extends StatefulWidget {
   _CategoriesState createState() => _CategoriesState();
 }
 
-class _CategoriesState extends State<Categories> with SingleTickerProviderStateMixin {
-
+class _CategoriesState extends State<Categories>
+    with SingleTickerProviderStateMixin {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-  String _value = 'all';
   //TODO CREATE MONTH WIDGET
-  List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  List months = [
+    "JANUARY",
+    "FEBRUARY",
+    "MARCH",
+    "APRIL",
+    "MAY",
+    "JUNE",
+    "JULY",
+    "AUGUST",
+    "SEPTEMER",
+    "OCTOBER",
+    "NOVEMBER",
+    "DECEMBER"
+  ];
 
   late DateTime from;
   late DateTime to;
@@ -29,30 +41,26 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
 
   late TabController _tabController;
 
-  TabBar get _tabBar =>
-      TabBar(
+  TabBar get _tabBar => TabBar(
         controller: _tabController,
         indicator: BoxDecoration(
-            color : _tabController.index == 0 ? Colors.red.withOpacity(0.1) : Colors
-            .teal.withOpacity(0.1),
-          border: Border(
-            bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red: Colors
-                .teal)
-          )
-        ),
-        indicatorColor: _tabController.index == 0 ? Colors.red[500] : Colors
-            .teal[500],
-        labelColor: _tabController.index == 0 ? Colors.red[500] : Colors
-            .teal[500],
-        unselectedLabelColor: _tabController.index == 1 ? Colors.red[500] : Colors
-            .teal[500],
+            color: _tabController.index == 0
+                ? Colors.red.withOpacity(0.1)
+                : Colors.teal.withOpacity(0.1),
+            border: Border(
+                bottom: BorderSide(
+                    width: 2.0,
+                    color:
+                        _tabController.index == 0 ? Colors.red : Colors.teal))),
+        indicatorColor:
+            _tabController.index == 0 ? Colors.red[500] : Colors.teal[500],
+        labelColor:
+            _tabController.index == 0 ? Colors.red[500] : Colors.teal[500],
+        unselectedLabelColor:
+            _tabController.index == 1 ? Colors.red[500] : Colors.teal[500],
         tabs: [
-          Tab(
-              text: 'Expenses'
-          ),
-          Tab(
-              text: 'Income'
-          ),
+          Tab(text: 'Expenses'),
+          Tab(text: 'Income'),
         ],
       );
 
@@ -70,8 +78,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
   }
 
   void _handleTabChange() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   changeDate(Map dateMap) {
@@ -82,7 +89,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
   }
 
   getCategoryType() {
-    if(_tabController.index == 0) {
+    if (_tabController.index == 0) {
       return CategoryType.expense;
     } else {
       return CategoryType.income;
@@ -90,7 +97,7 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
   }
 
   getValueColor() {
-    if(_tabController.index == 0) {
+    if (_tabController.index == 0) {
       return Color(0xEB6467).withOpacity(1);
     } else {
       return Color(0x55C9C6).withOpacity(1);
@@ -98,14 +105,12 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
   }
 
   getHeaderText() {
-    if(_tabController.index == 0) {
+    if (_tabController.index == 0) {
       return "You've spent:";
     } else {
       return "You've earned:";
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -114,14 +119,23 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
     return Material(
       child: Container(
           child: Column(
-            children: [
-              DateRangeBar(
-                from: this.from,
-                to: this.to,
-                onChanged: changeDate,
-              ),
-              TotalHeader(header: getHeaderText(), valueColor: getValueColor(), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getCategoryTypeNet(from: this.from, to: this.to, categoryType: getCategoryType()).abs(), description:
-              Row(
+        children: [
+          DateRangeBar(
+            from: this.from,
+            to: this.to,
+            onChanged: changeDate,
+          ),
+          TotalHeader(
+              header: getHeaderText(),
+              valueColor: getValueColor(),
+              currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+              value: user
+                  .getCategoryTypeNet(
+                      from: this.from,
+                      to: this.to,
+                      categoryType: getCategoryType())
+                  .abs(),
+              description: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -135,60 +149,48 @@ class _CategoriesState extends State<Categories> with SingleTickerProviderStateM
                         fontWeight: FontWeight.w400,
                         color: Colors.grey[400],
                         fontSize: 12,
-                      )
-                  ),
+                      )),
                 ],
               )),
-              ColoredBox(
-                  color: Colors.white,
-                  child: _tabBar
+          ColoredBox(color: Colors.white, child: _tabBar),
+          Expanded(
+            child: TabBarView(controller: _tabController, children: [
+              CategoriesTab(
+                categoryType: CategoryType.expense,
+                from: from,
+                to: to,
+                onCategoryClick: (int categoryID) {
+                  final user = context.read<User>();
+                  user.selectRecipient(categoryID, TransactionType.expense);
+                  Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => AddTransaction(),
+                  ));
+                },
+                isRearrange: false,
               ),
-              Expanded(
-                child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      CategoriesTab(
-                        categoryType: CategoryType.expense,
-                        from: from,
-                        to: to,
-                        onCategoryClick: (int categoryID) {
-                          final user = context.read<User>();
-                          user.selectRecipient(categoryID, TransactionType.expense);
-                          Navigator.of(context).push(
-                              PageRouteBuilder(
-                                barrierColor: Colors.black.withOpacity(0.25),
-                                barrierDismissible: true,
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => AddTransaction(),
-                              )
-                          );
-                        },
-                        isRearrange: false,
-                      ),
-                      CategoriesTab(
-                        categoryType: CategoryType.income,
-                        from: from,
-                        to: to,
-                        onCategoryClick: (int categoryID) {
-                          final user = context.read<User>();
-                          user.selectRecipient(categoryID, TransactionType.income);
-                          Navigator.of(context).push(
-                              PageRouteBuilder(
-                                barrierColor: Colors.black.withOpacity(0.25),
-                                barrierDismissible: true,
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => AddTransaction(),
-                              )
-                          );
-                        },
-                        isRearrange: false,
-                      ),
-                    ]
-                ),
-              )
-            ],
+              CategoriesTab(
+                categoryType: CategoryType.income,
+                from: from,
+                to: to,
+                onCategoryClick: (int categoryID) {
+                  final user = context.read<User>();
+                  user.selectRecipient(categoryID, TransactionType.income);
+                  Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => AddTransaction(),
+                  ));
+                },
+                isRearrange: false,
+              ),
+            ]),
           )
-      ),
+        ],
+      )),
     );
   }
 }

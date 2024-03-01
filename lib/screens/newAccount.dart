@@ -10,17 +10,14 @@ import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
-
 class NewAccount extends StatefulWidget {
   final AccountType accountType;
 
   const NewAccount({Key? key, required this.accountType}) : super(key: key);
 
-
   @override
   _NewAccountState createState() => _NewAccountState();
 }
-
 
 class _NewAccountState extends State<NewAccount> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
@@ -39,22 +36,19 @@ class _NewAccountState extends State<NewAccount> {
 
   late Currency selectedCurrency;
 
-
-
   void initState() {
     super.initState();
     User userModel = context.read<User>();
     IconData defaultIcon = Icons.account_balance_wallet_outlined;
     Color defaultColor = Colors.deepPurple.shade400;
 
-    if(widget.accountType == AccountType.savings) {
+    if (widget.accountType == AccountType.savings) {
       defaultIcon = Icons.account_balance_outlined;
       defaultColor = Colors.teal.shade400;
-    } else if(widget.accountType == AccountType.debt) {
+    } else if (widget.accountType == AccountType.debt) {
       defaultIcon = Icons.credit_card_outlined;
       defaultColor = Colors.red.shade400;
     }
-
 
     setState(() {
       selectedCurrency = userModel.mySettings.getPrimaryCurrency();
@@ -69,9 +63,8 @@ class _NewAccountState extends State<NewAccount> {
         context: context,
         builder: (BuildContext context) {
           return AccountsType();
-        }
-    );
-    if(newAccountType != null) {
+        });
+    if (newAccountType != null) {
       setState(() {
         _accountType = newAccountType;
       });
@@ -79,9 +72,9 @@ class _NewAccountState extends State<NewAccount> {
   }
 
   Color generateMoneyStyle(double value) {
-    if(value < 0) {
+    if (value < 0) {
       return Color(0xFFEB6467);
-    } else if(value == 0) {
+    } else if (value == 0) {
       return Color(0xFFB6B6B6);
     } else {
       return Color(0xFF55C9C6);
@@ -89,7 +82,7 @@ class _NewAccountState extends State<NewAccount> {
   }
 
   Color generateLimitStyle(double value) {
-    if(value == 0) {
+    if (value == 0) {
       return Color(0xFFB6B6B6);
     } else {
       return Color(0xFF4F4F4F);
@@ -97,7 +90,7 @@ class _NewAccountState extends State<NewAccount> {
   }
 
   String getAccountTypeString() {
-    switch(_accountType) {
+    switch (_accountType) {
       case AccountType.wallet:
         return "Stash";
       case AccountType.savings:
@@ -110,7 +103,7 @@ class _NewAccountState extends State<NewAccount> {
   }
 
   String getLimitHeader() {
-    switch(_accountType) {
+    switch (_accountType) {
       case AccountType.wallet:
         return "Expense Limit";
       case AccountType.savings:
@@ -123,7 +116,7 @@ class _NewAccountState extends State<NewAccount> {
   }
 
   String getLimitDescription() {
-    switch(_accountType) {
+    switch (_accountType) {
       case AccountType.wallet:
         return "Monthly Limit";
       case AccountType.savings:
@@ -136,7 +129,7 @@ class _NewAccountState extends State<NewAccount> {
   }
 
   String getBalanceHeader() {
-    switch(_accountType) {
+    switch (_accountType) {
       case AccountType.wallet:
         return "Balance";
       case AccountType.savings:
@@ -149,17 +142,16 @@ class _NewAccountState extends State<NewAccount> {
   }
 
   String getBalanceDescription() {
-    switch(_accountType) {
+    switch (_accountType) {
       case AccountType.wallet:
         return "Current Amount";
       case AccountType.savings:
         return "Current Amount";
       case AccountType.debt:
-        if(balance > 0)
+        if (balance > 0)
           return "I am Owed";
         else
           return "I Owe";
-        break;
       default:
         return "Expense Limit";
     }
@@ -183,26 +175,26 @@ class _NewAccountState extends State<NewAccount> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              if(userModel.accounts.length < 1) {
+              if (userModel.accounts.length < 1) {
                 userModel.changePrimaryCurrency(selectedCurrency);
               }
               userModel.addAccount(
                 Account(
-                  name: accountNameController.text,
-                  icon: accountIcon.codePoint,
-                  color: accountColor.value,
-                  balance: balance,
-                  accountType: this._accountType,
-                  creditLimit: limit,
-                  description: descriptionController.text,
-                  isIncludedInTotalNet: isIncludedInTotalNet,
-                  isDarkIcon : isDarkIcon,
-                  isArchived: false,
-                  currencyID: currencyList.indexOf(selectedCurrency)
-                ),
+                    name: accountNameController.text,
+                    icon: accountIcon.codePoint,
+                    color: accountColor.value,
+                    balance: balance,
+                    accountType: this._accountType,
+                    creditLimit: limit,
+                    description: descriptionController.text,
+                    isIncludedInTotalNet: isIncludedInTotalNet,
+                    isDarkIcon: isDarkIcon,
+                    isArchived: false,
+                    currencyID: currencyList.indexOf(selectedCurrency)),
               );
               Navigator.pop(context);
-            },)
+            },
+          )
         ],
         title: Text("New Account"),
       ),
@@ -212,9 +204,7 @@ class _NewAccountState extends State<NewAccount> {
         child: Column(
           children: [
             Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               margin: EdgeInsets.zero,
               color: accountColor,
               child: Padding(
@@ -224,80 +214,71 @@ class _NewAccountState extends State<NewAccount> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                          children : [
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundColor: Colors.white,
-                              child: IconButton(
-                                  icon: Icon(accountIcon, size: 30),
-                                  color: accountColor,
-                                  onPressed: () async {
-                                    final result = await Navigator.of(context).push(
-                                        PageRouteBuilder(
-                                          barrierColor: Colors.black.withOpacity(0.25),
-                                          barrierDismissible: true,
-                                          opaque: false,
-                                          pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.accountColor, accountIcon: this.accountIcon, isDarkIcon: isDarkIcon),
-                                        )
-                                    );
-                                    if(result != null) {
-                                      setState(() {
-                                        accountIcon = result["iconData"];
-                                        accountColor = result["backgroundColor"];
-                                        isDarkIcon = result["isDarkIcon"];
-                                      });
-                                    }
-
-                                  }
-                              ),
-                            ),
-                            SizedBox(width: 20),
-                            InkWell(
-                              onTap: () {
-                                _selectAccountType(context);
-                              },
-                              splashColor: Colors.white.withOpacity(0.5),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 4.0),
-                                width: 250,
-                                height: 50,
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(children: [
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.white,
+                          child: IconButton(
+                              icon: Icon(accountIcon, size: 30),
+                              color: accountColor,
+                              onPressed: () async {
+                                final result = await Navigator.of(context)
+                                    .push(PageRouteBuilder(
+                                  barrierColor: Colors.black.withOpacity(0.25),
+                                  barrierDismissible: true,
+                                  opaque: false,
+                                  pageBuilder: (_, __, ___) =>
+                                      IconAndColorSelection(
+                                          accountColor: this.accountColor,
+                                          accountIcon: this.accountIcon,
+                                          isDarkIcon: isDarkIcon),
+                                ));
+                                if (result != null) {
+                                  setState(() {
+                                    accountIcon = result["iconData"];
+                                    accountColor = result["backgroundColor"];
+                                    isDarkIcon = result["isDarkIcon"];
+                                  });
+                                }
+                              }),
+                        ),
+                        SizedBox(width: 20),
+                        InkWell(
+                          onTap: () {
+                            _selectAccountType(context);
+                          },
+                          splashColor: Colors.white.withOpacity(0.5),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 4.0),
+                            width: 250,
+                            height: 50,
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Type",
+                                      style: TextStyle(
+                                        color: Color(0xB6B6B6).withOpacity(1),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12.0,
+                                      )),
+                                  SizedBox(height: 4),
+                                  Row(
                                     children: [
-                                      Text(
-                                          "Type",
+                                      Text(getAccountTypeString(),
                                           style: TextStyle(
-                                            color: Color(0xB6B6B6).withOpacity(1),
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 12.0,
-                                          )
-                                      ),
-                                      SizedBox(height: 4),
-                                      Row(
-                                        children: [
-                                          Text(
-                                              getAccountTypeString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14.0,
-                                              )
-                                          ),
-                                          Icon(
-                                              Icons.arrow_drop_down_sharp,
-                                              color: Colors.white,
-                                              size: 24
-                                          )
-                                        ],
-                                      ),
-                                    ]
-                                ),
-                              ),
-                            ),
-                          ]
-                      ),
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14.0,
+                                          )),
+                                      Icon(Icons.arrow_drop_down_sharp,
+                                          color: Colors.white, size: 24)
+                                    ],
+                                  ),
+                                ]),
+                          ),
+                        ),
+                      ]),
                     ],
                   ),
                 ),
@@ -312,8 +293,9 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
-                    ),
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
                   ),
                   height: 74,
                   child: Padding(
@@ -322,21 +304,18 @@ class _NewAccountState extends State<NewAccount> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Name",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          )
-                        ),
+                        Text("Name",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            )),
                         SizedBox(height: 8.0),
                         Expanded(
                           child: TextField(
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
-                                color: const Color(0xFF4F4F4F)
-                            ),
+                                color: const Color(0xFF4F4F4F)),
                             focusNode: nameFocusNode,
                             controller: accountNameController,
                             decoration: InputDecoration(
@@ -346,12 +325,10 @@ class _NewAccountState extends State<NewAccount> {
                               hintStyle: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
-                                  color: const Color(0xFFBDBDBD)
-                              ),
+                                  color: const Color(0xFFBDBDBD)),
                             ),
                           ),
                         )
-
                       ],
                     ),
                   ),
@@ -362,15 +339,14 @@ class _NewAccountState extends State<NewAccount> {
               color: Colors.white,
               child: InkWell(
                 onTap: () async {
-                  final result = await Navigator.of(context).push(
-                      PageRouteBuilder(
-                        barrierColor: Colors.black.withOpacity(0.25),
-                        barrierDismissible: true,
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => CurrencySelection(),
-                      )
-                  );
-                  if(result != null) {
+                  final result =
+                      await Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => CurrencySelection(),
+                  ));
+                  if (result != null) {
                     setState(() {
                       selectedCurrency = result;
                     });
@@ -379,8 +355,9 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
-                    ),
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
                   ),
                   width: double.infinity,
                   height: 74,
@@ -390,22 +367,18 @@ class _NewAccountState extends State<NewAccount> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                            "Currency",
+                        Text("Currency",
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor
-                            )
-                        ),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).primaryColor)),
                         RichText(
                           text: TextSpan(
                               text: "${selectedCurrency.symbol} ",
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF4F4F4F)
-                              ),
+                                  color: const Color(0xFF4F4F4F)),
                               children: [
                                 TextSpan(
                                     text: " (${selectedCurrency.name})",
@@ -413,11 +386,8 @@ class _NewAccountState extends State<NewAccount> {
                                         fontSize: 14,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500,
-                                        color: const Color(0xFF4F4F4F)
-                                    )
-                                ),
-                              ]
-                          ),
+                                        color: const Color(0xFF4F4F4F))),
+                              ]),
                         ),
                       ],
                     ),
@@ -429,15 +399,17 @@ class _NewAccountState extends State<NewAccount> {
               color: Colors.white,
               child: InkWell(
                 onTap: () async {
-                  final result = await Navigator.of(context).push(
-                      PageRouteBuilder(
-                        barrierColor: Colors.black.withOpacity(0.25),
-                        barrierDismissible: true,
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getBalanceHeader(), isDebt: this._accountType == AccountType.debt),
-                      )
-                  );
-                  if(result != null) {
+                  final result =
+                      await Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => Calculator(
+                        valueCurrencySymbol: this.selectedCurrency.symbol,
+                        header: getBalanceHeader(),
+                        isDebt: this._accountType == AccountType.debt),
+                  ));
+                  if (result != null) {
                     setState(() {
                       balance = result;
                     });
@@ -446,8 +418,9 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
-                    ),
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
                   ),
                   width: double.infinity,
                   height: 74,
@@ -457,46 +430,42 @@ class _NewAccountState extends State<NewAccount> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                            getBalanceHeader(),
+                        Text(getBalanceHeader(),
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
-                                color: Theme.of(context).primaryColor
-                            )
-                        ),
+                                color: Theme.of(context).primaryColor)),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             RichText(
                               text: TextSpan(
-                                  text: _accountType == AccountType.debt ? "${selectedCurrency.symbol}" : this.balance < 0 ? "-${selectedCurrency.symbol}" :  "${selectedCurrency.symbol}",
+                                  text: _accountType == AccountType.debt
+                                      ? "${selectedCurrency.symbol}"
+                                      : this.balance < 0
+                                          ? "-${selectedCurrency.symbol}"
+                                          : "${selectedCurrency.symbol}",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: generateMoneyStyle(this.balance)
-                                  ),
+                                      color: generateMoneyStyle(this.balance)),
                                   children: [
                                     TextSpan(
-                                        text: "${moneyFormat.format(this.balance.abs())}",
+                                        text:
+                                            "${moneyFormat.format(this.balance.abs())}",
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontFamily: "Poppins",
                                             fontWeight: FontWeight.w500,
-                                            color: generateMoneyStyle(this.balance)
-                                        )
-                                    ),
-                                  ]
-                              ),
+                                            color: generateMoneyStyle(
+                                                this.balance))),
+                                  ]),
                             ),
-                            Text(
-                                getBalanceDescription(),
+                            Text(getBalanceDescription(),
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xFFB6B6B6)
-                                )
-                            ),
+                                    color: Color(0xFFB6B6B6))),
                           ],
                         ),
                       ],
@@ -509,15 +478,17 @@ class _NewAccountState extends State<NewAccount> {
               color: Colors.white,
               child: InkWell(
                 onTap: () async {
-                  final result = await Navigator.of(context).push(
-                      PageRouteBuilder(
-                        barrierColor: Colors.black.withOpacity(0.25),
-                        barrierDismissible: true,
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => Calculator(valueCurrencySymbol: this.selectedCurrency.symbol, header: getLimitHeader(), isDebt: false),
-                      )
-                  );
-                  if(result != null) {
+                  final result =
+                      await Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => Calculator(
+                        valueCurrencySymbol: this.selectedCurrency.symbol,
+                        header: getLimitHeader(),
+                        isDebt: false),
+                  ));
+                  if (result != null) {
                     setState(() {
                       limit = result;
                     });
@@ -526,8 +497,9 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
-                    ),
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
                   ),
                   width: double.infinity,
                   height: 74,
@@ -537,14 +509,11 @@ class _NewAccountState extends State<NewAccount> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                            this.getLimitHeader(),
+                        Text(this.getLimitHeader(),
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
-                                color: Theme.of(context).primaryColor
-                            )
-                        ),
+                                color: Theme.of(context).primaryColor)),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -554,29 +523,24 @@ class _NewAccountState extends State<NewAccount> {
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: generateLimitStyle(this.limit)
-                                  ),
+                                      color: generateLimitStyle(this.limit)),
                                   children: [
                                     TextSpan(
-                                        text: "${moneyFormat.format(this.limit)}",
+                                        text:
+                                            "${moneyFormat.format(this.limit)}",
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontFamily: "Poppins",
                                             fontWeight: FontWeight.w500,
-                                            color: generateLimitStyle(this.limit)
-                                        )
-                                    ),
-                                  ]
-                              ),
+                                            color: generateLimitStyle(
+                                                this.limit))),
+                                  ]),
                             ),
-                            Text(
-                                this.getLimitDescription(),
+                            Text(this.getLimitDescription(),
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xFFB6B6B6)
-                                )
-                            ),
+                                    color: Color(0xFFB6B6B6))),
                           ],
                         ),
                       ],
@@ -595,8 +559,9 @@ class _NewAccountState extends State<NewAccount> {
                   height: 74,
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
-                    ),
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
@@ -608,13 +573,11 @@ class _NewAccountState extends State<NewAccount> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                                "Description",
+                            Text("Description",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
-                                )
-                            ),
+                                )),
                             SizedBox(height: 8),
                             SizedBox(
                               width: 200,
@@ -623,8 +586,7 @@ class _NewAccountState extends State<NewAccount> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
-                                    color: const Color(0xFF4F4F4F)
-                                ),
+                                    color: const Color(0xFF4F4F4F)),
                                 focusNode: descriptionFocusNode,
                                 controller: descriptionController,
                                 decoration: InputDecoration(
@@ -633,17 +595,13 @@ class _NewAccountState extends State<NewAccount> {
                                 ),
                               ),
                             )
-
                           ],
                         ),
-                        Text(
-                            "Ex. Daily carry wallet",
+                        Text("Ex. Daily carry wallet",
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xFFB6B6B6)
-                            )
-                        ),
+                                color: Color(0xFFB6B6B6))),
                       ],
                     ),
                   ),
@@ -661,8 +619,9 @@ class _NewAccountState extends State<NewAccount> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
-                    ),
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
                   ),
                   width: double.infinity,
                   height: 74,
@@ -676,22 +635,16 @@ class _NewAccountState extends State<NewAccount> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                                "Include in Total Net",
+                            Text("Include in Total Net",
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xFF4F4F4F)
-                                )
-                            ),
-                            Text(
-                                "Balance added to total net worth",
+                                    color: Color(0xFF4F4F4F))),
+                            Text("Balance added to total net worth",
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xFFB6B6B6)
-                                )
-                            ),
+                                    color: Color(0xFFB6B6B6))),
                           ],
                         ),
                         SizedBox(

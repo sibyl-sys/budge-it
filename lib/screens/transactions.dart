@@ -4,11 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
-import 'package:money_tracker/widgets/favTransactionButton.dart';
 import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
 import 'package:provider/provider.dart';
-
 
 class Transactions extends StatefulWidget {
   @override
@@ -16,7 +14,6 @@ class Transactions extends StatefulWidget {
 }
 
 class _TransactionsState extends State<Transactions> {
-
   late DateTime from;
   late DateTime to;
 
@@ -24,10 +21,10 @@ class _TransactionsState extends State<Transactions> {
   int year = DateTime.now().year;
 
   getValueColor(Transaction transaction) {
-    if(transaction.transactionType == TransactionType.transfer) {
-        return Color(0xB6B6B6).withOpacity(1);
-    } else if(transaction.transactionType == TransactionType.expense) {
-        return Color(0xEB6467).withOpacity(1);
+    if (transaction.transactionType == TransactionType.transfer) {
+      return Color(0xB6B6B6).withOpacity(1);
+    } else if (transaction.transactionType == TransactionType.expense) {
+      return Color(0xEB6467).withOpacity(1);
     } else {
       return Color(0x55C9C6).withOpacity(1);
     }
@@ -35,22 +32,33 @@ class _TransactionsState extends State<Transactions> {
 
   renderTransactionListPerDay(User user, List<Transaction> transactions) {
     return Column(
-      children: transactions.map((transaction) =>
-      //TODO compute actual value based on currency
-        TransactionCard(
-          color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.color : user.findAccountByID(transaction.toID)!.color).withOpacity(1),
-          icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.icon : user.findAccountByID(transaction.toID)!.icon, fontFamily: "MaterialIcons"),
-          categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
-          description: transaction.note,
-          value: transaction.value,
-          type: transaction.transactionType!,
-          transactionID: transaction.transactionID,
-          currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
-          valueColor: getValueColor(transaction),
-          importance: transaction.importance!,
-        )
-      ).toList()
-    );
+        children: transactions
+            .map((transaction) =>
+                //TODO compute actual value based on currency
+                TransactionCard(
+                  color: Color(transaction.transactionType !=
+                              TransactionType.transfer
+                          ? user.findCategoryByID(transaction.toID)!.color
+                          : user.findAccountByID(transaction.toID)!.color)
+                      .withOpacity(1),
+                  icon: IconData(
+                      transaction.transactionType != TransactionType.transfer
+                          ? user.findCategoryByID(transaction.toID)!.icon
+                          : user.findAccountByID(transaction.toID)!.icon,
+                      fontFamily: "MaterialIcons"),
+                  categoryName:
+                      transaction.transactionType != TransactionType.transfer
+                          ? user.findCategoryByID(transaction.toID)!.name
+                          : user.findAccountByID(transaction.toID)!.name,
+                  description: transaction.note,
+                  value: transaction.value,
+                  type: transaction.transactionType!,
+                  transactionID: transaction.transactionID,
+                  currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+                  valueColor: getValueColor(transaction),
+                  importance: transaction.importance!,
+                ))
+            .toList());
   }
 
   changeDate(Map dateMap) {
@@ -73,16 +81,33 @@ class _TransactionsState extends State<Transactions> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
-
-    final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-    String _value = 'all';
     //TODO CREATE MONTH WIDGET
-    List months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    List weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
-    double monthlyNet = user.getAccountNet(from: from, to: to, accountID: -1);
+    List months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+    List weekdays = [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
+    ];
 
-
-    final List<Map> transactionListPerDay = user.getTransactions(from: from, to: to, accountID: -1);
+    final List<Map> transactionListPerDay =
+        user.getTransactions(from: from, to: to, accountID: -1);
 
     return ListView(
       padding: EdgeInsets.zero,
@@ -93,31 +118,36 @@ class _TransactionsState extends State<Transactions> {
           onChanged: changeDate,
         ),
         SizedBox(height: 4),
-        TotalHeader(header: "Total Net:", valueColor: Color(0x4F4F4F).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getAccountNet(from: from, to: to, accountID: -1), description:
-        RichText(
-          text: TextSpan(
-              text: "xx%",
-              style: TextStyle(
-                color: Color(0x55C9C6).withOpacity(1),
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              ),
-              children: [
-                TextSpan(
-                    text: " Total Savings",
-                    style: TextStyle(
-                        color: Color(0xB6B6B6).withOpacity(1),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: "Poppins"
-                    )
-                ),
-              ]
-          ),
-        )),
+        TotalHeader(
+            header: "Total Net:",
+            valueColor: Color(0x4F4F4F).withOpacity(1),
+            currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+            value: user.getAccountNet(from: from, to: to, accountID: -1),
+            description: RichText(
+              text: TextSpan(
+                  text: "xx%",
+                  style: TextStyle(
+                    color: Color(0x55C9C6).withOpacity(1),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                  ),
+                  children: [
+                    TextSpan(
+                        text: " Total Savings",
+                        style: TextStyle(
+                            color: Color(0xB6B6B6).withOpacity(1),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "Poppins")),
+                  ]),
+            )),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          child: Text("Favorites", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
+          child: Text("Favorites",
+              style: TextStyle(
+                  color: Color(0xFFB6B6B6),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500)),
         ),
         // Container(
         //   padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -142,66 +172,57 @@ class _TransactionsState extends State<Transactions> {
         //   ),
         // ),
         Column(
-          children: transactionListPerDay.map((e) =>
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            e["day"].toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 26,
-                              color: Color(0x3C3A5F).withOpacity(1)
-                            )
-                          ),
-                          SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+            children: transactionListPerDay
+                .map((e) => Column(
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                  weekdays[e["weekday"]-1],
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Color(0x3C3A5F).withOpacity(1)
-                                  )
-                              ),
-                              Text(
-                                  months[e["month"]] + " " + e["year"].toString(),
+                              Row(children: [
+                                Text(e["day"].toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 26,
+                                        color: Color(0x3C3A5F).withOpacity(1))),
+                                SizedBox(width: 8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(weekdays[e["weekday"] - 1],
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Color(0x3C3A5F)
+                                                .withOpacity(1))),
+                                    Text(
+                                        months[e["month"]] +
+                                            " " +
+                                            e["year"].toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12,
+                                            color: Color(0x5F5C96)
+                                                .withOpacity(1))),
+                                  ],
+                                )
+                              ]),
+                              Text(e["value"].toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: Color(0x5F5C96).withOpacity(1)
-                                  )
-                              ),
+                                      fontSize: 16,
+                                      color: Color(0x4F4F4F).withOpacity(1))),
                             ],
-                          )
-                        ]
-                      ),
-                      Text(
-                          e["value"].toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Color(0x4F4F4F).withOpacity(1)
-                          )
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child:renderTransactionListPerDay(user, e["transactions"])
-                )
-              ],
-            )
-          ).toList()
-        )
+                          ),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: renderTransactionListPerDay(
+                                user, e["transactions"]))
+                      ],
+                    ))
+                .toList())
       ],
     );
   }

@@ -11,41 +11,49 @@ class RearrangeCategories extends StatefulWidget {
   _RearrangeCategoriesState createState() => _RearrangeCategoriesState();
 }
 
-class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTickerProviderStateMixin {
-
+class _RearrangeCategoriesState extends State<RearrangeCategories>
+    with SingleTickerProviderStateMixin {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-  String _value = 'all';
   //TODO CREATE MONTH WIDGET
-  List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  List months = [
+    "JANUARY",
+    "FEBRUARY",
+    "MARCH",
+    "APRIL",
+    "MAY",
+    "JUNE",
+    "JULY",
+    "AUGUST",
+    "SEPTEMER",
+    "OCTOBER",
+    "NOVEMBER",
+    "DECEMBER"
+  ];
 
   late DateTime from;
   late DateTime to;
   late TabController _tabController;
 
-  TabBar get _tabBar =>
-      TabBar(
+  TabBar get _tabBar => TabBar(
         controller: _tabController,
         indicator: BoxDecoration(
-            color : _tabController.index == 0 ? Colors.red.withOpacity(0.1) : Colors
-                .teal.withOpacity(0.1),
+            color: _tabController.index == 0
+                ? Colors.red.withOpacity(0.1)
+                : Colors.teal.withOpacity(0.1),
             border: Border(
-                bottom: BorderSide(width: 2.0, color:  _tabController.index == 0 ? Colors.red: Colors
-                    .teal)
-            )
-        ),
-        indicatorColor: _tabController.index == 0 ? Colors.red[500] : Colors
-            .teal[500],
-        labelColor: _tabController.index == 0 ? Colors.red[500] : Colors
-            .teal[500],
-        unselectedLabelColor: _tabController.index == 1 ? Colors.red[500] : Colors
-            .teal[500],
+                bottom: BorderSide(
+                    width: 2.0,
+                    color:
+                        _tabController.index == 0 ? Colors.red : Colors.teal))),
+        indicatorColor:
+            _tabController.index == 0 ? Colors.red[500] : Colors.teal[500],
+        labelColor:
+            _tabController.index == 0 ? Colors.red[500] : Colors.teal[500],
+        unselectedLabelColor:
+            _tabController.index == 1 ? Colors.red[500] : Colors.teal[500],
         tabs: [
-          Tab(
-              text: 'Expenses'
-          ),
-          Tab(
-              text: 'Income'
-          ),
+          Tab(text: 'Expenses'),
+          Tab(text: 'Income'),
         ],
       );
 
@@ -63,8 +71,7 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
   }
 
   void _handleTabChange() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   Future<void> _selectAccountType(BuildContext context) async {
@@ -83,98 +90,77 @@ class _RearrangeCategoriesState extends State<RearrangeCategories> with SingleTi
       default:
         Navigator.pushNamed(context, "/newAccount");
         break;
-
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-          title: Text("Edit Categories")
-      ),
+      appBar: AppBar(title: Text("Edit Categories")),
       body: Container(
           child: Column(
-            children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.grey.withOpacity(0.5), width: 2.5)
-                  )
+        children: [
+          DecoratedBox(
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(
+                        color: Colors.grey.withOpacity(0.5), width: 2.5))),
+            child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/addCategory");
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.white,
                 ),
-                child: TextButton(
-                    onPressed: (){
-                      Navigator.of(context).pushNamed("/addCategory");
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.white,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add,
-                          size: 20,
-                          color: Theme.of(context).primaryColor
-                        ),
-                        Text(
-                          "ADD NEW CATEGORY",
-                          style: TextStyle(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add,
+                        size: 20, color: Theme.of(context).primaryColor),
+                    Text("ADD NEW CATEGORY",
+                        style: TextStyle(
                             color: Theme.of(context).primaryColor,
-                            fontSize: 16
-                          )
-                        ),
-                      ],
-                    )
-                ),
+                            fontSize: 16)),
+                  ],
+                )),
+          ),
+          ColoredBox(color: Colors.white, child: _tabBar),
+          Expanded(
+            child: TabBarView(controller: _tabController, children: [
+              CategoriesTab(
+                categoryType: CategoryType.expense,
+                from: from,
+                to: to,
+                onCategoryClick: (int categoryID) {
+                  Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) =>
+                        EditCategory(categoryID: categoryID),
+                  ));
+                },
+                isRearrange: true,
               ),
-              ColoredBox(
-                  color: Colors.white,
-                  child: _tabBar
+              CategoriesTab(
+                categoryType: CategoryType.income,
+                from: from,
+                to: to,
+                isRearrange: true,
+                onCategoryClick: (int categoryID) {
+                  Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) =>
+                        EditCategory(categoryID: categoryID),
+                  ));
+                },
               ),
-              Expanded(
-                child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      CategoriesTab(
-                        categoryType: CategoryType.expense,
-                        from: from,
-                        to: to,
-                        onCategoryClick: (int categoryID) {
-                          Navigator.of(context).push(
-                              PageRouteBuilder(
-                                barrierColor: Colors.black.withOpacity(0.25),
-                                barrierDismissible: true,
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => EditCategory(categoryID: categoryID),
-                              )
-                          );
-                        },
-                        isRearrange: true,
-                      ),
-                      CategoriesTab(
-                        categoryType: CategoryType.income,
-                        from: from,
-                        to: to,
-                        isRearrange: true,
-                        onCategoryClick: (int categoryID) {
-                          Navigator.of(context).push(
-                              PageRouteBuilder(
-                                barrierColor: Colors.black.withOpacity(0.25),
-                                barrierDismissible: true,
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => EditCategory(categoryID: categoryID),
-                              )
-                          );
-                        },
-                      ),
-                    ]
-                ),
-              )
-            ],
+            ]),
           )
-      ),
+        ],
+      )),
     );
   }
 }

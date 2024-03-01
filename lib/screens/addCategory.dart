@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addSubcategory.dart';
 import 'package:money_tracker/screens/categoriesType.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
-import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/subcategory.dart';
@@ -49,23 +47,6 @@ class _AddCategoryState extends State<AddCategory> {
       });
     }
   }
-
-  TextStyle generateMoneyStyle(double value) {
-    if(value > 0) {
-      return TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
-          color: Colors.teal[400]
-      );
-    } else {
-      return TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 18,
-          color: const Color(0xFFBDBDBD)
-      );
-    }
-  }
-
 
   Widget renderSubcategoryList() {
     return Column(
@@ -291,7 +272,8 @@ class _AddCategoryState extends State<AddCategory> {
                         bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
                     ),
                   ),
-                  height: 74,
+                  width: double.infinity,
+                  height: 78,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
                     child: Column(
@@ -309,16 +291,16 @@ class _AddCategoryState extends State<AddCategory> {
                           text: TextSpan(
                               text: "${selectedCurrency.symbol} ",
                               style: TextStyle(
-                                  color: Colors.green[700],
-                                  fontSize: 18,
+                                  color: const Color(0xFF4F4F4F),
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500
                               ),
                               children: [
                                 TextSpan(
                                     text: " (${selectedCurrency.name})",
                                     style: TextStyle(
-                                        color: Colors.green[700],
-                                        fontSize: 18,
+                                        color: const Color(0xFF4F4F4F),
+                                        fontSize: 16,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500
                                     )

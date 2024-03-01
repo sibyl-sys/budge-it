@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addSubcategory.dart';
 import 'package:money_tracker/screens/categoriesType.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
-import 'package:money_tracker/services/account.dart';
-import 'package:intl/intl.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
-
 class EditCategory extends StatefulWidget {
   final int categoryID;
-  const EditCategory({Key? key, required this.categoryID}) : super(key : key);
+  const EditCategory({Key? key, required this.categoryID}) : super(key: key);
   @override
   _EditCategoryState createState() => _EditCategoryState();
 }
-
 
 class _EditCategoryState extends State<EditCategory> {
   CategoryType _categoryType = CategoryType.expense;
@@ -30,7 +25,6 @@ class _EditCategoryState extends State<EditCategory> {
   bool isDarkIcon = false;
   List<Subcategory> subcategories = [];
 
-
   late Currency selectedCurrency;
   late int index;
 
@@ -40,10 +34,13 @@ class _EditCategoryState extends State<EditCategory> {
     Category currentCategory = userModel.findCategoryByID(widget.categoryID)!;
     setState(() {
       _categoryType = currentCategory.categoryType!;
-      selectedCurrency = currentCategory.getCurrency() == null ? userModel.mySettings.getPrimaryCurrency() : currentCategory.getCurrency()!;
+      selectedCurrency = currentCategory.getCurrency() == null
+          ? userModel.mySettings.getPrimaryCurrency()
+          : currentCategory.getCurrency()!;
       categoryNameController.text = currentCategory.name;
       categoryColor = Color(currentCategory.color).withOpacity(1);
-      categoryIcon = IconData(currentCategory.icon, fontFamily: 'MaterialIcons');
+      categoryIcon =
+          IconData(currentCategory.icon, fontFamily: 'MaterialIcons');
       subcategories = currentCategory.subcategories;
       index = currentCategory.index;
     });
@@ -54,68 +51,55 @@ class _EditCategoryState extends State<EditCategory> {
         context: context,
         builder: (BuildContext context) {
           return CategoriesType();
-        }
-    );
-    if(newCategoryType != null) {
+        });
+    if (newCategoryType != null) {
       setState(() {
         _categoryType = newCategoryType;
       });
     }
-
   }
 
   TextStyle generateMoneyStyle(double value) {
-    if(value > 0) {
+    if (value > 0) {
       return TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
-          color: Colors.teal[400]
-      );
+          fontWeight: FontWeight.w500, fontSize: 18, color: Colors.teal[400]);
     } else {
       return TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
-          color: const Color(0xFFBDBDBD)
-      );
+          color: const Color(0xFFBDBDBD));
     }
   }
 
   Widget renderSubcategoryList() {
     return Column(
-        children: subcategories.map((e) =>
-            Card(
-                child: Container(
+        children: subcategories
+            .map((e) => Card(
+                    child: Container(
                   height: 50,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                    child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(4.0),
-                            child: Icon(
-                              IconData(e.icon, fontFamily: "MaterialIcons"),
-                              color: categoryColor,
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          Text(
-                              e.name,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: categoryColor
-                              )
-                          )
-                        ]
-                    ),
+                    child: Row(children: [
+                      Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          IconData(e.icon, fontFamily: "MaterialIcons"),
+                          color: categoryColor,
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      Text(e.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: categoryColor))
+                    ]),
                   ),
-                )
-            )
-        ).toList()
-    );
+                )))
+            .toList());
   }
 
   String getCategoryTypeString() {
-    switch(_categoryType) {
+    switch (_categoryType) {
       case CategoryType.income:
         return "Income";
       case CategoryType.expense:
@@ -140,7 +124,8 @@ class _EditCategoryState extends State<EditCategory> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              Category toUpdate = userModel.findCategoryByID(widget.categoryID)!;
+              Category toUpdate =
+                  userModel.findCategoryByID(widget.categoryID)!;
               toUpdate.color = categoryColor.value;
               toUpdate.categoryType = _categoryType;
               toUpdate.icon = categoryIcon.codePoint;
@@ -148,7 +133,8 @@ class _EditCategoryState extends State<EditCategory> {
               toUpdate.index = index;
               userModel.updateCategory(toUpdate);
               Navigator.pop(context);
-            },)
+            },
+          )
         ],
         title: Text("Edit Category"),
       ),
@@ -168,26 +154,29 @@ class _EditCategoryState extends State<EditCategory> {
                       backgroundColor: categoryColor,
                       child: IconButton(
                           icon: Icon(categoryIcon, size: 30),
-                          color: isDarkIcon ? Colors.black.withOpacity(0.2) : Colors.white,
+                          color: isDarkIcon
+                              ? Colors.black.withOpacity(0.2)
+                              : Colors.white,
                           onPressed: () async {
-                            final result = await Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  barrierColor: Colors.black.withOpacity(0.25),
-                                  barrierDismissible: true,
-                                  opaque: false,
-                                  pageBuilder: (_, __, ___) => IconAndColorSelection(accountColor: this.categoryColor, accountIcon: this.categoryIcon, isDarkIcon: isDarkIcon),
-                                )
-                            );
-                            if(result != null) {
+                            final result = await Navigator.of(context)
+                                .push(PageRouteBuilder(
+                              barrierColor: Colors.black.withOpacity(0.25),
+                              barrierDismissible: true,
+                              opaque: false,
+                              pageBuilder: (_, __, ___) =>
+                                  IconAndColorSelection(
+                                      accountColor: this.categoryColor,
+                                      accountIcon: this.categoryIcon,
+                                      isDarkIcon: isDarkIcon),
+                            ));
+                            if (result != null) {
                               setState(() {
                                 categoryIcon = result["iconData"];
                                 categoryColor = result["backgroundColor"];
                                 isDarkIcon = result["isDarkIcon"];
                               });
                             }
-
-                          }
-                      ),
+                          }),
                     ),
                     InkWell(
                         onTap: () {
@@ -200,25 +189,17 @@ class _EditCategoryState extends State<EditCategory> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                    getCategoryTypeString(),
+                                Text(getCategoryTypeString(),
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor,
                                         fontSize: 18,
-                                        fontWeight: FontWeight.w400
-                                    )
-                                ),
-                                Icon(
-                                    Icons.arrow_right,
+                                        fontWeight: FontWeight.w400)),
+                                Icon(Icons.arrow_right,
                                     color: Theme.of(context).primaryColor,
-                                    size: 28
-                                )
+                                    size: 28)
                               ],
-                            )
-                        )
-                    )
-                  ]
-              ),
+                            )))
+                  ]),
             ),
             Ink(
               color: Colors.white,
@@ -229,8 +210,9 @@ class _EditCategoryState extends State<EditCategory> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
-                    ),
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
                   ),
                   height: 74,
                   child: Padding(
@@ -239,21 +221,18 @@ class _EditCategoryState extends State<EditCategory> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                            "Name",
+                        Text("Name",
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
-                            )
-                        ),
+                            )),
                         SizedBox(height: 8.0),
                         Expanded(
                           child: TextField(
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
-                                color: const Color(0xFF4F4F4F)
-                            ),
+                                color: const Color(0xFF4F4F4F)),
                             focusNode: nameFocusNode,
                             controller: categoryNameController,
                             decoration: InputDecoration(
@@ -263,12 +242,10 @@ class _EditCategoryState extends State<EditCategory> {
                               hintStyle: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
-                                  color: const Color(0xFFBDBDBD)
-                              ),
+                                  color: const Color(0xFFBDBDBD)),
                             ),
                           ),
                         )
-
                       ],
                     ),
                   ),
@@ -278,16 +255,15 @@ class _EditCategoryState extends State<EditCategory> {
             Ink(
               color: Colors.white,
               child: InkWell(
-                onTap: () async{
-                  final result = await Navigator.of(context).push(
-                      PageRouteBuilder(
-                        barrierColor: Colors.black.withOpacity(0.25),
-                        barrierDismissible: true,
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => CurrencySelection(),
-                      )
-                  );
-                  if(result != null) {
+                onTap: () async {
+                  final result =
+                      await Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => CurrencySelection(),
+                  ));
+                  if (result != null) {
                     setState(() {
                       selectedCurrency = result;
                     });
@@ -296,8 +272,9 @@ class _EditCategoryState extends State<EditCategory> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade400.withOpacity((0.5)), width: 1)
-                    ),
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
                   ),
                   width: double.infinity,
                   height: 78,
@@ -307,21 +284,18 @@ class _EditCategoryState extends State<EditCategory> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                            "Currency",
+                        Text("Currency",
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
-                            )
-                        ),
+                            )),
                         RichText(
                           text: TextSpan(
                               text: "${selectedCurrency.symbol} ",
                               style: TextStyle(
                                   color: const Color(0xFF4F4F4F),
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500
-                              ),
+                                  fontWeight: FontWeight.w500),
                               children: [
                                 TextSpan(
                                     text: " (${selectedCurrency.name})",
@@ -329,11 +303,8 @@ class _EditCategoryState extends State<EditCategory> {
                                         color: const Color(0xFF4F4F4F),
                                         fontSize: 16,
                                         fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500
-                                    )
-                                ),
-                              ]
-                          ),
+                                        fontWeight: FontWeight.w500)),
+                              ]),
                         ),
                       ],
                     ),
@@ -347,14 +318,11 @@ class _EditCategoryState extends State<EditCategory> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                      "Subcategories:",
+                  Text("Subcategories:",
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
-                          color: Color(0x4F4F4F).withOpacity(1)
-                      )
-                  ),
+                          color: Color(0x4F4F4F).withOpacity(1))),
                 ],
               ),
             ),
@@ -365,57 +333,56 @@ class _EditCategoryState extends State<EditCategory> {
                   renderSubcategoryList(),
                   Card(
                       child: Container(
-                        height: 50,
-                        child: TextButton(
-                          onPressed: () async {
-                            final result = await Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  barrierColor: Colors.black.withOpacity(0.25),
-                                  barrierDismissible: true,
-                                  opaque: false,
-                                  pageBuilder: (_, __, ___) => AddSubcategory(categoryColor: this.categoryColor, categoryIcon: this.categoryIcon, isDarkIcon: isDarkIcon, name: ""),
-                                )
-                              //TODO SUBCATEGORY ADD
-                            );
-                            if(result != null) {
-                              User userModel = context.read<User>();
-                              setState(() {
-                                subcategories = List.from(subcategories)..add(Subcategory(
-                                    icon: result["iconData"].codePoint,
-                                    name: result["name"],
-                                ));
-                              });
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                          ),
-                          child: Row(
-                              children: [
-                                Container(
-                                    padding: EdgeInsets.all(4.0),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(color: Colors.grey.withOpacity(0.25))
-                                    ),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: categoryColor,
-                                    )
-                                ),
-                                SizedBox(width: 20),
-                                Text(
-                                    "Add Subcategory",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        color: categoryColor
-                                    )
-                                )
-                              ]
-                          ),
-                        ),
-                      )
-                  ),
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () async {
+                        final result =
+                            await Navigator.of(context).push(PageRouteBuilder(
+                          barrierColor: Colors.black.withOpacity(0.25),
+                          barrierDismissible: true,
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => AddSubcategory(
+                              categoryColor: this.categoryColor,
+                              categoryIcon: this.categoryIcon,
+                              isDarkIcon: isDarkIcon,
+                              name: ""),
+                        )
+                                //TODO SUBCATEGORY ADD
+                                );
+                        if (result != null) {
+                          User userModel = context.read<User>();
+                          setState(() {
+                            subcategories = List.from(subcategories)
+                              ..add(Subcategory(
+                                icon: result["iconData"].codePoint,
+                                name: result["name"],
+                              ));
+                          });
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                      ),
+                      child: Row(children: [
+                        Container(
+                            padding: EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.25))),
+                            child: Icon(
+                              Icons.add,
+                              color: categoryColor,
+                            )),
+                        SizedBox(width: 20),
+                        Text("Add Subcategory",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: categoryColor))
+                      ]),
+                    ),
+                  )),
                 ],
               ),
             ),

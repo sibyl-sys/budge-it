@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/constants/Constants.dart';
-import 'package:money_tracker/services/account.dart';
-import 'package:money_tracker/services/category.dart';
-import 'package:money_tracker/services/currency.dart';
-import 'package:money_tracker/services/subcategory.dart';
-import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
@@ -24,21 +18,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     super.initState();
     setupObjectbox();
-    WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.pushReplacementNamed(context, "/home"));
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Navigator.pushReplacementNamed(context, "/home"));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Image(
-          image: AssetImage('assets/splash.png'),
-          fit: BoxFit.cover,
-          height: double.infinity,
-          width: double.infinity,
-          alignment: Alignment.center,
-        )
-      )
-    );
+        body: Center(
+            child: Image(
+      image: AssetImage('assets/splash.png'),
+      fit: BoxFit.cover,
+      height: double.infinity,
+      width: double.infinity,
+      alignment: Alignment.center,
+    )));
   }
 }
