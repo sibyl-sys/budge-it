@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/services/budgetCap.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/user.dart';
@@ -6,6 +7,9 @@ import 'package:money_tracker/screens/iconAndColorSelection.dart';
 import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/categorySelection.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import 'dart:math';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class AddBudget extends StatefulWidget {
   const AddBudget({Key? key}) : super(key: key);
@@ -17,12 +21,19 @@ class AddBudget extends StatefulWidget {
 class _AddBudgetState extends State<AddBudget> {
   final FocusNode nameFocusNode = FocusNode();
   final TextEditingController categoryNameController = TextEditingController();
+  final DateFormat dateFormatter = DateFormat("MMM y", "en_us");
+  final NumberFormat moneyFormatter = new NumberFormat("#,##0.00", "en_US");
+
   IconData categoryIcon = Icons.account_balance_wallet;
   Color categoryColor = Colors.blue.shade400;
   bool isDarkIcon = false;
   bool isCarryOver = false;
   late Currency selectedCurrency;
   List<Category> categories = [];
+  List<BudgetCap> budgetCap = [
+    BudgetCap(month: 2, year: 2024, cap: 100000),
+    BudgetCap(month: 3, year: 2024, cap: 100000)
+  ];
 
   void initState() {
     super.initState();
@@ -55,6 +66,49 @@ class _AddBudgetState extends State<AddBudget> {
                               color: categoryColor))
                     ]),
                   ),
+                )))
+            .toList());
+  }
+
+  Widget renderBudgetHistory() {
+    return Column(
+        children: budgetCap
+            .map((e) => Card(
+                    child: Container(
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                      child: Column(children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  dateFormatter
+                                      .format(DateTime(e.year, e.month)),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF4F4F4F))),
+                              Text(moneyFormatter.format(50000),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: categoryColor))
+                            ]),
+                        LinearPercentIndicator(
+                            lineHeight: 3.0,
+                            percent: min((50000 / e.cap), 1),
+                            backgroundColor: Colors.grey,
+                            progressColor: categoryColor,
+                            padding: EdgeInsets.zero),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(moneyFormatter.format(e.cap),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFFB6B6B6)))
+                            ]),
+                      ])),
                 )))
             .toList());
   }
@@ -230,7 +284,14 @@ class _AddBudgetState extends State<AddBudget> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text("Categories",
+                      style: TextStyle(
+                          color: Color(0xFFB6B6B6),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500)),
                   renderCategoryList(),
                   Card(
                       child: Container(
@@ -270,6 +331,65 @@ class _AddBudgetState extends State<AddBudget> {
                             )),
                         SizedBox(width: 20),
                         Text("Track Category",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: categoryColor))
+                      ]),
+                    ),
+                  )),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Budget History",
+                      style: TextStyle(
+                          color: Color(0xFFB6B6B6),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500)),
+                  renderBudgetHistory(),
+                  Card(
+                      child: Container(
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () async {
+                        final results =
+                            await Navigator.of(context).push(PageRouteBuilder(
+                          barrierColor: Colors.black.withOpacity(0.25),
+                          barrierDismissible: true,
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => CategorySelection(),
+                        ));
+                        if (results != null) {
+                          Category categoryToAdd =
+                              user.findCategoryByID(results["recipientID"])!;
+                          setState(() {
+                            categories = List.from(categories)
+                              ..add(categoryToAdd);
+                          });
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                      ),
+                      child: Row(children: [
+                        Container(
+                            padding: EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.25))),
+                            child: Icon(
+                              Icons.add,
+                              color: categoryColor,
+                            )),
+                        SizedBox(width: 20),
+                        Text("Allocate Budget",
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: categoryColor))
