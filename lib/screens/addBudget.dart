@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/setBudget.dart';
 import 'package:money_tracker/services/budgetCap.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/category.dart';
@@ -362,16 +363,10 @@ class _AddBudgetState extends State<AddBudget> {
                           barrierColor: Colors.black.withOpacity(0.25),
                           barrierDismissible: true,
                           opaque: false,
-                          pageBuilder: (_, __, ___) => CategorySelection(),
+                          pageBuilder: (_, __, ___) => SetBudget(
+                              currencySymbol: selectedCurrency.symbol),
                         ));
-                        if (results != null) {
-                          Category categoryToAdd =
-                              user.findCategoryByID(results["recipientID"])!;
-                          setState(() {
-                            categories = List.from(categories)
-                              ..add(categoryToAdd);
-                          });
-                        }
+                        //TODO IMPLEMENT CHANGES
                       },
                       style: TextButton.styleFrom(
                         padding:

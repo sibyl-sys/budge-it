@@ -18,26 +18,25 @@ Future<void> main() async {
   objectbox = await ObjectBox.create();
   runApp(ChangeNotifierProvider(
       create: (context) => User(),
-      child:MaterialApp(
+      child: MaterialApp(
         initialRoute: "/loading",
         routes: {
-          '/home' : (context) => Home(),
-          '/newAccount' : (context) => NewAccount(accountType: AccountType.wallet),
-          '/addCategory' : (context) => AddCategory(),
-          '/accountType' : (context) => AccountsType(),
+          '/home': (context) => Home(),
+          '/newAccount': (context) =>
+              NewAccount(accountType: AccountType.wallet),
+          '/addCategory': (context) => AddCategory(),
+          '/accountType': (context) => AccountsType(),
           '/loading': (context) => LoadingScreen(),
-          '/accountDetails' : (context) => AccountDetails(),
-          '/rearrangeCategories' : (context) => RearrangeCategories(),
+          '/accountDetails': (context) => AccountDetails(),
+          '/rearrangeCategories': (context) => RearrangeCategories(),
         },
         theme: ThemeData(
-          colorScheme: ColorScheme.light(
-            primary: Color(0x3C3A5F).withOpacity(1.0),
-            secondary: Color(0xEB6467).withOpacity(1.0),
-          ),
-          primaryColor: Color(0x3C3A5F).withOpacity(1.0),
-          fontFamily: 'Poppins',
-          useMaterial3: false
-        )
-      )
-  ));
+            colorScheme: ColorScheme.light(
+              primary: Color(0x3C3A5F).withOpacity(1.0),
+              secondary: Color(0xEB6467).withOpacity(1.0),
+            ),
+            primaryColor: Color(0x3C3A5F).withOpacity(1.0),
+            fontFamily: 'Poppins',
+            useMaterial3: false),
+      )));
 }
