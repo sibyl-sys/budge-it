@@ -114,6 +114,12 @@ class _AddBudgetState extends State<AddBudget> {
             .toList());
   }
 
+  bool checkForBudgetDuplicate(int month, int year) {
+    var element = budgetCap
+        .where((element) => element.month == month && element.year == year);
+    return !element.isEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
@@ -366,6 +372,53 @@ class _AddBudgetState extends State<AddBudget> {
                           pageBuilder: (_, __, ___) => SetBudget(
                               currencySymbol: selectedCurrency.symbol),
                         ));
+                        if (results != null) {
+                          if (!results["isRepeatedAllYear"]) {
+                            if (checkForBudgetDuplicate(
+                                results["schedule"].month,
+                                results["schedule"].year)) {
+                              //PROMPT WOULD YOU LIKE TO UPDATE?
+                              bool? response = await showDialog<bool>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title:
+                                            const Text('Budget already exists'),
+                                        content: Text(
+                                            'Budget has already been set for ${dateFormatter.format(results["schedule"])}. Would you like to update budget instead?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, false),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, true),
+                                            child: const Text('Update'),
+                                          ),
+                                        ],
+                                      ));
+                              if (response == true) {
+                                setState(() {
+                                  budgetCap
+                                      .firstWhere((element) =>
+                                          element.month ==
+                                              results["schedule"].month &&
+                                          element.year ==
+                                              results["schedule"].year)
+                                      .cap = results["budget"];
+                                });
+                              }
+                            } else {
+                              budgetCap.add(BudgetCap(
+                                  cap: results["budget"],
+                                  month: results["schedule"].month,
+                                  year: results["schedule"].year));
+                            }
+                          } else {}
+                        }
                         //TODO IMPLEMENT CHANGES
                       },
                       style: TextButton.styleFrom(
