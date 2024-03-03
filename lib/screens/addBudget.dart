@@ -64,7 +64,7 @@ class _AddBudgetState extends State<AddBudget> {
                       Text(e.name,
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
-                              color: categoryColor))
+                              color: Color(e.color).withOpacity(1)))
                     ]),
                   ),
                 )))
