@@ -120,6 +120,45 @@ class _AddBudgetState extends State<AddBudget> {
     return !element.isEmpty;
   }
 
+  void allocateBudget(int month, int year, double cap) async {
+    if (checkForBudgetDuplicate(month, year)) {
+      //PROMPT WOULD YOU LIKE TO UPDATE?
+      bool? response = await promptForDuplicates(
+          dateFormatter.format(DateTime(year, month)));
+      if (response == true) {
+        setState(() {
+          budgetCap
+              .firstWhere(
+                  (element) => element.month == month && element.year == year)
+              .cap = cap;
+        });
+      }
+    } else {
+      budgetCap.add(BudgetCap(cap: cap, month: month, year: year));
+    }
+  }
+
+  Future<bool?> promptForDuplicates(String date) {
+    return showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+              title: const Text('Budget already exists'),
+              content: Text(
+                  'Budget has already been set for ${date}. Would you like to update budget instead?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Update'),
+                ),
+              ],
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
@@ -374,51 +413,24 @@ class _AddBudgetState extends State<AddBudget> {
                         ));
                         if (results != null) {
                           if (!results["isRepeatedAllYear"]) {
-                            if (checkForBudgetDuplicate(
-                                results["schedule"].month,
-                                results["schedule"].year)) {
-                              //PROMPT WOULD YOU LIKE TO UPDATE?
-                              bool? response = await showDialog<bool>(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                        title:
-                                            const Text('Budget already exists'),
-                                        content: Text(
-                                            'Budget has already been set for ${dateFormatter.format(results["schedule"])}. Would you like to update budget instead?'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, false),
-                                            child: const Text('Cancel'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, true),
-                                            child: const Text('Update'),
-                                          ),
-                                        ],
-                                      ));
-                              if (response == true) {
-                                setState(() {
-                                  budgetCap
-                                      .firstWhere((element) =>
-                                          element.month ==
-                                              results["schedule"].month &&
-                                          element.year ==
-                                              results["schedule"].year)
-                                      .cap = results["budget"];
-                                });
-                              }
-                            } else {
-                              budgetCap.add(BudgetCap(
-                                  cap: results["budget"],
-                                  month: results["schedule"].month,
-                                  year: results["schedule"].year));
+                            allocateBudget(results["schedule"].month,
+                                results["schedule"].year, results["budget"]);
+                          } else {
+                            for (var i = 1; i <= 12; i++) {
+                              allocateBudget(i, results["schedule"].year,
+                                  results["budget"]);
                             }
-                          } else {}
+                          }
                         }
+                        setState(() {
+                          budgetCap.sort((a, b) {
+                            int yearComp = a.year.compareTo(b.year);
+                            if (yearComp == 0) {
+                              return a.month.compareTo(b.month);
+                            }
+                            return yearComp;
+                          });
+                        });
                         //TODO IMPLEMENT CHANGES
                       },
                       style: TextButton.styleFrom(
