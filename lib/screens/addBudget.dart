@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/setBudget.dart';
+import 'package:money_tracker/services/budget.dart';
 import 'package:money_tracker/services/budgetCap.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/category.dart';
@@ -21,12 +24,12 @@ class AddBudget extends StatefulWidget {
 
 class _AddBudgetState extends State<AddBudget> {
   final FocusNode nameFocusNode = FocusNode();
-  final TextEditingController categoryNameController = TextEditingController();
+  final TextEditingController budgetNameController = TextEditingController();
   final DateFormat dateFormatter = DateFormat("MMM y", "en_us");
   final NumberFormat moneyFormatter = new NumberFormat("#,##0.00", "en_US");
 
-  IconData categoryIcon = Icons.account_balance_wallet;
-  Color categoryColor = Colors.blue.shade400;
+  IconData budgetIcon = Icons.account_balance_wallet;
+  Color budgetColor = Colors.blue.shade400;
   bool isDarkIcon = false;
   bool isCarryOver = false;
   late Currency selectedCurrency;
@@ -92,13 +95,13 @@ class _AddBudgetState extends State<AddBudget> {
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
-                                      color: categoryColor))
+                                      color: budgetColor))
                             ]),
                         LinearPercentIndicator(
                             lineHeight: 3.0,
                             percent: min((50000 / e.cap), 1),
                             backgroundColor: Colors.grey,
-                            progressColor: categoryColor,
+                            progressColor: budgetColor,
                             padding: EdgeInsets.zero),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -169,6 +172,15 @@ class _AddBudgetState extends State<AddBudget> {
               icon: Icon(Icons.check),
               onPressed: () {
                 User userModel = context.read<User>();
+                userModel.addBudgetHistory(budgetCap);
+                Budget newBudget = Budget(
+                    color: budgetColor.value,
+                    icon: budgetIcon.codePoint,
+                    name: budgetNameController.text,
+                    willCarryOver: isCarryOver);
+                newBudget.budgetCap.addAll(budgetCap);
+                newBudget.toTrack.addAll(categories);
+                userModel.addBudget(newBudget);
                 //TODO ADD BUDGET
                 Navigator.pop(context);
               },
@@ -187,9 +199,9 @@ class _AddBudgetState extends State<AddBudget> {
                   children: [
                     CircleAvatar(
                       radius: 25,
-                      backgroundColor: categoryColor,
+                      backgroundColor: budgetColor,
                       child: IconButton(
-                          icon: Icon(categoryIcon, size: 30),
+                          icon: Icon(budgetIcon, size: 30),
                           color: isDarkIcon
                               ? Colors.black.withOpacity(0.2)
                               : Colors.white,
@@ -201,14 +213,14 @@ class _AddBudgetState extends State<AddBudget> {
                               opaque: false,
                               pageBuilder: (_, __, ___) =>
                                   IconAndColorSelection(
-                                      accountColor: this.categoryColor,
-                                      accountIcon: this.categoryIcon,
+                                      accountColor: this.budgetColor,
+                                      accountIcon: this.budgetIcon,
                                       isDarkIcon: isDarkIcon),
                             ));
                             if (result != null) {
                               setState(() {
-                                categoryIcon = result["iconData"];
-                                categoryColor = result["backgroundColor"];
+                                budgetIcon = result["iconData"];
+                                budgetColor = result["backgroundColor"];
                                 isDarkIcon = result["isDarkIcon"];
                               });
                             }
@@ -249,7 +261,7 @@ class _AddBudgetState extends State<AddBudget> {
                                 fontSize: 14,
                                 color: const Color(0xFF4F4F4F)),
                             focusNode: nameFocusNode,
-                            controller: categoryNameController,
+                            controller: budgetNameController,
                             decoration: InputDecoration(
                               isDense: true,
                               border: InputBorder.none,
@@ -373,13 +385,13 @@ class _AddBudgetState extends State<AddBudget> {
                                     color: Colors.grey.withOpacity(0.25))),
                             child: Icon(
                               Icons.add,
-                              color: categoryColor,
+                              color: budgetColor,
                             )),
                         SizedBox(width: 20),
                         Text("Track Category",
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
-                                color: categoryColor))
+                                color: budgetColor))
                       ]),
                     ),
                   )),
@@ -446,13 +458,13 @@ class _AddBudgetState extends State<AddBudget> {
                                     color: Colors.grey.withOpacity(0.25))),
                             child: Icon(
                               Icons.add,
-                              color: categoryColor,
+                              color: budgetColor,
                             )),
                         SizedBox(width: 20),
                         Text("Allocate Budget",
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
-                                color: categoryColor))
+                                color: budgetColor))
                       ]),
                     ),
                   )),
