@@ -26,7 +26,7 @@ class _SetBudgetState extends State<SetBudget> {
         child: Center(
             child: Container(
           width: 350,
-          height: 300,
+          height: 325,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -169,7 +169,7 @@ class _SetBudgetState extends State<SetBudget> {
                     ));
                     if (result != null) {
                       setState(() {
-                        budget = result;
+                        budget = result.abs();
                       });
                     }
                   },
