@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/services/account.dart';
+import 'package:money_tracker/services/budget.dart';
+import 'package:money_tracker/services/budgetCap.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/transaction.dart';
@@ -20,6 +22,8 @@ class User extends ChangeNotifier {
   List<Transaction> transactions = [];
   // List<Transaction> transactionAlert = [];
   List<FavoriteTransaction> favoriteTransactions = [];
+  List<Budget> budgets = [];
+  List<BudgetCap> budgetHistory = [];
 
   late Settings mySettings;
 
@@ -602,6 +606,31 @@ class User extends ChangeNotifier {
     // categories.forEach((category) => {
     //   print(category.name)
     // });
+    notifyListeners();
+  }
+
+  void addBudget(Budget newBudget) {
+    objectbox.budgetBox.put(newBudget);
+
+    budgets = objectbox.budgetBox.getAll();
+    notifyListeners();
+  }
+
+  void updateBudget(Budget budget) {
+    objectbox.budgetBox.put(budget);
+    budgets = objectbox.budgetBox.getAll();
+    notifyListeners();
+  }
+
+  void addBudgetHistory(List<BudgetCap> history) {
+    objectbox.budgetCapBox.putMany(history);
+    budgetHistory = objectbox.budgetCapBox.getAll();
+    notifyListeners();
+  }
+
+  void removeBudgetHistory(BudgetCap cap) {
+    objectbox.budgetCapBox.remove(cap.id);
+    budgetHistory = objectbox.budgetCapBox.getAll();
     notifyListeners();
   }
 

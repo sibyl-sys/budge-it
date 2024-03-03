@@ -5,7 +5,6 @@ import 'package:money_tracker/widgets/dateRangeBar.dart';
 import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:money_tracker/widgets/budgetCard.dart';
 
-
 class Budget extends StatefulWidget {
   const Budget({Key? key}) : super(key: key);
 
@@ -14,7 +13,20 @@ class Budget extends StatefulWidget {
 }
 
 class _BudgetState extends State<Budget> {
-  List months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  List months = [
+    "JANUARY",
+    "FEBRUARY",
+    "MARCH",
+    "APRIL",
+    "MAY",
+    "JUNE",
+    "JULY",
+    "AUGUST",
+    "SEPTEMER",
+    "OCTOBER",
+    "NOVEMBER",
+    "DECEMBER"
+  ];
 
   late DateTime from;
   late DateTime to;
@@ -47,15 +59,19 @@ class _BudgetState extends State<Budget> {
     return Material(
       child: Container(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DateRangeBar(
-                from: this.from,
-                to: this.to,
-                onChanged: changeDate,
-              ),
-              TotalHeader(header: "Budget Amount:", valueColor: Color(0xFF4F4F4F), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.getRangeNet(from: this.from, to: this.to), description:
-              Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DateRangeBar(
+            from: this.from,
+            to: this.to,
+            onChanged: changeDate,
+          ),
+          TotalHeader(
+              header: "Budget Amount:",
+              valueColor: Color(0xFF4F4F4F),
+              currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+              value: user.getRangeNet(from: this.from, to: this.to),
+              description: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -69,45 +85,55 @@ class _BudgetState extends State<Budget> {
                         fontWeight: FontWeight.w400,
                         color: Colors.grey[400],
                         fontSize: 12,
-                      )
-                  ),
+                      )),
                 ],
               )),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Text("Main Budget", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
-              ),
-              BudgetCard(
-                name: "Regular Expenses",
-                amount: 50000.00,
-                cap: 100000.00,
-                id: 0,
-                color: const Color(0xFF9CCC65),
-                icon: Icons.wallet,
-                currencySymbol: "\$"
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Current Total", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w500)),
-                    Text("\$ 300,000.00", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16, fontWeight: FontWeight.w400))
-                  ]
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text("/ \$ 600,000.00", style: TextStyle(color: Color(0xFFB6B6B6), fontSize: 12, fontWeight: FontWeight.w400))
-                    ]
-                ),
-              )
-            ],
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Text("Main Budget",
+                style: TextStyle(
+                    color: Color(0xFFB6B6B6),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500)),
+          ),
+          BudgetCard(
+              name: "Regular Expenses",
+              amount: 50000.00,
+              cap: 100000.00,
+              id: 0,
+              color: const Color(0xFF9CCC65),
+              icon: Icons.wallet,
+              currencySymbol: "\$"),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 8.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Current Total",
+                      style: TextStyle(
+                          color: Color(0xFFB6B6B6),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500)),
+                  Text("\$ 300,000.00",
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400))
+                ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Text("/ \$ 600,000.00",
+                  style: TextStyle(
+                      color: Color(0xFFB6B6B6),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400))
+            ]),
           )
-      ),
+        ],
+      )),
     );
   }
 }
