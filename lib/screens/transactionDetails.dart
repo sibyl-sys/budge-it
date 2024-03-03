@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountSelection.dart';
-import 'package:money_tracker/screens/categorySelection.dart';
 import 'package:money_tracker/screens/dateSelection.dart';
+import 'package:money_tracker/screens/recipientSelection.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/services/favoriteTransaction.dart';
@@ -180,7 +180,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           barrierColor: Colors.black.withOpacity(0.25),
                           barrierDismissible: true,
                           opaque: false,
-                          pageBuilder: (_, __, ___) => CategorySelection(),
+                          pageBuilder: (_, __, ___) => RecipientSelection(),
                         ));
                         if (results != null) {
                           transaction.toID = results["categoryID"];
