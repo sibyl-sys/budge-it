@@ -11,7 +11,6 @@ import './budgetCap.dart';
 import './subcategory.dart';
 import './favoriteTransaction.dart';
 
-
 class ObjectBox {
   late final Store store;
   late final Box<Account> accountBox;
@@ -33,14 +32,20 @@ class ObjectBox {
     budgetBox = store.box<Budget>();
     budgetCapBox = store.box<BudgetCap>();
 
-    if(categoryBox.isEmpty()) {
+    if (categoryBox.isEmpty()) {
       categoryBox.putMany(categoryDefault);
     }
 
-    settingsBox.removeAll();
-    if(settingsBox.isEmpty()) {
+    if (settingsBox.isEmpty()) {
       Category firstCategory = categoryBox.getAll()[0];
-      Settings newSettings = new Settings(id: 0, primaryCurrencyID: 0, spendAlertAmount: 5000.00, selectedAccountFrom: 0, selectedAccountTo: 0, selectedCategoryTo: firstCategory.categoryID, selectedTransactionType: 0);
+      Settings newSettings = new Settings(
+          id: 0,
+          primaryCurrencyID: 0,
+          spendAlertAmount: 5000.00,
+          selectedAccountFrom: 0,
+          selectedAccountTo: 0,
+          selectedCategoryTo: firstCategory.categoryID,
+          selectedTransactionType: 0);
       settingsBox.put(newSettings);
     }
     // Add any additional setup code, e.g. build queries.

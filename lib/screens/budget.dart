@@ -138,7 +138,31 @@ class _BudgetState extends State<Budget> {
                       fontSize: 12,
                       fontWeight: FontWeight.w400))
             ]),
-          )
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Text("Inactive Budget",
+                style: TextStyle(
+                    color: Color(0xFFB6B6B6),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500)),
+          ),
+          Column(
+            children: user
+                .getInactiveBudgets(from, to)
+                .map(
+                  (e) => BudgetCard(
+                      name: e.name,
+                      amount: user.getBudgetExpenditures(from, to, e.budgetID),
+                      cap: user.getMonthlyBudgetCap(from, to, e.budgetID),
+                      id: e.budgetID,
+                      color: Color(e.color).withOpacity(1),
+                      icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
+                      currencySymbol: "\$"),
+                )
+                .toList(),
+          ),
         ],
       )),
     );

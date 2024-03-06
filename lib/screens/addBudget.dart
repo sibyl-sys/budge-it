@@ -84,40 +84,80 @@ class _AddBudgetState extends State<AddBudget> {
   }
 
   Widget renderBudgetHistory(User user) {
-    //TODO COMPUTE TRACKED CATEGORY EXPENDITURES
     return Column(
         children: budgetCap.map((e) {
       double expenditures = user.getCategoryListExpenditures(
           DateTime(e.year, e.month), DateTime(e.year, e.month), categories);
       return Card(
-          child: Container(
-        child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-            child: Column(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(dateFormatter.format(DateTime(e.year, e.month)),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400, color: Color(0xFF4F4F4F))),
-                Text(moneyFormatter.format(expenditures),
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: budgetColor))
-              ]),
-              LinearPercentIndicator(
-                  lineHeight: 3.0,
-                  percent: min((expenditures / e.cap), 1),
-                  backgroundColor: Colors.grey,
-                  progressColor: budgetColor,
-                  padding: EdgeInsets.zero),
-              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                Text(moneyFormatter.format(e.cap),
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFB6B6B6)))
-              ]),
-            ])),
+          child: InkWell(
+        splashColor: Colors.teal.shade700.withAlpha(50),
+        onTap: () async {
+          final results = await Navigator.of(context).push(PageRouteBuilder(
+            barrierColor: Colors.black.withOpacity(0.25),
+            barrierDismissible: true,
+            opaque: false,
+            pageBuilder: (_, __, ___) => SetBudget(
+              currencySymbol: selectedCurrency.symbol,
+              budgetCap: e,
+              onDelete: () {
+                setState(() {
+                  budgetCap.remove(e);
+                });
+              },
+            ),
+          ));
+          if (results != null) {
+            if (!results["isRepeatedAllYear"]) {
+              allocateBudget(results["schedule"].month,
+                  results["schedule"].year, results["budget"]);
+            } else {
+              for (var i = 1; i <= 12; i++) {
+                allocateBudget(i, results["schedule"].year, results["budget"]);
+              }
+            }
+          }
+          setState(() {
+            budgetCap.sort((a, b) {
+              int yearComp = a.year.compareTo(b.year);
+              if (yearComp == 0) {
+                return a.month.compareTo(b.month);
+              }
+              return yearComp;
+            });
+          });
+        },
+        child: Container(
+          child: Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              child: Column(children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(dateFormatter.format(DateTime(e.year, e.month)),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF4F4F4F))),
+                      Text(moneyFormatter.format(expenditures),
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: budgetColor))
+                    ]),
+                LinearPercentIndicator(
+                    lineHeight: 3.0,
+                    percent: min((expenditures / e.cap), 1),
+                    backgroundColor: Colors.grey,
+                    progressColor: budgetColor,
+                    padding: EdgeInsets.zero),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Text(moneyFormatter.format(e.cap),
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFB6B6B6)))
+                ]),
+              ])),
+        ),
       ));
     }).toList());
   }
@@ -448,7 +488,6 @@ class _AddBudgetState extends State<AddBudget> {
                             return yearComp;
                           });
                         });
-                        //TODO IMPLEMENT CHANGES
                       },
                       style: TextButton.styleFrom(
                         padding:

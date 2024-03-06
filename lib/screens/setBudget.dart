@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/screens/calculator.dart';
+import 'package:money_tracker/services/budgetCap.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class SetBudget extends StatefulWidget {
   final String currencySymbol;
-  const SetBudget({super.key, required this.currencySymbol});
+  final Function? onDelete;
+  final BudgetCap? budgetCap;
+  const SetBudget(
+      {super.key, required this.currencySymbol, this.onDelete, this.budgetCap});
 
   @override
   State<SetBudget> createState() => _SetBudgetState();
@@ -18,6 +22,15 @@ class _SetBudgetState extends State<SetBudget> {
   DateTime schedule = DateTime.now();
   bool isRepeatedAllYear = false;
   double budget = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.budgetCap != null) {
+      budget = widget.budgetCap!.cap;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,32 +235,53 @@ class _SetBudgetState extends State<SetBudget> {
                   ),
                 ),
               ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("CANCEL",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, color: Colors.grey)),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context, {
-                          "schedule": schedule,
-                          "isRepeatedAllYear": isRepeatedAllYear,
-                          "budget": budget
-                        });
-                      },
-                      child: Text("DONE",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).primaryColor)),
-                    )
-                  ])
+                    widget.budgetCap == null
+                        ? Spacer()
+                        : TextButton(
+                            onPressed: () {
+                              widget.onDelete!();
+                              Navigator.pop(context);
+                            },
+                            child: Text("DELETE",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.red)),
+                          ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("CANCEL",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey)),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context, {
+                                "schedule": schedule,
+                                "isRepeatedAllYear": isRepeatedAllYear,
+                                "budget": budget
+                              });
+                            },
+                            child: Text("DONE",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context).primaryColor)),
+                          )
+                        ]),
+                  ],
+                ),
+              )
             ],
           ),
         )));
