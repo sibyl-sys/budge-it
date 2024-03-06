@@ -34,10 +34,7 @@ class _AddBudgetState extends State<AddBudget> {
   bool isCarryOver = false;
   late Currency selectedCurrency;
   List<Category> categories = [];
-  List<BudgetCap> budgetCap = [
-    BudgetCap(month: 2, year: 2024, cap: 100000),
-    BudgetCap(month: 3, year: 2024, cap: 100000)
-  ];
+  List<BudgetCap> budgetCap = [];
 
   void initState() {
     super.initState();
@@ -55,20 +52,32 @@ class _AddBudgetState extends State<AddBudget> {
                   height: 50,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                    child: Row(children: [
-                      Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: Icon(
-                          IconData(e.icon, fontFamily: "MaterialIcons"),
-                          color: Color(e.color).withOpacity(1),
-                        ),
-                      ),
-                      SizedBox(width: 20),
-                      Text(e.name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              color: Color(e.color).withOpacity(1)))
-                    ]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(children: [
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: Icon(
+                              IconData(e.icon, fontFamily: "MaterialIcons"),
+                              color: Color(e.color).withOpacity(1),
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Text(e.name,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(e.color).withOpacity(1)))
+                        ]),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                categories.remove(e);
+                              });
+                            },
+                            icon: Icon(Icons.close, color: Color(0xFFB6B6B6)))
+                      ],
+                    ),
                   ),
                 )))
             .toList());

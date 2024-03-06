@@ -374,7 +374,7 @@
     },
     {
       "id": "9:6551503317915763204",
-      "lastPropertyId": "4:4420009488407882880",
+      "lastPropertyId": "5:1902462991968783265",
       "name": "BudgetCap",
       "properties": [
         {
@@ -403,14 +403,18 @@
     }
   ],
   "lastEntityId": "9:6551503317915763204",
-  "lastIndexId": "0:0",
+  "lastIndexId": "1:7569967098903491230",
   "lastRelationId": "3:4019700745509467872",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredIndexUids": [
+    7569967098903491230
+  ],
+  "retiredPropertyUids": [
+    1902462991968783265
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

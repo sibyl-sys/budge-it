@@ -23,15 +23,16 @@ class Budget {
 
   final budgetCap = ToMany<BudgetCap>();
 
-
-  Budget({required this.icon,required this.color,required this.name, required this.willCarryOver});
-
+  Budget(
+      {required this.icon,
+      required this.color,
+      required this.name,
+      required this.willCarryOver});
 
   Currency? getCurrency() {
-    if(budgetCurrencyID == -1) {
+    if (budgetCurrencyID == -1) {
       return null;
     }
     return currencyList[budgetCurrencyID];
   }
-
 }

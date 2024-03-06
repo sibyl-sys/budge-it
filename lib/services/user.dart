@@ -188,6 +188,10 @@ class User extends ChangeNotifier {
     return objectbox.transactionBox.get(transactionID);
   }
 
+  Budget? findBudgetByID(int budgetID) {
+    return objectbox.budgetBox.get(budgetID);
+  }
+
   double exchangeCurrency(double value, Currency from, Currency to) {
     return value * from.exchangeRateToUSD / to.exchangeRateToUSD;
   }
@@ -632,6 +636,50 @@ class User extends ChangeNotifier {
     objectbox.budgetCapBox.remove(cap.id);
     budgetHistory = objectbox.budgetCapBox.getAll();
     notifyListeners();
+  }
+
+  double getMonthlyBudgetCap(DateTime from, DateTime to, int budgetID) {
+    Budget? activeBudget = findBudgetByID(budgetID);
+    double budgetCap = 0;
+    if (activeBudget != null) {
+      activeBudget.budgetCap.forEach((element) {
+        if ((element.month >= from.month && element.year >= from.year) &&
+            (element.month <= to.month && element.year <= to.year))
+          budgetCap += element.cap;
+      });
+    }
+    return budgetCap;
+  }
+
+  double getBudgetExpenditures(DateTime from, DateTime to, int budgetID) {
+    Budget? activeBudget = findBudgetByID(budgetID);
+    double budgetExpenditures = 0;
+    if (activeBudget != null) {
+      activeBudget.toTrack.forEach((element) {
+        getCategoryNet(from: from, to: to, categoryID: element.categoryID);
+      });
+    }
+    return budgetExpenditures;
+  }
+
+  List<Budget> getActiveBudgets(DateTime from, DateTime to) {
+    List<Budget> activeBudgets = [];
+    budgets.forEach((element) {
+      if (getMonthlyBudgetCap(from, to, element.budgetID) > 0) {
+        activeBudgets.add(element);
+      }
+    });
+    return activeBudgets;
+  }
+
+  List<Budget> getInactiveBudgets(DateTime from, DateTime to) {
+    List<Budget> activeBudgets = [];
+    budgets.forEach((element) {
+      if (getMonthlyBudgetCap(from, to, element.budgetID) <= 0) {
+        activeBudgets.add(element);
+      }
+    });
+    return activeBudgets;
   }
 
   void init() {

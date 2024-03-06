@@ -1,3 +1,4 @@
+import 'package:money_tracker/services/budget.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
@@ -11,7 +12,5 @@ class BudgetCap {
 
   double cap;
 
-
   BudgetCap({required this.month, required this.year, required this.cap});
-
 }

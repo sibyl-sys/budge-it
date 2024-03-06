@@ -396,7 +396,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(9, 6551503317915763204),
       name: 'BudgetCap',
-      lastPropertyId: const IdUid(4, 4420009488407882880),
+      lastPropertyId: const IdUid(5, 1902462991968783265),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -452,12 +452,12 @@ ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
       lastEntityId: const IdUid(9, 6551503317915763204),
-      lastIndexId: const IdUid(0, 0),
+      lastIndexId: const IdUid(1, 7569967098903491230),
       lastRelationId: const IdUid(3, 4019700745509467872),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
-      retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredIndexUids: const [7569967098903491230],
+      retiredPropertyUids: const [1902462991968783265],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -856,7 +856,7 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (BudgetCap object, fb.Builder fbb) {
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.month);
           fbb.addInt64(2, object.year);

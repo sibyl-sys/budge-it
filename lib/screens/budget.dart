@@ -97,14 +97,21 @@ class _BudgetState extends State<Budget> {
                     fontSize: 12,
                     fontWeight: FontWeight.w500)),
           ),
-          BudgetCard(
-              name: "Regular Expenses",
-              amount: 50000.00,
-              cap: 100000.00,
-              id: 0,
-              color: const Color(0xFF9CCC65),
-              icon: Icons.wallet,
-              currencySymbol: "\$"),
+          Column(
+            children: user
+                .getActiveBudgets(from, to)
+                .map(
+                  (e) => BudgetCard(
+                      name: e.name,
+                      amount: user.getBudgetExpenditures(from, to, e.budgetID),
+                      cap: user.getMonthlyBudgetCap(from, to, e.budgetID),
+                      id: e.budgetID,
+                      color: Color(e.color).withOpacity(1),
+                      icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
+                      currencySymbol: "\$"),
+                )
+                .toList(),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 8.0),
             child: Row(
