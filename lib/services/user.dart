@@ -697,6 +697,8 @@ class User extends ChangeNotifier {
     this.transactions = objectbox.transactionBox.getAll();
     this.mySettings = objectbox.settingsBox.getAll()[0];
     this.favoriteTransactions = objectbox.favoriteTransactionBox.getAll();
+    this.budgets = objectbox.budgetBox.getAll();
+    this.budgetHistory = objectbox.budgetCapBox.getAll();
     // this.transactionAlert = transactionAlert;
     // this.favoriteTransactions = favoriteTransactions;
   }
