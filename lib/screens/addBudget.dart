@@ -83,47 +83,43 @@ class _AddBudgetState extends State<AddBudget> {
             .toList());
   }
 
-  Widget renderBudgetHistory() {
+  Widget renderBudgetHistory(User user) {
+    //TODO COMPUTE TRACKED CATEGORY EXPENDITURES
     return Column(
-        children: budgetCap
-            .map((e) => Card(
-                    child: Container(
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                      child: Column(children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                  dateFormatter
-                                      .format(DateTime(e.year, e.month)),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF4F4F4F))),
-                              Text(moneyFormatter.format(50000),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: budgetColor))
-                            ]),
-                        LinearPercentIndicator(
-                            lineHeight: 3.0,
-                            percent: min((50000 / e.cap), 1),
-                            backgroundColor: Colors.grey,
-                            progressColor: budgetColor,
-                            padding: EdgeInsets.zero),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(moneyFormatter.format(e.cap),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFFB6B6B6)))
-                            ]),
-                      ])),
-                )))
-            .toList());
+        children: budgetCap.map((e) {
+      double expenditures = user.getCategoryListExpenditures(
+          DateTime(e.year, e.month), DateTime(e.year, e.month), categories);
+      return Card(
+          child: Container(
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+            child: Column(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text(dateFormatter.format(DateTime(e.year, e.month)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400, color: Color(0xFF4F4F4F))),
+                Text(moneyFormatter.format(expenditures),
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: budgetColor))
+              ]),
+              LinearPercentIndicator(
+                  lineHeight: 3.0,
+                  percent: min((expenditures / e.cap), 1),
+                  backgroundColor: Colors.grey,
+                  progressColor: budgetColor,
+                  padding: EdgeInsets.zero),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Text(moneyFormatter.format(e.cap),
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFFB6B6B6)))
+              ]),
+            ])),
+      ));
+    }).toList());
   }
 
   bool checkForBudgetDuplicate(int month, int year) {
@@ -418,7 +414,7 @@ class _AddBudgetState extends State<AddBudget> {
                           color: Color(0xFFB6B6B6),
                           fontSize: 12,
                           fontWeight: FontWeight.w500)),
-                  renderBudgetHistory(),
+                  renderBudgetHistory(user),
                   Card(
                       child: Container(
                     height: 50,

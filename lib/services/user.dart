@@ -682,6 +682,15 @@ class User extends ChangeNotifier {
     return activeBudgets;
   }
 
+  double getCategoryListExpenditures(
+      DateTime from, DateTime to, List<Category> categoryList) {
+    double budgetExpenditures = 0;
+    categoryList.forEach((element) {
+      getCategoryNet(from: from, to: to, categoryID: element.categoryID);
+    });
+    return budgetExpenditures;
+  }
+
   void init() {
     this.accounts = objectbox.accountBox.getAll();
     this.categories = objectbox.categoryBox.getAll();
