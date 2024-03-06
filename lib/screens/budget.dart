@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
@@ -13,20 +14,7 @@ class Budget extends StatefulWidget {
 }
 
 class _BudgetState extends State<Budget> {
-  List months = [
-    "JANUARY",
-    "FEBRUARY",
-    "MARCH",
-    "APRIL",
-    "MAY",
-    "JUNE",
-    "JULY",
-    "AUGUST",
-    "SEPTEMER",
-    "OCTOBER",
-    "NOVEMBER",
-    "DECEMBER"
-  ];
+  final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
   late DateTime from;
   late DateTime to;
@@ -55,6 +43,8 @@ class _BudgetState extends State<Budget> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
+    double totalBudget = 0;
+    double totalRemaining = 0;
 
     return Material(
       child: Container(
@@ -67,7 +57,7 @@ class _BudgetState extends State<Budget> {
             onChanged: changeDate,
           ),
           TotalHeader(
-              header: "Budget Amount:",
+              header: "Budget Expenses:",
               valueColor: Color(0xFF4F4F4F),
               currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
               value: user.getRangeNet(from: this.from, to: this.to),
@@ -98,19 +88,21 @@ class _BudgetState extends State<Budget> {
                     fontWeight: FontWeight.w500)),
           ),
           Column(
-            children: user
-                .getActiveBudgets(from, to)
-                .map(
-                  (e) => BudgetCard(
-                      name: e.name,
-                      amount: user.getBudgetExpenditures(from, to, e.budgetID),
-                      cap: user.getMonthlyBudgetCap(from, to, e.budgetID),
-                      id: e.budgetID,
-                      color: Color(e.color).withOpacity(1),
-                      icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
-                      currencySymbol: "\$"),
-                )
-                .toList(),
+            children: user.getActiveBudgets(from, to).map((e) {
+              double budgetCap = user.getMonthlyBudgetCap(from, to, e.budgetID);
+              double budgetExpenditures =
+                  user.getBudgetExpenditures(from, to, e.budgetID);
+              totalBudget += budgetCap;
+              totalRemaining += (budgetCap - budgetExpenditures);
+              return BudgetCard(
+                  name: e.name,
+                  amount: budgetExpenditures,
+                  cap: budgetCap,
+                  id: e.budgetID,
+                  color: Color(e.color).withOpacity(1),
+                  icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
+                  currencySymbol: "\$");
+            }).toList(),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 8.0),
@@ -122,21 +114,44 @@ class _BudgetState extends State<Budget> {
                           color: Color(0xFFB6B6B6),
                           fontSize: 12,
                           fontWeight: FontWeight.w500)),
-                  Text("\$ 300,000.00",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400))
+                  RichText(
+                    text: TextSpan(
+                        text: "${user.mySettings.getPrimaryCurrency().symbol}",
+                        style: TextStyle(
+                            color: Color(0xFF4f4f4f),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                        children: [
+                          TextSpan(
+                              text: "${moneyFormat.format((totalRemaining))}",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w400)),
+                        ]),
+                  ),
                 ]),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Text("/ \$ 600,000.00",
-                  style: TextStyle(
-                      color: Color(0xFFB6B6B6),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400))
+              RichText(
+                text: TextSpan(
+                    text: "/ ${user.mySettings.getPrimaryCurrency().symbol}",
+                    style: TextStyle(
+                        color: Color(0xFFB6B6B6),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500),
+                    children: [
+                      TextSpan(
+                          text: "${moneyFormat.format((totalBudget))}",
+                          style: TextStyle(
+                              color: Color(0xFFB6B6B6),
+                              fontSize: 12,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500)),
+                    ]),
+              ),
             ]),
           ),
           Padding(
