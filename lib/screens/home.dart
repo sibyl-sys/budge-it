@@ -4,7 +4,7 @@ import 'package:money_tracker/screens/budget.dart';
 import 'package:money_tracker/screens/overview.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
-import 'package:money_tracker/screens/addBudget.dart';
+import 'package:money_tracker/screens/budgetManager.dart';
 import 'package:money_tracker/screens/categories.dart';
 import 'package:money_tracker/screens/newAccount.dart';
 import 'package:money_tracker/screens/transactions.dart';
@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
               barrierColor: Colors.black.withOpacity(0.25),
               barrierDismissible: true,
               opaque: false,
-              pageBuilder: (_, __, ___) => AddBudget(),
+              pageBuilder: (_, __, ___) => BudgetManager(),
             ));
           });
     } else {

@@ -13,14 +13,15 @@ import 'package:intl/intl.dart';
 import 'dart:math';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class AddBudget extends StatefulWidget {
-  const AddBudget({Key? key}) : super(key: key);
+class BudgetManager extends StatefulWidget {
+  final Budget? budgetInformation;
+  const BudgetManager({Key? key, this.budgetInformation}) : super(key: key);
 
   @override
-  _AddBudgetState createState() => _AddBudgetState();
+  _BudgetManagerState createState() => _BudgetManagerState();
 }
 
-class _AddBudgetState extends State<AddBudget> {
+class _BudgetManagerState extends State<BudgetManager> {
   final FocusNode nameFocusNode = FocusNode();
   final TextEditingController budgetNameController = TextEditingController();
   final DateFormat dateFormatter = DateFormat("MMM y", "en_us");
@@ -38,7 +39,17 @@ class _AddBudgetState extends State<AddBudget> {
     super.initState();
     User userModel = context.read<User>();
     setState(() {
-      selectedCurrency = userModel.mySettings.getPrimaryCurrency();
+      if (widget.budgetInformation != null) {
+        Budget budgetInfo = widget.budgetInformation!;
+        budgetNameController.text = budgetInfo.name;
+        categories = budgetInfo.toTrack;
+        budgetCap = budgetInfo.budgetCap;
+        selectedCurrency = budgetInfo.getCurrency()!;
+        budgetColor = Color(budgetInfo.color).withOpacity(1.0);
+        budgetIcon = IconData(budgetInfo.icon);
+      } else {
+        selectedCurrency = userModel.mySettings.getPrimaryCurrency();
+      }
     });
   }
 
@@ -180,7 +191,10 @@ class _AddBudgetState extends State<AddBudget> {
         });
       }
     } else {
-      budgetCap.add(BudgetCap(cap: cap, month: month, year: year));
+      setState(() {
+        budgetCap = List.from(budgetCap)
+          ..add(BudgetCap(cap: cap, month: month, year: year));
+      });
     }
   }
 
@@ -215,17 +229,40 @@ class _AddBudgetState extends State<AddBudget> {
               icon: Icon(Icons.check),
               onPressed: () {
                 User userModel = context.read<User>();
-                userModel.addBudgetHistory(budgetCap);
-                Budget newBudget = Budget(
-                    color: budgetColor.value,
-                    icon: budgetIcon.codePoint,
-                    name: budgetNameController.text,
-                    willCarryOver: isCarryOver);
-                newBudget.budgetCap.addAll(budgetCap);
-                newBudget.toTrack.addAll(categories);
-                userModel.addBudget(newBudget);
-                //TODO ADD BUDGET
-                Navigator.pop(context);
+                if (widget.budgetInformation != null) {
+                  //TODO ITERATE THROUGH CURRENT BUDGETCAP AND REMOVE THOSE THAT ARE NOT PART OF THIS.BUDGETCAP
+                  Budget forUpdate = widget.budgetInformation!;
+                  forUpdate.budgetCap.forEach((element) {
+                    BudgetCap? existingBudgetCap;
+                    budgetCap.forEach((existing) {
+                      if (existing.id == element.id)
+                        existingBudgetCap = element;
+                    });
+                    if (existingBudgetCap == null) {
+                      user.removeBudgetHistory(element);
+                    }
+                  });
+                  user.addBudgetHistory(budgetCap);
+                  forUpdate.color = budgetColor.value;
+                  forUpdate.icon = budgetIcon.codePoint;
+                  forUpdate.name = budgetNameController.text;
+                  forUpdate.willCarryOver = isCarryOver;
+                  forUpdate.toTrack.clear();
+                  forUpdate.toTrack.addAll(categories);
+                  forUpdate.budgetCap.clear();
+                  forUpdate.budgetCap.addAll(budgetCap);
+                } else {
+                  userModel.addBudgetHistory(budgetCap);
+                  Budget newBudget = Budget(
+                      color: budgetColor.value,
+                      icon: budgetIcon.codePoint,
+                      name: budgetNameController.text,
+                      willCarryOver: isCarryOver);
+                  newBudget.budgetCap.addAll(budgetCap);
+                  newBudget.toTrack.addAll(categories);
+                  userModel.addBudget(newBudget);
+                  Navigator.pop(context);
+                }
               },
             )
           ],
