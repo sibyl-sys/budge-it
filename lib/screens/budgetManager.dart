@@ -231,7 +231,6 @@ class _BudgetManagerState extends State<BudgetManager> {
               onPressed: () {
                 User userModel = context.read<User>();
                 if (widget.budgetInformation != null) {
-                  //TODO INTEGRATE CURRENCY SELECTION
                   Budget forUpdate = widget.budgetInformation!;
 
                   user.addBudgetHistory(budgetCap);
@@ -366,66 +365,66 @@ class _BudgetManagerState extends State<BudgetManager> {
                 ),
               ),
             ),
-            Ink(
-              color: Colors.white,
-              child: InkWell(
-                onTap: () async {
-                  final result =
-                      await Navigator.of(context).push(PageRouteBuilder(
-                    barrierColor: Colors.black.withOpacity(0.25),
-                    barrierDismissible: true,
-                    opaque: false,
-                    pageBuilder: (_, __, ___) => CurrencySelection(),
-                  ));
-                  if (result != null) {
-                    setState(() {
-                      selectedCurrency = result;
-                    });
-                  }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Colors.grey.shade400.withOpacity((0.5)),
-                            width: 1)),
-                  ),
-                  width: double.infinity,
-                  height: 78,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Currency",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            )),
-                        RichText(
-                          text: TextSpan(
-                              text: "${selectedCurrency.symbol} ",
-                              style: TextStyle(
-                                  color: const Color(0xFF4F4F4F),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              children: [
-                                TextSpan(
-                                    text: " (${selectedCurrency.name})",
-                                    style: TextStyle(
-                                        color: const Color(0xFF4F4F4F),
-                                        fontSize: 16,
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500)),
-                              ]),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Ink(
+            //   color: Colors.white,
+            //   child: InkWell(
+            //     onTap: () async {
+            //       final result =
+            //           await Navigator.of(context).push(PageRouteBuilder(
+            //         barrierColor: Colors.black.withOpacity(0.25),
+            //         barrierDismissible: true,
+            //         opaque: false,
+            //         pageBuilder: (_, __, ___) => CurrencySelection(),
+            //       ));
+            //       if (result != null) {
+            //         setState(() {
+            //           selectedCurrency = result;
+            //         });
+            //       }
+            //     },
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         border: Border(
+            //             bottom: BorderSide(
+            //                 color: Colors.grey.shade400.withOpacity((0.5)),
+            //                 width: 1)),
+            //       ),
+            //       width: double.infinity,
+            //       height: 78,
+            //       child: Padding(
+            //         padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+            //         child: Column(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text("Currency",
+            //                 style: TextStyle(
+            //                   fontSize: 12,
+            //                   fontWeight: FontWeight.w400,
+            //                 )),
+            //             RichText(
+            //               text: TextSpan(
+            //                   text: "${selectedCurrency.symbol} ",
+            //                   style: TextStyle(
+            //                       color: const Color(0xFF4F4F4F),
+            //                       fontSize: 16,
+            //                       fontWeight: FontWeight.w500),
+            //                   children: [
+            //                     TextSpan(
+            //                         text: " (${selectedCurrency.name})",
+            //                         style: TextStyle(
+            //                             color: const Color(0xFF4F4F4F),
+            //                             fontSize: 16,
+            //                             fontFamily: "Poppins",
+            //                             fontWeight: FontWeight.w500)),
+            //                   ]),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
               child: Column(
@@ -453,10 +452,12 @@ class _BudgetManagerState extends State<BudgetManager> {
                         if (results != null) {
                           Category categoryToAdd =
                               user.findCategoryByID(results["recipientID"])!;
-                          setState(() {
-                            categories = List.from(categories)
-                              ..add(categoryToAdd);
-                          });
+                          if (!categories.contains(categoryToAdd)) {
+                            setState(() {
+                              categories = List.from(categories)
+                                ..add(categoryToAdd);
+                            });
+                          }
                         }
                       },
                       style: TextButton.styleFrom(
