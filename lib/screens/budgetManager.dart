@@ -42,11 +42,13 @@ class _BudgetManagerState extends State<BudgetManager> {
       if (widget.budgetInformation != null) {
         Budget budgetInfo = widget.budgetInformation!;
         budgetNameController.text = budgetInfo.name;
-        categories = budgetInfo.toTrack;
-        budgetCap = budgetInfo.budgetCap;
-        selectedCurrency = budgetInfo.getCurrency()!;
+        categories = List.from(budgetInfo.toTrack);
+        budgetCap = List.from(budgetInfo.budgetCap);
+        selectedCurrency = budgetInfo.getCurrency() == null
+            ? userModel.mySettings.getPrimaryCurrency()
+            : budgetInfo.getCurrency()!;
         budgetColor = Color(budgetInfo.color).withOpacity(1.0);
-        budgetIcon = IconData(budgetInfo.icon);
+        budgetIcon = IconData(budgetInfo.icon, fontFamily: 'MaterialIcons');
       } else {
         selectedCurrency = userModel.mySettings.getPrimaryCurrency();
       }
@@ -230,8 +232,17 @@ class _BudgetManagerState extends State<BudgetManager> {
               onPressed: () {
                 User userModel = context.read<User>();
                 if (widget.budgetInformation != null) {
-                  //TODO ITERATE THROUGH CURRENT BUDGETCAP AND REMOVE THOSE THAT ARE NOT PART OF THIS.BUDGETCAP
+                  //TODO INTEGRATE CURRENCY SELECTION
                   Budget forUpdate = widget.budgetInformation!;
+
+                  user.addBudgetHistory(budgetCap);
+                  forUpdate.color = budgetColor.value;
+                  forUpdate.icon = budgetIcon.codePoint;
+                  forUpdate.name = budgetNameController.text;
+                  forUpdate.willCarryOver = isCarryOver;
+                  forUpdate.toTrack.clear();
+                  forUpdate.toTrack.addAll(categories);
+                  forUpdate.budgetCap.addAll(budgetCap);
                   forUpdate.budgetCap.forEach((element) {
                     BudgetCap? existingBudgetCap;
                     budgetCap.forEach((existing) {
@@ -242,15 +253,10 @@ class _BudgetManagerState extends State<BudgetManager> {
                       user.removeBudgetHistory(element);
                     }
                   });
-                  user.addBudgetHistory(budgetCap);
-                  forUpdate.color = budgetColor.value;
-                  forUpdate.icon = budgetIcon.codePoint;
-                  forUpdate.name = budgetNameController.text;
-                  forUpdate.willCarryOver = isCarryOver;
-                  forUpdate.toTrack.clear();
-                  forUpdate.toTrack.addAll(categories);
-                  forUpdate.budgetCap.clear();
-                  forUpdate.budgetCap.addAll(budgetCap);
+                  print(forUpdate.toTrack);
+
+                  userModel.addBudget(forUpdate);
+                  Navigator.pop(context);
                 } else {
                   userModel.addBudgetHistory(budgetCap);
                   Budget newBudget = Budget(
@@ -266,7 +272,9 @@ class _BudgetManagerState extends State<BudgetManager> {
               },
             )
           ],
-          title: Text("New Budget"),
+          title: Text(widget.budgetInformation == null
+              ? "New Budget"
+              : "Update Budget"),
         ),
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color(0xFFF2F2F2),

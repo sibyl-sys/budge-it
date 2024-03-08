@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_tracker/screens/budgetManager.dart';
 import 'package:provider/provider.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
@@ -101,7 +102,16 @@ class _BudgetState extends State<Budget> {
                   id: e.budgetID,
                   color: Color(e.color).withOpacity(1),
                   icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
-                  currencySymbol: "\$");
+                  currencySymbol: "\$",
+                  onClick: () {
+                    Navigator.of(context).push(PageRouteBuilder(
+                      barrierColor: Colors.black.withOpacity(0.25),
+                      barrierDismissible: true,
+                      opaque: false,
+                      pageBuilder: (_, __, ___) =>
+                          BudgetManager(budgetInformation: e),
+                    ));
+                  });
             }).toList(),
           ),
           Padding(
@@ -174,7 +184,16 @@ class _BudgetState extends State<Budget> {
                       id: e.budgetID,
                       color: Color(e.color).withOpacity(1),
                       icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
-                      currencySymbol: "\$"),
+                      currencySymbol: "\$",
+                      onClick: () {
+                        Navigator.of(context).push(PageRouteBuilder(
+                          barrierColor: Colors.black.withOpacity(0.25),
+                          barrierDismissible: true,
+                          opaque: false,
+                          pageBuilder: (_, __, ___) =>
+                              BudgetManager(budgetInformation: e),
+                        ));
+                      }),
                 )
                 .toList(),
           ),

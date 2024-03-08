@@ -11,6 +11,7 @@ class BudgetCard extends StatefulWidget {
   final double amount;
   final double cap;
   final String currencySymbol;
+  final Function onClick;
 
   const BudgetCard(
       {Key? key,
@@ -20,7 +21,8 @@ class BudgetCard extends StatefulWidget {
       required this.icon,
       required this.amount,
       required this.cap,
-      required this.currencySymbol})
+      required this.currencySymbol,
+      required this.onClick})
       : super(key: key);
 
   @override
@@ -38,7 +40,9 @@ class _BudgetCardState extends State<BudgetCard> {
         surfaceTintColor: Colors.white,
         child: InkWell(
             splashColor: Colors.teal.shade700.withAlpha(50),
-            onTap: () {},
+            onTap: () {
+              widget.onClick();
+            },
             child: Container(
                 height: 75,
                 child: Padding(
@@ -138,28 +142,33 @@ class _BudgetCardState extends State<BudgetCard> {
                                                               FontWeight.w500)),
                                                 ]),
                                           ),
-                                          widget.cap == 0 ? Spacer() : RichText(
-                                            text: TextSpan(
-                                                text:
-                                                    "/ ${widget.currencySymbol} ",
-                                                style: TextStyle(
-                                                    color: Color(0xFFB6B6B6),
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                                children: [
-                                                  TextSpan(
+                                          widget.cap == 0
+                                              ? Spacer()
+                                              : RichText(
+                                                  text: TextSpan(
                                                       text:
-                                                          "${moneyFormat.format((widget.cap))}",
+                                                          "/ ${widget.currencySymbol} ",
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xFFB6B6B6),
                                                           fontSize: 12,
-                                                          fontFamily: "Poppins",
                                                           fontWeight:
-                                                              FontWeight.w500)),
-                                                ]),
-                                          ),
+                                                              FontWeight.w500),
+                                                      children: [
+                                                        TextSpan(
+                                                            text:
+                                                                "${moneyFormat.format((widget.cap))}",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xFFB6B6B6),
+                                                                fontSize: 12,
+                                                                fontFamily:
+                                                                    "Poppins",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500)),
+                                                      ]),
+                                                ),
                                         ]),
                                   ]),
                             ),
