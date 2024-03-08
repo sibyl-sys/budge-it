@@ -1,4 +1,3 @@
-import 'package:money_tracker/services/budget.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()

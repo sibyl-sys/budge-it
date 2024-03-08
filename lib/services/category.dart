@@ -1,7 +1,5 @@
 import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
-import 'package:money_tracker/services/currency.dart';
-import 'package:money_tracker/constants/Constants.dart';
 import 'package:objectbox/objectbox.dart';
 
 enum CategoryType { expense, income }

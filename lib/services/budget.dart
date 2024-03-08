@@ -1,8 +1,6 @@
 import 'package:objectbox/objectbox.dart';
-import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/budgetCap.dart';
-import 'package:money_tracker/constants/Constants.dart';
 
 @Entity()
 class Budget {
