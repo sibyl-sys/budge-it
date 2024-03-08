@@ -15,7 +15,7 @@ class Budget {
 
   String name;
 
-  int budgetCurrencyID = -1;
+  // int budgetCurrencyID = -1;
 
   bool willCarryOver = true;
 
@@ -29,10 +29,10 @@ class Budget {
       required this.name,
       required this.willCarryOver});
 
-  Currency? getCurrency() {
-    if (budgetCurrencyID == -1) {
-      return null;
-    }
-    return currencyList[budgetCurrencyID];
-  }
+  // Currency? getCurrency() {
+  //   if (budgetCurrencyID == -1) {
+  //     return null;
+  //   }
+  //   return currencyList[budgetCurrencyID];
+  // }
 }

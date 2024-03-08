@@ -133,11 +133,6 @@ final _entities = <ModelEntity>[
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 1630040688712898633),
-            name: 'categoryCurrencyID',
-            type: 6,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(8, 7671964770639684222),
             name: 'dbLastTransactionImportance',
             type: 6,
@@ -372,11 +367,6 @@ final _entities = <ModelEntity>[
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 2343707797326796135),
-            name: 'budgetCurrencyID',
-            type: 6,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(6, 5608647318040087238),
             name: 'willCarryOver',
             type: 1,
@@ -457,7 +447,11 @@ ModelDefinition getObjectBoxModel() {
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [7569967098903491230],
-      retiredPropertyUids: const [1902462991968783265],
+      retiredPropertyUids: const [
+        1902462991968783265,
+        2343707797326796135,
+        1630040688712898633
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -553,7 +547,6 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(3, nameOffset);
           fbb.addInt64(4, object.index);
           fbb.addInt64(5, object.dbCategoryType);
-          fbb.addInt64(6, object.categoryCurrencyID);
           fbb.addInt64(7, object.dbLastTransactionImportance);
           fbb.finish(fbb.endTable());
           return object.categoryID;
@@ -578,8 +571,6 @@ ModelDefinition getObjectBoxModel() {
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbCategoryType =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 14)
-            ..categoryCurrencyID =
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0)
             ..dbLastTransactionImportance = const fb.Int64Reader()
                 .vTableGetNullable(buffer, rootOffset, 18);
           InternalToManyAccess.setRelInfo<Category>(object.subcategories, store,
@@ -816,7 +807,6 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(1, object.icon);
           fbb.addInt64(2, object.color);
           fbb.addOffset(3, nameOffset);
-          fbb.addInt64(4, object.budgetCurrencyID);
           fbb.addBool(5, object.willCarryOver);
           fbb.finish(fbb.endTable());
           return object.budgetID;
@@ -838,9 +828,7 @@ ModelDefinition getObjectBoxModel() {
               name: nameParam,
               willCarryOver: willCarryOverParam)
             ..budgetID =
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
-            ..budgetCurrencyID =
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           InternalToManyAccess.setRelInfo<Budget>(object.toTrack, store,
               RelInfo<Budget>.toMany(2, object.budgetID));
           InternalToManyAccess.setRelInfo<Budget>(object.budgetCap, store,
@@ -958,13 +946,9 @@ class Category_ {
   static final dbCategoryType =
       QueryIntegerProperty<Category>(_entities[1].properties[5]);
 
-  /// see [Category.categoryCurrencyID]
-  static final categoryCurrencyID =
-      QueryIntegerProperty<Category>(_entities[1].properties[6]);
-
   /// see [Category.dbLastTransactionImportance]
   static final dbLastTransactionImportance =
-      QueryIntegerProperty<Category>(_entities[1].properties[7]);
+      QueryIntegerProperty<Category>(_entities[1].properties[6]);
 
   /// see [Category.subcategories]
   static final subcategories =
@@ -1118,13 +1102,9 @@ class Budget_ {
   /// see [Budget.name]
   static final name = QueryStringProperty<Budget>(_entities[7].properties[3]);
 
-  /// see [Budget.budgetCurrencyID]
-  static final budgetCurrencyID =
-      QueryIntegerProperty<Budget>(_entities[7].properties[4]);
-
   /// see [Budget.willCarryOver]
   static final willCarryOver =
-      QueryBooleanProperty<Budget>(_entities[7].properties[5]);
+      QueryBooleanProperty<Budget>(_entities[7].properties[4]);
 
   /// see [Budget.toTrack]
   static final toTrack =

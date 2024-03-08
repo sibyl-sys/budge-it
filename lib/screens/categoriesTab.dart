@@ -36,9 +36,10 @@ class _CategoriesTabState extends State<CategoriesTab> {
           icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
           name: e.name,
           categoryID: e.categoryID,
-          currencySymbol: e.getCurrency() == null
-              ? user.mySettings.getPrimaryCurrency().symbol
-              : e.getCurrency()!.symbol,
+          // currencySymbol: e.getCurrency() == null
+          //     ? user.mySettings.getPrimaryCurrency().symbol
+          //     : e.getCurrency()!.symbol,
+          currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
           value: user.getCategoryNet(
               from: widget.from, to: widget.to, categoryID: e.categoryID),
           onCategoryClick: widget.onCategoryClick)));
@@ -49,9 +50,10 @@ class _CategoriesTabState extends State<CategoriesTab> {
           icon: IconData(e.icon, fontFamily: 'MaterialIcons'),
           name: e.name,
           categoryID: e.categoryID,
-          currencySymbol: e.getCurrency() == null
-              ? user.mySettings.getPrimaryCurrency().symbol
-              : e.getCurrency()!.symbol,
+          // currencySymbol: e.getCurrency() == null
+          //     ? user.mySettings.getPrimaryCurrency().symbol
+          //     : e.getCurrency()!.symbol,
+          currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
           value: user.getCategoryNet(
               from: widget.from, to: widget.to, categoryID: e.categoryID),
           onCategoryClick: widget.onCategoryClick)));

@@ -4,11 +4,7 @@ import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/constants/Constants.dart';
 import 'package:objectbox/objectbox.dart';
 
-
-enum CategoryType {
-  expense,
-  income
-}
+enum CategoryType { expense, income }
 
 @Entity()
 class Category {
@@ -27,7 +23,7 @@ class Category {
   @Transient()
   TransactionImportance? lastTransactionImportance;
 
-  int categoryCurrencyID = -1;
+  // int categoryCurrencyID = -1;
 
   int index;
 
@@ -40,7 +36,7 @@ class Category {
 
   set dbCategoryType(int? value) {
     _ensureStableEnumValues();
-    if(value == null) {
+    if (value == null) {
       categoryType = null;
     } else {
       categoryType = CategoryType.values[value];
@@ -54,16 +50,20 @@ class Category {
 
   set dbLastTransactionImportance(int? value) {
     _ensureStableEnumValues();
-    if(value == null) {
+    if (value == null) {
       lastTransactionImportance = null;
     } else {
       lastTransactionImportance = TransactionImportance.values[value];
     }
   }
 
-
-
-  Category({required this.icon,required this.color,required  this.name, required this.index, this.lastTransactionImportance = TransactionImportance.need, this.categoryType});
+  Category(
+      {required this.icon,
+      required this.color,
+      required this.name,
+      required this.index,
+      this.lastTransactionImportance = TransactionImportance.need,
+      this.categoryType});
 
   void _ensureStableEnumValues() {
     assert(CategoryType.expense.index == 0);
@@ -73,11 +73,10 @@ class Category {
     assert(TransactionImportance.sudden.index == 2);
   }
 
-  Currency? getCurrency() {
-    if(categoryCurrencyID == -1) {
-      return null;
-    }
-    return currencyList[categoryCurrencyID];
-  }
-
+  // Currency? getCurrency() {
+  //   if(categoryCurrencyID == -1) {
+  //     return null;
+  //   }
+  //   return currencyList[categoryCurrencyID];
+  // }
 }

@@ -44,14 +44,13 @@ class _BudgetManagerState extends State<BudgetManager> {
         budgetNameController.text = budgetInfo.name;
         categories = List.from(budgetInfo.toTrack);
         budgetCap = List.from(budgetInfo.budgetCap);
-        selectedCurrency = budgetInfo.getCurrency() == null
-            ? userModel.mySettings.getPrimaryCurrency()
-            : budgetInfo.getCurrency()!;
+        // selectedCurrency = budgetInfo.getCurrency() == null
+        //     ? userModel.mySettings.getPrimaryCurrency()
+        //     : budgetInfo.getCurrency()!;
         budgetColor = Color(budgetInfo.color).withOpacity(1.0);
         budgetIcon = IconData(budgetInfo.icon, fontFamily: 'MaterialIcons');
-      } else {
-        selectedCurrency = userModel.mySettings.getPrimaryCurrency();
       }
+      selectedCurrency = userModel.mySettings.getPrimaryCurrency();
     });
   }
 

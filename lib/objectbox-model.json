@@ -109,11 +109,6 @@
           "type": 6
         },
         {
-          "id": "7:1630040688712898633",
-          "name": "categoryCurrencyID",
-          "type": 6
-        },
-        {
           "id": "8:7671964770639684222",
           "name": "dbLastTransactionImportance",
           "type": 6
@@ -349,11 +344,6 @@
           "type": 9
         },
         {
-          "id": "5:2343707797326796135",
-          "name": "budgetCurrencyID",
-          "type": 6
-        },
-        {
           "id": "6:5608647318040087238",
           "name": "willCarryOver",
           "type": 1
@@ -413,7 +403,9 @@
     7569967098903491230
   ],
   "retiredPropertyUids": [
-    1902462991968783265
+    1902462991968783265,
+    2343707797326796135,
+    1630040688712898633
   ],
   "retiredRelationUids": [],
   "version": 1
