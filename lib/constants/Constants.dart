@@ -3,134 +3,194 @@ import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/currency.dart';
 
 final Map<String, List<IconData>> accountIconList = {
-  "Accounts" : [
+  "Accounts": [
     Icons.account_balance_wallet_outlined,
     Icons.credit_card_outlined,
     Icons.account_balance_outlined,
     Icons.attach_money_outlined,
+    Icons.savings_outlined,
+    Icons.money,
+    Icons.local_activity_outlined,
+    Icons.payments_outlined,
+    Icons.sell_outlined,
+    Icons.paid_outlined,
+    Icons.currency_exchange,
+    Icons.currency_bitcoin,
+    Icons.price_change_outlined,
+    Icons.atm_outlined,
+    Icons.card_membership_outlined,
+    Icons.redeem_outlined
   ],
-  "Categories" : [
-    Icons.whatshot_outlined,
+  "Categories": [
+    Icons.restaurant_outlined,
+    Icons.restaurant_menu_outlined,
     Icons.shopping_cart_outlined,
-    Icons.house_outlined
+    Icons.shopping_bag_outlined,
+    Icons.ev_station,
+    Icons.local_parking_outlined,
+    Icons.local_gas_station,
+    Icons.local_car_wash,
+    Icons.electric_car,
+    Icons.directions_car_outlined,
+    Icons.two_wheeler,
+    Icons.electrical_services_outlined,
+    Icons.home_repair_service_outlined,
+    Icons.handyman_outlined,
+    Icons.water_drop_outlined,
+    Icons.bolt_outlined,
+    Icons.local_hotel_outlined,
+    Icons.directions_bus_outlined,
+    Icons.train_outlined,
+    Icons.tram_outlined,
+    Icons.local_taxi_outlined,
+    Icons.place_outlined,
+    Icons.flight,
+    Icons.local_offer_outlined,
+    Icons.local_mall_outlined,
+    Icons.shopping_bag_outlined,
+    Icons.shopping_basket_outlined,
+    Icons.set_meal_outlined,
+    Icons.local_pizza_outlined,
+    Icons.lunch_dining_outlined,
+    Icons.ramen_dining_outlined,
+    Icons.kebab_dining_outlined,
+    Icons.local_cafe_outlined,
+    Icons.brunch_dining_outlined,
+    Icons.fastfood_outlined,
+    Icons.dinner_dining_outlined,
+    Icons.theater_comedy_outlined,
+    Icons.local_movies_outlined,
+    Icons.camera_alt_outlined,
+    Icons.volunteer_activism_outlined,
+    Icons.local_florist_outlined,
+    Icons.directions_bike_outlined,
+    Icons.pedal_bike_outlined,
+    Icons.directions_run_outlined,
+    Icons.sailing_outlined,
+    Icons.audiotrack_outlined,
+    Icons.headset_outlined,
+    Icons.smart_display_outlined,
+    Icons.videogame_asset_outlined,
+    Icons.gamepad_outlined,
+    Icons.pets_outlined,
+    Icons.yard_outlined,
+    Icons.family_restroom_outlined,
+    Icons.person_outline,
+    Icons.cleaning_services_outlined,
+    Icons.local_laundry_service_outlined,
+    Icons.medical_services_outlined,
+    Icons.local_hospital_outlined,
+    Icons.local_fire_department_outlined,
+    Icons.emergency_outlined,
+    Icons.local_library_outlined
   ]
 };
 
 final List<Map<String, dynamic>> accountColorList = [
   {
-    "name" : "Deep Purple",
-    "shade" : 400,
-    "value" :  Colors.deepPurple[400],
-    "isDarkIcon" : false
+    "name": "Deep Purple",
+    "shade": 400,
+    "value": Colors.deepPurple[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Purple",
-    "shade" : 400,
-    "value" :  Colors.purple[400],
-    "isDarkIcon" : false
+    "name": "Purple",
+    "shade": 400,
+    "value": Colors.purple[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Pink",
-    "shade" : 400,
-    "value" :  Colors.pink[400],
-    "isDarkIcon" : false
+    "name": "Pink",
+    "shade": 400,
+    "value": Colors.pink[400],
+    "isDarkIcon": false
+  },
+  {"name": "Red", "shade": 400, "value": Colors.red[400], "isDarkIcon": false},
+  {
+    "name": "Indigo",
+    "shade": 400,
+    "value": Colors.indigo[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Red",
-    "shade" : 400,
-    "value" :  Colors.red[400],
-    "isDarkIcon" : false
+    "name": "Blue",
+    "shade": 400,
+    "value": Colors.blue[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Indigo",
-    "shade" : 400,
-    "value" :  Colors.indigo[400],
-    "isDarkIcon" : false
+    "name": "Light Blue",
+    "shade": 400,
+    "value": Colors.lightBlue[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Blue",
-    "shade" : 400,
-    "value" :  Colors.blue[400],
-    "isDarkIcon" : false
+    "name": "Cyan",
+    "shade": 400,
+    "value": Colors.cyan[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Light Blue",
-    "shade" : 400,
-    "value" :  Colors.lightBlue[400],
-    "isDarkIcon" : false
+    "name": "Teal",
+    "shade": 400,
+    "value": Colors.teal[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Cyan",
-    "shade" : 400,
-    "value" :  Colors.cyan[400],
-    "isDarkIcon" : false
+    "name": "Green",
+    "shade": 400,
+    "value": Colors.green[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Teal",
-    "shade" : 400,
-    "value" :  Colors.teal[400],
-    "isDarkIcon" : false
+    "name": "Light Green",
+    "shade": 400,
+    "value": Colors.lightGreen[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Green",
-    "shade" : 400,
-    "value" :  Colors.green[400],
-    "isDarkIcon" : false
+    "name": "Lime",
+    "shade": 400,
+    "value": Colors.lime[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Light Green",
-    "shade" : 400,
-    "value" :  Colors.lightGreen[400],
-    "isDarkIcon" : false
+    "name": "Deep Orange",
+    "shade": 400,
+    "value": Colors.deepOrange[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Lime",
-    "shade" : 400,
-    "value" :  Colors.lime[400],
-    "isDarkIcon" : false
+    "name": "Orange",
+    "shade": 400,
+    "value": Colors.orange[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Deep Orange",
-    "shade" : 400,
-    "value" :  Colors.deepOrange[400],
-    "isDarkIcon" : false
+    "name": "Amber",
+    "shade": 400,
+    "value": Colors.amber[400],
+    "isDarkIcon": true
   },
   {
-    "name" : "Orange",
-    "shade" : 400,
-    "value" :  Colors.orange[400],
-    "isDarkIcon" : false
+    "name": "Yellow",
+    "shade": 400,
+    "value": Colors.yellow[400],
+    "isDarkIcon": true
   },
   {
-    "name" : "Amber",
-    "shade" : 400,
-    "value" :  Colors.amber[400],
-    "isDarkIcon" : true
+    "name": "Brown",
+    "shade": 400,
+    "value": Colors.brown[400],
+    "isDarkIcon": false
   },
   {
-    "name" : "Yellow",
-    "shade" : 400,
-    "value" :  Colors.yellow[400],
-    "isDarkIcon" : true
+    "name": "Grey",
+    "shade": 400,
+    "value": Colors.grey[400],
+    "isDarkIcon": false
   },
-  {
-    "name" : "Brown",
-    "shade" : 400,
-    "value" :  Colors.brown[400],
-    "isDarkIcon" : false
-  },
-  {
-    "name" : "Grey",
-    "shade" : 400,
-    "value" :  Colors.grey[400],
-    "isDarkIcon" : false
-  },
-  {
-    "name" : "Black",
-    "shade" : 400,
-    "value" :  Colors.black54,
-    "isDarkIcon" : false
-  },
+  {"name": "Black", "shade": 400, "value": Colors.black54, "isDarkIcon": false},
 ];
 
 // final List<Map<String, dynamic>> accountColorList = [
@@ -463,16 +523,66 @@ final List<Map<String, dynamic>> accountColorList = [
 // ];
 
 final List<Category> categoryDefault = [
-  Category(color: Colors.green.shade400.value, categoryType: CategoryType.expense, icon: Icons.shopping_cart_outlined.codePoint, name: "Shopping", index: 0),
-  Category(color: Colors.blue.shade400.value, categoryType: CategoryType.expense, icon: Icons.fastfood.codePoint, name: "Restaurant", index: 1),
-  Category(color: Colors.red.shade400.value, categoryType: CategoryType.expense, icon: Icons.local_movies.codePoint, name: "Leisure", index: 2),
-  Category( color: Colors.yellow.shade400.value, categoryType: CategoryType.expense, icon: Icons.directions_bus.codePoint, name: "Transport", index: 3),
-  Category(color: Colors.teal.shade400.value, categoryType: CategoryType.expense, icon: Icons.healing.codePoint, name: "Health", index: 4),
-  Category(color: Colors.brown.shade400.value, categoryType: CategoryType.expense, icon: Icons.wallet_giftcard.codePoint, name: "Gifts",index: 5),
-  Category(color: Colors.deepPurple.shade400.value, categoryType: CategoryType.expense, icon: Icons.pets.codePoint, name: "Pet", index: 6),
-  Category(color: Colors.lightGreen.shade400.value, categoryType: CategoryType.income, icon: Icons.money.codePoint, name: "Salary", index: 7),
-  Category(color: Colors.lime.shade400.value, categoryType: CategoryType.income, icon: Icons.receipt.codePoint, name: "Reimbursements", index:8),
-  Category(color: Colors.grey.value, categoryType: CategoryType.expense, icon: Icons.adjust.codePoint, name: "Untracked", index: 9),
+  Category(
+      color: Colors.green.shade400.value,
+      categoryType: CategoryType.expense,
+      icon: Icons.shopping_cart_outlined.codePoint,
+      name: "Shopping",
+      index: 0),
+  Category(
+      color: Colors.blue.shade400.value,
+      categoryType: CategoryType.expense,
+      icon: Icons.fastfood.codePoint,
+      name: "Restaurant",
+      index: 1),
+  Category(
+      color: Colors.red.shade400.value,
+      categoryType: CategoryType.expense,
+      icon: Icons.local_movies.codePoint,
+      name: "Leisure",
+      index: 2),
+  Category(
+      color: Colors.yellow.shade400.value,
+      categoryType: CategoryType.expense,
+      icon: Icons.directions_bus.codePoint,
+      name: "Transport",
+      index: 3),
+  Category(
+      color: Colors.teal.shade400.value,
+      categoryType: CategoryType.expense,
+      icon: Icons.healing.codePoint,
+      name: "Health",
+      index: 4),
+  Category(
+      color: Colors.brown.shade400.value,
+      categoryType: CategoryType.expense,
+      icon: Icons.wallet_giftcard.codePoint,
+      name: "Gifts",
+      index: 5),
+  Category(
+      color: Colors.deepPurple.shade400.value,
+      categoryType: CategoryType.expense,
+      icon: Icons.pets.codePoint,
+      name: "Pet",
+      index: 6),
+  Category(
+      color: Colors.lightGreen.shade400.value,
+      categoryType: CategoryType.income,
+      icon: Icons.money.codePoint,
+      name: "Salary",
+      index: 7),
+  Category(
+      color: Colors.lime.shade400.value,
+      categoryType: CategoryType.income,
+      icon: Icons.receipt.codePoint,
+      name: "Reimbursements",
+      index: 8),
+  Category(
+      color: Colors.grey.value,
+      categoryType: CategoryType.expense,
+      icon: Icons.adjust.codePoint,
+      name: "Untracked",
+      index: 9),
 ];
 
 final List<Currency> currencyList = [
@@ -490,28 +600,38 @@ final List<Currency> currencyList = [
   Currency(name: "Belize Dollar", symbol: "BZ\$", exchangeRateToUSD: 1),
   Currency(name: "Bermuda Dollar", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Bolivia Bolíviano", symbol: "\$b", exchangeRateToUSD: 1),
-  Currency(name: "Bosnia and Herzegovina Convertible Mark", symbol: "KM", exchangeRateToUSD: 1),
+  Currency(
+      name: "Bosnia and Herzegovina Convertible Mark",
+      symbol: "KM",
+      exchangeRateToUSD: 1),
   Currency(name: "Botswana Pula", symbol: "P", exchangeRateToUSD: 1),
   Currency(name: "Bulgaria Lev", symbol: "лв", exchangeRateToUSD: 1),
   Currency(name: "Brazil Real", symbol: "R\$", exchangeRateToUSD: 1),
-  Currency(name: "Brunei Darussalam Dollar", symbol: "\$", exchangeRateToUSD: 1),
+  Currency(
+      name: "Brunei Darussalam Dollar", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Cambodia Riel", symbol: "៛", exchangeRateToUSD: 1),
   Currency(name: "Canada Dollar", symbol: "\$", exchangeRateToUSD: 0.793035),
   Currency(name: "Cayman Islands Dollar", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Chile Peso", symbol: "\$", exchangeRateToUSD: 1),
-  Currency(name: "China Yuan Renminbi", symbol: "¥", exchangeRateToUSD: 0.15287),
+  Currency(
+      name: "China Yuan Renminbi", symbol: "¥", exchangeRateToUSD: 0.15287),
   Currency(name: "Colombia Peso", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Costa Rica Colon", symbol: "₡", exchangeRateToUSD: 1),
   Currency(name: "Croatia Kuna", symbol: "kn", exchangeRateToUSD: 1),
   Currency(name: "Cuba Peso", symbol: "₱", exchangeRateToUSD: 1),
   Currency(name: "Czech Republic Koruna", symbol: "Kč", exchangeRateToUSD: 1),
   Currency(name: "Denmark Krone", symbol: "kr", exchangeRateToUSD: 1),
-  Currency(name: "Dominican Republic Peso", symbol: "RD\$", exchangeRateToUSD: 1),
+  Currency(
+      name: "Dominican Republic Peso", symbol: "RD\$", exchangeRateToUSD: 1),
   Currency(name: "East Caribbean Dollar", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Egypt Pound", symbol: "£", exchangeRateToUSD: 1),
   Currency(name: "El Salvador Colon", symbol: "\$", exchangeRateToUSD: 1),
-  Currency(name: "Euro Member Countries", symbol: "€", exchangeRateToUSD: 1.18245),
-  Currency(name: "Falkland Islands (Malvinas) Pound", symbol: "£", exchangeRateToUSD: 1),
+  Currency(
+      name: "Euro Member Countries", symbol: "€", exchangeRateToUSD: 1.18245),
+  Currency(
+      name: "Falkland Islands (Malvinas) Pound",
+      symbol: "£",
+      exchangeRateToUSD: 1),
   Currency(name: "Fiji Dollar", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Ghana Cedi", symbol: "¢", exchangeRateToUSD: 1),
   Currency(name: "Gibraltar Pound", symbol: "£", exchangeRateToUSD: 1),
@@ -543,7 +663,8 @@ final List<Currency> currencyList = [
   Currency(name: "Mozambique Metical", symbol: "MT", exchangeRateToUSD: 1),
   Currency(name: "Namibia Dollar", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Nepal Rupee", symbol: "₨", exchangeRateToUSD: 1),
-  Currency(name: "Netherlands Antilles Guilder", symbol: "ƒ", exchangeRateToUSD: 1),
+  Currency(
+      name: "Netherlands Antilles Guilder", symbol: "ƒ", exchangeRateToUSD: 1),
   Currency(name: "New Zealand Dollar", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Nicaragua Cordoba", symbol: "C\$", exchangeRateToUSD: 1),
   Currency(name: "Nigeria Naira", symbol: "₦", exchangeRateToUSD: 1),
@@ -572,12 +693,14 @@ final List<Currency> currencyList = [
   Currency(name: "Syria Pound", symbol: "£", exchangeRateToUSD: 1),
   Currency(name: "Taiwan New Dollar", symbol: "NT\$", exchangeRateToUSD: 1),
   Currency(name: "Thailand Baht", symbol: "฿", exchangeRateToUSD: 1),
-  Currency(name: "Trinidad and Tobago Dollar", symbol: "TT\$", exchangeRateToUSD: 1),
+  Currency(
+      name: "Trinidad and Tobago Dollar", symbol: "TT\$", exchangeRateToUSD: 1),
   Currency(name: "Turkey Lira", symbol: "₺", exchangeRateToUSD: 1),
   Currency(name: "Tuvalu Dollar", symbol: "\$", exchangeRateToUSD: 1),
   Currency(name: "Ukraine Hryvnia", symbol: "₴", exchangeRateToUSD: 1),
   Currency(name: "UAE-Dirham", symbol: "د.إ", exchangeRateToUSD: 1),
-  Currency(name: "United Kingdom Pound", symbol: "£", exchangeRateToUSD: 1.379099),
+  Currency(
+      name: "United Kingdom Pound", symbol: "£", exchangeRateToUSD: 1.379099),
   Currency(name: "Uruguay Peso", symbol: "\$U", exchangeRateToUSD: 1),
   Currency(name: "Uzbekistan Som", symbol: "лв", exchangeRateToUSD: 1),
   Currency(name: "Venezuela Bolívar", symbol: "Bs", exchangeRateToUSD: 1),
