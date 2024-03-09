@@ -172,7 +172,7 @@
     },
     {
       "id": "5:5949585774518277514",
-      "lastPropertyId": "9:4214703002186977694",
+      "lastPropertyId": "10:1148654174728662569",
       "name": "Transaction",
       "properties": [
         {
@@ -219,6 +219,11 @@
         {
           "id": "9:4214703002186977694",
           "name": "dbImportance",
+          "type": 6
+        },
+        {
+          "id": "10:1148654174728662569",
+          "name": "subcategoryID",
           "type": 6
         }
       ],

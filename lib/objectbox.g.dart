@@ -196,7 +196,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(5, 5949585774518277514),
       name: 'Transaction',
-      lastPropertyId: const IdUid(9, 4214703002186977694),
+      lastPropertyId: const IdUid(10, 1148654174728662569),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -242,6 +242,11 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(9, 4214703002186977694),
             name: 'dbImportance',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(10, 1148654174728662569),
+            name: 'subcategoryID',
             type: 6,
             flags: 0)
       ],
@@ -645,7 +650,7 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Transaction object, fb.Builder fbb) {
           final noteOffset = fbb.writeString(object.note);
-          fbb.startTable(10);
+          fbb.startTable(11);
           fbb.addInt64(0, object.transactionID);
           fbb.addFloat64(1, object.value);
           fbb.addOffset(2, noteOffset);
@@ -655,6 +660,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addBool(6, object.isArchived);
           fbb.addInt64(7, object.dbTransactionType);
           fbb.addInt64(8, object.dbImportance);
+          fbb.addInt64(9, object.subcategoryID);
           fbb.finish(fbb.endTable());
           return object.transactionID;
         },
@@ -673,13 +679,16 @@ ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
           final isArchivedParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 16, false);
+          final subcategoryIDParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
           final object = Transaction(
               value: valueParam,
               note: noteParam,
               timestamp: timestampParam,
               toID: toIDParam,
               fromID: fromIDParam,
-              isArchived: isArchivedParam)
+              isArchived: isArchivedParam,
+              subcategoryID: subcategoryIDParam)
             ..transactionID =
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbTransactionType =
@@ -1013,6 +1022,10 @@ class Transaction_ {
   /// see [Transaction.dbImportance]
   static final dbImportance =
       QueryIntegerProperty<Transaction>(_entities[4].properties[8]);
+
+  /// see [Transaction.subcategoryID]
+  static final subcategoryID =
+      QueryIntegerProperty<Transaction>(_entities[4].properties[9]);
 }
 
 /// [Settings] entity fields to define ObjectBox queries.

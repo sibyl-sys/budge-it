@@ -1,17 +1,8 @@
 import 'package:objectbox/objectbox.dart';
 
+enum TransactionType { expense, income, transfer }
 
-enum TransactionType {
-  expense,
-  income,
-  transfer
-}
-
-enum TransactionImportance {
-  need,
-  want,
-  sudden
-}
+enum TransactionImportance { need, want, sudden }
 
 @Entity()
 class Transaction {
@@ -29,6 +20,8 @@ class Transaction {
 
   int fromID;
 
+  int subcategoryID;
+
   @Transient()
   TransactionType? transactionType;
 
@@ -44,7 +37,7 @@ class Transaction {
 
   set dbTransactionType(int? value) {
     _ensureStableEnumValues();
-    if(value == null) {
+    if (value == null) {
       transactionType = null;
     } else {
       transactionType = TransactionType.values[value];
@@ -58,14 +51,23 @@ class Transaction {
 
   set dbImportance(int? value) {
     _ensureStableEnumValues();
-    if(value == null) {
+    if (value == null) {
       importance = null;
     } else {
       importance = TransactionImportance.values[value];
     }
   }
 
-  Transaction({required this.value,required  this.note, required this.timestamp,required  this.toID,required  this.fromID,required this.isArchived, this.transactionType, this.importance});
+  Transaction(
+      {required this.value,
+      required this.note,
+      required this.timestamp,
+      required this.toID,
+      required this.fromID,
+      required this.isArchived,
+      this.subcategoryID = -1,
+      this.transactionType,
+      this.importance});
 
   void _ensureStableEnumValues() {
     assert(TransactionType.expense.index == 0);

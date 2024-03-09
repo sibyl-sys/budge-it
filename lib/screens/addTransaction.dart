@@ -29,6 +29,7 @@ class _AddTransactionState extends State<AddTransaction> {
   Operator operator = Operator.none;
   DateTime currentDate = DateTime.now();
   DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
+  int subcategoryID = -1;
 
   final TextEditingController notesController = TextEditingController();
 
@@ -240,6 +241,7 @@ class _AddTransactionState extends State<AddTransaction> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
+    Category? category;
     TransactionType transactionType =
         user.mySettings.getSelectedTransactionType();
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
@@ -252,6 +254,10 @@ class _AddTransactionState extends State<AddTransaction> {
         : user
             .findCategoryByID(user.mySettings.selectedCategoryTo)!
             .lastTransactionImportance!;
+
+    if (transactionType != TransactionType.transfer) {
+      category = user.findCategoryByID(user.mySettings.selectedCategoryTo);
+    }
 
     return Material(
       type: MaterialType.transparency,
@@ -434,217 +440,39 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ),
             ]),
-            transactionType != TransactionType.transfer
+            transactionType != TransactionType.transfer &&
+                    category != null &&
+                    category.subcategories.length > 0
                 ? Container(
                     padding: EdgeInsets.all(8),
                     color: Colors.white,
                     width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: ToggleButton(
-                              childSelected:
-                                  Stack(alignment: Alignment.center, children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      child: Icon(
-                                        Icons.favorite,
-                                        size: 11.0,
-                                        color: Colors.white,
-                                      ),
-                                      radius: 7.0,
-                                      backgroundColor: Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.5),
-                                    ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Text("Need",
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500)),
-                                ),
-                              ]),
-                              childUnselected:
-                                  Stack(alignment: Alignment.center, children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      child: Icon(
-                                        Icons.favorite,
-                                        size: 11.0,
-                                        color: Colors.white,
-                                      ),
-                                      radius: 7.0,
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                    ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Text("Need",
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500)),
-                                ),
-                              ]),
-                              onChange: () {
-                                Category currentSelectedCategory =
-                                    user.findCategoryByID(
-                                        user.mySettings.selectedCategoryTo)!;
-                                currentSelectedCategory
-                                        .lastTransactionImportance =
-                                    TransactionImportance.need;
-                                user.updateCategory(currentSelectedCategory);
-                              },
-                              selected: transactionImportance ==
-                                  TransactionImportance.need,
-                              outlineColor: Theme.of(context).primaryColor),
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: ToggleButton(
-                              childSelected:
-                                  Stack(alignment: Alignment.center, children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      child: Icon(
-                                        Icons.star,
-                                        size: 11.0,
-                                        color: Colors.white,
-                                      ),
-                                      radius: 7.0,
-                                      backgroundColor: Colors.yellow.shade700
-                                          .withOpacity(0.5),
-                                    ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Text("Want",
-                                      style: TextStyle(
-                                          color: Colors.yellow[700],
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500)),
-                                ),
-                              ]),
-                              childUnselected:
-                                  Stack(alignment: Alignment.center, children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      child: Icon(
-                                        Icons.star,
-                                        size: 11.0,
-                                        color: Colors.white,
-                                      ),
-                                      radius: 7.0,
-                                      backgroundColor: Colors.yellow[700],
-                                    ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Text("Want",
-                                      style: TextStyle(
-                                          color: Colors.yellow[700],
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500)),
-                                ),
-                              ]),
-                              onChange: () {
-                                Category currentSelectedCategory =
-                                    user.findCategoryByID(
-                                        user.mySettings.selectedCategoryTo)!;
-                                currentSelectedCategory
-                                        .lastTransactionImportance =
-                                    TransactionImportance.want;
-                                user.updateCategory(currentSelectedCategory);
-                              },
-                              selected: transactionImportance ==
-                                  TransactionImportance.want,
-                              outlineColor: Colors.yellow[700]),
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: ToggleButton(
-                            childSelected:
-                                Stack(alignment: Alignment.center, children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    child: Text("*",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 14)),
-                                    radius: 7.0,
-                                    backgroundColor:
-                                        Colors.orange.shade700.withOpacity(0.5),
-                                  ),
-                                ],
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: category.subcategories
+                            .map(
+                              (element) => Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: ToggleButton(
+                                    onChange: () {
+                                      setState(() {
+                                        subcategoryID = element.id;
+                                      });
+                                    },
+                                    selected: subcategoryID == element.id,
+                                    color: Color(category!.color),
+                                    text: element!.name,
+                                    icon: IconData(element.icon,
+                                        fontFamily: "MaterialIcons")),
                               ),
-                              Center(
-                                child: Text("Sudden",
-                                    style: TextStyle(
-                                        color: Colors.orange.shade700,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500)),
-                              ),
-                            ]),
-                            childUnselected:
-                                Stack(alignment: Alignment.center, children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    child: Text("*",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 14)),
-                                    radius: 7.0,
-                                    backgroundColor: Colors.orange[700],
-                                  ),
-                                ],
-                              ),
-                              Center(
-                                child: Text("Sudden",
-                                    style: TextStyle(
-                                        color: Colors.orange[700],
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500)),
-                              ),
-                            ]),
-                            onChange: () {
-                              Category currentSelectedCategory =
-                                  user.findCategoryByID(
-                                      user.mySettings.selectedCategoryTo)!;
-                              currentSelectedCategory
-                                      .lastTransactionImportance =
-                                  TransactionImportance.sudden;
-                              user.updateCategory(currentSelectedCategory);
-                            },
-                            selected: transactionImportance ==
-                                TransactionImportance.sudden,
-                            outlineColor: Colors.orange[700],
-                          ),
-                        ),
-                      ],
+                            )
+                            .toList(),
+                      ),
                     ),
                   )
-                : SizedBox(height: 0),
+                : Spacer(),
             Container(
                 color: const Color(0xFBFBFBFF),
                 width: double.infinity,
@@ -824,7 +652,8 @@ class _AddTransactionState extends State<AddTransaction> {
                             timestamp: currentDate,
                             transactionType: transactionType,
                             isArchived: false,
-                            importance: transactionImportance));
+                            importance: transactionImportance,
+                            subcategoryID: subcategoryID));
                         Navigator.pop(context);
                       })
                     : generateButton(baseButtonSize, baseButtonSize * 2, "=",
