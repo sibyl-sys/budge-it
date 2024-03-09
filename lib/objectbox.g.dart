@@ -74,11 +74,6 @@ final _entities = <ModelEntity>[
             type: 1,
             flags: 0),
         ModelProperty(
-            id: const IdUid(9, 8588361961052653005),
-            name: 'isDarkIcon',
-            type: 1,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(10, 7236535467079320341),
             name: 'currencyID',
             type: 6,
@@ -99,7 +94,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(2, 5591438262522025838),
       name: 'Category',
-      lastPropertyId: const IdUid(8, 7671964770639684222),
+      lastPropertyId: const IdUid(9, 5640264298874476428),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -450,7 +445,9 @@ ModelDefinition getObjectBoxModel() {
       retiredPropertyUids: const [
         1902462991968783265,
         2343707797326796135,
-        1630040688712898633
+        1630040688712898633,
+        8588361961052653005,
+        5640264298874476428
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -478,7 +475,6 @@ ModelDefinition getObjectBoxModel() {
           fbb.addFloat64(5, object.balance);
           fbb.addFloat64(6, object.creditLimit);
           fbb.addBool(7, object.isIncludedInTotalNet);
-          fbb.addBool(8, object.isDarkIcon);
           fbb.addInt64(9, object.currencyID);
           fbb.addBool(10, object.isArchived);
           fbb.addInt64(11, object.dbAccountType);
@@ -503,8 +499,6 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 12, '');
           final isIncludedInTotalNetParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 18, false);
-          final isDarkIconParam =
-              const fb.BoolReader().vTableGet(buffer, rootOffset, 20, false);
           final isArchivedParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 24, false);
           final currencyIDParam =
@@ -517,7 +511,6 @@ ModelDefinition getObjectBoxModel() {
               creditLimit: creditLimitParam,
               description: descriptionParam,
               isIncludedInTotalNet: isIncludedInTotalNetParam,
-              isDarkIcon: isDarkIconParam,
               isArchived: isArchivedParam,
               currencyID: currencyIDParam)
             ..accountID =
@@ -540,7 +533,7 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Category object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(9);
+          fbb.startTable(10);
           fbb.addInt64(0, object.categoryID);
           fbb.addInt64(1, object.icon);
           fbb.addInt64(2, object.color);
@@ -904,21 +897,17 @@ class Account_ {
   static final isIncludedInTotalNet =
       QueryBooleanProperty<Account>(_entities[0].properties[7]);
 
-  /// see [Account.isDarkIcon]
-  static final isDarkIcon =
-      QueryBooleanProperty<Account>(_entities[0].properties[8]);
-
   /// see [Account.currencyID]
   static final currencyID =
-      QueryIntegerProperty<Account>(_entities[0].properties[9]);
+      QueryIntegerProperty<Account>(_entities[0].properties[8]);
 
   /// see [Account.isArchived]
   static final isArchived =
-      QueryBooleanProperty<Account>(_entities[0].properties[10]);
+      QueryBooleanProperty<Account>(_entities[0].properties[9]);
 
   /// see [Account.dbAccountType]
   static final dbAccountType =
-      QueryIntegerProperty<Account>(_entities[0].properties[11]);
+      QueryIntegerProperty<Account>(_entities[0].properties[10]);
 }
 
 /// [Category] entity fields to define ObjectBox queries.

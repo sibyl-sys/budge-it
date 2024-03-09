@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:objectbox/objectbox.dart';
@@ -69,6 +70,14 @@ class Category {
     assert(TransactionImportance.need.index == 0);
     assert(TransactionImportance.want.index == 1);
     assert(TransactionImportance.sudden.index == 2);
+  }
+
+  Color getColor() {
+    return Color(color).withOpacity(1);
+  }
+
+  IconData getIconData() {
+    return IconData(icon, fontFamily: "MaterialIcons");
   }
 
   // Currency? getCurrency() {

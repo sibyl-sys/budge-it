@@ -35,7 +35,6 @@ class _AccountManagerState extends State<AccountManager> {
   double limit = 0;
   IconData accountIcon = Icons.account_balance_wallet_outlined;
   Color accountColor = Colors.blue.shade400;
-  bool isDarkIcon = false;
   bool isArchived = false;
 
   late Currency selectedCurrency;
@@ -208,7 +207,6 @@ class _AccountManagerState extends State<AccountManager> {
                   forUpdate.creditLimit = limit;
                   forUpdate.description = descriptionController.text;
                   forUpdate.isIncludedInTotalNet = isIncludedInTotalNet;
-                  forUpdate.isDarkIcon = isDarkIcon;
                   forUpdate.isArchived = isArchived;
                   forUpdate.currencyID = currencyList.indexOf(selectedCurrency);
                   userModel.addAccount(forUpdate);
@@ -223,7 +221,6 @@ class _AccountManagerState extends State<AccountManager> {
                       creditLimit: limit,
                       description: descriptionController.text,
                       isIncludedInTotalNet: isIncludedInTotalNet,
-                      isDarkIcon: isDarkIcon,
                       isArchived: false,
                       currencyID: currencyList.indexOf(selectedCurrency)),
                 );
@@ -266,14 +263,12 @@ class _AccountManagerState extends State<AccountManager> {
                                   pageBuilder: (_, __, ___) =>
                                       IconAndColorSelection(
                                           accountColor: this.accountColor,
-                                          accountIcon: this.accountIcon,
-                                          isDarkIcon: isDarkIcon),
+                                          accountIcon: this.accountIcon),
                                 ));
                                 if (result != null) {
                                   setState(() {
                                     accountIcon = result["iconData"];
                                     accountColor = result["backgroundColor"];
-                                    isDarkIcon = result["isDarkIcon"];
                                   });
                                 }
                               }),

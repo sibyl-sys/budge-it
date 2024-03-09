@@ -5,31 +5,22 @@ import 'package:money_tracker/screens/iconSelection.dart';
 class IconAndColorSelection extends StatefulWidget {
   final IconData accountIcon;
   final Color accountColor;
-  final bool isDarkIcon;
 
   const IconAndColorSelection(
-      {Key? key,
-      required this.accountColor,
-      required this.accountIcon,
-      required this.isDarkIcon})
+      {Key? key, required this.accountColor, required this.accountIcon})
       : super(key: key);
 
   @override
   _IconAndColorSelectionState createState() => _IconAndColorSelectionState(
-      accountColor: this.accountColor,
-      accountIcon: this.accountIcon,
-      isDarkIcon: this.isDarkIcon);
+      accountColor: this.accountColor, accountIcon: this.accountIcon);
 }
 
 class _IconAndColorSelectionState extends State<IconAndColorSelection> {
   IconData accountIcon;
   Color accountColor;
-  bool isDarkIcon;
 
   _IconAndColorSelectionState(
-      {required this.accountIcon,
-      required this.accountColor,
-      required this.isDarkIcon});
+      {required this.accountIcon, required this.accountColor});
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +59,7 @@ class _IconAndColorSelectionState extends State<IconAndColorSelection> {
                                     backgroundColor: accountColor,
                                     radius: 20,
                                     child: Icon(accountIcon,
-                                        color: isDarkIcon
-                                            ? Colors.black.withOpacity(0.2)
-                                            : Colors.white,
-                                        size: 30),
+                                        color: Colors.white, size: 30),
                                   ),
                                 )
                               ])
@@ -101,11 +89,9 @@ class _IconAndColorSelectionState extends State<IconAndColorSelection> {
                   ),
                   ColorSelection(
                     colorData: accountColor,
-                    isDarkIcon: isDarkIcon,
                     onColorChange: (Color color, bool isDark) {
                       setState(() {
                         accountColor = color;
-                        isDarkIcon = isDark;
                       });
                     },
                   )
@@ -127,8 +113,7 @@ class _IconAndColorSelectionState extends State<IconAndColorSelection> {
                       onPressed: () {
                         Navigator.pop(context, {
                           "iconData": accountIcon,
-                          "backgroundColor": accountColor,
-                          "isDarkIcon": isDarkIcon
+                          "backgroundColor": accountColor
                         });
                       },
                       child: Text("DONE",

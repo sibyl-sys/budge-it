@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/categoriesTab.dart';
-import 'package:money_tracker/screens/editCategory.dart';
+import 'package:money_tracker/screens/categoryManager.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:intl/intl.dart';
+import 'package:money_tracker/services/user.dart';
+import 'package:provider/provider.dart';
 
 class RearrangeCategories extends StatefulWidget {
   @override
@@ -95,6 +97,7 @@ class _RearrangeCategoriesState extends State<RearrangeCategories>
 
   @override
   Widget build(BuildContext context) {
+    final User user = context.watch<User>();
     return Scaffold(
       appBar: AppBar(title: Text("Edit Categories")),
       body: Container(
@@ -132,12 +135,13 @@ class _RearrangeCategoriesState extends State<RearrangeCategories>
                 from: from,
                 to: to,
                 onCategoryClick: (int categoryID) {
+                  Category currentCategory = user.findCategoryByID(categoryID)!;
                   Navigator.of(context).push(PageRouteBuilder(
                     barrierColor: Colors.black.withOpacity(0.25),
                     barrierDismissible: true,
                     opaque: false,
                     pageBuilder: (_, __, ___) =>
-                        EditCategory(categoryID: categoryID),
+                        CategoryManager(categoryInformation: currentCategory),
                   ));
                 },
                 isRearrange: true,
@@ -148,12 +152,13 @@ class _RearrangeCategoriesState extends State<RearrangeCategories>
                 to: to,
                 isRearrange: true,
                 onCategoryClick: (int categoryID) {
+                  Category currentCategory = user.findCategoryByID(categoryID)!;
                   Navigator.of(context).push(PageRouteBuilder(
                     barrierColor: Colors.black.withOpacity(0.25),
                     barrierDismissible: true,
                     opaque: false,
                     pageBuilder: (_, __, ___) =>
-                        EditCategory(categoryID: categoryID),
+                        CategoryManager(categoryInformation: currentCategory),
                   ));
                 },
               ),

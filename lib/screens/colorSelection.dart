@@ -4,13 +4,9 @@ import 'package:money_tracker/constants/Constants.dart';
 class ColorSelection extends StatefulWidget {
   final Color colorData;
   final Function onColorChange;
-  final bool isDarkIcon;
 
   const ColorSelection(
-      {Key? key,
-      required this.colorData,
-      required this.onColorChange,
-      required this.isDarkIcon})
+      {Key? key, required this.colorData, required this.onColorChange})
       : super(key: key);
 
   @override
@@ -68,8 +64,7 @@ class _ColorSelectionState extends State<ColorSelection> {
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(4)))),
                           onPressed: () {
-                            widget.onColorChange(
-                                color["value"], color["isDarkIcon"]);
+                            widget.onColorChange(color["value"]);
                           },
                           child: widget.colorData == color["value"]
                               ? Container(

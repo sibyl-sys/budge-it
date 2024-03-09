@@ -6,7 +6,6 @@ import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/screens/iconAndColorSelection.dart';
-import 'package:money_tracker/screens/currencySelection.dart';
 import 'package:money_tracker/screens/categorySelection.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -29,7 +28,6 @@ class _BudgetManagerState extends State<BudgetManager> {
 
   IconData budgetIcon = Icons.account_balance_wallet;
   Color budgetColor = Colors.blue.shade400;
-  bool isDarkIcon = false;
   bool isCarryOver = false;
   late Currency selectedCurrency;
   List<Category> categories = [];
@@ -287,9 +285,7 @@ class _BudgetManagerState extends State<BudgetManager> {
                       backgroundColor: budgetColor,
                       child: IconButton(
                           icon: Icon(budgetIcon, size: 30),
-                          color: isDarkIcon
-                              ? Colors.black.withOpacity(0.2)
-                              : Colors.white,
+                          color: Colors.white,
                           onPressed: () async {
                             final result = await Navigator.of(context)
                                 .push(PageRouteBuilder(
@@ -299,14 +295,12 @@ class _BudgetManagerState extends State<BudgetManager> {
                               pageBuilder: (_, __, ___) =>
                                   IconAndColorSelection(
                                       accountColor: this.budgetColor,
-                                      accountIcon: this.budgetIcon,
-                                      isDarkIcon: isDarkIcon),
+                                      accountIcon: this.budgetIcon),
                             ));
                             if (result != null) {
                               setState(() {
                                 budgetIcon = result["iconData"];
                                 budgetColor = result["backgroundColor"];
-                                isDarkIcon = result["isDarkIcon"];
                               });
                             }
                           }),

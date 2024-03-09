@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountDetails.dart';
 import 'package:money_tracker/screens/accountsType.dart';
-import 'package:money_tracker/screens/addCategory.dart';
+import 'package:money_tracker/screens/categoryManager.dart';
 import 'package:money_tracker/screens/home.dart';
 import 'package:money_tracker/screens/loading.dart';
 import 'package:money_tracker/screens/accountManager.dart';
@@ -24,7 +24,7 @@ Future<void> main() async {
           '/home': (context) => Home(),
           '/newAccount': (context) =>
               AccountManager(accountType: AccountType.wallet),
-          '/addCategory': (context) => AddCategory(),
+          '/addCategory': (context) => CategoryManager(),
           '/accountType': (context) => AccountsType(),
           '/loading': (context) => LoadingScreen(),
           '/accountDetails': (context) => AccountDetails(),

@@ -27,8 +27,6 @@ class Account {
 
   bool isIncludedInTotalNet;
 
-  bool isDarkIcon;
-
   int currencyID;
 
   bool isArchived;
@@ -55,7 +53,6 @@ class Account {
       required this.creditLimit,
       required this.description,
       required this.isIncludedInTotalNet,
-      required this.isDarkIcon,
       required this.isArchived,
       required this.currencyID,
       this.accountType});
