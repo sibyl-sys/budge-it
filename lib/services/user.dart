@@ -468,7 +468,9 @@ class User extends ChangeNotifier {
 
   void deleteAccount(int accountID) async {
     for (Transaction transaction in transactions) {
-      if (transaction.fromID == accountID) {
+      if (transaction.fromID == accountID ||
+          (transaction.transactionType == TransactionType.transfer &&
+              transaction.toID == accountID)) {
         objectbox.transactionBox.remove(transaction.transactionID);
       }
     }
@@ -600,6 +602,18 @@ class User extends ChangeNotifier {
 
   void updateCategory(Category category) {
     objectbox.categoryBox.put(category);
+    categories = objectbox.categoryBox.getAll();
+    notifyListeners();
+  }
+
+  void deleteCategory(int categoryID) {
+    for (Transaction transaction in transactions) {
+      if (transaction.fromID == categoryID &&
+          transaction.transactionType != TransactionType.transfer) {
+        objectbox.transactionBox.remove(transaction.transactionID);
+      }
+    }
+    objectbox.categoryBox.remove(categoryID);
     categories = objectbox.categoryBox.getAll();
     notifyListeners();
   }

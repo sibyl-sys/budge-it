@@ -26,6 +26,7 @@ class _CategoryManagerState extends State<CategoryManager> {
 
   void initState() {
     super.initState();
+    print(widget.categoryInformation!.categoryID);
     // User userModel = context.read<User>();
     if (widget.categoryInformation != null) {
       Category currentCategory = widget.categoryInformation!;
@@ -121,7 +122,7 @@ class _CategoryManagerState extends State<CategoryManager> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              if (widget.categoryInformation == null) {
+              if (widget.categoryInformation != null) {
                 Category forUpdate = widget.categoryInformation!;
                 forUpdate.color = categoryColor.value;
                 forUpdate.categoryType = _categoryType;
@@ -405,6 +406,84 @@ class _CategoryManagerState extends State<CategoryManager> {
                 ],
               ),
             ),
+            widget.categoryInformation == null
+                ? SizedBox()
+                : Ink(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () async {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                    title: Text(
+                                        "Delete ${categoryNameController.text}?"),
+                                    content: RichText(
+                                        text: TextSpan(
+                                      text:
+                                          "All transactions in this category will be deleted permanently. Are you sure?",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            User userModel =
+                                                context.read<User>();
+                                            userModel.deleteCategory(widget
+                                                .categoryInformation!
+                                                .categoryID);
+                                            Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                "/home",
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                          },
+                                          child: Text('Delete',
+                                              style: TextStyle(
+                                                  color: Colors.red[700]))),
+                                    ]));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color:
+                                      Colors.grey.shade400.withOpacity((0.5)),
+                                  width: 1)),
+                        ),
+                        width: double.infinity,
+                        height: 74,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Delete Account",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFFEB6467))),
+                              Text(
+                                  "Permanently remove account and transactions",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFFB6B6B6))),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),
