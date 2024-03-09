@@ -306,17 +306,18 @@ class _AddTransactionState extends State<AddTransaction> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(width: 55),
-                                Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("From Account",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10)),
-                                      Flexible(
-                                        child: Text(
+                                Expanded(
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("From Account",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10)),
+                                        Text(
                                           user
                                               .findAccountByID(user.mySettings
                                                   .selectedAccountFrom)!
@@ -327,8 +328,8 @@ class _AddTransactionState extends State<AddTransaction> {
                                               fontWeight: FontWeight.w600),
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                    ]),
+                                      ]),
+                                ),
                               ]),
                         ])),
                   ),
@@ -395,17 +396,18 @@ class _AddTransactionState extends State<AddTransaction> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(width: 55),
-                                Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(getToLabel(transactionType),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10)),
-                                      Flexible(
-                                        child: Text(
+                                Expanded(
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(getToLabel(transactionType),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10)),
+                                        Text(
                                           transactionType !=
                                                   TransactionType.transfer
                                               ? user
@@ -424,8 +426,8 @@ class _AddTransactionState extends State<AddTransaction> {
                                               fontWeight: FontWeight.w600),
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                    ]),
+                                      ]),
+                                ),
                               ]),
                         ])),
                   ),
