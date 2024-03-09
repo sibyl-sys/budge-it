@@ -1,12 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:money_tracker/services/currency.dart';
 import 'package:objectbox/objectbox.dart';
 import '../constants/Constants.dart';
 
-enum AccountType {
-  wallet,
-  savings,
-  debt
-}
+enum AccountType { wallet, savings, debt }
 
 @Entity()
 class Account {
@@ -43,14 +40,25 @@ class Account {
 
   set dbAccountType(int? value) {
     _ensureStableEnumValues();
-    if(value == null) {
+    if (value == null) {
       accountType = null;
     } else {
       accountType = AccountType.values[value];
     }
   }
 
-  Account({required this.icon, required this.color, required this.name, required this.balance, required this.creditLimit, required this.description, required this.isIncludedInTotalNet, required this.isDarkIcon, required this.isArchived, required this.currencyID, this.accountType});
+  Account(
+      {required this.icon,
+      required this.color,
+      required this.name,
+      required this.balance,
+      required this.creditLimit,
+      required this.description,
+      required this.isIncludedInTotalNet,
+      required this.isDarkIcon,
+      required this.isArchived,
+      required this.currencyID,
+      this.accountType});
 
   void _ensureStableEnumValues() {
     assert(AccountType.wallet.index == 0);
@@ -60,5 +68,13 @@ class Account {
 
   Currency getCurrency() {
     return currencyList[currencyID];
+  }
+
+  Color getColor() {
+    return Color(color).withOpacity(1);
+  }
+
+  IconData getIconData() {
+    return IconData(icon, fontFamily: "MaterialIcons");
   }
 }

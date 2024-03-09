@@ -6,7 +6,7 @@ import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/budgetManager.dart';
 import 'package:money_tracker/screens/categories.dart';
-import 'package:money_tracker/screens/newAccount.dart';
+import 'package:money_tracker/screens/accountManager.dart';
 import 'package:money_tracker/screens/transactions.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +31,7 @@ Future<void> _selectAccountType(BuildContext context) async {
         barrierDismissible: true,
         opaque: false,
         pageBuilder: (_, __, ___) =>
-            NewAccount(accountType: AccountType.wallet),
+            AccountManager(accountType: AccountType.wallet),
       ));
       break;
     case AccountType.savings:
@@ -40,7 +40,7 @@ Future<void> _selectAccountType(BuildContext context) async {
         barrierDismissible: true,
         opaque: false,
         pageBuilder: (_, __, ___) =>
-            NewAccount(accountType: AccountType.savings),
+            AccountManager(accountType: AccountType.savings),
       ));
       break;
     case AccountType.debt:
@@ -48,7 +48,8 @@ Future<void> _selectAccountType(BuildContext context) async {
         barrierColor: Colors.black.withOpacity(0.25),
         barrierDismissible: true,
         opaque: false,
-        pageBuilder: (_, __, ___) => NewAccount(accountType: AccountType.debt),
+        pageBuilder: (_, __, ___) =>
+            AccountManager(accountType: AccountType.debt),
       ));
       break;
     default:
@@ -57,7 +58,7 @@ Future<void> _selectAccountType(BuildContext context) async {
         barrierDismissible: true,
         opaque: false,
         pageBuilder: (_, __, ___) =>
-            NewAccount(accountType: AccountType.wallet),
+            AccountManager(accountType: AccountType.wallet),
       ));
       break;
   }
@@ -94,7 +95,7 @@ class _HomeState extends State<Home> {
       return SizedBox(height: 0);
     } else if (index == 3) {
       return IconButton(
-          icon: Icon(Icons.add, color: Colors.white),
+          icon: Icon(Icons.add_box, color: Colors.white),
           onPressed: () {
             Navigator.of(context).push(PageRouteBuilder(
               barrierColor: Colors.black.withOpacity(0.25),

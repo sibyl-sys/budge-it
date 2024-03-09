@@ -254,7 +254,6 @@ class _BudgetManagerState extends State<BudgetManager> {
                   print(forUpdate.toTrack);
 
                   userModel.addBudget(forUpdate);
-                  Navigator.pop(context);
                 } else {
                   userModel.addBudgetHistory(budgetCap);
                   Budget newBudget = Budget(
@@ -265,8 +264,8 @@ class _BudgetManagerState extends State<BudgetManager> {
                   newBudget.budgetCap.addAll(budgetCap);
                   newBudget.toTrack.addAll(categories);
                   userModel.addBudget(newBudget);
-                  Navigator.pop(context);
                 }
+                Navigator.pop(context);
               },
             )
           ],

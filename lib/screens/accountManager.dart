@@ -10,16 +10,19 @@ import 'package:money_tracker/services/currency.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
-class NewAccount extends StatefulWidget {
+class AccountManager extends StatefulWidget {
+  final Account? accountInformation;
   final AccountType accountType;
 
-  const NewAccount({Key? key, required this.accountType}) : super(key: key);
+  const AccountManager(
+      {Key? key, required this.accountType, this.accountInformation})
+      : super(key: key);
 
   @override
-  _NewAccountState createState() => _NewAccountState();
+  _AccountManagerState createState() => _AccountManagerState();
 }
 
-class _NewAccountState extends State<NewAccount> {
+class _AccountManagerState extends State<AccountManager> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
   AccountType _accountType = AccountType.wallet;
@@ -33,6 +36,7 @@ class _NewAccountState extends State<NewAccount> {
   IconData accountIcon = Icons.account_balance_wallet_outlined;
   Color accountColor = Colors.blue.shade400;
   bool isDarkIcon = false;
+  bool isArchived = false;
 
   late Currency selectedCurrency;
 
@@ -50,12 +54,28 @@ class _NewAccountState extends State<NewAccount> {
       defaultColor = Colors.red.shade400;
     }
 
-    setState(() {
-      selectedCurrency = userModel.mySettings.getPrimaryCurrency();
-      _accountType = widget.accountType;
-      accountColor = defaultColor;
-      accountIcon = defaultIcon;
-    });
+    if (widget.accountInformation != null) {
+      Account currentAccount = widget.accountInformation!;
+      setState(() {
+        _accountType = currentAccount.accountType!;
+        accountColor = currentAccount.getColor();
+        accountIcon = currentAccount.getIconData();
+        accountNameController.text = currentAccount.name;
+        selectedCurrency = currentAccount.getCurrency();
+        balance = currentAccount.balance;
+        limit = currentAccount.creditLimit;
+        descriptionController.text = currentAccount.description;
+        isIncludedInTotalNet = currentAccount.isIncludedInTotalNet;
+        isArchived = currentAccount.isArchived;
+      });
+    } else {
+      setState(() {
+        selectedCurrency = userModel.mySettings.getPrimaryCurrency();
+        _accountType = widget.accountType;
+        accountColor = defaultColor;
+        accountIcon = defaultIcon;
+      });
+    }
   }
 
   Future<void> _selectAccountType(BuildContext context) async {
@@ -175,23 +195,39 @@ class _NewAccountState extends State<NewAccount> {
             icon: Icon(Icons.check),
             onPressed: () {
               User userModel = context.read<User>();
-              if (userModel.accounts.length < 1) {
-                userModel.changePrimaryCurrency(selectedCurrency);
+              if (widget.accountInformation == null) {
+              } else {
+                if (userModel.accounts.length < 1) {
+                  userModel.changePrimaryCurrency(selectedCurrency);
+                  Account forUpdate = widget.accountInformation!;
+                  forUpdate.name = accountNameController.text;
+                  forUpdate.icon = accountIcon.codePoint;
+                  forUpdate.color = accountColor.value;
+                  forUpdate.balance = balance;
+                  forUpdate.accountType = this._accountType;
+                  forUpdate.creditLimit = limit;
+                  forUpdate.description = descriptionController.text;
+                  forUpdate.isIncludedInTotalNet = isIncludedInTotalNet;
+                  forUpdate.isDarkIcon = isDarkIcon;
+                  forUpdate.isArchived = isArchived;
+                  forUpdate.currencyID = currencyList.indexOf(selectedCurrency);
+                  userModel.addAccount(forUpdate);
+                }
+                userModel.addAccount(
+                  Account(
+                      name: accountNameController.text,
+                      icon: accountIcon.codePoint,
+                      color: accountColor.value,
+                      balance: balance,
+                      accountType: this._accountType,
+                      creditLimit: limit,
+                      description: descriptionController.text,
+                      isIncludedInTotalNet: isIncludedInTotalNet,
+                      isDarkIcon: isDarkIcon,
+                      isArchived: false,
+                      currencyID: currencyList.indexOf(selectedCurrency)),
+                );
               }
-              userModel.addAccount(
-                Account(
-                    name: accountNameController.text,
-                    icon: accountIcon.codePoint,
-                    color: accountColor.value,
-                    balance: balance,
-                    accountType: this._accountType,
-                    creditLimit: limit,
-                    description: descriptionController.text,
-                    isIncludedInTotalNet: isIncludedInTotalNet,
-                    isDarkIcon: isDarkIcon,
-                    isArchived: false,
-                    currencyID: currencyList.indexOf(selectedCurrency)),
-              );
               Navigator.pop(context);
             },
           )
@@ -665,6 +701,163 @@ class _NewAccountState extends State<NewAccount> {
                 ),
               ),
             ),
+            widget.accountInformation == null
+                ? SizedBox()
+                : Ink(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () async {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                    title: Text(
+                                        "Archive ${accountNameController.text}?"),
+                                    content: Text(
+                                      "All transactions in this account will be archived as well. You may unarchive the account in the Archives menu.",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            User userModel =
+                                                context.read<User>();
+                                            userModel.archiveAccount(widget
+                                                .accountInformation!.accountID);
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'Archive',
+                                          )),
+                                    ]));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color:
+                                      Colors.grey.shade400.withOpacity((0.5)),
+                                  width: 1)),
+                        ),
+                        width: double.infinity,
+                        height: 74,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Archive Account",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF4F4F4F))),
+                              Text("Hide account and transactions",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFFB6B6B6))),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+            widget.accountInformation == null
+                ? SizedBox()
+                : Ink(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () async {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                    title: Text(
+                                        "Delete ${accountNameController.text}?"),
+                                    content: RichText(
+                                        text: TextSpan(
+                                            text:
+                                                "All transactions in this account will be deleted permanently. \n\nIf you wish to hide this account, you may consider ",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                            children: [
+                                          TextSpan(
+                                              text: "Archive",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                              )),
+                                          TextSpan(
+                                            text: " instead",
+                                          )
+                                        ])),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            User userModel =
+                                                context.read<User>();
+                                            userModel.deleteAccount(widget
+                                                .accountInformation!.accountID);
+                                            Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                "/home",
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                          },
+                                          child: Text('Delete',
+                                              style: TextStyle(
+                                                  color: Colors.red[700]))),
+                                    ]));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color:
+                                      Colors.grey.shade400.withOpacity((0.5)),
+                                  width: 1)),
+                        ),
+                        width: double.infinity,
+                        height: 74,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Delete Account",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFFEB6467))),
+                              Text(
+                                  "Permanently remove account and transactions",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFFB6B6B6))),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

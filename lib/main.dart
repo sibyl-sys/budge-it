@@ -4,7 +4,7 @@ import 'package:money_tracker/screens/accountsType.dart';
 import 'package:money_tracker/screens/addCategory.dart';
 import 'package:money_tracker/screens/home.dart';
 import 'package:money_tracker/screens/loading.dart';
-import 'package:money_tracker/screens/newAccount.dart';
+import 'package:money_tracker/screens/accountManager.dart';
 import 'package:money_tracker/screens/rearrangeCategories.dart';
 import 'package:money_tracker/services/account.dart';
 import 'package:money_tracker/services/user.dart';
@@ -23,7 +23,7 @@ Future<void> main() async {
         routes: {
           '/home': (context) => Home(),
           '/newAccount': (context) =>
-              NewAccount(accountType: AccountType.wallet),
+              AccountManager(accountType: AccountType.wallet),
           '/addCategory': (context) => AddCategory(),
           '/accountType': (context) => AccountsType(),
           '/loading': (context) => LoadingScreen(),

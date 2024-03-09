@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/screens/accountManager.dart';
 import 'package:money_tracker/screens/addTransaction.dart';
 import 'package:money_tracker/screens/editAccount.dart';
 import 'package:money_tracker/services/account.dart';
@@ -125,19 +126,20 @@ class _AccountDetailsState extends State<AccountDetails> {
 
     return Scaffold(
       appBar: AppBar(actions: [
-        TextButton(
+        IconButton(
             onPressed: () {
+              Account currentAccount =
+                  user.findAccountByID(arguments["accountIndex"])!;
               Navigator.of(context).push(PageRouteBuilder(
                 barrierColor: Colors.black.withOpacity(0.25),
                 barrierDismissible: true,
                 opaque: false,
-                pageBuilder: (_, __, ___) =>
-                    EditAccount(accountIndex: arguments["accountIndex"]),
+                pageBuilder: (_, __, ___) => AccountManager(
+                    accountInformation: currentAccount,
+                    accountType: currentAccount.accountType!),
               ));
             },
-            child: Text(
-              "EDIT",
-            ))
+            icon: Icon(Icons.edit))
       ], title: Text("Account Details")),
       body: Column(
         children: [
