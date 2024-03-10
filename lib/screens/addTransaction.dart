@@ -472,7 +472,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       ),
                     ),
                   )
-                : Spacer(),
+                : SizedBox(),
             Container(
                 color: const Color(0xFBFBFBFF),
                 width: double.infinity,
