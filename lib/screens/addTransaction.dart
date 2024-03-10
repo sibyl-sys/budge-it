@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/accountSelection.dart';
 import 'package:money_tracker/screens/dateSelection.dart';
+import 'package:money_tracker/screens/notesManager.dart';
 import 'package:money_tracker/screens/recipientSelection.dart';
 import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
+import 'package:money_tracker/widgets/importanceDisplay.dart';
 import 'package:money_tracker/widgets/toggleButton.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -30,14 +32,7 @@ class _AddTransactionState extends State<AddTransaction> {
   DateTime currentDate = DateTime.now();
   DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
   int subcategoryID = -1;
-
-  final TextEditingController notesController = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    notesController.dispose();
-  }
+  String notes = "";
 
   @override
   void initState() {
@@ -463,7 +458,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                     },
                                     selected: subcategoryID == element.id,
                                     color: Color(category!.color),
-                                    text: element!.name,
+                                    text: element.name,
                                     icon: IconData(element.icon,
                                         fontFamily: "MaterialIcons")),
                               ),
@@ -494,31 +489,54 @@ class _AddTransactionState extends State<AddTransaction> {
                               fontWeight: FontWeight.w500,
                               color: Theme.of(context).primaryColor))
                     ])),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                      color: Colors.grey.shade400.withOpacity(0.25),
-                      width: 1.0),
+            Ink(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async {
+                  //TODO OPEN ADD NOTES
+                  final result =
+                      await Navigator.of(context).push(PageRouteBuilder(
+                    barrierColor: Colors.black.withOpacity(0.25),
+                    barrierDismissible: true,
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => NotesManager(
+                        notes: notes, importance: transactionImportance),
+                  ));
+                  if (result != null) {
+                    setState(() {
+                      notes = result["notes"];
+                      transactionImportance = result["importance"];
+                    });
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            color: Colors.grey.shade400.withOpacity((0.5)),
+                            width: 1)),
+                  ),
+                  width: double.infinity,
+                  height: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 4.0, 24.0, 4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ImportanceDisplay(importance: transactionImportance),
+                        SizedBox(width: 16),
+                        Text(notes == "" ? "Add Notes.." : notes,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                color: notes == ""
+                                    ? Color(0xFFBDBDBD)
+                                    : Color(0xFF4F4F4F)))
+                      ],
+                    ),
+                  ),
                 ),
-                color: Colors.white,
-              ),
-              child: TextField(
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: const Color(0xFF4F4F4F)),
-                textAlign: TextAlign.center,
-                controller: notesController,
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(12.0),
-                    isDense: true,
-                    border: InputBorder.none,
-                    hintText: "Add Notes...",
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 18,
-                        color: const Color(0xFFBDBDBD))),
               ),
             ),
             Padding(
@@ -644,7 +662,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         print(transactionType);
                         userModel.addTransaction(Transaction(
                             value: double.parse(this.firstValue),
-                            note: notesController.text,
+                            note: notes,
                             fromID: user.mySettings.selectedAccountFrom,
                             toID: transactionType == TransactionType.transfer
                                 ? user.mySettings.selectedAccountTo
