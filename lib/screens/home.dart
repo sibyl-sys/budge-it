@@ -134,6 +134,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<User>();
+
     return Scaffold(
       appBar: AppBar(
         actions: [generateAppbarAction(_selectedIndex)],
@@ -149,6 +151,22 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         //TODO CHANGE ACTION DEPENDING ON TAB
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: user.accounts.length > 0
+            ? () {
+                Navigator.of(context).push(PageRouteBuilder(
+                  barrierColor: Colors.black.withOpacity(0.25),
+                  barrierDismissible: true,
+                  opaque: false,
+                  pageBuilder: (_, __, ___) => AddTransaction(),
+                ));
+              }
+            : null,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.post_add_outlined),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       drawer: BudgeitNav(),
       body: _bodyOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -161,8 +179,6 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(icon: Icon(Icons.grading), label: 'Budget'),
           BottomNavigationBarItem(
               icon: Icon(Icons.leaderboard), label: 'Overview'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add), label: 'Add Transaction'),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.grey[600],
