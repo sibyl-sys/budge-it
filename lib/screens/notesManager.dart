@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/services/transaction.dart';
+import 'package:money_tracker/widgets/importanceToggleButton.dart';
 
 class NotesManager extends StatefulWidget {
   final String notes;
@@ -17,7 +18,6 @@ class _NotesManagerState extends State<NotesManager> {
 
   @override
   void initState() {
-    // TODO: implement initState
     importance = widget.importance;
     notesController.text = widget.notes;
     super.initState();
@@ -30,7 +30,7 @@ class _NotesManagerState extends State<NotesManager> {
       child: Center(
         child: Container(
           width: 350,
-          height: 400,
+          height: 275,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -66,6 +66,57 @@ class _NotesManagerState extends State<NotesManager> {
                       color: const Color(0xFFBDBDBD)),
                 ),
               ),
+            ),
+            SizedBox(height: 16),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              color: Color(0xFFFBFBFB),
+              height: 100,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Importance",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB6B6B6),
+                            fontSize: 12)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ImportanceToggleButton(
+                            selected: importance == TransactionImportance.need,
+                            onChange: () {
+                              setState(() {
+                                importance = TransactionImportance.need;
+                              });
+                            },
+                            text: "Need",
+                            icon: Icons.favorite,
+                            color: Color(0xFF5F5C96)),
+                        ImportanceToggleButton(
+                            selected: importance == TransactionImportance.want,
+                            onChange: () {
+                              setState(() {
+                                importance = TransactionImportance.want;
+                              });
+                            },
+                            text: "Want",
+                            icon: Icons.star,
+                            color: Color(0xFFFFB800)),
+                        ImportanceToggleButton(
+                            selected:
+                                importance == TransactionImportance.sudden,
+                            onChange: () {
+                              setState(() {
+                                importance = TransactionImportance.sudden;
+                              });
+                            },
+                            text: "Sudden",
+                            icon: Icons.priority_high,
+                            color: Color(0xFFEF4545))
+                      ],
+                    )
+                  ]),
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.end,

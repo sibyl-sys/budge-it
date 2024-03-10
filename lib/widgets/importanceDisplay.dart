@@ -15,9 +15,7 @@ class _ImportanceDisplayState extends State<ImportanceDisplay> {
   String text = "Need";
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  Widget build(BuildContext context) {
     if (widget.importance == TransactionImportance.sudden) {
       color = Color(0xFFEF4545);
       icon = Icons.priority_high;
@@ -26,11 +24,11 @@ class _ImportanceDisplayState extends State<ImportanceDisplay> {
       color = Color(0xFFFFB800);
       icon = Icons.star;
       text = "Want";
+    } else {
+      color = Color(0xFF5F5C96);
+      icon = Icons.favorite;
+      text = "Need";
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       width: 100,
       decoration: BoxDecoration(

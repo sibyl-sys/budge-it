@@ -7,7 +7,7 @@ import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/importanceDisplay.dart';
-import 'package:money_tracker/widgets/toggleButton.dart';
+import 'package:money_tracker/widgets/subcategoryToggleButton.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -33,15 +33,28 @@ class _AddTransactionState extends State<AddTransaction> {
   DateFormat dateFormatter = DateFormat('EEEE, MMMM dd, yyyy');
   int subcategoryID = -1;
   String notes = "";
+  TransactionImportance transactionImportance = TransactionImportance.need;
 
   @override
   void initState() {
+    final user = context.read<User>();
     super.initState();
     if (widget.initialValue != "") {
       setState(() {
         firstValue = widget.initialValue;
       });
     }
+
+    setState(() {
+      transactionImportance = user
+                  .findCategoryByID(user.mySettings.selectedCategoryTo)!
+                  .lastTransactionImportance ==
+              null
+          ? TransactionImportance.need
+          : user
+              .findCategoryByID(user.mySettings.selectedCategoryTo)!
+              .lastTransactionImportance!;
+    });
   }
 
   void eraseDigit() {
@@ -240,15 +253,6 @@ class _AddTransactionState extends State<AddTransaction> {
     TransactionType transactionType =
         user.mySettings.getSelectedTransactionType();
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
-
-    TransactionImportance transactionImportance = user
-                .findCategoryByID(user.mySettings.selectedCategoryTo)!
-                .lastTransactionImportance ==
-            null
-        ? TransactionImportance.need
-        : user
-            .findCategoryByID(user.mySettings.selectedCategoryTo)!
-            .lastTransactionImportance!;
 
     if (transactionType != TransactionType.transfer) {
       category = user.findCategoryByID(user.mySettings.selectedCategoryTo);
@@ -450,7 +454,7 @@ class _AddTransactionState extends State<AddTransaction> {
                             .map(
                               (element) => Padding(
                                 padding: const EdgeInsets.only(right: 8.0),
-                                child: ToggleButton(
+                                child: subcategoryToggleButton(
                                     onChange: () {
                                       setState(() {
                                         subcategoryID = element.id;
@@ -504,6 +508,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   ));
                   if (result != null) {
                     setState(() {
+                      print(result["importance"]);
                       notes = result["notes"];
                       transactionImportance = result["importance"];
                     });
@@ -658,9 +663,8 @@ class _AddTransactionState extends State<AddTransaction> {
                         Icons.done,
                         Theme.of(context).primaryColor,
                         Colors.white, () {
-                        User userModel = context.read<User>();
                         print(transactionType);
-                        userModel.addTransaction(Transaction(
+                        user.addTransaction(Transaction(
                             value: double.parse(this.firstValue),
                             note: notes,
                             fromID: user.mySettings.selectedAccountFrom,
@@ -672,6 +676,12 @@ class _AddTransactionState extends State<AddTransaction> {
                             isArchived: false,
                             importance: transactionImportance,
                             subcategoryID: subcategoryID));
+                        //UPDATE CATEGORY IMPORTANCE
+                        Category forUpdate = user.findCategoryByID(
+                            user.mySettings.selectedCategoryTo)!;
+                        forUpdate.lastTransactionImportance =
+                            transactionImportance;
+                        user.addCategory(forUpdate);
                         Navigator.pop(context);
                       })
                     : generateButton(baseButtonSize, baseButtonSize * 2, "=",

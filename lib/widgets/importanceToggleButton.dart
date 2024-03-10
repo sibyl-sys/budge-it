@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ToggleButton extends StatelessWidget {
+class ImportanceToggleButton extends StatelessWidget {
   final bool selected;
   final Function onChange;
   final String text;
   final IconData icon;
   final Color color;
 
-  ToggleButton(
+  ImportanceToggleButton(
       {required this.selected,
       required this.onChange,
       required this.text,
@@ -20,15 +20,14 @@ class ToggleButton extends StatelessWidget {
       duration: Duration(milliseconds: 200),
       crossFadeState:
           selected ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      firstChild: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              side: BorderSide(color: color, width: 1.5)),
+      firstChild: ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
           child: Row(
             children: [
-              Icon(icon, color: color),
+              CircleAvatar(
+                  backgroundColor: color,
+                  radius: 10,
+                  child: Icon(icon, color: Colors.white, size: 14)),
               SizedBox(width: 4),
               Text(text,
                   style: TextStyle(
@@ -40,19 +39,17 @@ class ToggleButton extends StatelessWidget {
           }),
       secondChild: OutlinedButton(
           style: OutlinedButton.styleFrom(
-              backgroundColor: color,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              side: BorderSide(color: color, width: 1.5)),
+              backgroundColor: color.withOpacity(0.06), side: BorderSide.none),
           child: Row(
             children: [
-              Icon(icon, color: Colors.white),
+              CircleAvatar(
+                  backgroundColor: color,
+                  radius: 10,
+                  child: Icon(icon, color: Colors.white, size: 14)),
               SizedBox(width: 4),
               Text(text,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500))
+                      color: color, fontSize: 14, fontWeight: FontWeight.w500))
             ],
           ),
           onPressed: null),
