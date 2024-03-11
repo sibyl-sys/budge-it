@@ -162,8 +162,8 @@ class _HomeState extends State<Home> {
                 ));
               }
             : null,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.white,
+        foregroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(Icons.post_add_outlined),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
