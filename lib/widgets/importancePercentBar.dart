@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/services/category.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +34,7 @@ class _ImportancePercentBarState extends State<ImportancePercentBar> {
       limit += value;
     });
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         height: 10,
         color: Color(0xB6B6B6).withOpacity(1),

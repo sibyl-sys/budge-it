@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:money_tracker/services/favoriteTransaction.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
+import 'package:money_tracker/widgets/favTransactionButton.dart';
 import 'package:money_tracker/widgets/importancePercentBar.dart';
 import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
@@ -156,29 +158,39 @@ class _TransactionsState extends State<Transactions> {
                   fontSize: 12,
                   fontWeight: FontWeight.w500)),
         ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          height: 50,
+          child: ListView.builder(
+              itemCount: user.favoriteTransactions.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                FavoriteTransaction transaction =
+                    user.favoriteTransactions[index];
+                return FavTransactionButton(
+                    color: Color(transaction.transactionType !=
+                                TransactionType.transfer
+                            ? user.findCategoryByID(transaction.toID)!.color
+                            : user.findAccountByID(transaction.toID)!.color)
+                        .withOpacity(1),
+                    icon: IconData(
+                        transaction.transactionType != TransactionType.transfer
+                            ? user.findCategoryByID(transaction.toID)!.icon
+                            : user.findAccountByID(transaction.toID)!.icon,
+                        fontFamily: "MaterialIcons"),
+                    categoryName:
+                        transaction.transactionType != TransactionType.transfer
+                            ? user.findCategoryByID(transaction.toID)!.name
+                            : user.findAccountByID(transaction.toID)!.name,
+                    value: transaction.value,
+                    type: transaction.transactionType!,
+                    currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+                    importance: transaction.importance!,
+                    fromID: transaction.fromID,
+                    toID: transaction.toID);
+              }),
+        ),
         ImportancePercentBar(from: from, to: to),
-        // Container(
-        //   padding: EdgeInsets.symmetric(horizontal: 16.0),
-        //   height: 50,
-        //   child: ListView.builder(
-        //       itemCount: user.favoriteTransactions.length,
-        //       scrollDirection: Axis.horizontal,
-        //       itemBuilder: (context, index) {
-        //         Transaction transaction = user.favoriteTransactions[index];
-        //         return FavTransactionButton(
-        //           color: Color(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.color : user.findAccountByID(transaction.toID)!.color).withOpacity(1),
-        //           icon: IconData(transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.icon : user.findAccountByID(transaction.toID)!.icon, fontFamily: "MaterialIcons"),
-        //           categoryName: transaction.transactionType != TransactionType.transfer ? user.findCategoryByID(transaction.toID)!.name : user.findAccountByID(transaction.toID)!.name,
-        //           value: transaction.value,
-        //           type: transaction.transactionType,
-        //           currencySymbol: user.primaryCurrency.symbol,
-        //           importance: transaction.importance,
-        //           fromID: transaction.fromID,
-        //           toID: transaction.toID
-        //         );
-        //       }
-        //   ),
-        // ),
         Column(
             children: transactionListPerDay
                 .map((e) => Column(
