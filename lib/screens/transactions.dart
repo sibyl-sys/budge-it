@@ -56,6 +56,13 @@ class _TransactionsState extends State<Transactions> {
                   currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
                   valueColor: getValueColor(transaction),
                   importance: transaction.importance!,
+                  subcategory: transaction.subcategoryID != -1
+                      ? user
+                          .findCategoryByID(transaction.toID)!
+                          .subcategories
+                          .firstWhere((element) =>
+                              element.id == transaction.subcategoryID)
+                      : null,
                 ))
             .toList());
   }

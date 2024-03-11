@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/screens/transactionDetails.dart';
+import 'package:money_tracker/services/subcategory.dart';
 import 'package:money_tracker/services/transaction.dart';
 
 class TransactionCard extends StatefulWidget {
@@ -14,6 +15,7 @@ class TransactionCard extends StatefulWidget {
   final String currencySymbol;
   final Color valueColor;
   final TransactionImportance importance;
+  final Subcategory? subcategory;
 
   TransactionCard(
       {Key? key,
@@ -26,7 +28,8 @@ class TransactionCard extends StatefulWidget {
       required this.transactionID,
       required this.importance,
       required this.currencySymbol,
-      required this.valueColor});
+      required this.valueColor,
+      this.subcategory});
 
   @override
   _TransactionCardState createState() => _TransactionCardState();
@@ -128,6 +131,7 @@ class _TransactionCardState extends State<TransactionCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(widget.categoryName,
                                 style: TextStyle(
@@ -135,7 +139,15 @@ class _TransactionCardState extends State<TransactionCard> {
                                     fontSize: 14.0,
                                     color: Color(0x4F4F4F).withOpacity(1))),
                             SizedBox(width: 8),
-                            getImportanceIcon()
+                            getImportanceIcon(),
+                            SizedBox(width: 4),
+                            widget.subcategory != null
+                                ? Icon(
+                                    IconData(widget.subcategory!.icon,
+                                        fontFamily: "MaterialIcons"),
+                                    color: widget.color,
+                                    size: 20)
+                                : SizedBox(),
                           ],
                         ),
                         SizedBox(height: 4),
