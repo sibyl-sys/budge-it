@@ -89,11 +89,9 @@ class _IconAndColorSelectionState extends State<IconAndColorSelection> {
                   ),
                   ColorSelection(
                     colorData: accountColor,
-                    onColorChange: (Color color, bool isDark) {
-                      setState(() {
-                        accountColor = color;
-                      });
-                    },
+                    onColorChange: (Color color) => setState(() {
+                      accountColor = color;
+                    }),
                   )
                 ]),
               ),

@@ -14,6 +14,8 @@ class IconSelection extends StatefulWidget {
 }
 
 class _IconSelectionState extends State<IconSelection> {
+  final ScrollController controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scrollbar(
@@ -25,6 +27,7 @@ class _IconSelectionState extends State<IconSelection> {
           children: [
             Text("Account Icons"),
             GridView.count(
+                controller: controller,
                 padding: EdgeInsets.all(8.0),
                 crossAxisCount: 5,
                 crossAxisSpacing: 8,
@@ -48,6 +51,7 @@ class _IconSelectionState extends State<IconSelection> {
                     .toList()),
             Text("Categories"),
             GridView.count(
+                controller: controller,
                 padding: EdgeInsets.all(8.0),
                 crossAxisCount: 5,
                 crossAxisSpacing: 8,

@@ -14,6 +14,7 @@ class ColorSelection extends StatefulWidget {
 }
 
 class _ColorSelectionState extends State<ColorSelection> {
+  final ScrollController controller = ScrollController();
   late String colorName;
   late int colorShade;
 
@@ -32,6 +33,7 @@ class _ColorSelectionState extends State<ColorSelection> {
   Widget build(BuildContext context) {
     getColorData();
     return Scrollbar(
+      controller: controller,
       thumbVisibility: true,
       child: Padding(
           padding: EdgeInsets.all(8.0),
@@ -49,6 +51,7 @@ class _ColorSelectionState extends State<ColorSelection> {
               SizedBox(height: 8.0),
               Expanded(
                 child: GridView.count(
+                  controller: controller,
                   crossAxisCount: 4,
                   padding: EdgeInsets.all(8.0),
                   crossAxisSpacing: 8,
