@@ -411,7 +411,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
               OutlinedButton(
                   onPressed: () async {
                     Navigator.pop(context);
-                    await Future.delayed(Duration(milliseconds: 200));
+                    await Future.delayed(Duration(milliseconds: 500));
                     user.deleteTransaction(widget.transactionID);
                   },
                   style: TextButton.styleFrom(

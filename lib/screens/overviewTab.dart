@@ -194,8 +194,8 @@ class _OverviewTabState extends State<OverviewTab>
                 transactionImportance: importance);
           } else {
             categoryValue = user.getImportanceNet(
-                from: DateTime(from.year, from.month, i),
-                to: DateTime(from.year, from.month, i),
+                from: DateTime(from.year, from.month, from.day + i),
+                to: DateTime(from.year, from.month, from.day + i),
                 transactionImportance: importance);
           }
           total += categoryValue;
@@ -216,8 +216,8 @@ class _OverviewTabState extends State<OverviewTab>
                   .subtract(Duration(days: 1)));
         } else {
           netValue = user.getRangeNet(
-              from: DateTime(from.year, from.month, i),
-              to: DateTime(from.year, from.month, i));
+              from: DateTime(from.year, from.month, from.day + i),
+              to: DateTime(from.year, from.month, from.day + i));
         }
 
         total = netValue;
