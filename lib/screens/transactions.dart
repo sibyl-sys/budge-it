@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:money_tracker/widgets/dateRangeBar.dart';
+import 'package:money_tracker/widgets/importancePercentBar.dart';
 import 'package:money_tracker/widgets/totalHeader.dart';
 import 'package:money_tracker/widgets/transactionCard.dart';
 import 'package:provider/provider.dart';
@@ -155,6 +156,7 @@ class _TransactionsState extends State<Transactions> {
                   fontSize: 12,
                   fontWeight: FontWeight.w500)),
         ),
+        ImportancePercentBar(from: from, to: to),
         // Container(
         //   padding: EdgeInsets.symmetric(horizontal: 16.0),
         //   height: 50,
