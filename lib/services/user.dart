@@ -670,7 +670,8 @@ class User extends ChangeNotifier {
     double budgetExpenditures = 0;
     if (activeBudget != null) {
       activeBudget.toTrack.forEach((element) {
-        getCategoryNet(from: from, to: to, categoryID: element.categoryID);
+        budgetExpenditures +=
+            getCategoryNet(from: from, to: to, categoryID: element.categoryID);
       });
     }
     return budgetExpenditures;

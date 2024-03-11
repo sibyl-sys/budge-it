@@ -784,19 +784,21 @@ ModelDefinition getObjectBoxModel() {
               const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false);
           final valueParam =
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          final descriptionParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, '');
           final object = FavoriteTransaction(
               toID: toIDParam,
               fromID: fromIDParam,
               isArchived: isArchivedParam,
-              value: valueParam)
+              value: valueParam,
+              description: descriptionParam)
             ..favoriteID =
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbTransactionType =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 12)
-            ..dbImportance =
-                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 14)
-            ..description = const fb.StringReader(asciiOptimization: true)
-                .vTableGet(buffer, rootOffset, 18, '');
+            ..dbImportance = const fb.Int64Reader()
+                .vTableGetNullable(buffer, rootOffset, 14);
 
           return object;
         }),

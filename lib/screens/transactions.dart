@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_tracker/services/favoriteTransaction.dart';
 import 'package:money_tracker/services/transaction.dart';
 import 'package:money_tracker/services/user.dart';
@@ -16,6 +17,8 @@ class Transactions extends StatefulWidget {
 }
 
 class _TransactionsState extends State<Transactions> {
+  final moneyFormat = new NumberFormat("#,##0.00", "en_US");
+
   late DateTime from;
   late DateTime to;
 
@@ -229,7 +232,7 @@ class _TransactionsState extends State<Transactions> {
                                   ],
                                 )
                               ]),
-                              Text(e["value"].toString(),
+                              Text(moneyFormat.format(e["value"]),
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 16,
