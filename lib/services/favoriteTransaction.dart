@@ -1,7 +1,6 @@
 import 'package:objectbox/objectbox.dart';
 import './transaction.dart';
 
-
 @Entity()
 class FavoriteTransaction {
   @Id()
@@ -12,6 +11,8 @@ class FavoriteTransaction {
   int fromID;
 
   double value;
+
+  String description;
 
   @Transient()
   TransactionType? transactionType;
@@ -26,7 +27,7 @@ class FavoriteTransaction {
   }
 
   set dbTransactionType(int? value) {
-    if(value == null) {
+    if (value == null) {
       transactionType = null;
     } else {
       transactionType = TransactionType.values[value];
@@ -38,13 +39,19 @@ class FavoriteTransaction {
   }
 
   set dbImportance(int? value) {
-    if(value == null) {
+    if (value == null) {
       importance = null;
     } else {
       importance = TransactionImportance.values[value];
     }
   }
 
-  FavoriteTransaction({required this.toID, required this.fromID, required this.isArchived, this.transactionType, this.importance, required this.value});
-
+  FavoriteTransaction(
+      {required this.toID,
+      required this.fromID,
+      required this.isArchived,
+      this.transactionType,
+      this.importance,
+      required this.value,
+      required this.description});
 }

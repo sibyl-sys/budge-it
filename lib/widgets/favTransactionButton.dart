@@ -5,8 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 
-
-
 class FavTransactionButton extends StatefulWidget {
   final IconData icon;
   final Color color;
@@ -16,10 +14,22 @@ class FavTransactionButton extends StatefulWidget {
   final int fromID;
   final int toID;
   final String currencySymbol;
+  final String description;
   final TransactionImportance importance;
 
-
-  const FavTransactionButton({Key? key, required this.icon,required this.color,required this.categoryName,required this.value,required this.type,required this.fromID,required this.toID,required this.currencySymbol,required this.importance}) : super(key: key);
+  const FavTransactionButton(
+      {Key? key,
+      required this.icon,
+      required this.color,
+      required this.categoryName,
+      required this.value,
+      required this.type,
+      required this.fromID,
+      required this.toID,
+      required this.currencySymbol,
+      required this.importance,
+      required this.description})
+      : super(key: key);
 
   @override
   _FavTransactionButtonState createState() => _FavTransactionButtonState();
@@ -29,15 +39,14 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
   //TODO CHANGE TO BUTTON
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
   getIcon() {
-    if(widget.type == TransactionType.transfer) {
+    if (widget.type == TransactionType.transfer) {
       return CircleAvatar(
           backgroundColor: widget.color,
           child: Icon(
             widget.icon,
             color: Colors.white,
             size: 18,
-          )
-      );
+          ));
     } else {
       return Container(
         width: 30,
@@ -48,20 +57,15 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
               color: Colors.white.withOpacity(0.45),
               width: 2,
             ),
-            color: widget.color
-        ),
-        child: Icon(
-            widget.icon,
-            color: Colors.white,
-            size: 18
-        ),
+            color: widget.color),
+        child: Icon(widget.icon, color: Colors.white, size: 18),
       );
     }
   }
 
-  getImportanceIcon () {
-    if(widget.type == TransactionType.expense) {
-      if(widget.importance == TransactionImportance.need) {
+  getImportanceIcon() {
+    if (widget.type == TransactionType.expense) {
+      if (widget.importance == TransactionImportance.need) {
         return CircleAvatar(
           child: Icon(
             Icons.favorite,
@@ -83,12 +87,7 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
         );
       } else if (widget.importance == TransactionImportance.sudden) {
         return CircleAvatar(
-          child: Text("*",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12
-              )
-          ),
+          child: Text("*", style: TextStyle(color: Colors.white, fontSize: 12)),
           radius: 4.0,
           backgroundColor: Colors.orange.shade700.withOpacity(0.5),
         );
@@ -96,7 +95,6 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
     } else {
       return SizedBox(width: 0);
     }
-
   }
 
   @override
@@ -107,23 +105,21 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
       child: Container(
         child: Ink(
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5)
-          ),
+              color: Colors.white, borderRadius: BorderRadius.circular(5)),
           child: InkWell(
             borderRadius: BorderRadius.circular(5),
             onTap: () {
               user.selectAccountFrom(widget.fromID);
               user.selectRecipient(widget.toID, widget.type);
-              if(user.accounts.length > 0) {
-                Navigator.of(context).push(
-                    PageRouteBuilder(
-                      barrierColor: Colors.black.withOpacity(0.25),
-                      barrierDismissible: true,
-                      opaque: false,
-                      pageBuilder: (_, __, ___) => AddTransaction(initialValue: "${widget.value}"),
-                    )
-                );
+              if (user.accounts.length > 0) {
+                Navigator.of(context).push(PageRouteBuilder(
+                  barrierColor: Colors.black.withOpacity(0.25),
+                  barrierDismissible: true,
+                  opaque: false,
+                  pageBuilder: (_, __, ___) => AddTransaction(
+                      initialValue: "${widget.value}",
+                      note: widget.description),
+                ));
 
                 //TODO UPDATE FAVORITE TRANSACTION BASED ON THE NEW VALUE INPUT
               }
@@ -139,14 +135,11 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            widget.categoryName,
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF4F4F4F)
-                            )
-                          ),
+                          Text(widget.categoryName,
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF4F4F4F))),
                           SizedBox(width: 4),
                           getImportanceIcon()
                         ],
@@ -157,30 +150,25 @@ class _FavTransactionButtonState extends State<FavTransactionButton> {
                             style: TextStyle(
                                 color: Color(0xFFB6B6B6),
                                 fontSize: 12,
-                                fontWeight: FontWeight.w500
-                            ),
+                                fontWeight: FontWeight.w500),
                             children: [
                               TextSpan(
-                                  text: "${moneyFormat.format(widget.value).split('.')[0]}",
+                                  text:
+                                      "${moneyFormat.format(widget.value).split('.')[0]}",
                                   style: TextStyle(
                                       color: Color(0xFFB6B6B6),
                                       fontSize: 12,
                                       fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w500
-
-                                  )
-                              ),
+                                      fontWeight: FontWeight.w500)),
                               TextSpan(
-                                  text: ".${moneyFormat.format(widget.value).split('.')[1]}",
+                                  text:
+                                      ".${moneyFormat.format(widget.value).split('.')[1]}",
                                   style: TextStyle(
                                       color: Color(0xFFB6B6B6),
                                       fontSize: 11,
                                       fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w500
-                                  )
-                              )
-                            ]
-                        ),
+                                      fontWeight: FontWeight.w500))
+                            ]),
                       )
                     ],
                   )

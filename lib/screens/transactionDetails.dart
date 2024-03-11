@@ -383,7 +383,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                         isArchived: toFavorite.isArchived,
                         transactionType: toFavorite.transactionType,
                         importance: toFavorite.importance,
-                        value: toFavorite.value));
+                        value: toFavorite.value,
+                        description: toFavorite.note));
                     // user.addTransactionToFavorites(user.transactions[user.getTransactionIndexByID(widget.transactionID)]);
                   },
                   style: TextButton.styleFrom(

@@ -299,7 +299,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(7, 562735512304116534),
       name: 'FavoriteTransaction',
-      lastPropertyId: const IdUid(7, 7658815484122720605),
+      lastPropertyId: const IdUid(8, 5238873149732740466),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -336,6 +336,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(7, 7658815484122720605),
             name: 'value',
             type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 5238873149732740466),
+            name: 'description',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -755,7 +760,8 @@ ModelDefinition getObjectBoxModel() {
           object.favoriteID = id;
         },
         objectToFB: (FavoriteTransaction object, fb.Builder fbb) {
-          fbb.startTable(8);
+          final descriptionOffset = fbb.writeString(object.description);
+          fbb.startTable(9);
           fbb.addInt64(0, object.favoriteID);
           fbb.addInt64(1, object.toID);
           fbb.addInt64(2, object.fromID);
@@ -763,6 +769,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(4, object.dbTransactionType);
           fbb.addInt64(5, object.dbImportance);
           fbb.addFloat64(6, object.value);
+          fbb.addOffset(7, descriptionOffset);
           fbb.finish(fbb.endTable());
           return object.favoriteID;
         },
@@ -786,8 +793,10 @@ ModelDefinition getObjectBoxModel() {
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbTransactionType =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 12)
-            ..dbImportance = const fb.Int64Reader()
-                .vTableGetNullable(buffer, rootOffset, 14);
+            ..dbImportance =
+                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 14)
+            ..description = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 18, '');
 
           return object;
         }),
@@ -1087,6 +1096,10 @@ class FavoriteTransaction_ {
   /// see [FavoriteTransaction.value]
   static final value =
       QueryDoubleProperty<FavoriteTransaction>(_entities[6].properties[6]);
+
+  /// see [FavoriteTransaction.description]
+  static final description =
+      QueryStringProperty<FavoriteTransaction>(_entities[6].properties[7]);
 }
 
 /// [Budget] entity fields to define ObjectBox queries.

@@ -173,6 +173,7 @@ class _TransactionsState extends State<Transactions> {
                             ? user.findCategoryByID(transaction.toID)!.color
                             : user.findAccountByID(transaction.toID)!.color)
                         .withOpacity(1),
+                    description: transaction.description,
                     icon: IconData(
                         transaction.transactionType != TransactionType.transfer
                             ? user.findCategoryByID(transaction.toID)!.icon

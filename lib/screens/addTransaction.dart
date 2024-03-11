@@ -15,8 +15,10 @@ enum Operator { addition, subtraction, multiplication, division, none }
 
 class AddTransaction extends StatefulWidget {
   final String initialValue;
+  final String note;
 
-  const AddTransaction({Key? key, this.initialValue = ""}) : super(key: key);
+  const AddTransaction({Key? key, this.initialValue = "", this.note = ""})
+      : super(key: key);
 
   @override
   _AddTransactionState createState() => _AddTransactionState();
@@ -42,6 +44,7 @@ class _AddTransactionState extends State<AddTransaction> {
     if (widget.initialValue != "") {
       setState(() {
         firstValue = widget.initialValue;
+        notes = widget.note;
       });
     }
 
