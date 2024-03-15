@@ -130,9 +130,13 @@ class User extends ChangeNotifier {
         total += exchangeCurrency(account.balance, account.getCurrency(),
             mySettings.getPrimaryCurrency());
       }
-      print(total);
     }
     return total;
+  }
+
+  double totalNetPercentageChange(DateTime from, DateTime to) {
+    double previousValue = getHistoricalNetValue(from, to);
+    return (previousValue - totalNet) / previousValue * 100;
   }
 
   double get totalRegular {
@@ -146,6 +150,38 @@ class User extends ChangeNotifier {
       }
     }
     return total;
+  }
+
+  double totalBalancePercentageChange(DateTime from, DateTime to) {
+    double stashHistorical = 0;
+    double savingsHistorical = 0;
+    for (Account account in stashAccounts) {
+      if (account.getCurrency() == mySettings.getPrimaryCurrency()) {
+        stashHistorical +=
+            getHistoricalAccountValue(from, to, account.accountID);
+      } else {
+        stashHistorical += exchangeCurrency(
+            getHistoricalAccountValue(from, to, account.accountID),
+            account.getCurrency(),
+            mySettings.getPrimaryCurrency());
+      }
+    }
+
+    for (Account account in savingsAccounts) {
+      if (account.getCurrency() == mySettings.getPrimaryCurrency()) {
+        savingsHistorical +=
+            getHistoricalAccountValue(from, to, account.accountID);
+      } else {
+        savingsHistorical += exchangeCurrency(
+            getHistoricalAccountValue(from, to, account.accountID),
+            account.getCurrency(),
+            mySettings.getPrimaryCurrency());
+      }
+    }
+    return (stashHistorical + savingsHistorical) *
+        -1 /
+        (totalRegular + totalSavings + stashHistorical + savingsHistorical) *
+        100;
   }
 
   double get totalDebts {
@@ -402,8 +438,48 @@ class User extends ChangeNotifier {
     return monthlyNet;
   }
 
+  double getHistoricalAccountValue(DateTime from, DateTime to, int accountID) {
+    double accountTotal = 0;
+
+    Query<Transaction> transactionRangeQuery = objectbox.transactionBox
+        .query(Transaction_.timestamp
+            .between(from.millisecondsSinceEpoch, to.millisecondsSinceEpoch))
+        .build();
+    List<Transaction> transactionRange = transactionRangeQuery.find();
+    for (Transaction transaction in transactionRange) {
+      if (transaction.fromID == accountID) {
+        if (transaction.transactionType == TransactionType.income) {
+          accountTotal -= transaction.value;
+        } else {
+          accountTotal += transaction.value;
+        }
+      } else if (transaction.toID == accountID) {
+        accountTotal -= transaction.value;
+      }
+    }
+    return accountTotal;
+  }
+
+  double getHistoricalNetValue(DateTime from, DateTime to) {
+    double transactionTotal = 0;
+
+    Query<Transaction> transactionRangeQuery = objectbox.transactionBox
+        .query(Transaction_.timestamp
+            .between(from.millisecondsSinceEpoch, to.millisecondsSinceEpoch))
+        .build();
+    List<Transaction> transactionRange = transactionRangeQuery.find();
+    for (Transaction transaction in transactionRange) {
+      if (transaction.transactionType == TransactionType.income) {
+        transactionTotal -= transaction.value;
+      } else {
+        transactionTotal += transaction.value;
+      }
+    }
+    return transactionTotal;
+  }
+
   //TODO TRANSLATE TO QUERY
-  List<Map> getTransactions(
+  List<Map> getTransactionsByDate(
       {required DateTime from, required DateTime to, required int accountID}) {
     List<Map> transactionsByDate = <Map>[];
     for (Transaction transaction in transactions) {

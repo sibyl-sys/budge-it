@@ -116,7 +116,7 @@ class _AccountDetailsState extends State<AccountDetails> {
     final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
     final User user = context.watch<User>();
 
-    final List<Map> transactionListPerDay = user.getTransactions(
+    final List<Map> transactionListPerDay = user.getTransactionsByDate(
         from: from, to: to, accountID: arguments["accountIndex"]);
     Account currentAccount = user.findAccountByID(arguments["accountIndex"])!;
 

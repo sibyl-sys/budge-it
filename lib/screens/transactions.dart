@@ -119,7 +119,7 @@ class _TransactionsState extends State<Transactions> {
     ];
 
     final List<Map> transactionListPerDay =
-        user.getTransactions(from: from, to: to, accountID: -1);
+        user.getTransactionsByDate(from: from, to: to, accountID: -1);
 
     return ListView(
       padding: EdgeInsets.zero,

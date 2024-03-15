@@ -144,6 +144,9 @@ class _AccountsTabState extends State<AccountsTab> {
   Widget renderAllAccounts(User user) {
     final stash = user.stashAccounts;
     final savings = user.savingsAccounts;
+    DateTime now = DateTime.now();
+    double percentageChange = user.totalBalancePercentageChange(
+        DateTime(now.year, now.month, 1).subtract(Duration(days: 1)), now);
     print(savings);
     return Column(
       children: [
@@ -158,11 +161,15 @@ class _AccountsTabState extends State<AccountsTab> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.arrow_upward,
-                  color: Color(0x55C9C6).withOpacity(1),
+                  percentageChange > 0
+                      ? Icons.arrow_upward
+                      : Icons.arrow_downward,
+                  color: percentageChange > 0
+                      ? Color(0xFF55C9C6)
+                      : Color(0xFFEB6467),
                   size: 12,
                 ),
-                Text("0% from last month",
+                Text("${percentageChange.abs()}% from last month",
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       color: Colors.grey[400],
