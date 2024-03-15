@@ -98,9 +98,9 @@ class _CategoriesState extends State<Categories>
 
   getValueColor() {
     if (_tabController.index == 0) {
-      return Color(0xEB6467).withOpacity(1);
+      return Color(0xFFEB6467);
     } else {
-      return Color(0x55C9C6).withOpacity(1);
+      return Color(0xFF55C9C6);
     }
   }
 
