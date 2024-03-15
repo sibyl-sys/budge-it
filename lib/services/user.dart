@@ -178,6 +178,12 @@ class User extends ChangeNotifier {
             mySettings.getPrimaryCurrency());
       }
     }
+
+    if (totalRegular + totalSavings + stashHistorical + savingsHistorical ==
+        0) {
+      return 0;
+    }
+
     return (stashHistorical + savingsHistorical) *
         -1 /
         (totalRegular + totalSavings + stashHistorical + savingsHistorical) *
@@ -209,6 +215,10 @@ class User extends ChangeNotifier {
             account.getCurrency(),
             mySettings.getPrimaryCurrency());
       }
+    }
+
+    if (totalDebts + historicalDebt == 0) {
+      return 0;
     }
 
     return (historicalDebt) * -1 / (totalDebts + historicalDebt) * 100;
