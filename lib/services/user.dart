@@ -197,6 +197,23 @@ class User extends ChangeNotifier {
     return total;
   }
 
+  double totalDebtPercentageChange(DateTime from, DateTime to) {
+    double historicalDebt = 0;
+    for (Account account in debtAccounts) {
+      if (account.getCurrency() == mySettings.getPrimaryCurrency()) {
+        historicalDebt +=
+            getHistoricalAccountValue(from, to, account.accountID);
+      } else {
+        historicalDebt += exchangeCurrency(
+            getHistoricalAccountValue(from, to, account.accountID),
+            account.getCurrency(),
+            mySettings.getPrimaryCurrency());
+      }
+    }
+
+    return (historicalDebt) * -1 / (totalDebts + historicalDebt) * 100;
+  }
+
   double get totalNet {
     double total = 0;
     for (var account in accounts) {

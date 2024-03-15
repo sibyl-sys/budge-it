@@ -16,7 +16,6 @@ class DebtsTab extends StatefulWidget {
 }
 
 class _DebtsTabState extends State<DebtsTab> {
-
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
 
   Widget renderCallToAction() {
@@ -32,22 +31,14 @@ class _DebtsTabState extends State<DebtsTab> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
-            child: Text(
-                "Ooops! You don't have a debt account yet",
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18
-                )
-            ),
+            child: Text("Ooops! You don't have a debt account yet",
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18)),
           ),
-          Text(
-              "Add new account",
+          Text("Add new account",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Theme.of(context).primaryColor,
-                  fontSize: 18
-              )
-          ),
+                  fontSize: 18)),
         ],
       ),
     );
@@ -61,14 +52,12 @@ class _DebtsTabState extends State<DebtsTab> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-                "I Owe",
+            Text("I Owe",
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                )
-            ),
+                )),
             RichText(
               text: TextSpan(
                   text: "${user.mySettings.getPrimaryCurrency().symbol} ",
@@ -78,23 +67,20 @@ class _DebtsTabState extends State<DebtsTab> {
                   ),
                   children: [
                     TextSpan(
-                        text: "${moneyFormat.format(user.totalRegular).split('.')[0]}",
+                        text:
+                            "${moneyFormat.format(user.totalRegular).split('.')[0]}",
                         style: TextStyle(
                             color: Color(0x55C9C6).withOpacity(1),
                             fontSize: 14,
-                            fontFamily: "Poppins"
-                        )
-                    ),
+                            fontFamily: "Poppins")),
                     TextSpan(
-                        text: ".${moneyFormat.format(user.totalRegular).split('.')[1]}",
+                        text:
+                            ".${moneyFormat.format(user.totalRegular).split('.')[1]}",
                         style: TextStyle(
                             color: Color(0x55C9C6).withOpacity(1),
                             fontSize: 12,
-                            fontFamily: "Poppins"
-                        )
-                    )
-                  ]
-              ),
+                            fontFamily: "Poppins"))
+                  ]),
             ),
           ],
         ),
@@ -113,14 +99,11 @@ class _DebtsTabState extends State<DebtsTab> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-                "I am owed",
+            Text("I am owed",
                 style: TextStyle(
                     color: Colors.grey[400],
                     fontSize: 12,
-                    fontWeight: FontWeight.w500
-                )
-            ),
+                    fontWeight: FontWeight.w500)),
             RichText(
               text: TextSpan(
                   text: "${user.mySettings.getPrimaryCurrency().symbol} ",
@@ -130,23 +113,20 @@ class _DebtsTabState extends State<DebtsTab> {
                   ),
                   children: [
                     TextSpan(
-                        text: "${moneyFormat.format(user.totalSavings).split('.')[0]}",
+                        text:
+                            "${moneyFormat.format(user.totalSavings).split('.')[0]}",
                         style: TextStyle(
                             color: Color(0x55C9C6).withOpacity(1),
                             fontSize: 14,
-                            fontFamily: "Poppins"
-                        )
-                    ),
+                            fontFamily: "Poppins")),
                     TextSpan(
-                        text: ".${moneyFormat.format(user.totalSavings).split('.')[1]}",
+                        text:
+                            ".${moneyFormat.format(user.totalSavings).split('.')[1]}",
                         style: TextStyle(
                             color: Color(0x55C9C6).withOpacity(1),
                             fontSize: 12,
-                            fontFamily: "Poppins"
-                        )
-                    )
-                  ]
-              ),
+                            fontFamily: "Poppins"))
+                  ]),
             ),
           ],
         ),
@@ -155,40 +135,55 @@ class _DebtsTabState extends State<DebtsTab> {
       ],
     );
   }
+
   //TODO COMPUTATION FOR INCREASE
   Widget renderAllAccounts(User user) {
     final iAmOwed = user.iAmOwedAccounts;
     final iOwed = user.iOwedAccounts;
+    DateTime now = DateTime.now();
+    double percentageChange = user.totalBalancePercentageChange(
+        DateTime(now.year, now.month, 1).subtract(Duration(days: 1)), now);
     return Column(
       children: [
-        TotalHeader(header: "Total Debts", valueColor: Color(0x333333).withOpacity(1), currencySymbol: user.mySettings.getPrimaryCurrency().symbol, value: user.totalDebts, description:
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.arrow_upward,
-              color: Color(0x55C9C6).withOpacity(1),
-              size: 12,
+        TotalHeader(
+            header: "Total Debts",
+            valueColor: Color(0xFF333333),
+            currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+            value: user.totalDebts,
+            description: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  percentageChange > 0
+                      ? Icons.arrow_upward
+                      : Icons.arrow_downward,
+                  color: percentageChange > 0
+                      ? Color(0xFF55C9C6)
+                      : Color(0xFFEB6467),
+                  size: 12,
+                ),
+                Text("${user.debtAccounts}% from last month",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey[400],
+                      fontSize: 12,
+                    )),
+              ],
             ),
-            Text("0% from last month",
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey[400],
-                  fontSize: 12,
-                )
-            ),
-          ],
-        ),
-        isDebt: true),
+            isDebt: true),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                iAmOwed.length > 0 ? renderIAmOwedAccounts(user) : SizedBox(height: 0),
-                iOwed.length > 0 ? renderIOweAccounts(user) : SizedBox(height: 0)
+                iAmOwed.length > 0
+                    ? renderIAmOwedAccounts(user)
+                    : SizedBox(height: 0),
+                iOwed.length > 0
+                    ? renderIOweAccounts(user)
+                    : SizedBox(height: 0)
               ],
             ),
           ),
@@ -201,28 +196,31 @@ class _DebtsTabState extends State<DebtsTab> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: accounts.map((account) =>
-            AccountCard(
-              accountName: account.name,
-              icon: IconData(account.icon, fontFamily: 'MaterialIcons'),
-              color: Color(account.color).withOpacity(1),
-              balance: account.balance,
-              creditLimit: account.creditLimit,
-              progress: user.getAccountExpenses(account.accountID, DateTime.now().month, DateTime.now().year) / account.creditLimit * 100,
-              description: account.description,
-              accountIndex: account.accountID,
-              onAccountTapped: widget.onAccountTapped,
-              currencySymbol : account.getCurrency().symbol,
-              isDebt: true,
-            )
-        ).toList()
-    );
+        children: accounts
+            .map((account) => AccountCard(
+                  accountName: account.name,
+                  icon: IconData(account.icon, fontFamily: 'MaterialIcons'),
+                  color: Color(account.color).withOpacity(1),
+                  balance: account.balance,
+                  creditLimit: account.creditLimit,
+                  progress: user.getAccountExpenses(account.accountID,
+                          DateTime.now().month, DateTime.now().year) /
+                      account.creditLimit *
+                      100,
+                  description: account.description,
+                  accountIndex: account.accountID,
+                  onAccountTapped: widget.onAccountTapped,
+                  currencySymbol: account.getCurrency().symbol,
+                  isDebt: true,
+                ))
+            .toList());
   }
 
   @override
   Widget build(BuildContext context) {
-
     final user = context.watch<User>();
-    return user.accounts.length > 0 ? renderAllAccounts(user) : renderCallToAction();
+    return user.accounts.length > 0
+        ? renderAllAccounts(user)
+        : renderCallToAction();
   }
 }

@@ -153,7 +153,7 @@ class _AccountsTabState extends State<AccountsTab> {
         SizedBox(height: 2),
         TotalHeader(
             header: "Total Balance",
-            valueColor: Color(0x333333).withOpacity(1),
+            valueColor: Color(0xFF333333),
             currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
             value: user.totalRegular + user.totalSavings,
             description: Row(
