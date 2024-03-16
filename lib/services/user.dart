@@ -182,6 +182,9 @@ class User extends ChangeNotifier {
     if (totalRegular + totalSavings + stashHistorical + savingsHistorical ==
         0) {
       return 0;
+    } else if (totalRegular + totalSavings > 0 &&
+        stashHistorical + savingsHistorical == 0) {
+      return 100;
     }
 
     return (stashHistorical + savingsHistorical) *
@@ -219,6 +222,8 @@ class User extends ChangeNotifier {
 
     if (totalDebts + historicalDebt == 0) {
       return 0;
+    } else if (totalDebts > 0 && historicalDebt == 0) {
+      return 100;
     }
 
     return (historicalDebt) * -1 / (totalDebts + historicalDebt) * 100;
@@ -360,10 +365,18 @@ class User extends ChangeNotifier {
     return categoryNet;
   }
 
-  double categoryNetPercentageChange(
-      DateTime from, DateTime to, int categoryID, double current) {
+  double categoryTypePercentageChange(
+      DateTime from, DateTime to, CategoryType categoryType, double current) {
     double previousValue =
-        getCategoryNet(from: from, to: to, categoryID: categoryID);
+        getCategoryTypeNet(from: from, to: to, categoryType: categoryType);
+    print(previousValue);
+
+    if (current > 0 && previousValue == 0) {
+      return 100;
+    } else if (current == 0 && previousValue == 0) {
+      return 0;
+    }
+
     return (previousValue - current) / previousValue * 100;
   }
 

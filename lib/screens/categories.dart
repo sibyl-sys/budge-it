@@ -17,21 +17,7 @@ class Categories extends StatefulWidget {
 class _CategoriesState extends State<Categories>
     with SingleTickerProviderStateMixin {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-  //TODO CREATE MONTH WIDGET
-  List months = [
-    "JANUARY",
-    "FEBRUARY",
-    "MARCH",
-    "APRIL",
-    "MAY",
-    "JUNE",
-    "JULY",
-    "AUGUST",
-    "SEPTEMER",
-    "OCTOBER",
-    "NOVEMBER",
-    "DECEMBER"
-  ];
+  DateRangeType rangeType = DateRangeType.MONTHLY;
 
   late DateTime from;
   late DateTime to;
@@ -85,6 +71,7 @@ class _CategoriesState extends State<Categories>
     setState(() {
       from = dateMap["from"];
       to = dateMap["to"];
+      rangeType = dateMap["type"];
     });
   }
 
@@ -112,9 +99,31 @@ class _CategoriesState extends State<Categories>
     }
   }
 
+  getPercentage(User user, double net) {
+    DateTime historicalFrom = DateTime(from.year, from.month - 1, from.day);
+    DateTime historicalTo = DateTime(to.year, to.month - 1, to.day);
+
+    if (rangeType == DateRangeType.YEARLY) {
+      historicalFrom = DateTime(from.year - 1, from.month, from.day);
+      historicalTo = DateTime(to.year - 1, to.month, to.day);
+    } else if (rangeType == DateRangeType.DAILY) {
+      historicalFrom = DateTime(from.year - 1, from.month, from.day);
+      historicalTo = DateTime(to.year - 1, to.month, to.day);
+    }
+
+    return user.categoryTypePercentageChange(
+        historicalFrom, historicalTo, getCategoryType(), net);
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
+
+    double categoryNet = user
+        .getCategoryTypeNet(
+            from: this.from, to: this.to, categoryType: getCategoryType())
+        .abs();
+    double percentageChange = getPercentage(user, categoryNet);
 
     return Material(
       child: Container(
@@ -129,29 +138,30 @@ class _CategoriesState extends State<Categories>
               header: getHeaderText(),
               valueColor: getValueColor(),
               currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
-              value: user
-                  .getCategoryTypeNet(
-                      from: this.from,
-                      to: this.to,
-                      categoryType: getCategoryType())
-                  .abs(),
-              description: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.arrow_upward,
-                    color: Color(0x55C9C6).withOpacity(1),
-                    size: 12,
-                  ),
-                  Text("0% from last month",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[400],
-                        fontSize: 12,
-                      )),
-                ],
-              )),
+              value: categoryNet,
+              description: rangeType == DateRangeType.IRREGULAR
+                  ? SizedBox()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          percentageChange >= 0
+                              ? Icons.arrow_upward
+                              : Icons.arrow_downward,
+                          color: percentageChange >= 0
+                              ? Color(0xFF55C9C6)
+                              : Color(0xFFEB6467),
+                          size: 12,
+                        ),
+                        Text("${percentageChange}% from last month",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey[400],
+                              fontSize: 12,
+                            )),
+                      ],
+                    )),
           ColoredBox(color: Colors.white, child: _tabBar),
           Expanded(
             child: TabBarView(controller: _tabController, children: [

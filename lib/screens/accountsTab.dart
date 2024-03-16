@@ -161,10 +161,10 @@ class _AccountsTabState extends State<AccountsTab> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  percentageChange > 0
+                  percentageChange >= 0
                       ? Icons.arrow_upward
                       : Icons.arrow_downward,
-                  color: percentageChange > 0
+                  color: percentageChange >= 0
                       ? Color(0xFF55C9C6)
                       : Color(0xFFEB6467),
                   size: 12,

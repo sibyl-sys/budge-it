@@ -38,6 +38,25 @@ class _DateRangeBarState extends State<DateRangeBar> {
     }
   }
 
+  getUpdateDateRangeType(DateTime from, DateTime to) {
+    if (from.month == 1 &&
+        from.day == 1 &&
+        from.year == to.year &&
+        to.month == 12 &&
+        to.day == 31) {
+      return DateRangeType.YEARLY;
+    } else if (widget.from.month == to.month &&
+        from.day == 1 &&
+        from.year == to.year &&
+        to.day == DateTime(from.year, from.month + 1, 0).day) {
+      return DateRangeType.MONTHLY;
+    } else if (from.compareTo(to) == 0) {
+      return DateRangeType.DAILY;
+    } else {
+      return DateRangeType.IRREGULAR;
+    }
+  }
+
   getDateRangeText() {
     DateRangeType type = getDateRangeType();
     if (type == DateRangeType.YEARLY) {
@@ -60,19 +79,22 @@ class _DateRangeBarState extends State<DateRangeBar> {
       widget.onChanged({
         "from":
             DateTime(widget.from.year + 1, widget.from.month, widget.from.day),
-        "to": DateTime(widget.to.year + 1, widget.to.month, widget.to.day)
+        "to": DateTime(widget.to.year + 1, widget.to.month, widget.to.day),
+        "type": getDateRangeType()
       });
     } else if (type == DateRangeType.MONTHLY) {
       widget.onChanged({
         "from":
             DateTime(widget.from.year, widget.from.month + 1, widget.from.day),
-        "to": DateTime(widget.from.year, widget.from.month + 2, 0)
+        "to": DateTime(widget.from.year, widget.from.month + 2, 0),
+        "type": getDateRangeType()
       });
     } else if (type == DateRangeType.DAILY) {
       widget.onChanged({
         "from":
             DateTime(widget.from.year, widget.from.month, widget.from.day + 1),
-        "to": DateTime(widget.to.year, widget.to.month, widget.to.day + 1)
+        "to": DateTime(widget.to.year, widget.to.month, widget.to.day + 1),
+        "type": getDateRangeType()
       });
     }
   }
@@ -84,19 +106,22 @@ class _DateRangeBarState extends State<DateRangeBar> {
       widget.onChanged({
         "from":
             DateTime(widget.from.year - 1, widget.from.month, widget.from.day),
-        "to": DateTime(widget.to.year - 1, widget.to.month, widget.to.day)
+        "to": DateTime(widget.to.year - 1, widget.to.month, widget.to.day),
+        "type": getDateRangeType()
       });
     } else if (type == DateRangeType.MONTHLY) {
       widget.onChanged({
         "from":
             DateTime(widget.from.year, widget.from.month - 1, widget.from.day),
-        "to": DateTime(widget.from.year, widget.from.month, 0)
+        "to": DateTime(widget.from.year, widget.from.month, 0),
+        "type": getDateRangeType()
       });
     } else if (type == DateRangeType.DAILY) {
       widget.onChanged({
         "from":
             DateTime(widget.from.year, widget.from.month, widget.from.day - 1),
-        "to": DateTime(widget.to.year, widget.to.month, widget.to.day - 1)
+        "to": DateTime(widget.to.year, widget.to.month, widget.to.day - 1),
+        "type": getDateRangeType()
       });
     }
   }
@@ -117,7 +142,13 @@ class _DateRangeBarState extends State<DateRangeBar> {
                   DateRangeSelection(toDate: widget.to, fromDate: widget.from),
             ));
             if (results != null) {
-              widget.onChanged(results);
+              DateRangeType rangeType =
+                  getUpdateDateRangeType(results["from"], results["to"]);
+              widget.onChanged({
+                "from": results["from"],
+                "to": results["to"],
+                "type": rangeType
+              });
             }
           },
           child: Container(
