@@ -6,8 +6,6 @@ import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-enum DateRangeType { DAILY, WEEKLY, MONTHLY }
-
 class OverviewTab extends StatefulWidget {
   final DateTime from;
   final DateTime to;

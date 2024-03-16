@@ -15,6 +15,8 @@ import 'package:money_tracker/main.dart';
 
 import '../objectbox.g.dart';
 
+enum DateRangeType { DAILY, WEEKLY, MONTHLY }
+
 class User extends ChangeNotifier {
   List<Account> accounts = [];
   List<Category> categories = [];
@@ -358,6 +360,13 @@ class User extends ChangeNotifier {
       }
     }
     return categoryNet;
+  }
+
+  double categoryNetPercentageChange(
+      DateTime from, DateTime to, int categoryID, double current) {
+    double previousValue =
+        getCategoryNet(from: from, to: to, categoryID: categoryID);
+    return (previousValue - current) / previousValue * 100;
   }
 
   double getCategoryTypeNet(

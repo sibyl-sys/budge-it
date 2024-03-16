@@ -141,7 +141,7 @@ class _DebtsTabState extends State<DebtsTab> {
     final iAmOwed = user.iAmOwedAccounts;
     final iOwed = user.iOwedAccounts;
     DateTime now = DateTime.now();
-    double percentageChange = user.totalBalancePercentageChange(
+    double percentageChange = user.totalDebtPercentageChange(
         DateTime(now.year, now.month, 1).subtract(Duration(days: 1)), now);
     return Column(
       children: [
@@ -163,7 +163,7 @@ class _DebtsTabState extends State<DebtsTab> {
                       : Color(0xFFEB6467),
                   size: 12,
                 ),
-                Text("${user.debtAccounts}% from last month",
+                Text("${percentageChange}% from last month",
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       color: Colors.grey[400],
