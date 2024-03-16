@@ -154,7 +154,7 @@ class _CategoriesState extends State<Categories>
                               : Color(0xFFEB6467),
                           size: 12,
                         ),
-                        Text("${percentageChange}% from last month",
+                        Text("${percentageChange.abs()}% from last month",
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               color: Colors.grey[400],
