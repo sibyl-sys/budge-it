@@ -15,7 +15,8 @@ class Overview extends StatefulWidget {
 
 class _OverviewState extends State<Overview> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
-  //TODO CREATE MONTH WIDGET
+  DateRangeType rangeType = DateRangeType.MONTHLY;
+
   List months = [
     "JANUARY",
     "FEBRUARY",
@@ -52,12 +53,32 @@ class _OverviewState extends State<Overview> {
     setState(() {
       from = dateMap["from"];
       to = dateMap["to"];
+      rangeType = dateMap["type"];
     });
+  }
+
+  getPercentage(User user, double current) {
+    DateTime historicalFrom = DateTime(from.year, from.month - 1, from.day);
+    DateTime historicalTo = DateTime(to.year, to.month - 1, to.day);
+
+    if (rangeType == DateRangeType.YEARLY) {
+      historicalFrom = DateTime(from.year - 1, from.month, from.day);
+      historicalTo = DateTime(to.year - 1, to.month, to.day);
+    } else if (rangeType == DateRangeType.DAILY) {
+      historicalFrom = DateTime(from.year - 1, from.month, from.day);
+      historicalTo = DateTime(to.year - 1, to.month, to.day);
+    }
+
+    return user.totalNetPercentageChange(historicalFrom, historicalTo, current);
   }
 
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
+
+    double current = user.getRangeNet(from: this.from, to: this.to);
+
+    double percentageChange = getPercentage(user, current);
 
     return Material(
       child: Container(
@@ -72,24 +93,30 @@ class _OverviewState extends State<Overview> {
               header: "Total net:",
               valueColor: Color(0xFF4F4F4F),
               currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
-              value: user.getRangeNet(from: this.from, to: this.to),
-              description: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.arrow_upward,
-                    color: Color(0x55C9C6).withOpacity(1),
-                    size: 12,
-                  ),
-                  Text("0% Total Savings",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[400],
-                        fontSize: 12,
-                      )),
-                ],
-              )),
+              value: current,
+              description: rangeType == DateRangeType.IRREGULAR
+                  ? SizedBox()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          percentageChange >= 0
+                              ? Icons.arrow_upward
+                              : Icons.arrow_downward,
+                          color: percentageChange >= 0
+                              ? Color(0xFF55C9C6)
+                              : Color(0xFFEB6467),
+                          size: 12,
+                        ),
+                        Text("${percentageChange.abs()}% from last month",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey[400],
+                              fontSize: 12,
+                            )),
+                      ],
+                    )),
           Expanded(child: OverviewTab(from: this.from, to: this.to)),
         ],
       )),

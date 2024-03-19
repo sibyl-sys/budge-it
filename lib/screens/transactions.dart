@@ -78,6 +78,7 @@ class _TransactionsState extends State<Transactions> {
     setState(() {
       from = dateMap["from"];
       to = dateMap["to"];
+      rangeType = dateMap["type"];
     });
   }
 
