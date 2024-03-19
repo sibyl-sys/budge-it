@@ -134,7 +134,7 @@ class _TransactionsState extends State<Transactions> {
             header: "Total Net:",
             valueColor: Color(0x4F4F4F).withOpacity(1),
             currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
-            value: user.getAccountNet(from: from, to: to, accountID: -1),
+            value: user.getRangeNet(from: this.from, to: this.to),
             description: RichText(
               text: TextSpan(
                   text: "xx%",
