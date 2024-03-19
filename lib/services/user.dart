@@ -789,6 +789,29 @@ class User extends ChangeNotifier {
     return budgetExpenditures;
   }
 
+  double getTotalBudgetExpenditures(DateTime from, DateTime to) {
+    List<Budget> activeBudgets = getActiveBudgets(from, to);
+    double totalExpenditures = 0;
+    for (Budget budget in activeBudgets) {
+      totalExpenditures += getBudgetExpenditures(from, to, budget.budgetID);
+    }
+
+    return totalExpenditures;
+  }
+
+  double getTotalBudgetPercentageChange(
+      DateTime from, DateTime to, double current) {
+    double previousValue = getTotalBudgetExpenditures(from, to);
+    if (current > 0 && previousValue == 0) {
+      return 100;
+    } else if (current < 0 && previousValue == 0) {
+      return -100;
+    } else if (current == 0 && previousValue == 0) {
+      return 0;
+    }
+    return (previousValue - current) / previousValue * 100;
+  }
+
   List<Budget> getActiveBudgets(DateTime from, DateTime to) {
     List<Budget> activeBudgets = [];
     budgets.forEach((element) {
