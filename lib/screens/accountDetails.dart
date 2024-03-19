@@ -49,15 +49,15 @@ class _AccountDetailsState extends State<AccountDetails> {
   getValueColor(Transaction transaction, Account currentAccount) {
     if (transaction.transactionType == TransactionType.transfer) {
       if (currentAccount.accountID == transaction.fromID) {
-        return Color(0xEB6467).withOpacity(1);
+        return Color(0xFFEB6467);
       } else {
-        return Color(0x55C9C6).withOpacity(1);
+        return Color(0xFF55C9C6);
       }
     } else {
       if (transaction.transactionType == TransactionType.expense) {
-        return Color(0xEB6467).withOpacity(1);
+        return Color(0xFFEB6467);
       } else {
-        return Color(0x55C9C6).withOpacity(1);
+        return Color(0xFF55C9C6);
       }
     }
   }
@@ -86,7 +86,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                   description: transaction.note,
                   value: transaction.value,
                   transactionID: transaction.transactionID,
-                  currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+                  currencySymbol: currentAccount.getCurrency().symbol,
                   type: transaction.transactionType!,
                   valueColor: getValueColor(transaction, currentAccount),
                   importance: transaction.importance!,
