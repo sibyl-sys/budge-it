@@ -6,7 +6,7 @@ import 'package:money_tracker/services/user.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-enum DateRangeType { DAILY, WEEKLY, MONTHLY }
+enum OverviewRangeType { DAILY, WEEKLY, MONTHLY }
 
 //TODO USE DATERANGETYPE FROM DATERANGESELECTION?
 
@@ -78,15 +78,15 @@ class _OverviewTabState extends State<OverviewTab>
   }
 
   BarTooltipItem getTooltipItem(group, groupIndex, rod, rodIndex) {
-    DateRangeType rangeType = DateRangeType.DAILY;
+    OverviewRangeType rangeType = OverviewRangeType.DAILY;
     int noDays = (widget.to.difference(widget.from).inHours / 24).round();
     if (noDays > 31) {
-      rangeType = DateRangeType.MONTHLY;
+      rangeType = OverviewRangeType.MONTHLY;
     } else if (noDays == 6) {
-      rangeType = DateRangeType.WEEKLY;
+      rangeType = OverviewRangeType.WEEKLY;
     }
     String text = "";
-    if (rangeType == DateRangeType.MONTHLY) {
+    if (rangeType == OverviewRangeType.MONTHLY) {
       text =
           monthlyFormat.format(DateTime(widget.from.year, widget.from.month)) +
               ": " +
@@ -114,20 +114,20 @@ class _OverviewTabState extends State<OverviewTab>
   Widget bottomTitles(double value, TitleMeta meta) {
     //TODO: TEMPORARILY MONTH, DO VARIATIONS DEPENDING ON DATE SET AFTER.
     String text = "";
-    DateRangeType rangeType = DateRangeType.DAILY;
+    OverviewRangeType rangeType = OverviewRangeType.DAILY;
     int noDays = (widget.to.difference(widget.from).inHours / 24).round();
     if (noDays > 31) {
-      rangeType = DateRangeType.MONTHLY;
+      rangeType = OverviewRangeType.MONTHLY;
     } else if (noDays == 6) {
-      rangeType = DateRangeType.WEEKLY;
+      rangeType = OverviewRangeType.WEEKLY;
     }
-    if (rangeType == DateRangeType.DAILY &&
+    if (rangeType == OverviewRangeType.DAILY &&
         (value.floor() % 5 == 0 || value.floor() == 1)) {
       text = value.floor().toString();
-    } else if (rangeType == DateRangeType.MONTHLY) {
+    } else if (rangeType == OverviewRangeType.MONTHLY) {
       text = monthFormat.format(DateTime(widget.from.year, widget.from.month, 1)
           .add(Duration(days: 30 * value.floor() - 1)));
-    } else if (rangeType == DateRangeType.WEEKLY) {
+    } else if (rangeType == OverviewRangeType.WEEKLY) {
       text = weekFormat.format(
           DateTime(widget.from.year, widget.from.month, widget.from.day)
               .add(Duration(days: value.floor())));
@@ -149,16 +149,16 @@ class _OverviewTabState extends State<OverviewTab>
 
   List<BarChartGroupData> getData(
       DateTime from, DateTime to, List<Category> categories, User user) {
-    DateRangeType rangeType = DateRangeType.DAILY;
+    OverviewRangeType rangeType = OverviewRangeType.DAILY;
     int noDays = (to.difference(from).inHours / 24).round();
     int noMonths = monthsBetween(from, to);
     if (noDays > 31) {
-      rangeType = DateRangeType.MONTHLY;
+      rangeType = OverviewRangeType.MONTHLY;
     } else if (noDays == 6) {
-      rangeType = DateRangeType.WEEKLY;
+      rangeType = OverviewRangeType.WEEKLY;
     }
 
-    int barCount = rangeType == DateRangeType.MONTHLY ? noMonths : noDays;
+    int barCount = rangeType == OverviewRangeType.MONTHLY ? noMonths : noDays;
     List<BarChartGroupData> groupData = [];
     for (int i = 0; i <= barCount; i++) {
       //BARCHARTGROUPDATA
@@ -169,7 +169,7 @@ class _OverviewTabState extends State<OverviewTab>
       if (getSelectedType() == 0) {
         categories.forEach((category) {
           double categoryValue = 0;
-          if (rangeType == DateRangeType.MONTHLY) {
+          if (rangeType == OverviewRangeType.MONTHLY) {
             categoryValue = user.getCategoryNet(
                 from: DateTime(from.year, from.month + i, 1),
                 to: DateTime(from.year, from.month + i + 1, 1)
@@ -188,7 +188,7 @@ class _OverviewTabState extends State<OverviewTab>
       } else if (getSelectedType() == 1) {
         TransactionImportance.values.forEach((importance) {
           double categoryValue = 0;
-          if (rangeType == DateRangeType.MONTHLY) {
+          if (rangeType == OverviewRangeType.MONTHLY) {
             categoryValue = user.getImportanceNet(
                 from: DateTime(from.year, from.month + i, 1),
                 to: DateTime(from.year, from.month + i + 1, 1)
@@ -211,7 +211,7 @@ class _OverviewTabState extends State<OverviewTab>
         });
       } else {
         double netValue = 0;
-        if (rangeType == DateRangeType.MONTHLY) {
+        if (rangeType == OverviewRangeType.MONTHLY) {
           netValue = user.getRangeNet(
               from: DateTime(from.year, from.month + i, 1),
               to: DateTime(from.year, from.month + i + 1, 1)
@@ -240,9 +240,9 @@ class _OverviewTabState extends State<OverviewTab>
         }
       });
       groupData.add(BarChartGroupData(
-          x: rangeType == DateRangeType.MONTHLY
+          x: rangeType == OverviewRangeType.MONTHLY
               ? from.month + i
-              : rangeType == DateRangeType.WEEKLY
+              : rangeType == OverviewRangeType.WEEKLY
                   ? i
                   : from.add(Duration(days: i)).day,
           barsSpace: 2,
