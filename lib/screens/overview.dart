@@ -72,6 +72,18 @@ class _OverviewState extends State<Overview> {
     return user.totalNetPercentageChange(historicalFrom, historicalTo, current);
   }
 
+  getLastText() {
+    String historicalText = "last month";
+
+    if (rangeType == DateRangeType.YEARLY) {
+      historicalText = "last year";
+    } else if (rangeType == DateRangeType.DAILY) {
+      historicalText = "yesterday";
+    }
+
+    return historicalText;
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
@@ -109,7 +121,7 @@ class _OverviewState extends State<Overview> {
                               : Color(0xFFEB6467),
                           size: 12,
                         ),
-                        Text("${percentageChange.abs()}% from last month",
+                        Text("${percentageChange.abs()}% from ${getLastText()}",
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               color: Colors.grey[400],
