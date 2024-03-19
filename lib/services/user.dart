@@ -134,9 +134,16 @@ class User extends ChangeNotifier {
     return total;
   }
 
-  double totalNetPercentageChange(DateTime from, DateTime to) {
-    double previousValue = getHistoricalNetValue(from, to);
-    return (previousValue - totalNet) / previousValue * 100;
+  double totalNetPercentageChange(DateTime from, DateTime to, double current) {
+    double previousValue = getRangeNet(from: from, to: to);
+    if (current > 0 && previousValue == 0) {
+      return 100;
+    } else if (current < 0 && previousValue == 0) {
+      return -100;
+    } else if (current == 0 && previousValue == 0) {
+      return 0;
+    }
+    return (previousValue - current) / previousValue * 100;
   }
 
   double get totalRegular {
@@ -505,24 +512,6 @@ class User extends ChangeNotifier {
       }
     }
     return accountTotal;
-  }
-
-  double getHistoricalNetValue(DateTime from, DateTime to) {
-    double transactionTotal = 0;
-
-    Query<Transaction> transactionRangeQuery = objectbox.transactionBox
-        .query(Transaction_.timestamp
-            .between(from.millisecondsSinceEpoch, to.millisecondsSinceEpoch))
-        .build();
-    List<Transaction> transactionRange = transactionRangeQuery.find();
-    for (Transaction transaction in transactionRange) {
-      if (transaction.transactionType == TransactionType.income) {
-        transactionTotal -= transaction.value;
-      } else {
-        transactionTotal += transaction.value;
-      }
-    }
-    return transactionTotal;
   }
 
   //TODO TRANSLATE TO QUERY

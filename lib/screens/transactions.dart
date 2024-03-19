@@ -18,6 +18,7 @@ class Transactions extends StatefulWidget {
 
 class _TransactionsState extends State<Transactions> {
   final moneyFormat = new NumberFormat("#,##0.00", "en_US");
+  DateRangeType rangeType = DateRangeType.MONTHLY;
 
   late DateTime from;
   late DateTime to;
@@ -90,6 +91,21 @@ class _TransactionsState extends State<Transactions> {
     });
   }
 
+  getPercentage(User user, double current) {
+    DateTime historicalFrom = DateTime(from.year, from.month - 1, from.day);
+    DateTime historicalTo = DateTime(to.year, to.month - 1, to.day);
+
+    if (rangeType == DateRangeType.YEARLY) {
+      historicalFrom = DateTime(from.year - 1, from.month, from.day);
+      historicalTo = DateTime(to.year - 1, to.month, to.day);
+    } else if (rangeType == DateRangeType.DAILY) {
+      historicalFrom = DateTime(from.year - 1, from.month, from.day);
+      historicalTo = DateTime(to.year - 1, to.month, to.day);
+    }
+
+    return user.totalNetPercentageChange(historicalFrom, historicalTo, current);
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User>();
@@ -121,6 +137,10 @@ class _TransactionsState extends State<Transactions> {
     final List<Map> transactionListPerDay =
         user.getTransactionsByDate(from: from, to: to, accountID: -1);
 
+    double current = user.getRangeNet(from: this.from, to: this.to);
+
+    double percentageChange = getPercentage(user, current);
+
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -131,28 +151,33 @@ class _TransactionsState extends State<Transactions> {
         ),
         SizedBox(height: 4),
         TotalHeader(
-            header: "Total Net:",
-            valueColor: Color(0x4F4F4F).withOpacity(1),
+            header: "Total net:",
+            valueColor: Color(0xFF4F4F4F),
             currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
-            value: user.getRangeNet(from: this.from, to: this.to),
-            description: RichText(
-              text: TextSpan(
-                  text: "xx%",
-                  style: TextStyle(
-                    color: Color(0x55C9C6).withOpacity(1),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                  ),
-                  children: [
-                    TextSpan(
-                        text: " Total Savings",
-                        style: TextStyle(
-                            color: Color(0xB6B6B6).withOpacity(1),
+            value: current,
+            description: rangeType == DateRangeType.IRREGULAR
+                ? SizedBox()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        percentageChange >= 0
+                            ? Icons.arrow_upward
+                            : Icons.arrow_downward,
+                        color: percentageChange >= 0
+                            ? Color(0xFF55C9C6)
+                            : Color(0xFFEB6467),
+                        size: 12,
+                      ),
+                      Text("${percentageChange.abs()}% from last month",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[400],
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Poppins")),
-                  ]),
-            )),
+                          )),
+                    ],
+                  )),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           child: Text("Favorites",
