@@ -429,7 +429,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                                           ],
                                         )
                                       ]),
-                                      Text(e["value"].toString(),
+                                      Text(moneyFormat.format(e["value"]),
                                           style: TextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
