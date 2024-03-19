@@ -26,13 +26,21 @@ class _TransactionsState extends State<Transactions> {
   int month = DateTime.now().month;
   int year = DateTime.now().year;
 
-  getValueColor(Transaction transaction) {
+  Color getValueColor(Transaction transaction) {
     if (transaction.transactionType == TransactionType.transfer) {
-      return Color(0xB6B6B6).withOpacity(1);
+      return Color(0xFFB6B6B6);
     } else if (transaction.transactionType == TransactionType.expense) {
-      return Color(0xEB6467).withOpacity(1);
+      return Color(0xFFEB6467);
     } else {
-      return Color(0x55C9C6).withOpacity(1);
+      return Color(0xFF55C9C6);
+    }
+  }
+
+  String getCurrencySymbol(Transaction transaction, User user) {
+    if (transaction.transactionType == TransactionType.transfer) {
+      return user.findAccountByID(transaction.toID)!.getCurrency().symbol;
+    } else {
+      return user.findAccountByID(transaction.fromID)!.getCurrency().symbol;
     }
   }
 
@@ -60,7 +68,7 @@ class _TransactionsState extends State<Transactions> {
                   value: transaction.value,
                   type: transaction.transactionType!,
                   transactionID: transaction.transactionID,
-                  currencySymbol: user.mySettings.getPrimaryCurrency().symbol,
+                  currencySymbol: getCurrencySymbol(transaction, user),
                   valueColor: getValueColor(transaction),
                   importance: transaction.importance!,
                   subcategory: transaction.subcategoryID != -1
