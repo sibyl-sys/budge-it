@@ -172,7 +172,7 @@
     },
     {
       "id": "5:5949585774518277514",
-      "lastPropertyId": "10:1148654174728662569",
+      "lastPropertyId": "11:1425066578101634140",
       "name": "Transaction",
       "properties": [
         {
@@ -225,6 +225,11 @@
           "id": "10:1148654174728662569",
           "name": "subcategoryID",
           "type": 6
+        },
+        {
+          "id": "11:1425066578101634140",
+          "name": "exchangeRate",
+          "type": 8
         }
       ],
       "relations": []
