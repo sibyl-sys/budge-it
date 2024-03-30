@@ -475,27 +475,32 @@ class _AddTransactionState extends State<AddTransaction> {
                     ),
                   )
                 : SizedBox(),
-            Container(
-                color: const Color(0xFBFBFBFF),
-                width: double.infinity,
-                height: baseButtonSize,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(getValueLabel(transactionType),
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          )),
-                      SizedBox(height: 8.0),
-                      Text(getTextDisplay(),
-                          style: TextStyle(
-                              decoration: TextDecoration.none,
-                              fontSize: 26,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).primaryColor))
-                    ])),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                      color: const Color(0xFBFBFBFF),
+                      height: baseButtonSize,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(getValueLabel(transactionType),
+                                style: TextStyle(
+                                  decoration: TextDecoration.none,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                )),
+                            SizedBox(height: 8.0),
+                            Text(getTextDisplay(),
+                                style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context).primaryColor))
+                          ])),
+                ),
+              ],
+            ),
             Ink(
               color: Colors.white,
               child: InkWell(
