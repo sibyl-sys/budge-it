@@ -29,6 +29,7 @@ class AddTransaction extends StatefulWidget {
 class _AddTransactionState extends State<AddTransaction> {
   String firstValue = "";
   String secondValue = "";
+  String depositValue = "";
   bool isDecimal = false;
   Operator operator = Operator.none;
   DateTime currentDate = DateTime.now();
@@ -107,7 +108,7 @@ class _AddTransactionState extends State<AddTransaction> {
     } else if (transactionType == TransactionType.income) {
       return "Income";
     } else {
-      return "Transfer";
+      return "Withdraw";
     }
   }
 
@@ -256,9 +257,17 @@ class _AddTransactionState extends State<AddTransaction> {
     TransactionType transactionType =
         user.mySettings.getSelectedTransactionType();
     double baseButtonSize = MediaQuery.of(context).size.width / 5;
+    bool isSameCurrency = true;
 
     if (transactionType != TransactionType.transfer) {
       category = user.findCategoryByID(user.mySettings.selectedCategoryTo);
+    } else {
+      isSameCurrency = user
+              .findAccountByID(user.mySettings.selectedAccountFrom)!
+              .getCurrency() ==
+          user
+              .findAccountByID(user.mySettings.selectedAccountTo)!
+              .getCurrency();
     }
 
     return Material(
@@ -479,7 +488,7 @@ class _AddTransactionState extends State<AddTransaction> {
               children: [
                 Expanded(
                   child: Container(
-                      color: const Color(0xFBFBFBFF),
+                      color: Color(0xFBFBFBFF),
                       height: baseButtonSize,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -499,6 +508,31 @@ class _AddTransactionState extends State<AddTransaction> {
                                     color: Theme.of(context).primaryColor))
                           ])),
                 ),
+                transactionType == TransactionType.transfer && !isSameCurrency
+                    ? Expanded(
+                        child: Container(
+                            color: const Color(0xFBFBFBFF),
+                            height: baseButtonSize,
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Deposit",
+                                      style: TextStyle(
+                                        decoration: TextDecoration.none,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      )),
+                                  SizedBox(height: 8.0),
+                                  Text(getTextDisplay(),
+                                      style: TextStyle(
+                                          decoration: TextDecoration.none,
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Theme.of(context).primaryColor))
+                                ])),
+                      )
+                    : SizedBox(),
               ],
             ),
             Ink(

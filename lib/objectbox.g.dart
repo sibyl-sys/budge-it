@@ -196,7 +196,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(5, 5949585774518277514),
       name: 'Transaction',
-      lastPropertyId: const IdUid(11, 1425066578101634140),
+      lastPropertyId: const IdUid(12, 7399448800183268301),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -250,8 +250,8 @@ final _entities = <ModelEntity>[
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(11, 1425066578101634140),
-            name: 'exchangeRate',
+            id: const IdUid(12, 7399448800183268301),
+            name: 'withdrawValue',
             type: 8,
             flags: 0)
       ],
@@ -462,7 +462,8 @@ ModelDefinition getObjectBoxModel() {
         2343707797326796135,
         1630040688712898633,
         8588361961052653005,
-        5640264298874476428
+        5640264298874476428,
+        1425066578101634140
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -660,7 +661,7 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Transaction object, fb.Builder fbb) {
           final noteOffset = fbb.writeString(object.note);
-          fbb.startTable(12);
+          fbb.startTable(13);
           fbb.addInt64(0, object.transactionID);
           fbb.addFloat64(1, object.value);
           fbb.addOffset(2, noteOffset);
@@ -671,7 +672,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(7, object.dbTransactionType);
           fbb.addInt64(8, object.dbImportance);
           fbb.addInt64(9, object.subcategoryID);
-          fbb.addFloat64(10, object.exchangeRate);
+          fbb.addFloat64(11, object.withdrawValue);
           fbb.finish(fbb.endTable());
           return object.transactionID;
         },
@@ -692,8 +693,8 @@ ModelDefinition getObjectBoxModel() {
               const fb.BoolReader().vTableGet(buffer, rootOffset, 16, false);
           final subcategoryIDParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
-          final exchangeRateParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 24, 0);
+          final withdrawValueParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 26, 0);
           final object = Transaction(
               value: valueParam,
               note: noteParam,
@@ -702,7 +703,7 @@ ModelDefinition getObjectBoxModel() {
               fromID: fromIDParam,
               isArchived: isArchivedParam,
               subcategoryID: subcategoryIDParam,
-              exchangeRate: exchangeRateParam)
+              withdrawValue: withdrawValueParam)
             ..transactionID =
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbTransactionType =
@@ -1047,8 +1048,8 @@ class Transaction_ {
   static final subcategoryID =
       QueryIntegerProperty<Transaction>(_entities[4].properties[9]);
 
-  /// see [Transaction.exchangeRate]
-  static final exchangeRate =
+  /// see [Transaction.withdrawValue]
+  static final withdrawValue =
       QueryDoubleProperty<Transaction>(_entities[4].properties[10]);
 }
 
