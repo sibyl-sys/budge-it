@@ -11,7 +11,7 @@ class Transaction {
 
   double value;
 
-  double exchangeRate;
+  double withdrawValue;
 
   String note;
 
@@ -70,7 +70,7 @@ class Transaction {
       this.subcategoryID = -1,
       this.transactionType,
       this.importance,
-      this.exchangeRate = 0});
+      this.withdrawValue = 0});
 
   void _ensureStableEnumValues() {
     assert(TransactionType.expense.index == 0);
