@@ -11,6 +11,8 @@ class Transaction {
 
   double value;
 
+  double exchangeRate;
+
   String note;
 
   @Property(type: PropertyType.date)
@@ -67,7 +69,8 @@ class Transaction {
       required this.isArchived,
       this.subcategoryID = -1,
       this.transactionType,
-      this.importance});
+      this.importance,
+      this.exchangeRate = 0});
 
   void _ensureStableEnumValues() {
     assert(TransactionType.expense.index == 0);
